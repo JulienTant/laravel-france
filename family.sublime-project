@@ -1,0 +1,13 @@
+{
+	"folders":
+	[
+		{
+			"path": "/var/www"
+		}
+	],
+	"ignored_packages":
+	[
+		"Vintage",
+		"phpcs"
+	]
+}

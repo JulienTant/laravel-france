@@ -1,0 +1,187 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"Auth",
+				"Auth	Laravel: Auth::check()"
+			]
+		]
+	},
+	"buffers":
+	[
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 392.0,
+		"selected_items":
+		[
+			[
+				"space",
+				"Indentation: Convert to Spaces"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 449.0
+	},
+	"console":
+	{
+		"height": 139.0
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/home/a/Desktop/ex/website/app/start/global.php",
+		"/var/www/app/start/global.php",
+		"/home/a/Desktop/ex/website/bootstrap/paths.php",
+		"/var/www/bootstrap/paths.php",
+		"/var/www/app/routes.php",
+		"/home/a/Desktop/ex/website/app/config/app.php",
+		"/home/a/Desktop/ex/website/app/config/local/app.php",
+		"/var/www/app/config/local/app.php",
+		"/var/www/app/config/app.php",
+		"/home/a/Desktop/ex/website/bootstrap/start.php",
+		"/var/www/bootstrap/start.php",
+		"/var/www/composer.json",
+		"/var/www/public/css/app.css",
+		"/home/a/.config/sublime-text-2/Packages/User/Preferences.sublime-settings",
+		"/var/www/app/tests/acceptance/homepage.feature",
+		"/var/www/app/tests/acceptance/bootstrap/FeatureContext.php",
+		"/var/www/behat.yml",
+		"/var/www/family.sublime-workspace",
+		"/var/www/family.sublime-project",
+		"/home/a/.config/sublime-text-2/Packages/User/phpcs.sublime-settings",
+		"/home/a/Desktop/ex/website/app/filters.php",
+		"/var/www/app/modules.php",
+		"/home/a/Desktop/ex/website/app/modules.php",
+		"/home/a/Desktop/ex/website/app/routes.php",
+		"/var/www/app/config/local/database.php",
+		"/home/a/.config/sublime-text-2/Packages/Phpcs/phpcs.sublime-settings"
+	],
+	"find":
+	{
+		"height": 35.0
+	},
+	"find_in_files":
+	{
+		"height": 132.0,
+		"where_history":
+		[
+			"/var/www"
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"dz",
+			"dz ",
+			"    ",
+			","
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 0.0
+	},
+	"input":
+	{
+		"height": 33.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"replace":
+	{
+		"height": 0.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+			[
+				"appcss",
+				"public/css/app.css"
+			],
+			[
+				"composer.json",
+				"composer.json"
+			],
+			[
+				"featurecontext",
+				"app/tests/acceptance/bootstrap/FeatureContext.php"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 226.0,
+	"status_bar_visible": true
+}
