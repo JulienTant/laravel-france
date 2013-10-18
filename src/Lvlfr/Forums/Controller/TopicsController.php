@@ -28,7 +28,7 @@ class TopicsController extends \BaseController
 
     public function show($slug, $topicId)
     {
-        $topic = Topic::with('category')->find($topicId);
+        $topic = Topic::with(array('user','category'))->find($topicId);
         if (!$topic) {
             App::abort('404', 'Sujet non trouvé');
         }

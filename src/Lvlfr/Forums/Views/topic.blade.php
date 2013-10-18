@@ -7,7 +7,7 @@
         <li><a title="Retour à la page d'accueil" href="{{ route('home') }}"><i class="icon-home"></i></a> <span class="divider">/</span></li>
         <li><a title="Accueil des forums" href="{{ action('\Lvlfr\Forums\Controller\HomeController@index', null, true) }}"> Forums</a> <span class="divider">/</span></li>
         <li><a title="{{ $category->title }}" href="{{ action('\Lvlfr\Forums\Controller\TopicsController@index', array($category->slug, $category->id), true) }}"> {{ $category->title }}</a> <span class="divider">/</span></li>
-        <li>{{ $topic->title }}</li>
+        <li>@if($topic->sticky)<i class="icon-flag"></i> @endif {{ $topic->title }}</li>
     </ul>
 
     <div class="pagination">
@@ -34,7 +34,7 @@
                     @endif
                 </small>
                 <div class="forum-text">
-                    {{ $message->content }}
+                    {{ $message->html }}
                 </div>
             </div>
         </li>

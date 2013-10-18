@@ -15,7 +15,8 @@ class CreateTableForumMessages extends Migration
             $table->engine = 'InnoDB';
             $table->increments('id');
 
-            $table->text('content');
+            $table->text('html');
+            $table->text('bbcode');
 
             $table->integer('user_id')->unsigned();
             $table->integer('forum_topic_id')->unsigned();

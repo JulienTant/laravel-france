@@ -31,10 +31,10 @@
                         <td>
                             <strong>
                                 <a href="{{ action('\Lvlfr\Forums\Controller\TopicsController@show', array($topic->slug, $topic->id), true) }}">
-                                    {{ $topic->title }}
+                                   @if($topic->sticky)<i class="icon-flag"></i> @endif {{ $topic->title }}
                                 </a>
                             </strong><br>
-                            <small>Par {{ $topic->author }} le {{ $topic->created_at }}</small>
+                            <small>Par {{ $topic->user->username }} le {{ $topic->created_at }}</small>
                         </td>
                         <td class="text-center" width="127">{{ $topic->nb_messages }}</td>
                         <td class="text-center" width="127">{{ $topic->nb_views }}</td>
