@@ -5,10 +5,6 @@
     "license": "MIT",
     "require": {
         "laravel/framework": "4.0.*",
-        "behat/behat": "2.4.*@stable",
-        "behat/mink": "1.4.*@stable",
-        "behat/mink-extension": "*",
-        "behat/mink-goutte-driver": "*",
         "dflydev/markdown": "v1.0.3",
         "artdarek/oauth-4-laravel": "dev-master",
         "mjohnson/decoda": "6.2.3"
