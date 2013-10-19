@@ -28,7 +28,7 @@ class Topic extends \Eloquent
         $topic->slug = Str::slug($topic->title);
         $topic->save();
 
-        $message = Message::createNew($category->id, $topic, $user, $input);
+        $message = Message::createNew($category, $topic, $user, $input);
 
         $topic->setLastMessage($message, true);
         $category->setLastMessage($message, true);

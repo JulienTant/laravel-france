@@ -19,7 +19,7 @@ class Message extends \Eloquent
 
     public static function createNew($category, $topic, $user, $input)
     {
-        $text= strlen($input['message_content']) ? $input['message_content'] : $input['topic_content'];
+        $text= isset($input['message_content']) ? $input['message_content'] : $input['topic_content'];
 
         $message = new Message();
         $message->forum_category_id = $category->id;

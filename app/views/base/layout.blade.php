@@ -10,10 +10,7 @@
     <link rel="stylesheet" href="/css/normalize.css">
     <link rel="stylesheet" href="/css/font-awesome.min.css">
     <link rel="stylesheet" href="/css/app.css">
-
-    <script src="/js/modernizr.js"></script>
-    <script src="/js/jquery.js"></script>
-    <script src="/js/app.js"></script>
+    @yield('add_css')
 </head>
 <body class="@yield('page_class') preload">
 
@@ -70,16 +67,10 @@
     <footer>
         @yield('footer')
     </footer>
-    <script>
-    $(document).ready(function() {
-        $('body').removeClass('preload');
-        $('.top_msg').click(function() {
-            $that = $(this);
-            $that.slideUp(500, function() {
-                $that.remove();
-            });
-        });
-    });
-    </script>
 </body>
 </html>
+
+<script src="/js/modernizr.js"></script>
+<script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/app.js"></script>
+@yield('add_js')
