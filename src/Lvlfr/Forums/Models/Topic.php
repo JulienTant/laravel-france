@@ -19,23 +19,27 @@ class Topic extends \Eloquent
         return $this->belongsTo('\User', 'user_id');
     }
 
-    public static function createNew($categoryId, $input, $user)
+    public static function createNew($category, $input, $user)
     {
         $topic = new Topic();
-        $topic->forum_category_id = $categoryId;
+        $topic->forum_category_id = $category->id;
         $topic->user_id = $user->id;
         $topic->title = $input['topic_title'];
         $topic->slug = Str::slug($topic->title);
         $topic->save();
 
-        $message = Message::createNew($categoryId, $topic, $user, $input);
+        $message = Message::createNew($category->id, $topic, $user, $input);
 
         $topic->setLastMessage($message, true);
-        $topic->category->setLastMessage($message, true);
-
-        $user->newForumMessage();
+        $category->setLastMessage($message, true);
 
         return $topic;
+    }
+
+    public static function addReply($topicId, $input, $user)
+    {
+        $topic = Topic::find($topicId);
+
     }
 
     public function setLastMessage($message, $newTopic = false)

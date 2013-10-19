@@ -35,11 +35,11 @@
             </h1>
             <ul class="menu">
                 <li @if(str_is('*docs.*', Request::root()))class='active'@endif><a href="{{ action('\Lvlfr\Documentation\Controller\DocumentationController@showDocs') }}"><i class="icon-book"></i> Documentation</a></li>
-                <li @if(Request::is('*irc/index'))class='active'@endif>
+
+                <li @if(Request::is('*irc') || str_is('*forums.*', Request::root()))class='active'@endif>
                     <a href="#"><i class="icon-group"></i> Communauté</a>
                     <ul>
                         <li><a href="{{ action('\Lvlfr\Forums\Controller\HomeController@index', null, true) }}">Forums</a></li>
-                        <li><a href="#">Blog</a></li>
                         <li @if(Request::is('*irc/index'))class='active'@endif><a href="{{ action('Lvlfr\Website\Controller\IrcController@getIndex', null, true) }}">IRC</a></li>
                     </ul>
                 </li>

@@ -25,31 +25,26 @@
         <div class="control-group @if($errors->has('topic_title'))error@endif">
             {{ Form::label('topic_title', 'Titre : ')}}
             <div class="controls">
-            {{ Form::text('topic_title', Input::old('topic_title', null), array('placeholder'=>'Veuillez insérer un titre', 'class'=>'span12', "autofocus"=>"autofocus")) }}
-            {{ $errors->first('topic_title', '<span class="help-inline">Veuillez insérer un titre</span>') }}
+                {{ Form::text('topic_title', Input::old('topic_title', null), array('placeholder'=>'Veuillez insérer un titre', 'class'=>'span12', "autofocus"=>"autofocus")) }}
+                {{ $errors->first('topic_title', '<span class="help-inline">Veuillez insérer un titre</span>') }}
             </div>
         </div>
 
         <div class="control-group @if($errors->has('topic_content'))error@endif">
             {{ Form::label('topic_content', 'Message : ')}}
             <div class="controls">
-            {{ Form::textarea('topic_content', Input::old('topic_content', null), array('class'=>'span12')) }}
-            {{ $errors->first('topic_content', '<span class="help-inline">Veuillez insérer un message</span>') }}
+                {{ Form::textarea('topic_content', Input::old('topic_content', null), array('class'=>'span12')) }}
+                {{ $errors->first('topic_content', '<span class="help-inline">Veuillez insérer un message</span>') }}
             </div>
         </div>
 
         <div class="control-group">
             <div class="controls">
-            {{ Form::submit('Envoyer',array('class'=>'btn btn-primary')) }}
+                {{ Form::submit('Envoyer',array('class'=>'btn btn-primary')) }}
             </div>
         </div>
 
-    {{ Form::close() }}
-
-
+        {{ Form::close() }}
     </div>
-
-    FORM
-
 </div>
 @endsection

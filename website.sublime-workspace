@@ -4,6 +4,46 @@
 		"selected_items":
 		[
 			[
+				"categ",
+				"categoryId"
+			],
+			[
+				"cate",
+				"category"
+			],
+			[
+				"topic",
+				"topic"
+			],
+			[
+				"topi",
+				"topic"
+			],
+			[
+				"Str",
+				"Str	Laravel: Str::slug()"
+			],
+			[
+				"cateo",
+				"categoryId"
+			],
+			[
+				"cat",
+				"categoryId"
+			],
+			[
+				"Redirect",
+				"Redirect	Laravel: Redirect::to_action()"
+			],
+			[
+				"last",
+				"lastPage"
+			],
+			[
+				"Lv",
+				"LvlfrForums"
+			],
+			[
 				"Auth",
 				"Auth	Laravel: Auth::check()"
 			]
@@ -11,6 +51,136 @@
 	},
 	"buffers":
 	[
+		{
+			"file": "app/database/seeds/ForumSeeder.php",
+			"settings":
+			{
+				"buffer_size": 2881,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/Lvlfr/Forums/Views/topics.blade.php",
+			"settings":
+			{
+				"buffer_size": 3249,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/Lvlfr/Forums/Views/topic.blade.php",
+			"settings":
+			{
+				"buffer_size": 2145,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/Lvlfr/Forums/Models/Topic.php",
+			"settings":
+			{
+				"buffer_size": 1342,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/Lvlfr/Forums/Controller/TopicsController.php",
+			"settings":
+			{
+				"buffer_size": 2647,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/Lvlfr/Forums/Views/new.blade.php",
+			"settings":
+			{
+				"buffer_size": 2203,
+				"line_ending": "Unix",
+				"name": "new.blade.php"
+			}
+		},
+		{
+			"file": "src/Lvlfr/Forums/Validation/NewTopicValidator.php",
+			"settings":
+			{
+				"buffer_size": 296,
+				"line_ending": "Unix",
+				"name": "NewTopicValidator.php"
+			}
+		},
+		{
+			"file": "vendor/laravel/framework/src/Illuminate/Html/FormBuilder.php",
+			"settings":
+			{
+				"buffer_size": 23150,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "app/database/migrations/2013_10_18_174122_create_table_forum_messages.php",
+			"settings":
+			{
+				"buffer_size": 798,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "composer.json",
+			"settings":
+			{
+				"buffer_size": 1252,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/Lvlfr/Forums/Config/forums.php",
+			"settings":
+			{
+				"buffer_size": 132,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/Lvlfr/Forums/routes.php",
+			"settings":
+			{
+				"buffer_size": 940,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "app/database/migrations/2013_10_18_173730_create_table_forum_topics.php",
+			"settings":
+			{
+				"buffer_size": 1181,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/Lvlfr/Forums/Models/Category.php",
+			"settings":
+			{
+				"buffer_size": 665,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/Lvlfr/Forums/Models/Message.php",
+			"settings":
+			{
+				"buffer_size": 826,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "app/models/User.php",
+			"settings":
+			{
+				"buffer_size": 1190,
+				"line_ending": "Unix"
+			}
+		}
 	],
 	"build_system": "",
 	"command_palette":
@@ -44,17 +214,71 @@
 	},
 	"file_history":
 	[
-		"/home/a/Desktop/ex/website/app/start/global.php",
+		"/var/www/app/database/migrations/2013_10_17_042631_create_users_table.php",
+		"/var/www/app/database/migrations/2013_10_18_192235_add_nb_messages_to_users.php",
+		"/var/www/src/Lvlfr/Website/Controller/ContactController.php",
+		"/var/www/public/index.php",
+		"/var/www/app/database/migrations/2013_10_18_174927_create_forums_relations.php",
+		"/var/www/app/database/migrations/2013_10_18_173730_create_table_forum_topics.php",
+		"/var/www/app/database/migrations/2013_10_18_173441_create_table_forum_categories.php",
+		"/var/www/src/Lvlfr/Forums/Views/topics.blade.php",
+		"/var/www/src/Lvlfr/Forums/Controller/TopicsController.php",
+		"/var/www/src/Lvlfr/Forums/Views/home.blade.php",
 		"/var/www/app/start/global.php",
+		"/var/www/src/Lvlfr/Website/Controller/HomeController.php",
+		"/var/www/app/config/mail.php",
+		"/var/www/app/config/local/mail.php",
+		"/var/www/app/storage/logs/log-cli-2013-10-18.txt",
+		"/var/www/app/storage/logs/log-cli-2013-10-17.txt",
+		"/var/www/app/storage/logs/log-apache2handler-2013-10-17.txt",
+		"/var/www/app/storage/logs/log-apache2handler-2013-10-16.txt",
+		"/var/www/app/storage/logs/log-apache2handler-2013-10-18.txt",
+		"/var/www/src/Lvlfr/Forums/routes.php",
+		"/var/www/app/database/seeds/DatabaseSeeder.php",
+		"/var/www/app/database/seeds/UserSeeder.php",
+		"/var/www/app/database/seeds/ForumSeeder.php",
+		"/var/www/app/config/app.php",
+		"/var/www/app/config/auth.php",
+		"/var/www/app/config/cache.php",
+		"/var/www/app/config/compile.php",
+		"/var/www/app/config/database.php",
+		"/var/www/app/config/view.php",
+		"/var/www/app/views/errors/404.blade.php",
+		"/var/www/app/views/missing.blade.php",
+		"/var/www/bootstrap/start.php",
+		"/var/www/app/config/local/app.php",
+		"/var/www/vendor/laravel/framework/src/Illuminate/Foundation/Application.php",
+		"/var/www/src/Lvlfr/Override/Paginator/Environment.php",
+		"/var/www/src/Lvlfr/Override/Paginator/Paginator.php",
+		"/var/www/src/Lvlfr/Forums/Views/topic.blade.php",
+		"/var/www/vendor/laravel/framework/src/Illuminate/Pagination/PaginationServiceProvider.php",
+		"/var/www/src/Lvlfr/Override/Paginator/PaginationServiceProvider.php",
+		"/var/www/vendor/symfony/http-kernel/Symfony/Component/HttpKernel/Tests/Fixtures/KernelForOverrideName.php",
+		"/var/www/vendor/laravel/framework/src/Illuminate/Pagination/Environment.php",
+		"/var/www/app/overrides.php",
+		"/var/www/app/routes.php",
+		"/var/www/vendor/laravel/framework/src/Illuminate/Pagination/Paginator.php",
+		"/var/www/src/Lvlfr/Overload/Paginator.php",
+		"/var/www/src/Lvlfr/Override/Paginator.php",
+		"/var/www/src/Lvlfr/Forums/Models/Topic.php",
+		"/var/www/src/Lvlfr/Forums/Models/Message.php",
+		"/var/www/app/models/User.php",
+		"/var/www/src/Lvlfr/Forums/Models/Category.php",
+		"/var/www/src/Lvlfr/Website/routes.php",
+		"/var/www/src/Lvlfr/Forums/Config/forums.php",
+		"/var/www/src/Lvlfr/Forums/Controller/HomeController.php",
+		"/var/www/app/views/base/layout.blade.php",
+		"/var/www/vendor/laravel/framework/src/Illuminate/Support/helpers.php",
+		"/var/www/app/modules.php",
+		"/var/www/src/Lvlfr/Documentation/Controller/DocumentationController.php",
+		"/var/www/app/database/migrations/2013_10_18_174122_create_table_forum_messages.php",
+		"/var/www/src/Lvlfr/Documentation/Views/layout.blade.php",
+		"/home/a/Desktop/ex/website/app/start/global.php",
 		"/home/a/Desktop/ex/website/bootstrap/paths.php",
 		"/var/www/bootstrap/paths.php",
-		"/var/www/app/routes.php",
 		"/home/a/Desktop/ex/website/app/config/app.php",
 		"/home/a/Desktop/ex/website/app/config/local/app.php",
-		"/var/www/app/config/local/app.php",
-		"/var/www/app/config/app.php",
 		"/home/a/Desktop/ex/website/bootstrap/start.php",
-		"/var/www/bootstrap/start.php",
 		"/var/www/composer.json",
 		"/var/www/public/css/app.css",
 		"/home/a/.config/sublime-text-2/Packages/User/Preferences.sublime-settings",
@@ -65,7 +289,6 @@
 		"/var/www/website.sublime-project",
 		"/home/a/.config/sublime-text-2/Packages/User/phpcs.sublime-settings",
 		"/home/a/Desktop/ex/website/app/filters.php",
-		"/var/www/app/modules.php",
 		"/home/a/Desktop/ex/website/app/modules.php",
 		"/home/a/Desktop/ex/website/app/routes.php",
 		"/var/www/app/config/local/database.php",
@@ -80,6 +303,11 @@
 		"height": 132.0,
 		"where_history":
 		[
+			"/var/www/app/config",
+			"/var/www/src",
+			"/var/www/vendor",
+			"/var/www/src",
+			"/var/www/app/database",
 			"/var/www"
 		]
 	},
@@ -88,6 +316,53 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"topic",
+			"category",
+			"topic",
+			"user",
+			"topic",
+			"Auth::user()",
+			"Input::get",
+			"topic",
+			"forum_topic_id",
+			"content",
+			"title",
+			"categoryId",
+			"new",
+			"categoryId",
+			"javascript:alert('todo');",
+			"[b]",
+			"1",
+			"log",
+			"1",
+			"log",
+			")\n{",
+			"function(",
+			"[A-Za-z]+",
+			"name",
+			"getCurrentPage",
+			"paginator",
+			"setpa",
+			"category",
+			"URL::",
+			"URL::action",
+			"function action(",
+			"controller",
+			"URL::to('home')",
+			"accueil\" href=\"#",
+			"accueil\" href=\"#\"",
+			"20",
+			"<i class=\"icon-home\"></i>",
+			"category",
+			"lmTopicName",
+			"h2strong",
+			"strong",
+			"Schema::table",
+			"'",
+			"dropForeign",
+			"foreign",
+			"forumtopics",
+			"))",
 			"dz",
 			"dz ",
 			"    ",
@@ -99,6 +374,8 @@
 		"regex": false,
 		"replace_history":
 		[
+			"Config::get('app.url')",
+			"accueil\" href=\"{{ URL::home() }}"
 		],
 		"reverse": false,
 		"show_context": true,
@@ -109,8 +386,466 @@
 	"groups":
 	[
 		{
+			"selected": 3,
 			"sheets":
 			[
+				{
+					"buffer": 0,
+					"file": "app/database/seeds/ForumSeeder.php",
+					"settings":
+					{
+						"buffer_size": 2881,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2721,
+								2721
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 2650.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "src/Lvlfr/Forums/Views/topics.blade.php",
+					"settings":
+					{
+						"buffer_size": 3249,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "src/Lvlfr/Forums/Views/topic.blade.php",
+					"settings":
+					{
+						"buffer_size": 2145,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2145,
+								2145
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "src/Lvlfr/Forums/Models/Topic.php",
+					"settings":
+					{
+						"buffer_size": 1342,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								902,
+								904
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 740.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "src/Lvlfr/Forums/Controller/TopicsController.php",
+					"settings":
+					{
+						"buffer_size": 2647,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2365,
+								2365
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 2074.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "src/Lvlfr/Forums/Views/new.blade.php",
+					"settings":
+					{
+						"buffer_size": 2203,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1576,
+								1576
+							],
+							[
+								1634,
+								1634
+							],
+							[
+								1732,
+								1732
+							],
+							[
+								1760,
+								1760
+							],
+							[
+								1843,
+								1843
+							]
+						],
+						"settings":
+						{
+							"auto_name": "new.blade.php",
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 304.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "src/Lvlfr/Forums/Validation/NewTopicValidator.php",
+					"settings":
+					{
+						"buffer_size": 296,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								179,
+								179
+							],
+							[
+								236,
+								236
+							]
+						],
+						"settings":
+						{
+							"auto_name": "NewTopicValidator.php",
+							"syntax": "Packages/PHP/PHP.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "vendor/laravel/framework/src/Illuminate/Html/FormBuilder.php",
+					"settings":
+					{
+						"buffer_size": 23150,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								925,
+								925
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 1473.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "app/database/migrations/2013_10_18_174122_create_table_forum_messages.php",
+					"settings":
+					{
+						"buffer_size": 798,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								411,
+								411
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 480.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 9,
+					"file": "composer.json",
+					"settings":
+					{
+						"buffer_size": 1252,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								321,
+								321
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JSON.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 10,
+					"file": "src/Lvlfr/Forums/Config/forums.php",
+					"settings":
+					{
+						"buffer_size": 132,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								132,
+								132
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 11,
+					"file": "src/Lvlfr/Forums/routes.php",
+					"settings":
+					{
+						"buffer_size": 940,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								414,
+								414
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 12,
+					"file": "app/database/migrations/2013_10_18_173730_create_table_forum_topics.php",
+					"settings":
+					{
+						"buffer_size": 1181,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								578,
+								578
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 406.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 13,
+					"file": "src/Lvlfr/Forums/Models/Category.php",
+					"settings":
+					{
+						"buffer_size": 665,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								253,
+								253
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 14,
+					"file": "src/Lvlfr/Forums/Models/Message.php",
+					"settings":
+					{
+						"buffer_size": 826,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								455,
+								455
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 306.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 15,
+					"file": "app/models/User.php",
+					"settings":
+					{
+						"buffer_size": 1190,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								94,
+								94
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
 			]
 		}
 	],
@@ -156,6 +891,270 @@
 		"selected_items":
 		[
 			[
+				"migration",
+				"app/database/migrations/2013_10_17_042631_create_users_table.php"
+			],
+			[
+				"user.php",
+				"app/models/User.php"
+			],
+			[
+				"message.",
+				"src/Lvlfr/Forums/Models/Message.php"
+			],
+			[
+				"category.",
+				"src/Lvlfr/Forums/Models/Category.php"
+			],
+			[
+				"topic.php",
+				"src/Lvlfr/Forums/Models/Topic.php"
+			],
+			[
+				"create_topi",
+				"app/database/migrations/2013_10_18_173730_create_table_forum_topics.php"
+			],
+			[
+				"contactcontrol",
+				"src/Lvlfr/Website/Controller/ContactController.php"
+			],
+			[
+				"newblade",
+				"src/Lvlfr/Forums/Views/new.blade.php"
+			],
+			[
+				"contactcontr",
+				"src/Lvlfr/Website/Controller/ContactController.php"
+			],
+			[
+				"topics",
+				"src/Lvlfr/Forums/Views/topics.blade.php"
+			],
+			[
+				"forumroute",
+				"src/Lvlfr/Forums/routes.php"
+			],
+			[
+				"forumconfi",
+				"src/Lvlfr/Forums/Config/forums.php"
+			],
+			[
+				"create",
+				"app/database/migrations/2013_10_18_174122_create_table_forum_messages.php"
+			],
+			[
+				"topicscont",
+				"src/Lvlfr/Forums/Controller/TopicsController.php"
+			],
+			[
+				"topic.",
+				"src/Lvlfr/Forums/Views/topic.blade.php"
+			],
+			[
+				"topicsblade",
+				"src/Lvlfr/Forums/Views/topics.blade.php"
+			],
+			[
+				"index.php",
+				"public/index.php"
+			],
+			[
+				"migrationuser",
+				"app/database/migrations/2013_10_17_042631_create_users_table.php"
+			],
+			[
+				"controllerhomecontroller",
+				"src/Lvlfr/Website/Controller/HomeController.php"
+			],
+			[
+				"websitecontroller",
+				"src/Lvlfr/Website/Controller/HomeController.php"
+			],
+			[
+				"forumviews",
+				"src/Lvlfr/Forums/Views/home.blade.php"
+			],
+			[
+				"appstart",
+				"app/start/global.php"
+			],
+			[
+				"start.php",
+				"bootstrap/start.php"
+			],
+			[
+				"localapp",
+				"app/config/local/app.php"
+			],
+			[
+				"relation",
+				"app/database/migrations/2013_10_18_174927_create_forums_relations.php"
+			],
+			[
+				"topic",
+				"app/database/migrations/2013_10_18_173730_create_table_forum_topics.php"
+			],
+			[
+				"migrcate",
+				"app/database/migrations/2013_10_18_173441_create_table_forum_categories.php"
+			],
+			[
+				"forumtopicsbl",
+				"src/Lvlfr/Forums/Views/topics.blade.php"
+			],
+			[
+				"forumho",
+				"src/Lvlfr/Forums/Views/home.blade.php"
+			],
+			[
+				"topicscontro",
+				"src/Lvlfr/Forums/Controller/TopicsController.php"
+			],
+			[
+				"forumsroute",
+				"src/Lvlfr/Forums/routes.php"
+			],
+			[
+				"overri",
+				"vendor/symfony/http-kernel/Symfony/Component/HttpKernel/Tests/Fixtures/KernelForOverrideName.php"
+			],
+			[
+				"forumcontroller",
+				"src/Lvlfr/Forums/Controller/TopicsController.php"
+			],
+			[
+				"paginator",
+				"src/Lvlfr/Override/Paginator/Paginator.php"
+			],
+			[
+				"overenv",
+				"src/Lvlfr/Override/Paginator/Environment.php"
+			],
+			[
+				"paginenv",
+				"vendor/laravel/framework/src/Illuminate/Pagination/Environment.php"
+			],
+			[
+				"env",
+				"src/Lvlfr/Override/Paginator/Environment.php"
+			],
+			[
+				"paginatorprovide",
+				"vendor/laravel/framework/src/Illuminate/Pagination/PaginationServiceProvider.php"
+			],
+			[
+				"foundaapp",
+				"vendor/laravel/framework/src/Illuminate/Foundation/Application.php"
+			],
+			[
+				"routes.php",
+				"app/routes.php"
+			],
+			[
+				"illuminatefoundationapp",
+				"vendor/laravel/framework/src/Illuminate/Foundation/Application.php"
+			],
+			[
+				"paginatorprovi",
+				"vendor/laravel/framework/src/Illuminate/Pagination/PaginationServiceProvider.php"
+			],
+			[
+				"pagenvi",
+				"vendor/laravel/framework/src/Illuminate/Pagination/Environment.php"
+			],
+			[
+				"paginaenvi",
+				"vendor/laravel/framework/src/Illuminate/Pagination/Environment.php"
+			],
+			[
+				"pagi",
+				"vendor/laravel/framework/src/Illuminate/Pagination/Paginator.php"
+			],
+			[
+				"forumbld",
+				"src/Lvlfr/Forums/Views/topics.blade.php"
+			],
+			[
+				"forumblde",
+				"src/Lvlfr/Forums/Views/topic.blade.php"
+			],
+			[
+				"forumsblade",
+				"src/Lvlfr/Forums/Views/topic.blade.php"
+			],
+			[
+				"forums.blade",
+				"src/Lvlfr/Forums/Views/topics.blade.php"
+			],
+			[
+				"lvlfrforumscontrollerhomecontroller",
+				"src/Lvlfr/Forums/Controller/HomeController.php"
+			],
+			[
+				"layout",
+				"app/views/base/layout.blade.php"
+			],
+			[
+				"mail",
+				"app/config/mail.php"
+			],
+			[
+				"contactcon",
+				"src/Lvlfr/Website/Controller/ContactController.php"
+			],
+			[
+				"websiteroute",
+				"src/Lvlfr/Website/routes.php"
+			],
+			[
+				"topic.blade",
+				"src/Lvlfr/Forums/Views/topic.blade.php"
+			],
+			[
+				"t_user",
+				"app/database/migrations/2013_10_18_192235_add_nb_messages_to_users.php"
+			],
+			[
+				"topics.",
+				"src/Lvlfr/Forums/Views/topics.blade.php"
+			],
+			[
+				"homebla",
+				"src/Lvlfr/Forums/Views/home.blade.php"
+			],
+			[
+				"message",
+				"src/Lvlfr/Forums/Models/Message.php"
+			],
+			[
+				"migtopics",
+				"app/database/migrations/2013_10_18_173730_create_table_forum_topics.php"
+			],
+			[
+				"home.ph",
+				"src/Lvlfr/Forums/Views/home.blade.php"
+			],
+			[
+				"createforumrel",
+				"app/database/migrations/2013_10_18_174927_create_forums_relations.php"
+			],
+			[
+				"migrmessage",
+				"app/database/migrations/2013_10_18_174122_create_table_forum_messages.php"
+			],
+			[
+				"createtablefo",
+				"app/database/migrations/2013_10_18_173441_create_table_forum_categories.php"
+			],
+			[
+				"documentviews",
+				"src/Lvlfr/Documentation/Views/layout.blade.php"
+			],
+			[
+				"doccontroller",
+				"src/Lvlfr/Documentation/Controller/DocumentationController.php"
+			],
+			[
 				"appcss",
 				"public/css/app.css"
 			],
@@ -182,6 +1181,6 @@
 	"show_open_files": false,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 226.0,
+	"side_bar_width": 381.0,
 	"status_bar_visible": true
 }

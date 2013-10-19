@@ -1,19 +1,25 @@
 <?php
 namespace Lvlfr\Login\Controller;
 
+use \Auth;
 use \BaseController;
-use \View;
 use \Input;
 use \OAuth;
-use \Auth;
 use \Session;
+use \Redirect;
 use \Response;
+use \View;
 
 class LoginController extends BaseController
 {
     public function __construct()
     {
         $this->loginService = new \Lvlfr\Login\Service\LoginService;
+    }
+
+    public function index()
+    {
+        return \View::make('LvlfrLogin::login');
     }
 
     public function login($provider = 'Google')
@@ -40,7 +46,7 @@ class LoginController extends BaseController
                 $this->loginService->login($infos);
 
                 Session::flash('top_success', 'Vous êtes maintenant connecté !');
-                return Response::make()->header('Location', '/');
+                return Redirect::intended(action('Lvlfr\Website\Controller\HomeController@getIndex'));
             } catch (\OAuth\Common\Http\Exception\TokenResponseException $ex) {
                 $url = $oAuthService->getAuthorizationUri();
                 return Response::make()->header('Location', (string)$url);
@@ -50,7 +56,7 @@ class LoginController extends BaseController
                 return Response::make()->header('Location', (string)$url);
             } catch (\Exception $ex) {
                 Session::flash('top_error', 'Un compte avec cet identifiant ou cette adresse email existe déjà. Peut-être vous êtes vous déjà connecté avec un autre fournisseur ?');
-                return Response::make()->header('Location', '/');
+                return Redirect::intended(action('Lvlfr\Website\Controller\HomeController@getIndex'));
             }
         }
     }
@@ -58,7 +64,7 @@ class LoginController extends BaseController
     public function logout()
     {
         Auth::logout();
-        return Response::make()->header('Location', '/');
+        return Redirect::intended(action('Lvlfr\Website\Controller\HomeController@getIndex'));
     }
 
     public function check()

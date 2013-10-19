@@ -72,11 +72,47 @@ class TopicsController extends \BaseController
         $validator = new \Lvlfr\Forums\Validation\NewTopicValidator(Input::all());
 
         if ($validator->passes()) {
-            $topic = Topic::createNew($categoryId, Input::all(), Auth::user());
+            $topic = Topic::createNew($category, Input::all(), Auth::user());
 
             return Redirect::action('\Lvlfr\Forums\Controller\TopicsController@show', array($topic->slug, $topic->id));
         }
 
         return Redirect::back()->withInput()->withErrors($validator->getErrors());
+    }
+
+    public function newReply($slug, $topicId)
+    {
+        $topic = Topic::find($topicId);
+        if (!$topic) {
+            App::abort('404', 'Sujet non trouvé');
+        }
+        $messages = Message::with('user')->where('forum_topic_id', '=', $topicId)->orderBy('created_at', 'desc')->take(5)->get();
+
+        return View::make('LvlfrForums::reply', array(
+            'topic' => $topic,
+            'cite' => null,
+            'messages' => $messages,
+        ));
+    }
+
+    public function postReply($slug, $topicId)
+    {
+        $topic = Topic::find($topicId);
+        if (!$topic) {
+            App::abort('404', 'Sujet non trouvé');
+        }
+
+        $validator = new \Lvlfr\Forums\Validation\PostReplyValidator(Input::all());
+
+        if ($validator->passes()) {
+            $message = Message::createNew($topic->category, $topic, Auth::user(), Input::all());
+            $topic->setLastMessage($message);
+            $topic->category->setLastMessage($message);
+
+            return Redirect::action('\Lvlfr\Forums\Controller\TopicsController@moveToLast', array($topic->slug, $topic->id));
+        }
+
+        return Redirect::back()->withInput()->withErrors($validator->getErrors());
+
     }
 }

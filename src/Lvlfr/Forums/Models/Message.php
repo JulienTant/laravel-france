@@ -17,17 +17,21 @@ class Message extends \Eloquent
         return $this->belongsTo('\Lvlfr\Forums\Models\Topic', 'forum_topic_id');
     }
 
-    public static function createNew($categoryId, $topic, $user, $input)
+    public static function createNew($category, $topic, $user, $input)
     {
+        $text= strlen($input['message_content']) ? $input['message_content'] : $input['topic_content'];
+
         $message = new Message();
-        $message->forum_category_id = $categoryId;
+        $message->forum_category_id = $category->id;
         $message->forum_topic_id = $topic->id;
         $message->user_id = $user->id;
-        $message->bbcode = $input['topic_content'];
+        $message->bbcode = $text;
         $code = new Decoda\Decoda($message->bbcode);
         $code->defaults();
         $message->html = $code->parse();
         $message->save();
+
+        $user->newForumMessage();
 
         return $message;
     }
