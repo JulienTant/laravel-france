@@ -20,7 +20,7 @@ class CreateTableForumTopics extends Migration
 
             $table->boolean('sticky')->default(0);
             $table->string('title');
-            $table->string('slug')->unique();
+            $table->string('slug');
 
             $table->integer('nb_messages')->unsigned()->default(1);
             $table->integer('nb_views')->unsigned()->default(0);

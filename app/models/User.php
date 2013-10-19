@@ -53,4 +53,10 @@ class User extends Eloquent implements UserInterface, RemindableInterface
     {
         return 'http://www.gravatar.com/avatar/' . md5($this->email);
     }
+
+    public function newForumMessage()
+    {
+        $this->nb_messages++;
+        $this->save();
+    }
 }

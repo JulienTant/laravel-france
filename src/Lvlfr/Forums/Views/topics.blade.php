@@ -9,7 +9,7 @@
         <li>{{ $category->title }}</li>
     </ul>
 
-        <a class="" href="javascript:alert('todo');"><i class="icon-plus icon-white"></i> Nouveau sujet</a>
+        <a class="" href="{{ action('\Lvlfr\Forums\Controller\TopicsController@newTopic', array($category->slug, $category->id), true)}}"><i class="icon-plus icon-white"></i> Nouveau sujet</a>
 
     <div class="row">
         <div class="span12">
@@ -66,7 +66,7 @@
         @endif
 
 
-        <a class="" href="javascript:alert('todo');"><i class="icon-plus icon-white"></i> Nouveau sujet</a>
+        <a class="" href="{{ action('\Lvlfr\Forums\Controller\TopicsController@newTopic', array($category->slug, $category->id), true)}}"><i class="icon-plus icon-white"></i> Nouveau sujet</a>
 
     </div>
 @endsection

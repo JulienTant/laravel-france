@@ -6,7 +6,10 @@ use \Lvlfr\Forums\Models\Category;
 use \Lvlfr\Forums\Models\Topic;
 use \Lvlfr\Forums\Models\Message;
 use \App;
+use \Auth;
 use \Config;
+use \Input;
+use \Redirect;
 use \View;
 
 class TopicsController extends \BaseController
@@ -45,5 +48,35 @@ class TopicsController extends \BaseController
     {
         $page = ceil(Message::where('forum_topic_id', '=', $topicId)->count() / Config::get('LvlfrForums::forums.nb_messages_per_page'));
         return \Redirect::action('\Lvlfr\Forums\Controller\TopicsController@show', array('slug' => $slug, 'topicId' => $topicId, 'page' => $page), '303');
+    }
+
+    public function newTopic($slug, $categoryId)
+    {
+        $category = Category::find($categoryId);
+        if (!$category) {
+            App::abort('404', 'Catégorie non trouvée');
+        }
+
+        return View::make('LvlfrForums::new', array(
+            'category' => $category,
+        ));
+    }
+
+    public function postNew($slug, $categoryId)
+    {
+        $category = Category::find($categoryId);
+        if (!$category) {
+            App::abort('404', 'Catégorie non trouvée');
+        }
+
+        $validator = new \Lvlfr\Forums\Validation\NewTopicValidator(Input::all());
+
+        if ($validator->passes()) {
+            $topic = Topic::createNew($categoryId, Input::all(), Auth::user());
+
+            return Redirect::action('\Lvlfr\Forums\Controller\TopicsController@show', array($topic->slug, $topic->id));
+        }
+
+        return Redirect::back()->withInput()->withErrors($validator->getErrors());
     }
 }
