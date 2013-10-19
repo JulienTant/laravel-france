@@ -10,7 +10,8 @@
         "behat/mink-extension": "*",
         "behat/mink-goutte-driver": "*",
         "dflydev/markdown": "v1.0.3",
-        "artdarek/oauth-4-laravel": "dev-master"
+        "artdarek/oauth-4-laravel": "dev-master",
+        "mjohnson/decoda": "6.2.3"
     },
     "autoload": {
         "classmap": [
