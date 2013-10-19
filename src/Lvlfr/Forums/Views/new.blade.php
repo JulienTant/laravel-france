@@ -68,7 +68,7 @@ $(function() {
     });
     $("textarea").sceditor('instance').sourceMode(true);
 });
-</Script>
+</script>
 @endsection
 
 @section('add_css')
