@@ -11,3 +11,5 @@
 |
 */
 
+Artisan::add(new CreateDbCommand);
+Artisan::add(new ProjectInstallCommand);
