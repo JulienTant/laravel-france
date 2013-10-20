@@ -27,7 +27,13 @@
                     @foreach($topics as $topic)
                     <tr>
                         <td style="padding:0" width="1"><div style="min-height:61px"></div></td>
-                        <td class="ico-read" width="37"><i class="icon-circle-blank"></i></td>
+                        <td class="ico-read" width="37">
+                            @if($topic->isUnread())
+                                <i class="icon-circle"></i>
+                            @else
+                                <i class="icon-circle-blank"></i>
+                            @endif
+                        </td>
                         <td>
                             <strong>
                                 <a href="{{ action('\Lvlfr\Forums\Controller\TopicsController@show', array($topic->slug, $topic->id), true) }}">

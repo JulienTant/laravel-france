@@ -57,4 +57,54 @@ class Topic extends \Eloquent
         $this->lm_date = $message->created_at;
         $this->save();
     }
+
+    public function view($andMarkAsRead = false)
+    {
+        $this->nb_views++;
+        $this->save();
+
+        if (\Auth::guest()) {
+            return;
+        }
+
+        if ($andMarkAsRead) {
+            $fv = View::where('topic_id', '=', $this->id)->where('user_id', '=', \Auth::user()->id)->first();
+            if (!is_null($fv)) {
+                $fv->touch();
+            } else {
+                View::create(array(
+                    'topic_id' => $this->id,
+                    'category_id' => $this->category->id,
+                    'user_id' => \Auth::user()->id
+                ));
+            }
+        }
+    }
+
+    public function isUnread()
+    {
+        if (\Auth::guest()) {
+            return false;
+        }
+
+        $daysUntilRead = \Config::get('LvlfrForums::forums.day_mark_until_mark_as_read');
+        $markAsReadAfter = new \DateTime($daysUntilRead .'days ago');
+        if ($this->updated_at < $markAsReadAfter) {
+            return false;
+        }
+
+        if (app()->bound('forums.allUnreadTopics') === false) {
+            $topics = View::where('updated_at', '>=', $markAsReadAfter->format('Y-m-d H:i:s'))
+                ->where('user_id', '=', \Auth::user()->id)
+                ->where('category_id', '=', $this->category->id)
+                ->lists('topic_id');
+
+            app()->instance('forums.allUnreadTopics', $topics);
+        }
+        $topics = app()->make('forums.allUnreadTopics');
+        if (array_search($this->id, $topics) !== false) {
+            return false;
+        }
+        return true;
+    }
 }

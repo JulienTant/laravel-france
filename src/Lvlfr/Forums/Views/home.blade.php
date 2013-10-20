@@ -24,7 +24,13 @@
                     @foreach($categories as $category)
                     <tr>
                         <td style="padding:0" width="1"><div style="min-height:78px"></div></td>
-                        <td class="ico-read" width="37"><i class="icon-circle-blank"></i></td>
+                        <td class="ico-read" width="37">
+                            @if($category->isUnread())
+                                <i class="icon-circle"></i>
+                            @else
+                                <i class="icon-circle-blank"></i>
+                            @endif
+                        </td>
                         <td>
                             <strong>
                                 <a href="{{ action('\Lvlfr\Forums\Controller\TopicsController@index', array($category->slug, $category->id), true) }}">{{ $category->title }}</a>

@@ -37,6 +37,12 @@ class TopicsController extends \BaseController
         }
         $messages = Message::with('user')->where('forum_topic_id', '=', $topicId)->orderBy('created_at', 'asc')->paginate(Config::get('LvlfrForums::forums.nb_messages_per_page'));
 
+        $andMarkAsRead = false;
+        if ($messages->getCurrentPage() == $messages->getLastPage()) {
+            $andMarkAsRead = true;
+        }
+        $topic->view($andMarkAsRead);
+
         return View::make('LvlfrForums::topic', array(
             'category' => $topic->category,
             'topic' => $topic,
