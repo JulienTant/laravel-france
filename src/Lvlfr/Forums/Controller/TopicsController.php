@@ -88,9 +88,14 @@ class TopicsController extends \BaseController
         }
         $messages = Message::with('user')->where('forum_topic_id', '=', $topicId)->orderBy('created_at', 'desc')->take(5)->get();
 
+        $cite = null;
+        if ($quote = Message::with('user')->where('id', '=', Input::get('quote'))->first()) {
+            $cite = '[quote="'.$quote->user->username.'"]'.$quote->bbcode.'[/quote]';
+        }
+
         return View::make('LvlfrForums::reply', array(
             'topic' => $topic,
-            'cite' => null,
+            'cite' => $cite,
             'messages' => $messages,
         ));
     }

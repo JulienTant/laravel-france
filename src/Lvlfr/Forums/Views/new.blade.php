@@ -48,30 +48,3 @@
     </div>
 </div>
 @endsection
-
-@section('add_js')
-<script type="text/javascript" src="{{ asset('packages/sceditor/jquery.sceditor.bbcode.min.js') }}"></script>
-<script type="text/javascript" src="{{ asset('packages/sceditor/languages/fr.js') }}"></script>
-<script>
-$(function() {
-    // Replace all textarea's
-    // with SCEditor
-    $("textarea").sceditor({
-        plugins: "bbcode",
-        height: 350,
-        resizeWidth: false,
-        dateFormat: "day/month/year",
-        autofocus: true,
-        autoExpand: true,
-        style: "{{ asset('packages/sceditor/jquery.sceditor.default.min.css') }}",
-        emoticonsRoot: "{{ asset('packages/sceditor/') }}"
-    });
-    $("textarea").sceditor('instance').sourceMode(true);
-});
-</script>
-@endsection
-
-@section('add_css')
-<link rel="stylesheet" type="text/css" href="{{ asset('packages/sceditor/jquery.sceditor.default.min.css') }}">
-<link rel="stylesheet" type="text/css" href="{{ asset('packages/sceditor/themes/square.min.css') }}">
-@endsection

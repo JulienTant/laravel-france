@@ -151,7 +151,7 @@
 			"file": "app/tests/acceptance/30_irc.feature",
 			"settings":
 			{
-				"buffer_size": 298,
+				"buffer_size": 0,
 				"line_ending": "Unix",
 				"name": "30_irc.feature"
 			}
@@ -176,7 +176,7 @@
 			"file": "app/tests/acceptance/50_forum.feature",
 			"settings":
 			{
-				"buffer_size": 838,
+				"buffer_size": 0,
 				"line_ending": "Unix"
 			}
 		},
@@ -198,12 +198,36 @@
 				"buffer_size": 1097,
 				"line_ending": "Unix"
 			}
+		},
+		{
+			"file": "app/commands/CreateDbCommand.php",
+			"settings":
+			{
+				"buffer_size": 1500,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "app/start/artisan.php",
+			"settings":
+			{
+				"buffer_size": 485,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "app/commands/ProjectInstallCommand.php",
+			"settings":
+			{
+				"buffer_size": 1506,
+				"line_ending": "Unix"
+			}
 		}
 	],
 	"build_system": "",
 	"command_palette":
 	{
-		"height": 236.0,
+		"height": 392.0,
 		"selected_items":
 		[
 			[
@@ -219,7 +243,7 @@
 				"Indentation: Reindent Lines"
 			]
 		],
-		"width": 467.0
+		"width": 449.0
 	},
 	"console":
 	{
@@ -236,6 +260,7 @@
 	},
 	"file_history":
 	[
+		"/var/www/app/config/database.php",
 		"/var/www/app/config/auth.php",
 		"/var/www/vendor/laravel/framework/src/Illuminate/Auth/Guard.php",
 		"/var/www/app/tests/TestCase.php",
@@ -301,7 +326,6 @@
 		"/var/www/app/config/app.php",
 		"/var/www/app/config/cache.php",
 		"/var/www/app/config/compile.php",
-		"/var/www/app/config/database.php",
 		"/var/www/app/config/view.php",
 		"/var/www/app/views/errors/404.blade.php",
 		"/var/www/app/views/missing.blade.php",
@@ -349,7 +373,7 @@
 	},
 	"find_in_files":
 	{
-		"height": 138.0,
+		"height": 0.0,
 		"where_history":
 		[
 			"/var/www/vendor",
@@ -368,6 +392,8 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"{",
+			"$",
 			"function user()",
 			" i ",
 			"i",
@@ -466,7 +492,7 @@
 	"groups":
 	[
 		{
-			"selected": 17,
+			"selected": 0,
 			"sheets":
 			[
 				{
@@ -569,7 +595,9 @@
 						],
 						"settings":
 						{
-							"syntax": "Packages/Laravel Blade Highlighter/laravel-blade.tmLanguage"
+							"syntax": "Packages/Laravel Blade Highlighter/laravel-blade.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
 						"translation.y": 1608.0,
@@ -786,6 +814,7 @@
 						"settings":
 						{
 							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 4,
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
@@ -799,15 +828,15 @@
 					"file": "app/tests/acceptance/30_irc.feature",
 					"settings":
 					{
-						"buffer_size": 298,
+						"buffer_size": 0,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								298,
-								298
+								0,
+								0
 							]
 						],
 						"settings":
@@ -894,15 +923,15 @@
 					"file": "app/tests/acceptance/50_forum.feature",
 					"settings":
 					{
-						"buffer_size": 838,
+						"buffer_size": 0,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								231,
-								231
+								0,
+								0
 							]
 						],
 						"settings":
@@ -970,6 +999,86 @@
 						"zoom_level": 1.0
 					},
 					"type": "text"
+				},
+				{
+					"buffer": 18,
+					"file": "app/commands/CreateDbCommand.php",
+					"settings":
+					{
+						"buffer_size": 1500,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1044,
+								1044
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 994.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 19,
+					"file": "app/start/artisan.php",
+					"settings":
+					{
+						"buffer_size": 485,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								445,
+								445
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 20,
+					"file": "app/commands/ProjectInstallCommand.php",
+					"settings":
+					{
+						"buffer_size": 1506,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								140,
+								140
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
 				}
 			]
 		}
@@ -1015,6 +1124,14 @@
 		"height": 0.0,
 		"selected_items":
 		[
+			[
+				"database.",
+				"app/config/database.php"
+			],
+			[
+				"createdb",
+				"app/commands/CreateDbCommand.php"
+			],
 			[
 				"composer",
 				"composer.json"

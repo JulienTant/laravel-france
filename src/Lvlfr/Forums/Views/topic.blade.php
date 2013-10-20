@@ -36,6 +36,9 @@
                 <div class="forum-text">
                     {{ $message->html }}
                 </div>
+                <div class="forum-text-tools">
+                        <a href="{{ action('\Lvlfr\Forums\Controller\TopicsController@newReply', array('slug' => $topic->slug, 'topicId' => $topic->id, 'quote' => $message->id)) }}">Citer</a>
+                </div>
             </div>
         </li>
         <?php $i++; ?>
