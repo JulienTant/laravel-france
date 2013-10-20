@@ -13,7 +13,7 @@
             </ul>
         </div>
         <div class="col">
-            <a class="download" href="https://github.com/laravel/laravel/archive/master.zip">
+            <a class="download" href="http://docs.laraveldev.fr/4.0/quick">
                 <i class="icon-rocket"></i> Démarrage rapide
             </a>
         </div>
