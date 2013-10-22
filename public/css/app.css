@@ -4,7 +4,6 @@
     Orange  :   #f0523f
     Grey    :   #4c4c4c
 */
-* {box-sizing: border-box}
 html, body {padding: 0;margin: 0; font-size: 14px; font-family: 'Open Sans', sans-serif;color:#808080;}
 
 h1 {font-weight: normal;}
