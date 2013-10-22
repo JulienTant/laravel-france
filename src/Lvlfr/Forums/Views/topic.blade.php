@@ -13,7 +13,7 @@
     <div class="pagination">
         {{ $messages->links() }}
     </div>
-    <a href="{{ action('\Lvlfr\Forums\Controller\TopicsController@newReply', array($topic->slug, $topic->id)) }}">Répondre</a>
+    <a class="btn-reply" href="{{ action('\Lvlfr\Forums\Controller\TopicsController@newReply', array($topic->slug, $topic->id)) }}">Répondre</a>
 
     <ul id="forum-message-list">
         <?php $i = 0; ?>
@@ -48,7 +48,7 @@
     <div class="pagination">
         {{ $messages->links() }}
     </div>
-    <a href="{{ action('\Lvlfr\Forums\Controller\TopicsController@newReply', array($topic->slug, $topic->id)) }}">Répondre</a>
+    <a class="btn-reply" href="{{ action('\Lvlfr\Forums\Controller\TopicsController@newReply', array($topic->slug, $topic->id)) }}">Répondre</a>
 
 </div>
 @endsection
