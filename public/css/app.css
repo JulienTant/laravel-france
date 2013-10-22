@@ -31,11 +31,11 @@ div.top_success {background-color: green; color: white;}
 /* header */
 header {background: #4c4c4c}
 header nav {width: 1060px; margin:0 auto;font-family: 'Ubuntu', sans-serif;}
-header h1 {padding: 0;margin: 0;display: inline-block;font-weight: normal;line-height: 70px; width:320px;}
+header h1 {height: 69px; padding: 0;margin: 0;display: inline-block;font-weight: normal;line-height: 69px; width:320px; float:left;}
 header h1 img {float:left;margin: .5em;height: 45px;}
 header a {color : #A8A8A8;text-decoration: none;padding: 0 .6em;}
 header a:hover, header li.active > a {color: #F4F4F4;text-decoration: none}
-header ul.menu {display: inline-block;font-size: 1.2em;text-align: right; width: 635px; float: right; margin-top: 30px;}
+header ul.menu {display: inline-block;font-size: 1.2em;text-align: right; width: 635px; margin-top: 30px;}
 header ul li {display: inline-block;position: relative; float:left;}
 header ul li a {padding: 1.5em 0 1.5em 2em;}
 header ul ul {display: none;position: absolute;top: 1em;left: 1.3em;background: #4c4c4c;line-height: normal;padding: 0;border:1px solid #CCC;border-top:none;box-shadow: #474747 1px 1px 1px;}
