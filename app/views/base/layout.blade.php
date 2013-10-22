@@ -14,16 +14,17 @@
 </head>
 <body class="@yield('page_class') preload">
 
-@if(Session::has('top_error'))
-<div class="top_msg top_error">
-    {{ Session::get('top_error') }}
-</div>
-@endif
-@if(Session::has('top_success'))
-<div class="top_msg top_success">
-    {{ Session::get('top_success') }}
-</div>
-@endif
+    @if(Session::has('top_error'))
+    <div class="top_msg top_error">
+        {{ Session::get('top_error') }}
+    </div>
+    @endif
+
+    @if(Session::has('top_success'))
+    <div class="top_msg top_success">
+        {{ Session::get('top_success') }}
+    </div>
+    @endif
 
     <header>
         <nav>
@@ -61,9 +62,11 @@
             </ul>
         </nav>
     </header>
+
     <div id="page">
         @yield('content')
     </div><!--/.container-->
+    
     <footer>
         @yield('footer')
     </footer>
