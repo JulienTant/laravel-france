@@ -9,6 +9,11 @@ class Topic extends \Eloquent
 {
     protected $table = 'forum_topics';
 
+    public function getDates()
+    {
+        return array('created_at', 'updated_at', 'lm_date');
+    }
+
     public function category()
     {
         return $this->belongsTo('Lvlfr\Forums\Models\Category', 'forum_category_id');

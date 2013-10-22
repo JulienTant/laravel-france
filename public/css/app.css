@@ -54,6 +54,19 @@ header ul li.account {display:block; float:right}
 .orangebox .download {float: right;font-size: 2em;color: #FCC5B7;}
 .orangebox .download:hover {text-decoration: none;color: #F4F4F4;cursor: pointer;}
 
+/* BreadCrumb */
+ul.breadcrumb {background: #f0523f; border-radius: 4px; color: #ddd; padding:0; padding:3px 5px;}
+ul.breadcrumb a {color: white;}
+ul.breadcrumb li {display: inline-block; list-style-type: none;}
+ul.breadcrumb span.divider {display: inline-block; margin: 3px;}
+
+/* Forums */
+#forums .mainTable, #forums #forum-message-list {margin-top: 35px; width:100%; }
+#forums #forum-message-list {padding: 0; list-style-type: none;}
+#forums .forum-message {min-height: 180px}
+#forums .forum-message .user-infos { float:left; width: 200px;}
+#forums .forum-message .forum-text-zone { margin-left:200px;}
+
 /* Docs */
 .sidebar {width: 25%;float: left;}
 .sidebar ul {padding: 0;list-style: none;}

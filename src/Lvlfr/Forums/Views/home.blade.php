@@ -11,7 +11,7 @@
     <div class="row">
         <div class="span12">
             @if(count($categories))
-            <table class="table table-striped">
+            <table class="table table-striped mainTable">
                 <thead>
                     <tr>
                         <th colspan="3"><strong>Forums</strong></th>
@@ -43,7 +43,7 @@
                             @if($category->lm_topic_name)
                             <a href="{{ action('\Lvlfr\Forums\Controller\TopicsController@moveToLast', array($category->lm_topic_slug, $category->lm_topic_id), true) }}">
                                     {{ $category->lm_topic_name }}<br>
-                                    {{ $category->lm_date }}
+                                    le {{ $category->lm_date->format('d/m/Y à H:i:s') }}
                             </a><br/>
                             <small>Par {{ $category->lm_user_name }}</small>
                             @else

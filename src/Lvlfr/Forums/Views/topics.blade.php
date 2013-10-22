@@ -14,7 +14,7 @@
     <div class="row">
         <div class="span12">
             @if(count($topics))
-            <table class="table table-striped">
+            <table class="table table-striped mainTable">
                 <thead>
                     <tr>
                         <th colspan="3"><strong>Laravel France</strong></th>
@@ -40,15 +40,17 @@
                                    @if($topic->sticky)<i class="icon-flag"></i> @endif {{ $topic->title }}
                                 </a>
                             </strong><br>
-                            <small>Par {{ $topic->user->username }} le {{ $topic->created_at }}</small>
+                            <small>Par {{ $topic->user->username }} le {{ $topic->created_at->format('d/m/Y à H:i:s') }}</small>
                         </td>
                         <td class="text-center" width="127">{{ $topic->nb_messages }}</td>
                         <td class="text-center" width="127">{{ $topic->nb_views }}</td>
                         <td width="350">
+                            @if($topic->lm_date)
                             <a href="{{ action('\Lvlfr\Forums\Controller\TopicsController@moveToLast', array($topic->slug, $topic->id), true) }}">
-                                {{ $topic->lm_date }}
+                                le {{ $topic->lm_date->format('d/m/Y à H:i:s') }}
                             </a><br />
                             <small>Par {{ $topic->lm_user_name }}</small>
+                            @endif
                         </td>
                 </tr>
                 @endforeach

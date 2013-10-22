@@ -5,6 +5,11 @@ class Category extends \Eloquent
 {
     protected $table = 'forum_categories';
 
+    public function getDates()
+    {
+        return array('created_at', 'updated_at', 'lm_date');
+    }
+
     public function setLastMessage($message, $newTopic = false)
     {
         if ($newTopic) {

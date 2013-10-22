@@ -23,14 +23,14 @@
             <div class="user-infos">
                 <img src="{{ $message->user->getAvatarUrl() }}" class="img-polaroid">
                 <strong>{{ $message->user->username }}</strong><br />
-                Inscrit le {{ $message->user->created_at }}<br />
+                Inscrit le {{ $message->user->created_at->format('d/m/Y') }}<br />
                 Messages : {{ $message->user->nb_messages }}
             </div>
             <div class="forum-text-zone">
                 <small class="forum-message-date">
-                    Posté le {{ $message->created_at }}
+                    Posté le {{ $message->created_at->format('d/m/Y à H:i:s') }}
                     @if($message->created_at != $message->updated_at)
-                        , mis à jour le {{ $message->updated_at }}
+                        , mis à jour le {{ $message->updated_at->format('d/m/Y à H:i:s') }}
                     @endif
                 </small>
                 <div class="forum-text">
