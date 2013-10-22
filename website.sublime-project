@@ -2,7 +2,7 @@
 	"folders":
 	[
 		{
-			"path": "/var/www"
+			"path": "./"
 		}
 	],
 	"ignored_packages":
