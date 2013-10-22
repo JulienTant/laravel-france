@@ -18,7 +18,7 @@
     <ul id="forum-message-list">
         <?php $i = 0; ?>
         @foreach($messages as $message)
-        <a name="forum-message{{ $message->id }}" id="message{{ $message->id }}"></a>
+        <a name="message{{ $message->id }}" id="message{{ $message->id }}"></a>
         <li class="forum-message @if($i % 2) odd @else even @endif">
             <div class="user-infos">
                 <img src="{{ $message->user->getAvatarUrl() }}" class="img-polaroid">
@@ -28,10 +28,10 @@
             </div>
             <div class="forum-text-zone">
                 <small class="forum-message-date">
-                    Posté le {{ $message->created_at->format('d/m/Y à H:i:s') }}
+                    <a href="{{ URL::full() }}#message{{ $message->id }}">Posté le {{ $message->created_at->format('d/m/Y à H:i:s') }}
                     @if($message->created_at != $message->updated_at)
                         , mis à jour le {{ $message->updated_at->format('d/m/Y à H:i:s') }}
-                    @endif
+                    @endif</a>
                 </small>
                 <div class="forum-text">
                     {{ $message->html }}

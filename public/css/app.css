@@ -64,9 +64,9 @@ ul.breadcrumb span.divider {display: inline-block; margin: 3px;}
 #forums .mainTable, #forums #forum-message-list {margin-top: 35px; width:100%; }
 #forums #forum-message-list {padding: 0; list-style-type: none;}
 #forums .forum-message {min-height: 200px}
-#forums .forum-message .user-infos { float:left; width: 250px;}
-#forums .forum-message .user-infos img { height: 100px; width: 100px; float:left;}
-#forums .forum-message .forum-text-zone { margin-left:250px;}
+#forums .forum-message .user-infos { float:left; width: 270px; padding-top: 10px;}
+#forums .forum-message .user-infos img { height: 100px; width: 100px; float:left; margin: 0px 10px 10px 10px;}
+#forums .forum-message .forum-text-zone { margin-left:270px;}
 
 /* Docs */
 .sidebar {width: 25%;float: left;}
