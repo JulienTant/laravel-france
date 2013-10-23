@@ -55,7 +55,7 @@
                 </tbody>
             </table>
 
-            <div>
+            <div class="legend">
                 <strong>Légende :</strong>
                 <p class="ico-read">
                     <i class="icon-circle"></i> : Messages non lus<br>
