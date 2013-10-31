@@ -12,6 +12,8 @@
     </ul>
 
 
+    <h2>Répondre au sujet</h2>
+
     <div id="new_topic_form_container">
 
 
@@ -32,7 +34,7 @@
 
             <div class="control-group">
                 <div class="controls">
-                {{ Form::submit('Envoyer',array('class'=>'btn btn-primary')) }}
+                {{ Form::submit('Envoyer',array('class'=>'btn btn-valider')) }}
                 </div>
             </div>
 

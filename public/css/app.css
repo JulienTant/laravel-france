@@ -71,14 +71,14 @@ ul.breadcrumb span.divider {display: inline-block; margin: 3px;}
 #forums .forum-message .user-infos img { height: 100px; width: 100px; float:left; margin: 0px 10px 10px 10px;}
 #forums .forum-message .forum-text-zone { margin-left:270px;}
 #forums .forum-message .forum-text-tools { position: absolute; bottom: 15px; right: 15px;}
-#forums .btn-new, #forums .btn-reply {display: inline-block;background-color: #DAF084;color: #607A51;padding: .5em 1em;border-radius: .5em;}
-#forums .btn-new:hover, #forums .btn-reply:hover {background-color: #4EA832;color: #E0FFCF;text-decoration: none;}
-
+#forums .btn-new, #forums .btn-reply, #forums .btn-valider {display: inline-block;background-color: #DAF084;color: #607A51;padding: .5em 1em;border-radius: .5em;}
+#forums .btn-new:hover, #forums .btn-reply:hover, #forums .btn-valider:hover {background-color: #4EA832;color: #E0FFCF;text-decoration: none;}
+#forums .btn-valider {margin:15px auto 15px 15px;}
 #forums th {font-weight: 400;text-align: left;background: #F1F1F1;padding: 1em;}
 #forums td {padding: 1em;background: #FFFCF9;}
 #forums tr:nth-child(even) td {background: #FAF2EA}
-
 #forums .legend {border-top: 1px solid #CCC;margin: 1em 0 0 0;padding: 1em 0 0 0;}
+#forums textarea, #forums input[type="text"] {width: 95%; margin:0 auto; display: block}
 
 /* Docs */
 .sidebar {width: 25%;float: left;}
