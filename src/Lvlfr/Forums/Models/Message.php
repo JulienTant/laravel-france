@@ -35,4 +35,14 @@ class Message extends \Eloquent
 
         return $message;
     }
+
+    public function editable()
+    {
+        if (\Auth::guest()) {
+            return false;
+        } elseif ($this->user_id == \Auth::user()->id || \Auth::user()->hasRole('Forums')) {
+            return true;
+        }
+        return false;
+    }
 }

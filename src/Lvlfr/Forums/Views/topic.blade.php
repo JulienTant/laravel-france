@@ -30,10 +30,13 @@
                 <small class="forum-message-date">
                     <a href="{{ URL::full() }}#message{{ $message->id }}">Posté le {{ $message->created_at->format('d/m/Y à H:i:s') }}
                     @if($message->created_at != $message->updated_at)
-                        , mis à jour le {{ $message->updated_at->format('d/m/Y à H:i:s') }}
+                        (màj le {{ $message->updated_at->format('d/m/Y à H:i') }})
                     @endif</a>
+                    @if($message->editable())
+                    - <a href="{{ action('\Lvlfr\Forums\Controller\TopicsController@editMessage', array($topic->slug, $topic->id, $message->id)) }}">Editer</a>
+                    @endif
                 </small>
-                <div class="forum-text">
+                <div class="forum-text " data-post-id="{{$message->id}}">
                     {{ $message->html }}
                 </div>
                 <div class="forum-text-tools">
@@ -49,6 +52,5 @@
         {{ $messages->links() }}
     </div>
     <a class="btn-reply" href="{{ action('\Lvlfr\Forums\Controller\TopicsController@newReply', array($topic->slug, $topic->id)) }}"><i class="icon-reply"></i> Répondre</a>
-
 </div>
 @endsection

@@ -8,6 +8,7 @@ use \Lvlfr\Forums\Models\Message;
 use \App;
 use \Auth;
 use \Config;
+use \Decoda;
 use \Input;
 use \Redirect;
 use \View;
@@ -124,6 +125,43 @@ class TopicsController extends \BaseController
         }
 
         return Redirect::back()->withInput()->withErrors($validator->getErrors());
+    }
 
+    public function editMessage($slug, $topicId, $messageId)
+    {
+        $message = Message::find($messageId);
+        if (!$message || !$message->editable()) {
+            App::abort('404', 'Message non trouvé');
+        }
+
+        return View::make('LvlfrForums::edit', array(
+            'topic' => $message->topic,
+            'message' => $message,
+        ));
+    }
+
+    public function postEditMessage($slug, $topicId, $messageId)
+    {
+        $message = Message::find($messageId);
+        if (!$message || !$message->editable()) {
+            App::abort('404', 'Message non trouvé');
+        }
+
+
+        $validator = new \Lvlfr\Forums\Validation\EditReplyValidator(Input::all());
+
+        if ($validator->passes()) {
+            $message->bbcode = Input::get('message_content');
+
+            $code = new Decoda\Decoda($message->bbcode);
+            $code->defaults();
+            $message->html = $code->parse();
+
+            $message->save();
+
+            return Redirect::action('\Lvlfr\Forums\Controller\TopicsController@moveToLast', array($message->topic->slug, $message->topic->id));
+        }
+
+        return Redirect::back()->withInput()->withErrors($validator->getErrors());
     }
 }

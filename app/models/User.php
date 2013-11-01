@@ -59,4 +59,26 @@ class User extends Eloquent implements UserInterface, RemindableInterface
         $this->nb_messages++;
         $this->save();
     }
+
+    public function groups()
+    {
+        return $this->belongsToMany("Group")->withTimestamps();
+    }
+
+    public function isSuperAdmin()
+    {
+        return $this->groups->contains(1);
+    }
+
+    public function hasRole($role)
+    {
+        if (!is_int($role)) {
+            $role = Group::whereName($role)->first();
+            if ($role === null) {
+                throw new Exception("Group not found");
+            }
+        }
+
+        return $this->groups->contains($role) || $this->isSuperAdmin();
+    }
 }

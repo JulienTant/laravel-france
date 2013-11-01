@@ -70,28 +70,28 @@ class ForumSeeder extends Seeder
     {
         return array(
             array(
-                'html' => '<strong>Hello 1</strong>',
+                'html' => 'Hello <strong>1</strong>',
                 'bbcode' => 'Hello [b]1[/b]',
                 'user_id' => '1',
                 'forum_topic_id' => '1',
                 'forum_category_id' => '1',
             ),
             array(
-                'html' => '<strong>Hello 2</strong>',
+                'html' => 'Hello <strong>2</strong>',
                 'bbcode' => 'Hello [b]2[/b]',
                 'user_id' => '1',
                 'forum_topic_id' => '2',
                 'forum_category_id' => '1',
             ),
             array(
-                'html' => '<strong>Hello 3</strong>',
+                'html' => 'Hello <strong>3</strong>',
                 'bbcode' => 'Hello [b]3[/b]',
                 'user_id' => '1',
                 'forum_topic_id' => '3',
                 'forum_category_id' => '1',
             ),
             array(
-                'html' => '<strong>Hello 4</strong>',
+                'html' => 'Hello <strong>4</strong>',
                 'bbcode' => 'Hello [b]4[/b]',
                 'user_id' => '1',
                 'forum_topic_id' => '3',

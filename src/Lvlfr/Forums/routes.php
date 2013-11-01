@@ -49,6 +49,30 @@ Route::group(array('domain' => 'forums.'. Config::get('app.domain')), function (
     ->where('slug', '[A-Za-z0-9\-]+')
     ->where('topicId', '\d+');
 
+    /*********************************************
+     *************** EDIT ***********************
+     ********************************************/
+    Route::get(
+        '{slug}-t{topicId}/edit/{messageId}',
+        array(
+            'uses'=>'\Lvlfr\Forums\Controller\TopicsController@editMessage',
+            'before' => 'auth'
+        )
+    )
+    ->where('slug', '[A-Za-z0-9\-]+')
+    ->where('topicId', '\d+')
+    ->where('messageId', '\d+');
+    Route::post(
+        '{slug}-t{topicId}/edit/{messageId}',
+        array(
+            'uses'=>'\Lvlfr\Forums\Controller\TopicsController@postEditMessage',
+            'before' => 'auth'
+        )
+    )
+    ->where('slug', '[A-Za-z0-9\-]+')
+    ->where('topicId', '\d+')
+    ->where('messageId', '\d+');
+
     Route::get('{slug}-c{categoryId}', '\Lvlfr\Forums\Controller\TopicsController@index')->where('slug', '[A-Za-z0-9\-]+')->where('categoryId', '\d+');
     Route::get('{slug}-t{topicId}', '\Lvlfr\Forums\Controller\TopicsController@show')->where('slug', '[A-Za-z0-9\-]+')->where('topicId', '\d+');
     Route::get('{slug}-t{topicId}/lastpage', '\Lvlfr\Forums\Controller\TopicsController@moveToLast')->where('slug', '[A-Za-z0-9\-]+')->where('topicId', '\d+');
