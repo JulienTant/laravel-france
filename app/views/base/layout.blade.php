@@ -48,6 +48,7 @@
                     <li class="account">
                         <a href="{{ action('Lvlfr\Login\Controller\ProfileController@index') }}"><i class="icon-user"></i> {{ Auth::user()->username }}</a>
                         <ul>
+                            <li><a href="{{ action('Lvlfr\Login\Controller\ProfileController@index') }}">Profil</a></li>
                             <li><a href="{{ action('Lvlfr\Login\Controller\LoginController@logout', null, true) }}">Déconnexion</a></li>
                         </ul>
                     </li>

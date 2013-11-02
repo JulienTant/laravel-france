@@ -81,9 +81,13 @@ ul.breadcrumb span.divider {display: inline-block; margin: 3px;}
 #forums textarea, #forums input[type="text"] {width: 95%; margin:0 auto; display: block}
 
 #forums .icon-circle, #forums .icon-circle-blank {color: #f0523f;}
+
 /* Docs */
 .sidebar {width: 25%;float: left;}
 .sidebar ul {padding: 0;list-style: none;}
 .sidebar ul a {color: #9C9C9C;padding: .2em 1em;display: block;margin: 0 2em 0 0;}
 .sidebar ul a:hover {background: #FAFAFA;color: #F0523F;text-decoration: none;font-weight: bold;}
 .documentationContent {width: 74%;display: inline-block;}
+
+/* Profile */
+.profileContentSection {width: 74%;display: inline-block;}
