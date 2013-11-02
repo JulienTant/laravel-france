@@ -73,12 +73,15 @@ class User extends Eloquent implements UserInterface, RemindableInterface
         return $this->groups->contains(1);
     }
 
-    public function hasRole($role)
+    public function hasRole($roleId)
     {
-        if (!is_int($role)) {
-            $role = Group::whereName($role)->first();
+        if (!is_int($roleId)) {
+            $roleName = $roleId;
+            $role = Group::whereName($roleName)->first();
             if ($role === null) {
-                throw new Exception("Group "+$role+" not found");
+                throw new Exception("Group '".$roleName."' not found");
+            } else {
+                $roleId = $role->id;
             }
         }
 
