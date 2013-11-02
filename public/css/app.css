@@ -56,8 +56,9 @@ header ul li.account {display:block; float:right}
 
 /* BreadCrumb */
 ul.breadcrumb {background: #F7E9DE;border-radius: .5em;color: #BB761E;padding: .5em; padding-left: 15px}
-ul.breadcrumb a {color: #B97702;}
+ul.breadcrumb a {color: #B97702; text-decoration: underline;}
 ul.breadcrumb li {display: inline-block; list-style-type: none;}
+ul.breadcrumb li:first-child a {text-decoration: none;}
 ul.breadcrumb span.divider {display: inline-block; margin: 3px;}
 
 /* Forums */
