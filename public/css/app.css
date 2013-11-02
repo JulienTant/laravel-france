@@ -76,6 +76,7 @@ ul.breadcrumb span.divider {display: inline-block; margin: 3px;}
 #forums .btn-valider {margin:15px auto 15px 15px;}
 #forums th {font-weight: 400;text-align: left;background: #F1F1F1;padding: 1em;}
 #forums td {padding: 1em;background: #FFFCF9;}
+#forums td.ico-read {text-align: center}
 #forums tr:nth-child(even) td {background: #FAF2EA}
 #forums .legend {border-top: 1px solid #CCC;margin: 1em 0 0 0;padding: 1em 0 0 0;}
 #forums textarea, #forums input[type="text"] {width: 95%; margin:0 auto; display: block}
