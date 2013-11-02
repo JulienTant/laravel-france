@@ -46,7 +46,7 @@
                 <li @if(Request::is('contact*'))class='active'@endif><a href="{{ action('Lvlfr\Website\Controller\ContactController@getIndex', null, true) }}"><i class="icon-envelope"></i> Contact</a></li>
                 @if(Auth::check())
                     <li class="account">
-                        <a href="#"><i class="icon-user"></i> {{ Auth::user()->username }}</a>
+                        <a href="{{ action('Lvlfr\Login\Controller\ProfileController@index') }}"><i class="icon-user"></i> {{ Auth::user()->username }}</a>
                         <ul>
                             <li><a href="{{ action('Lvlfr\Login\Controller\LoginController@logout', null, true) }}">Déconnexion</a></li>
                         </ul>

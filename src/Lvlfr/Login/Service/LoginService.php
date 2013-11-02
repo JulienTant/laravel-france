@@ -2,7 +2,7 @@
 namespace Lvlfr\Login\Service;
 
 use \Auth;
-use \User;
+use \Lvlfr\Login\Model\User;
 use Lvlfr\Login\Model\OAuth as OAuthModel;
 
 class LoginService

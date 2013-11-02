@@ -1,7 +1,10 @@
 <?php
+namespace Lvlfr\Login\Model;
 
 use Illuminate\Auth\UserInterface;
 use Illuminate\Auth\Reminders\RemindableInterface;
+use Eloquent;
+use Exception;
 
 class User extends Eloquent implements UserInterface, RemindableInterface
 {

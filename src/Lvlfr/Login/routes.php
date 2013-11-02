@@ -14,4 +14,7 @@ Route::group(array('domain' => Config::get('app.domain')), function () {
         }
     ));
 
+    Route::group(array('prefix' => 'user', 'before' => 'auth'), function () {
+        Route::any('profile', 'Lvlfr\Login\Controller\ProfileController@index'); 
+    });   
 });
