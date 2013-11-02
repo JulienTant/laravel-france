@@ -46,7 +46,7 @@ class LoginController extends BaseController
                 $this->loginService->login($infos);
 
                 Session::flash('top_success', 'Vous êtes maintenant connecté !');
-                return Redirect::intended(action('Lvlfr\Website\Controller\HomeController@getIndex'));
+                return Redirect::intended(Session::get('prevUrl', action('Lvlfr\Website\Controller\HomeController@getIndex')));
             } catch (\OAuth\Common\Http\Exception\TokenResponseException $ex) {
                 $url = $oAuthService->getAuthorizationUri();
                 return Response::make()->header('Location', (string)$url);
@@ -56,7 +56,7 @@ class LoginController extends BaseController
                 return Response::make()->header('Location', (string)$url);
             } catch (\Exception $ex) {
                 Session::flash('top_error', 'Un compte avec cet identifiant ou cette adresse email existe déjà. Peut-être vous êtes vous déjà connecté avec un autre fournisseur ?');
-                return Redirect::intended(action('Lvlfr\Website\Controller\HomeController@getIndex'));
+                return Redirect::intended(Session::get('prevUrl', action('Lvlfr\Website\Controller\HomeController@getIndex')));
             }
         }
     }
@@ -64,7 +64,7 @@ class LoginController extends BaseController
     public function logout()
     {
         Auth::logout();
-        return Redirect::intended(action('Lvlfr\Website\Controller\HomeController@getIndex'));
+        return Redirect::intended(Session::get('prevUrl', action('Lvlfr\Website\Controller\HomeController@getIndex')));
     }
 
     public function check()

@@ -114,7 +114,12 @@ return array(
         'Illuminate\Validation\ValidationServiceProvider',
         'Illuminate\View\ViewServiceProvider',
         'Illuminate\Workbench\WorkbenchServiceProvider',
-
+      
+        'Lvlfr\Documentation\DocumentationServiceProvider',
+        'Lvlfr\Forums\ForumsServiceProvider',
+        'Lvlfr\Login\LoginServiceProvider',
+        'Lvlfr\Website\WebsiteServiceProvider',
+        
         'Artdarek\OAuth\OAuthServiceProvider',
     ),
 
