@@ -14,6 +14,9 @@ Route::group(array('domain' => Config::get('app.domain')), function () {
         }
     ));
 
+    /**
+     * USER PANEL
+     */
     Route::group(array('prefix' => 'user', 'before' => 'auth'), function () {
         Route::any('profile', 'Lvlfr\Login\Controller\ProfileController@index'); 
 
@@ -25,9 +28,19 @@ Route::group(array('domain' => Config::get('app.domain')), function () {
         Route::post('gravatar', 'Lvlfr\Login\Controller\ProfileController@submitAvatar');
     });   
 
+    /**
+     * FORUMS ADMIN
+     */
     Route::group(array('prefix' => 'admin/forums', 'before' => 'hasRole:Forums'), function () {
         Route::get('categories', 'Lvlfr\Login\Controller\Admin\ForumsController@categories'); 
         Route::post('categories', 'Lvlfr\Login\Controller\Admin\ForumsController@categoriesPost'); 
+    });   
+    
+    /**
+     * USERS ADMIN
+     */
+    Route::group(array('prefix' => 'admin/users', 'before' => 'hasRole:SuperAdmin'), function () {
+        Route::get('list', 'Lvlfr\Login\Controller\Admin\UsersController@lists'); 
     });   
 
     

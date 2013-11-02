@@ -20,6 +20,15 @@
             </li>
         </ul>
         @endif
+        
+        @if(Auth::user()->hasRole('SuperAdmin'))
+        <h3>Utilisateurs</h3>
+        <ul>
+            <li>
+                <a href="{{ action('Lvlfr\Login\Controller\Admin\UsersController@lists') }}">Utilisateurs</a>
+            </li>
+        </ul>
+        @endif
     </div>
 
     <div class="profileContentSection">
