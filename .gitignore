@@ -3,4 +3,5 @@
 composer.phar
 composer.lock
 .DS_Store
-/nbproject/private/
+/nbproject
+*.sublime*

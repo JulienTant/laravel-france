@@ -17,12 +17,14 @@
     @if(Session::has('top_error'))
     <div class="top_msg top_error">
         {{ Session::get('top_error') }}
+        <?php Session::forget('top_error'); ?>
     </div>
     @endif
 
     @if(Session::has('top_success'))
     <div class="top_msg top_success">
         {{ Session::get('top_success') }}
+        <?php Session::forget('top_success'); ?>
     </div>
     @endif
 
