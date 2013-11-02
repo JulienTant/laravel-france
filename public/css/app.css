@@ -80,6 +80,7 @@ ul.breadcrumb span.divider {display: inline-block; margin: 3px;}
 #forums .legend {border-top: 1px solid #CCC;margin: 1em 0 0 0;padding: 1em 0 0 0;}
 #forums textarea, #forums input[type="text"] {width: 95%; margin:0 auto; display: block}
 
+#forums .icon-circle, #forums .icon-circle-blank {color: #f0523f;}
 /* Docs */
 .sidebar {width: 25%;float: left;}
 .sidebar ul {padding: 0;list-style: none;}
