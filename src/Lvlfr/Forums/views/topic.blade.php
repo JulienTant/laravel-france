@@ -10,10 +10,15 @@
         <li>@if($topic->sticky)<i class="icon-flag"></i> @endif {{ $topic->title }}</li>
     </ul>
 
+
+    <div class="right-btn-group">
+        <a class="btn-reply" href="{{ action('\Lvlfr\Forums\Controller\TopicsController@newReply', array($topic->slug, $topic->id)) }}"><i class="icon-reply"></i> Répondre</a>
+    </div>
     <div class="pagination">
         {{ $messages->links() }}
     </div>
-    <a class="btn-reply" href="{{ action('\Lvlfr\Forums\Controller\TopicsController@newReply', array($topic->slug, $topic->id)) }}"><i class="icon-reply"></i> Répondre</a>
+
+    <div class="clear-sep"></div>
 
     <ul id="forum-message-list">
         <?php $i = 0; ?>
@@ -48,9 +53,14 @@
         @endforeach
     </ul>
 
+    <div class="clear-sep"></div>
+
+    <div class="right-btn-group">
+        <a class="btn-reply" href="{{ action('\Lvlfr\Forums\Controller\TopicsController@newReply', array($topic->slug, $topic->id)) }}"><i class="icon-reply"></i> Répondre</a>
+    </div>
     <div class="pagination">
         {{ $messages->links() }}
     </div>
-    <a class="btn-reply" href="{{ action('\Lvlfr\Forums\Controller\TopicsController@newReply', array($topic->slug, $topic->id)) }}"><i class="icon-reply"></i> Répondre</a>
+
 </div>
 @endsection

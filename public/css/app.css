@@ -4,7 +4,7 @@
     Orange  :   #f0523f
     Grey    :   #4c4c4c
 */
-html, body {padding: 0;margin: 0; font-size: 14px; font-family: 'Open Sans', sans-serif;color:#808080;}
+html, body {padding: 0;margin: 0; font-size: 14px; font-family: 'Open Sans', sans-serif;color:#808080; padding-bottom: 25px;}
 
 h1 {font-weight: normal;}
 h2 {font-weight: normal;color: #f0523f;}
@@ -55,7 +55,7 @@ header ul li.account {display:block; float:right}
 .orangebox .download:hover {text-decoration: none;color: #F4F4F4;cursor: pointer;}
 
 /* BreadCrumb */
-ul.breadcrumb {background: #F7E9DE;border-radius: .5em;color: #BB761E;padding: .5em;}
+ul.breadcrumb {background: #F7E9DE;border-radius: .5em;color: #BB761E;padding: .5em; padding-left: 15px}
 ul.breadcrumb a {color: #B97702;}
 ul.breadcrumb li {display: inline-block; list-style-type: none;}
 ul.breadcrumb span.divider {display: inline-block; margin: 3px;}
@@ -79,9 +79,9 @@ ul.breadcrumb span.divider {display: inline-block; margin: 3px;}
 #forums tr:nth-child(even) td {background: #FAF2EA}
 #forums .legend {border-top: 1px solid #CCC;margin: 1em 0 0 0;padding: 1em 0 0 0;}
 #forums textarea, #forums input[type="text"] {width: 95%; margin:0 auto; display: block}
-
 #forums .icon-circle, #forums .icon-circle-blank {color: #f0523f;}
-
+#forums .right-btn-group { float: right; }
+#forums .clear-sep {clear:both; height: 1px;}
 /* Docs */
 .sidebar {width: 25%;float: left;}
 .sidebar ul {padding: 0;list-style: none;}
@@ -91,3 +91,10 @@ ul.breadcrumb span.divider {display: inline-block; margin: 3px;}
 
 /* Profile */
 .profileContentSection {width: 74%;display: inline-block;}
+
+/* PAGINATION */
+.pagination { float:left; }
+.pagination ul { display: inline-block; margin-bottom: 0px; margin-left: 0px; padding-left: 0px; border-radius: 4px 4px 4px 4px; box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.05); }
+.pagination ul > li { display: inline-block; }
+.pagination ul > li:first-child > a, .pagination ul > li:first-child > span { border-left-width: 1px; border-bottom-left-radius: 4px; border-top-left-radius: 4px; }
+.pagination ul > li > a, .pagination ul > li > span { padding: 4px 12px; line-height: 20px; text-decoration: none; background-color: rgb(255, 255, 255); border-width: 1px 1px 1px 0px; border-style: solid; border-color: rgb(221, 221, 221); }
