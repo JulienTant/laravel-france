@@ -78,7 +78,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface
         if (!is_int($role)) {
             $role = Group::whereName($role)->first();
             if ($role === null) {
-                throw new Exception("Group not found");
+                throw new Exception("Group "+$role+" not found");
             }
         }
 

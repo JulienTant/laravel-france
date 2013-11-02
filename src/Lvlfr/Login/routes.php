@@ -24,4 +24,13 @@ Route::group(array('domain' => Config::get('app.domain')), function () {
         Route::get('gravatar', 'Lvlfr\Login\Controller\ProfileController@avatar'); 
         Route::post('gravatar', 'Lvlfr\Login\Controller\ProfileController@submitAvatar');
     });   
-});
+
+    Route::group(array('prefix' => 'admin/forums', 'before' => 'hasRole:Forums'), function () {
+        Route::get('categories', 'Lvlfr\Login\Controller\Admin\ForumsController@categories'); 
+        Route::post('categories', 'Lvlfr\Login\Controller\Admin\ForumsController@categoriesPost'); 
+    });   
+
+    
+    
+    
+    });

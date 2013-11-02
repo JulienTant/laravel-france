@@ -9,6 +9,17 @@
             <li><a href="{{ action('Lvlfr\Login\Controller\ProfileController@avatar') }}">Modifier mon avatar</a></li>
             <li><a href="{{ action('Lvlfr\Login\Controller\ProfileController@pseudo') }}">Modifier mon pseudo</a></li>
         </ul>
+        
+        
+        
+        @if(Auth::user()->hasRole('Forums'))
+        <h3>Forums</h3>
+        <ul>
+            <li>
+                <a href="{{ action('Lvlfr\Login\Controller\Admin\ForumsController@categories') }}">Catégories</a>
+            </li>
+        </ul>
+        @endif
     </div>
 
     <div class="profileContentSection">

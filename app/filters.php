@@ -83,3 +83,9 @@ Route::filter('envLocal', function () {
         throw new Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
     }
 });
+
+Route::filter('hasRole', function ($route, $request, $role) {
+    if (Auth::guest() || !Auth::user()->hasRole($role)) {
+        return Redirect::to('/');
+    }
+});
