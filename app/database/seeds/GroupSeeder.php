@@ -8,7 +8,7 @@ class GroupSeeder extends Seeder
             array('id' => 1, 'name' => 'SuperAdmin'),
             array('id' => 2, 'name' => 'Forums'),
         ) as $group) {
-            Group::create($group);
+            \Lvlfr\Login\Model\Group::create($group);
         }
     }
 }

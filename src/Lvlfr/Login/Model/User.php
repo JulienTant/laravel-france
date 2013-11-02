@@ -65,7 +65,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface
 
     public function groups()
     {
-        return $this->belongsToMany("Group")->withTimestamps();
+        return $this->belongsToMany('Lvlfr\Login\Model\Group')->withTimestamps();
     }
 
     public function isSuperAdmin()

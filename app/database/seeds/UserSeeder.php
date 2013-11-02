@@ -4,7 +4,7 @@ class UserSeeder extends Seeder
 {
     public function run()
     {
-        User::create(
+        \Lvlfr\Login\Model\User::create(
             array('id' => 1, 'username' => 'AoSiX', 'email' => 'julien@laravel.fr')
         );
 
@@ -12,7 +12,7 @@ class UserSeeder extends Seeder
             array('user_id' =>  1, 'provider' => 'GitHub', 'uid' => '785518')
         );
 
-        User::find(1)->groups()->sync(Group::lists('id'));
+        \Lvlfr\Login\Model\User::find(1)->groups()->sync(\Lvlfr\Login\Model\Group::lists('id'));
 
     }
 }
