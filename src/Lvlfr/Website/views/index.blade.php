@@ -4,12 +4,11 @@
 <div class="orangebox">
     <div class="container">
         <div class="col">
-            <h2>En direct du blog</h2>
+            <h2>En direct des forums</h2>
             <ul>
-                <li>Titre du billet le xx/xx/xx</li>
-                <li>Titre du billet le xx/xx/xx</li>
-                <li>Titre du billet le xx/xx/xx</li>
-                <li>Titre du billet le xx/xx/xx</li>
+                @foreach($topics as $topic)
+                <li><a href="{{ action('\Lvlfr\Forums\Controller\TopicsController@moveToLast', array($topic->slug, $topic->id), true) }}">{{ $topic->title }}</a> <small>{{ diffForHumans($topic->updated_at); }}</small></li>
+                @endforeach
             </ul>
         </div>
         <div class="col">

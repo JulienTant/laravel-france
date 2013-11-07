@@ -50,6 +50,7 @@ header ul li.account {display:block; float:right}
 .orangebox h2 {font-weight: normal;color: #FFF;font-size: 1.6em;padding: .3em 0;margin: 0;}
 .orangebox ul {padding: 0 0 1em 0;margin:0;}
 .orangebox li {color: #FFF;display: block;padding: .2em 0;}
+.orangebox li a {color: #FFF; text-decoration: underline;}
 .orangebox .col {width: 49.8%;display: inline-block;}
 .orangebox .download {float: right;font-size: 2em;color: #FCC5B7;}
 .orangebox .download:hover {text-decoration: none;color: #F4F4F4;cursor: pointer;}
