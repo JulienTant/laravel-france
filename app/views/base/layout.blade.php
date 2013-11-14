@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="/css/normalize.css">
     <link rel="stylesheet" href="/css/font-awesome.min.css">
     <link rel="stylesheet" href="/css/app.css">
+    <link rel="stylesheet" href="/css/prettify.css">
     @yield('add_css')
 </head>
 <body class="@yield('page_class') preload">
@@ -79,4 +80,7 @@
 <script src="/js/modernizr.js"></script>
 <script src="/js/jquery-2.0.3.min.js"></script>
 <script src="/js/app.js"></script>
+<script src="/js/prettify/prettify.js"></script>
+<script>prettyPrint();</script>
+
 @yield('add_js')
