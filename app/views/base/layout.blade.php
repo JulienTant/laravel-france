@@ -81,6 +81,7 @@
 <script src="/js/jquery-2.0.3.min.js"></script>
 <script src="/js/app.js"></script>
 <script src="/js/prettify/prettify.js"></script>
+<script>$("pre").addClass('prettyprint');</script>
 <script>prettyPrint();</script>
 
 @yield('add_js')

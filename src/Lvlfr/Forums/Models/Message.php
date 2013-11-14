@@ -36,6 +36,14 @@ class Message extends \Eloquent
         return $message;
     }
 
+    public function firstOfTopic()
+    {
+        return 
+        $this->topic->messages()->orderBy('id', 'asc')->first(array('id'))->id
+        ==
+        $this->id;
+    }
+
     public function editable()
     {
         if (\Auth::guest()) {

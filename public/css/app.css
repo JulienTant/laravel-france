@@ -64,6 +64,7 @@ header ul li.account {display:block; float:right}
 .orangebox ul {padding: 0 0 1em 0;margin:0;}
 .orangebox li {color: #FFF;display: block;padding: .2em 0;}
 .orangebox li a {color: #FFF; text-decoration: underline;}
+.orangebox li a.forum-link{display: inline-block;  width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;}
 .orangebox .col {width: 49.8%;display: inline-block;}
 .orangebox .download {float: right;font-size: 2em;color: #FCC5B7;}
 .orangebox .download:hover {text-decoration: none;color: #F4F4F4;cursor: pointer;}
@@ -81,7 +82,7 @@ ul.breadcrumb span.divider {display: inline-block; margin: 3px;}
 #forums .forum-message {padding: .5em; min-height: 200px;position: relative;margin-bottom: 1em; border-radius:.5em;border:1px solid #ccc;}
 #forums .forum-message.even {background-color: #fff;}
 #forums .forum-message.odd {background-color: #FCFCFC;}
-#forums .forum-message .forum-text {margin-top: 5px;}
+#forums .forum-message .forum-text {margin-top: 5px; margin-bottom: 30px;}
 #forums .forum-message .user-infos { float:left; width: 270px; padding-top: 10px;}
 #forums .forum-message .user-infos img { height: 100px; width: 100px; float:left; margin: 0px 10px 10px 10px;}
 #forums .forum-message .forum-text-zone { margin-left:270px;}

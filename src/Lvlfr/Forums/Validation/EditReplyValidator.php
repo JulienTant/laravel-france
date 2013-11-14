@@ -8,6 +8,7 @@ class EditReplyValidator extends \App\Services\Validator
     {
         return array(
             'message_content' => array('required', 'min:2'),
+            'title' => array('min:2'),
         );
     }
 }

@@ -151,6 +151,12 @@ class TopicsController extends \BaseController
         $validator = new \Lvlfr\Forums\Validation\EditReplyValidator(Input::all());
 
         if ($validator->passes()) {
+            if (Input::has('title')) {
+                $message->topic->title = Input::get('title');
+                $message->topic->save();
+            }
+
+
             $message->bbcode = Input::get('message_content');
 
             $code = new Decoda\Decoda($message->bbcode);

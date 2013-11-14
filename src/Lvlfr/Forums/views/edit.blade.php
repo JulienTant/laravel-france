@@ -25,7 +25,16 @@
             )
         ) }}
 
-            <div class="control-group @if($errors->has('message_content'))error@endif">
+            @if($message->firstOfTopic())
+                <div class="control-group @if($errors->has('title'))error@endif">
+                    <div class="controls">
+                    {{ Form::text('title', Input::old('title', $topic->title), array('class'=>'span12')) }}
+                    {{ $errors->first('title', '<span class="help-inline">Veuillez insérer un titre</span>') }}
+                    </div>
+                </div>
+            @endif
+
+            <div class="control-group @if($errors->has('message_content'))error@endif" style="margin-top:20px">
                 <div class="controls">
                 {{ Form::textarea('message_content', Input::old('message_content', $message->bbcode), array('class'=>'span12')) }}
                 {{ $errors->first('message_content', '<span class="help-inline">Veuillez insérer un message</span>') }}

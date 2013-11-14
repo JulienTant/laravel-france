@@ -19,6 +19,11 @@ class Topic extends \Eloquent
         return $this->belongsTo('Lvlfr\Forums\Models\Category', 'forum_category_id');
     }
 
+    public function messages()
+    {
+        return $this->hasMany('Lvlfr\Forums\Models\Message', 'forum_topic_id');
+    }
+
     public function user()
     {
         return $this->belongsTo('Lvlfr\Login\Model\User', 'user_id');
