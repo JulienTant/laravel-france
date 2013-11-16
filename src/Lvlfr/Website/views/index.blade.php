@@ -20,27 +20,28 @@
 </div>
 
 <div class="container" id="indexPage">
-    <section>
-        <h2>Un framework PHP élégant, puissant et robuste</h2>
-
-        <p>
-            Disponible aujourd'hui dans sa quatrième version, le framework Laravel créé par <a href="https://github.com/taylorotwell" target="_blank">Taylor Otwell</a> en 2011 remporte un franc succès grâce à des atouts qui le rendent unique. Depuis le début, l'objectif du framework est de rendre le développement fun à nouveau, en fournissant aux développeurs les outils dont ils ont besoin pour travailler efficacement sur leurs projets.
-        </p>
-    </section>
-
-    
+    <article id="homepageContent">
         <section>
-            <h2>Rapide à mettre en place</h2>
-            <p>Grâce à composer, vous pouvez créer un projet Laravel en une simple commande :</p>
+            <h2>Un framework PHP élégant, puissant et robuste</h2>
+
+            <p>
+                Disponible aujourd'hui dans sa quatrième version, le framework Laravel créé par <a href="https://github.com/taylorotwell" target="_blank">Taylor Otwell</a> en 2011 remporte un franc succès grâce à des atouts qui le rendent unique. Depuis le début, l'objectif du framework est de rendre le développement fun à nouveau, en fournissant aux développeurs les outils dont ils ont besoin pour travailler efficacement sur leurs projets.
+            </p>
+        </section>
+
+        
+            <section>
+                <h2>Rapide à mettre en place</h2>
+                <p>Grâce à composer, vous pouvez créer un projet Laravel en une simple commande :</p>
 
 <pre class="prettyprint">
 $ composer create-project laravel/laravel nom-de-votre-projet
 </pre>
-        </section>
+            </section>
 
-        <section>
-            <h2>Simple</h2>
-            <p>Laravel est simple, voyez par vous même :</p>
+            <section>
+                <h2>Simple</h2>
+                <p>Laravel est simple, voyez par vous même :</p>
 
 <pre class="prettyprint">
 Route::get('user/{id}', function($id)
@@ -50,11 +51,11 @@ Route::get('user/{id}', function($id)
     // Retourne une vue, en lui passant l'utilisateur
     return View::make('user.show')->with('user', $user);
 });</pre>
-        </section>
+            </section>
 
-        <section>
-            <h2>Intuitif</h2>
-            <p>Laravel est intuitif, "<span class="inline-quote" title="Phill Sparks">Il parle votre langue</span>" :</p>
+            <section>
+                <h2>Intuitif</h2>
+                <p>Laravel est intuitif, "<span class="inline-quote" title="Phill Sparks">Il parle votre langue</span>" :</p>
 <pre class="prettyprint lang-php">
 Route::post('login', function() {
     // On récupère les données du formulaire
@@ -74,11 +75,11 @@ Route::post('login', function() {
     }
 });
 </pre>
-        </section>
+            </section>
 
-        <section>
-            <h2>Puissant</h2>
-            <p>Laravel nous offre des outils puissants ET simple d'utilisation :</p>
+            <section>
+                <h2>Puissant</h2>
+                <p>Laravel nous offre des outils puissants ET simple d'utilisation :</p>
 <pre class="prettyprint lang-php">
 // application/start.php
 App::singleton('monWebService', function()
@@ -89,17 +90,27 @@ App::singleton('monWebService', function()
 // dans votre controller, par exemple
 $monMailer = IoC::resolve('mailer');
 </pre>
-        </section>
+            </section>
 
 
-        <section>
-            <h2>Flexible</h2>
-            <p>Laravel est flexible grace à son utilisation de composer, qui nous permet d'installer des packages en une simple commande :</p>
+            <section>
+                <h2>Flexible</h2>
+                <p>Laravel est flexible grace à son utilisation de composer, qui nous permet d'installer des packages en une simple commande :</p>
 <pre class="prettyprint lang-php">
-// Besoin d'utiliser oauth2 ?
-$ composer require t4s/camelot-auth dev-master
+// Besoin d'utiliser markdown ?
+$ composer require dflydev/markdown v1.0.3
 </pre>
-        </section>
+            </section>
+    </article>
 
+    <div class="side">
+        <h3>Participer à la vie du site</h3>
+        <ul>
+            <li><a href="#">Traduction de la documentation</a></li>
+            <li><a href="#">Développement de Laravel.fr</a></li>
+            <li><a href="#">Participer sur les forums</a></li>
+            <li><a href="#">Proposer un projet communautaire</a></li>
+        </ul>
+    </div>
 </div>
 @stop

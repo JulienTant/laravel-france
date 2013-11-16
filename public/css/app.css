@@ -69,6 +69,13 @@ header ul li.account {display:block; float:right}
 .orangebox .download {float: right;font-size: 2em;color: #FCC5B7;}
 .orangebox .download:hover {text-decoration: none;color: #F4F4F4;cursor: pointer;}
 
+/* homepage */
+#indexPage article#homepageContent {width: 720px; float:left;}
+#indexPage div.side {float:left; padding: 15px; width:266px; margin-left: 40px; background: #FFFCF9; min-height: 150px; margin-top: 20px; border:2px solid #f0523f; border-radius: 2px}
+#indexPage div.side ul {margin:0; padding:0;}
+#indexPage div.side li {margin:0; padding:0; list-style-type: none;}
+
+
 /* BreadCrumb */
 ul.breadcrumb {background: #F7E9DE;border-radius: .5em;color: #BB761E;padding: .5em; padding-left: 15px}
 ul.breadcrumb a {color: #B97702; text-decoration: underline;}
