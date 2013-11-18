@@ -119,6 +119,7 @@ return array(
         'Lvlfr\Forums\ForumsServiceProvider',
         'Lvlfr\Login\LoginServiceProvider',
         'Lvlfr\Website\WebsiteServiceProvider',
+        'Lvlfr\Wiki\WikiServiceProvider',
         
         'Artdarek\OAuth\OAuthServiceProvider',
     ),
