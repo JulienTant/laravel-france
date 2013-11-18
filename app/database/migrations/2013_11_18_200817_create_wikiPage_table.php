@@ -14,8 +14,11 @@ class CreateWikiPageTable extends Migration {
 	{
 		Schema::create('wiki_pages', function(Blueprint $table)
 		{
+            $table->engine = 'InnoDB';
+
             $table->increments('id');
 
+            $table->string('title');
             $table->string('slug');
             $table->text('content');
 

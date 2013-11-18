@@ -14,6 +14,8 @@ class CreateWikiversionsTable extends Migration {
 	{
 		Schema::create('wiki_versions', function(Blueprint $table)
 		{
+            $table->engine = 'InnoDB';
+
             $table->increments('id');
 
             $table->integer('wiki_page_id')->unsigned();

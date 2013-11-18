@@ -2,11 +2,12 @@
 namespace Lvlfr\Wiki\Repositories\Eloquent;
 
 use Lvlfr\Wiki\Repositories\Page as BasePageRepo;
+use Lvlfr\Wiki\Entities\Page as Page;
 
 class EloquentPageRepo implements BasePageRepo {
     
     public function find($slug) {
-        return \DB::table('wiki_page')->whereSlug($slug)->first()->content;
+        return Page::whereSlug($slug)->first();
     }
 
 }

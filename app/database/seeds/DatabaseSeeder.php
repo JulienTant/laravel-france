@@ -13,6 +13,10 @@ class DatabaseSeeder extends Seeder
 
         $this->call('GroupSeeder');
         $this->call('UserSeeder');
+
         $this->call('ForumSeeder');
+
+        $this->call('WikiPageSeeder');
+        $this->call('WikiVersionSeeder');
     }
 }
