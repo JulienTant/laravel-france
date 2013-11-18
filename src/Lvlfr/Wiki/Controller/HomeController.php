@@ -2,7 +2,6 @@
 
 namespace Lvlfr\Wiki\Controller;
 
-use Diff;
 use \Config;
 use \Input;
 use \Redirect;
