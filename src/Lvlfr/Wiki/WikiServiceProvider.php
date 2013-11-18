@@ -19,6 +19,6 @@ class WikiServiceProvider extends ServiceProvider {
     
     public function register()
     {
-        $this->app->bind('Lvlfr\Wiki\Repositories\Page', '\Lvlfr\Wiki\Repositories\File\FilePageRepo');
+        $this->app->bind('Lvlfr\Wiki\Repositories\Page', '\Lvlfr\Wiki\Repositories\Eloquent\EloquentPageRepo');
     }
 }

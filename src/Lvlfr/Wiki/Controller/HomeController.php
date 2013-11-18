@@ -2,9 +2,7 @@
 
 namespace Lvlfr\Wiki\Controller;
 
-use Diff\Diff;
-use Diff\MapDiffer;
-use Diff\MapPatcher;
+use Diff;
 use \Config;
 use \View;
 use Lvlfr\Wiki\Repositories\Page;
@@ -27,6 +25,14 @@ class HomeController extends \BaseController
             return \Redirect::action('\Lvlfr\Wiki\Controller\HomeController@index', array('slug' => $default));
         }
 
-        return View::make('LvlfrWiki::page', array("content" => $page));
+        return View::make('LvlfrWiki::page', array("slug" => $slug, "content" => $page));
     }
+
+    public function edit($slug)
+    {
+        $page = $this->page->find($slug);
+
+        return View::make('LvlfrWiki::edit', array("slug" => $slug, "content" => $page));
+    }
+
 }
