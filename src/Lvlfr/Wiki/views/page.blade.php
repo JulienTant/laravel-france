@@ -9,7 +9,7 @@
             </h1>
         </header>
 
-        <div>{{ $content }}</div>
+        <div>{{ markdownThis($content) }}</div>
 
         <footer>
             <ul>
