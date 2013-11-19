@@ -3,6 +3,11 @@
 @section('content')
 <div class="container" id="wiki">
     
+    @foreach($errors->all("<li>:message</li>") as $error)
+        {{ $error }}
+    @endforeach
+
+
     {{ Form::open() }}
         <div class="form-line">
             {{ Form::label('title', 'Title') }}

@@ -24,7 +24,7 @@ class HomeController extends \BaseController
         $page = $this->page->find($slug, $version);
 
         if(is_null($page)) {
-            return Redirect::action('\Lvlfr\Wiki\Controller\HomeController@index', array('slug' => $default));
+            return Redirect::action('\Lvlfr\Wiki\Controller\HomeController@create', array('slug' => $default));
         }
 
         return View::make('LvlfrWiki::page', array("slug" => $slug, "content" => $page));
@@ -58,6 +58,8 @@ class HomeController extends \BaseController
     public function create()
     {
         $page = new \Lvlfr\Wiki\Entities\Page;
+
+        $page->title = ucfirst(Input::get('slug'));
 
         return View::make('LvlfrWiki::edit', array("content" => $page));
     }

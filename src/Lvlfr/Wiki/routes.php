@@ -8,7 +8,7 @@ Route::group(array('domain' => 'wiki.'. Config::get('app.domain')), function () 
         'uses'=>'\Lvlfr\Wiki\Controller\HomeController@create',
         'before' => 'auth'
     ));
-    Route::get('new', array(
+    Route::post('new', array(
         'uses'=>'\Lvlfr\Wiki\Controller\HomeController@createPost',
         'before' => 'csrf|auth'
     ));
