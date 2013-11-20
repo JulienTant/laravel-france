@@ -74,7 +74,7 @@ class HomeController extends \BaseController
 
         if ($validator->passes()) {
             $page->title = Input::get('title');
-            $page->slug = Str::slug(Input::get('title'));
+            $page->slug = Str::slug(Input::get('title'), '_');
             $page->content = Input::get('content');
 
             $this->page->save($page);
