@@ -19,12 +19,14 @@ class HomeController extends \BaseController
     public function index($slug = null, $version = null)
     {
         $default = Config::get('LvlfrWiki::wiki.default_page');
-        $slug = $slug or $default; 
+
+        if (is_null($slug)) {
+            return Redirect::action('\Lvlfr\Wiki\Controller\HomeController@index', array('slug' => $default));
+        }
 
         $page = $this->page->find($slug, $version);
-
         if(is_null($page)) {
-            return Redirect::action('\Lvlfr\Wiki\Controller\HomeController@create', array('slug' => $default));
+            return Redirect::action('\Lvlfr\Wiki\Controller\HomeController@create', array('slug' => $slug));
         }
 
         return View::make('LvlfrWiki::page', array("slug" => $slug, "content" => $page));
