@@ -1,7 +1,7 @@
 @extends('base.layout')
 
 @section('title')
-    {{ $title }} - Documentation - Laravel France
+    {{ $title }} - Documentation Laravel {{ $version }} - Laravel France
 @endsection
 
 @section('content')
