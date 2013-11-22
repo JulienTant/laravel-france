@@ -117,9 +117,9 @@ return array(
       
         'Lvlfr\Documentation\DocumentationServiceProvider',
         'Lvlfr\Forums\ForumsServiceProvider',
+        'Lvlfr\Wiki\WikiServiceProvider',
         'Lvlfr\Login\LoginServiceProvider',
         'Lvlfr\Website\WebsiteServiceProvider',
-        'Lvlfr\Wiki\WikiServiceProvider',
         
         'Artdarek\OAuth\OAuthServiceProvider',
     ),

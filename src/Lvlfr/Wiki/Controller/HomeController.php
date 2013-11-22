@@ -2,6 +2,7 @@
 
 namespace Lvlfr\Wiki\Controller;
 
+use \Auth;
 use \Config;
 use \Input;
 use \Redirect;
@@ -29,7 +30,9 @@ class HomeController extends \BaseController
             return Redirect::action('\Lvlfr\Wiki\Controller\HomeController@create', array('slug' => $slug));
         }
 
-        return View::make('LvlfrWiki::page', array("slug" => $slug, "content" => $page));
+        $isHomepage = ($slug === $default) && ($version === null);
+
+        return View::make('LvlfrWiki::page', array("slug" => $slug, "content" => $page, "isHomepage" => $isHomepage));
     }
 
     public function edit($slug)
@@ -39,7 +42,7 @@ class HomeController extends \BaseController
         return View::make('LvlfrWiki::edit', array("slug" => $slug, "content" => $page));
     }
 
-    public function editPost($slug)
+    public function editPage($slug)
     {
         $page = $this->page->find($slug);
 
@@ -47,6 +50,11 @@ class HomeController extends \BaseController
 
         if ($validator->passes()) {
             $page->title = Input::get('title');
+            if (strlen(Str::slug(Input::get('slug'), '_')) > 0 && Auth::user()->hasRole('Wiki')) {
+                $page->slug = Str::slug(Input::get('slug'), '_');
+            } else {
+                $page->slug = Str::slug(Input::get('title'), '_');
+            }
             $page->content = Input::get('content');
 
             $this->page->save($page);
@@ -66,7 +74,7 @@ class HomeController extends \BaseController
         return View::make('LvlfrWiki::edit', array("content" => $page));
     }
 
-    public function createPost()
+    public function createPage()
     {
         $page = new \Lvlfr\Wiki\Entities\Page;
 
@@ -74,7 +82,11 @@ class HomeController extends \BaseController
 
         if ($validator->passes()) {
             $page->title = Input::get('title');
-            $page->slug = Str::slug(Input::get('title'), '_');
+            if (strlen(Str::slug(Input::get('slug'), '_')) > 0) {
+                $page->slug = Str::slug(Input::get('slug'), '_');
+            } else {
+                $page->slug = Str::slug(Input::get('title'), '_');
+            }
             $page->content = Input::get('content');
 
             $this->page->save($page);
@@ -90,5 +102,12 @@ class HomeController extends \BaseController
         $page = $this->page->find($slug);
         
         return View::make('LvlfrWiki::versions', array("page" => $page));
+    }
+
+    public function listAll()
+    {
+        $pages = $this->page->all();
+        
+        return View::make('LvlfrWiki::list', array("pages" => $pages));
     }
 }

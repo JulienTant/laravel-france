@@ -113,6 +113,18 @@ ul.breadcrumb span.divider {display: inline-block; margin: 3px;}
 .sidebar ul a:hover {background: #FAFAFA;color: #F0523F;text-decoration: none;font-weight: bold;}
 .documentationContent {width: 74%;display: inline-block;}
 
+/* wiki */
+#wiki header .page-title {float:left; font-size: 26px; margin:16px 0 0 0;}
+#wiki .page-actions {float:right; margin:16px 0px;}
+#wiki header ul {margin:0; padding:0; list-style-type: none;}
+#wiki header ul li {margin-left:5px; display: inline-block;}
+#wiki .btn-action, #wiki form input[type=submit] {display: inline-block;background-color: #DAF084;color: #607A51;padding: .5em 1em;border-radius: .5em;}
+#wiki #page-content {clear:both; border-top: 2px solid #f0523f; padding-top: 10px;}
+#wiki .homepage #page-content {border-bottom: 2px solid #f0523f; padding-bottom: 10px; margin-bottom: 25px;}
+#wiki form {margin-top: 25px;}
+#wiki form .form-line {margin-bottom: 10px;}
+
+
 /* Profile */
 .profileContentSection {width: 74%;display: inline-block;}
 

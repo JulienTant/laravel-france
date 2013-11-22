@@ -1,5 +1,9 @@
 @extends('base.layout')
 
+@section('title')
+    Nous rejoindre sur IRC - Laravel France
+@endsection
+
 @section('content')
 <div class="container" id="ircPage">
 

@@ -32,6 +32,11 @@ class Page extends \Eloquent
         return $this->hasMany('\Lvlfr\Wiki\Entities\Version', 'wiki_page_id')->orderBy('id', 'DESC');
     }
 
+    public function lastVersion()
+    {
+        return $this->hasOne('\Lvlfr\Wiki\Entities\Version', 'wiki_page_id')->orderBy('id', 'DESC')->take(1);
+    }
+
     public function __toString()
     {
         if (isset($this->content)) {

@@ -1,5 +1,9 @@
 @extends('base.layout')
 
+@section('title')
+    Contact - Laravel France
+@endsection
+
 @section('content')
 <div class="container">
     <h2>Contact</h2>

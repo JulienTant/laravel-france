@@ -1,5 +1,13 @@
 @extends('base.layout')
 
+@section('title')
+    @if(!$content->id || Auth::user()->hasRole('Wiki'))
+        Création d'un article - Wiki Laravel France
+    @else
+        Edition d'un article - Wiki Laravel France
+    @endif
+@endsection
+
 @section('content')
 <div class="container" id="wiki">
     
@@ -15,7 +23,15 @@
                 {{ Form::text('title', Input::old('title') ?: $content->title) }}
             </div>
         </div>
-        
+
+        @if(!$content->id || Auth::user()->hasRole('Wiki'))
+        <div class="form-line">
+            {{ Form::label('slug', 'Slug') }}
+            <div class="form-item">
+                {{ Form::text('slug', Input::old('slug', Input::get('slug')) ?: $content->slug) }}
+            </div>
+        </div>
+        @endif
         <div class="form-line">
             {{ Form::label('content', 'Contenu') }}
             <div class="form-item">
@@ -23,7 +39,7 @@
             </div>
         </div>
 
-        {{ Form::submit('Modifier')}}
+        {{ Form::submit('Valider')}}
 
     {{ Form::close()}}
 </div>

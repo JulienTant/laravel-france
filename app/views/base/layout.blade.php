@@ -2,9 +2,7 @@
 <html>
 <head>
     <title>
-        @section('title')
-        Bienvenue sur Laravel France
-        @stop
+        @yield('title')
     </title>
 
     <link rel="stylesheet" href="/css/normalize.css">

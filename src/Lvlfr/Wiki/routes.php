@@ -2,14 +2,16 @@
 
 Route::group(array('domain' => 'wiki.'. Config::get('app.domain')), function () {
 
-    Route::any('login', 'Lvlfr\Login\Controller\LoginController@index');
+    Route::any('login', '\Lvlfr\Login\Controller\LoginController@index');
+    
+    Route::any('list', '\Lvlfr\Wiki\Controller\HomeController@listAll');
 
     Route::get('new', array(
         'uses'=>'\Lvlfr\Wiki\Controller\HomeController@create',
         'before' => 'auth'
     ));
     Route::post('new', array(
-        'uses'=>'\Lvlfr\Wiki\Controller\HomeController@createPost',
+        'uses'=>'\Lvlfr\Wiki\Controller\HomeController@createPage',
         'before' => 'csrf|auth'
     ));
     Route::get('{slug}/edit', array(
@@ -17,7 +19,7 @@ Route::group(array('domain' => 'wiki.'. Config::get('app.domain')), function () 
         'before' => 'auth'
     ));
     Route::post('{slug}/edit', array(
-        'uses'=>'\Lvlfr\Wiki\Controller\HomeController@editPost',
+        'uses'=>'\Lvlfr\Wiki\Controller\HomeController@editPage',
         'before' => 'csrf|auth'
     ));
 

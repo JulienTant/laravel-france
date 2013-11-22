@@ -1,5 +1,9 @@
 @extends('base.layout')
 
+@section('title')
+    Connexion - Laravel France
+@endsection
+
 @section('content')
 <div class="container" id="login">
     <h2>Connexion</h2>

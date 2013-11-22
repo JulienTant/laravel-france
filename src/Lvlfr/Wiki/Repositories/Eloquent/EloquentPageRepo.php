@@ -23,4 +23,24 @@ class EloquentPageRepo implements BasePageRepo {
         return $page;
     }
 
+    public function all($orderBy = []) {
+        $query = Page::query();
+
+        foreach($orderBy as $colonne => $order) {
+            $query->orderBy($colonne, $order);
+        }
+
+        return $query->get();
+    }
+
+    public function allWithLastVersion($orderBy = []) {
+        $query = Page::with('lastVersion');
+
+        foreach($orderBy as $colonne => $order) {
+            $query->orderBy($colonne, $order);
+        }
+
+        return $query->get();
+    }
+
 }
