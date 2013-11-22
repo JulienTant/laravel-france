@@ -1,5 +1,9 @@
 @extends('base.layout')
 
+@section('title')
+    {{ $title }} - Documentation - Laravel France
+@endsection
+
 @section('content')
 <div class="container" id="pageDoc">
 

@@ -1,5 +1,9 @@
 @extends('LvlfrLogin::profile.layout')
 
+@section('title')
+    Modifier mon pseudo - Laravel France
+@endsection
+
 @section('profile_content')
     <h1>Modifier mon pseudo</h1>
 

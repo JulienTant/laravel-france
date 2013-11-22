@@ -1,5 +1,9 @@
 @extends('base.layout')
 
+@section('title')
+    Bienvenue sur Laravel France
+@endsection
+
 @section('content')
 <div class="orangebox">
     <div class="container">

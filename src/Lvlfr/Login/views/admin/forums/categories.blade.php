@@ -1,5 +1,9 @@
 @extends('LvlfrLogin::profile.layout')
 
+@section('title')
+    Modifier les catégories des forums - Laravel France
+@endsection
+
 @section('profile_content')
     <h1>Modifier les catégories</h1>
 

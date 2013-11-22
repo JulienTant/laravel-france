@@ -1,5 +1,9 @@
 @extends('base.layout')
 
+@section('title')
+    {{ $topic->title }} - Forums Laravel France
+@endsection
+
 @section('content')
 <div class="container" id="forums">
 

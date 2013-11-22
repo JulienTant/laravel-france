@@ -1,5 +1,9 @@
 @extends('LvlfrLogin::profile.layout')
 
+@section('title')
+    Liste des utilisateurs - Laravel France
+@endsection
+
 @section('profile_content')
     <h1>Modifier les catégories</h1>
 

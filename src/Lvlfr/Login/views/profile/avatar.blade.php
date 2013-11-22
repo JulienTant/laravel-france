@@ -1,5 +1,9 @@
 @extends('LvlfrLogin::profile.layout')
 
+@section('title')
+    Modifier mon avatar - Laravel France
+@endsection
+
 @section('profile_content')
 <h1>Modifier mon avatar</h1>
 

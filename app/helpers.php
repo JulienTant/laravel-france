@@ -53,3 +53,10 @@ function diffForHumans(Carbon $initial)
 
     return $txt . ' avant';
 }
+
+function markdownThis($text)
+{
+    $markdown = new \dflydev\markdown\MarkdownParser();
+
+    return $markdown->transformMarkdown($text);
+}

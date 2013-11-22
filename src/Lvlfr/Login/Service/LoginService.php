@@ -76,8 +76,7 @@ class LoginService
         }
         // Already logged in ?
         // --> Check if uid exist for given Provider for this user, and update
-        // --> Register now provider for current user
-        //
+        // --> Register now provider for current user  
         Auth::login($finalUser);
     }
 }

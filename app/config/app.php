@@ -53,7 +53,7 @@ return array(
     |
     */
 
-    'locale' => 'en',
+    'locale' => 'fr',
 
     /*
     |--------------------------------------------------------------------------
@@ -117,6 +117,7 @@ return array(
       
         'Lvlfr\Documentation\DocumentationServiceProvider',
         'Lvlfr\Forums\ForumsServiceProvider',
+        'Lvlfr\Wiki\WikiServiceProvider',
         'Lvlfr\Login\LoginServiceProvider',
         'Lvlfr\Website\WebsiteServiceProvider',
         
