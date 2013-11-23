@@ -52,3 +52,24 @@
     </div>
 </div>
 @endsection
+
+@section('add_css')
+<link rel="stylesheet" href="/js/sceditor/minified/themes/default.min.css" type="text/css" media="all" />
+@endsection
+
+@section('add_js')
+<script src="/js/sceditor/minified/jquery.sceditor.bbcode.min.js"></script>
+<script src="/js/sceditor/languages/fr.js"></script>
+<script>
+    $("textarea").sceditor({
+        plugins: "bbcode",
+        height: 350,
+        resizeWidth: false,
+        dateFormat: "day/month/year",
+        autofocus: true,
+        autoExpand: true,
+        emoticonsRoot: "/js/sceditor/"
+    });
+    $("textarea").sceditor('instance').sourceMode(true);
+</script>
+@endsection

@@ -1,7 +1,7 @@
 <?php
 namespace Lvlfr\Forums\Models;
 
-use \Decoda;
+use \BBCodeParser;
 
 class Message extends \Eloquent
 {
@@ -26,9 +26,7 @@ class Message extends \Eloquent
         $message->forum_topic_id = $topic->id;
         $message->user_id = $user->id;
         $message->bbcode = $text;
-        $code = new Decoda\Decoda($message->bbcode);
-        $code->defaults();
-        $message->html = $code->parse();
+        $message->html = BBCodeParser::parse($message->bbcode);
         $message->save();
 
         $user->newForumMessage();

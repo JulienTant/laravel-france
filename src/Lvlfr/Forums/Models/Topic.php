@@ -3,7 +3,6 @@ namespace Lvlfr\Forums\Models;
 
 use \Auth;
 use \Str;
-use \Decoda;
 
 class Topic extends \Eloquent
 {

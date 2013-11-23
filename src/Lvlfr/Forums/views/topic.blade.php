@@ -4,6 +4,8 @@
     {{ $topic->title }} - Forums Laravel France
 @endsection
 
+
+
 @section('content')
 <div class="container" id="forums">
 

@@ -8,7 +8,7 @@ use \Lvlfr\Forums\Models\Message;
 use \App;
 use \Auth;
 use \Config;
-use \Decoda;
+use \BBCodeParser;
 use \Input;
 use \Redirect;
 use \View;
@@ -155,13 +155,8 @@ class TopicsController extends \BaseController
                 $message->topic->title = Input::get('title');
                 $message->topic->save();
             }
-
-
             $message->bbcode = Input::get('message_content');
-
-            $code = new Decoda\Decoda($message->bbcode);
-            $code->defaults();
-            $message->html = $code->parse();
+            $message->html = BBCodeParser::parse($message->bbcode);
 
             $message->save();
 

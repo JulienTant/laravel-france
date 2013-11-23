@@ -114,7 +114,10 @@ return array(
         'Illuminate\Validation\ValidationServiceProvider',
         'Illuminate\View\ViewServiceProvider',
         'Illuminate\Workbench\WorkbenchServiceProvider',
-      
+
+        'AoSiX\BBCode\BBCodeServiceProvider',
+
+
         'Lvlfr\Documentation\DocumentationServiceProvider',
         'Lvlfr\Forums\ForumsServiceProvider',
         'Lvlfr\Wiki\WikiServiceProvider',
@@ -188,6 +191,9 @@ return array(
         'View'            => 'Illuminate\Support\Facades\View',
 
         'OAuth' => 'Artdarek\OAuth\Facade\OAuth',
+
+
+        'BBCodeParser' => 'AoSiX\BBCode\Facade\BBCodeParser',
     ),
 
 );
