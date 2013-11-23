@@ -68,7 +68,10 @@
         dateFormat: "day/month/year",
         autofocus: true,
         autoExpand: true,
-        emoticonsRoot: "/js/sceditor/"
+        emoticonsRoot: "/js/sceditor/",
+        locale: 'fr',
+        toolbarExclude: 'cut,copy,paste,pastetext,ltr,rtl,date,time',
+        style: '/js/sceditor/minified/jquery.sceditor.bbcode.min.js'
     });
     $("textarea").sceditor('instance').sourceMode(true);
 </script>

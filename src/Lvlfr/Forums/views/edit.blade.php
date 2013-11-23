@@ -71,7 +71,8 @@
         dateFormat: "day/month/year",
         autofocus: true,
         autoExpand: true,
-        emoticonsRoot: "/js/sceditor/"
+        emoticonsRoot: "/js/sceditor/",
+        locale: 'fr'
     });
     $("textarea").sceditor('instance').sourceMode(true);
 </script>
