@@ -19,7 +19,7 @@ class BBCodeServiceProvider extends ServiceProvider {
 	public function boot()
 	{
 		$this->package('aosix/bbcode');
-        require __DIR__ . '/SBBCode/SBBCodeParser.php';
+        require __DIR__ . '/SBBcode/SBBCodeParser.php';
 	}
 
 	/**

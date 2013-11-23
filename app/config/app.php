@@ -123,7 +123,7 @@ return array(
         'Lvlfr\Wiki\WikiServiceProvider',
         'Lvlfr\Login\LoginServiceProvider',
         'Lvlfr\Website\WebsiteServiceProvider',
-        
+
         'Artdarek\OAuth\OAuthServiceProvider',
     ),
 
