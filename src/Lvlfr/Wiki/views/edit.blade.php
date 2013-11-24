@@ -11,9 +11,13 @@
 @section('content')
 <div class="container" id="wiki">
     
-    @foreach($errors->all("<li>:message</li>") as $error)
-        {{ $error }}
-    @endforeach
+    @if(count($errors))
+        <ul class="errors">
+        @foreach($errors->all("<li class='error'>:message</li>") as $error)
+            {{ $error }}
+        @endforeach
+        </ul>
+    @endif
 
 
     {{ Form::open() }}

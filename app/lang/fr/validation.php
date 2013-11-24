@@ -96,6 +96,7 @@ return array(
     */
 
     'attributes' => array(
+        "mailContent" => "Message",
         "name" => "Nom",
         "username" => "Pseudo",
         "email" => "E-mail",

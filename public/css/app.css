@@ -128,7 +128,8 @@ ul.breadcrumb span.divider {display: inline-block; margin: 3px;}
 #wiki .homepage #page-content {border-bottom: 2px solid #f0523f; padding-bottom: 10px; margin-bottom: 25px;}
 #wiki form {margin-top: 25px;}
 #wiki form .form-line {margin-bottom: 10px;}
-
+#wiki ul.errors {background: hsl(0, 100%, 95%); border-radius: 4px; border: 2px solid red; padding: 10px 0 10px 40px;}
+#wiki ul.errors li {color:red;}
 
 /* Profile */
 .profileContentSection {width: 74%;display: inline-block;}
