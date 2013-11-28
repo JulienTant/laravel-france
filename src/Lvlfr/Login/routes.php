@@ -35,6 +35,14 @@ Route::group(array('domain' => Config::get('app.domain')), function () {
         Route::get('categories', 'Lvlfr\Login\Controller\Admin\ForumsController@categories'); 
         Route::post('categories', 'Lvlfr\Login\Controller\Admin\ForumsController@categoriesPost'); 
     });   
+
+    /**
+     * DOC ADMIN
+     */
+    Route::group(array('prefix' => 'admin/doc', 'before' => 'hasRole:Doc'), function () {
+        Route::get('update', 'Lvlfr\Login\Controller\Admin\DocController@update'); 
+        Route::post('update', 'Lvlfr\Login\Controller\Admin\DocController@postUpdate'); 
+    });   
     
     /**
      * USERS ADMIN

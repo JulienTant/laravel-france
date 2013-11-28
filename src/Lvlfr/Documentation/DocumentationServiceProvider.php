@@ -19,5 +19,6 @@ class DocumentationServiceProvider extends ServiceProvider {
     
     public function register()
     {
+        $this->app->bind('Lvlfr\Documentation\Services\DocUpdaterInterface', 'Lvlfr\Documentation\Services\DocUpdaterInterface\File');
     }
 }

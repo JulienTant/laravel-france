@@ -20,6 +20,15 @@
             </li>
         </ul>
         @endif
+
+        @if(Auth::user()->hasRole('Doc'))
+        <h3>Documentation</h3>
+        <ul>
+            <li>
+                <a href="{{ action('Lvlfr\Login\Controller\Admin\DocController@update') }}">Forcer la MAJ</a>
+            </li>
+        </ul>
+        @endif
         
         @if(Auth::user()->hasRole('SuperAdmin'))
         <h3>Utilisateurs</h3>

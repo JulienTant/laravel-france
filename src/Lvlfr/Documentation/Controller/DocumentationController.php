@@ -30,7 +30,7 @@ class DocumentationController extends \BaseController
             $markdown = new Markdown();
 
             array_walk($data, function (&$raw) use ($markdown, $versionConfig) {
-                $path = base_path().Config::get('docs.path', '/docs') . '/' . $versionConfig['path'];
+                $path = base_path().Config::get('LvlfrDocumentation::docs.path', '/docs') . '/' . $versionConfig['path'];
                 $raw = File::get($path."/{$raw}.md");
                 $raw = $markdown->transformMarkdown($raw);
             });

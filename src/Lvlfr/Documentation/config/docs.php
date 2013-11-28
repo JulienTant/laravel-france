@@ -8,4 +8,12 @@ return array(
         'menu' => 'documentation',
         'path' => '4'
     ),
+    'admin' => array(
+        'tmpDir' => function() {
+            return sys_get_temp_dir();
+        },
+        'filePath' => function() {
+            return app('path.storage') . '/documentation-master.zip';
+        }
+    ),
 );
