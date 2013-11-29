@@ -14,13 +14,13 @@
                 <li>
                     <a href="{{ action('\Lvlfr\Forums\Controller\TopicsController@moveToLast', array($topic->slug, $topic->id), true) }}" title="{{ $topic->title }} - Dans : {{ $topic->category->title }}" class="forum-link">
                         {{ $topic->title }} <br>
-                        <small>{{ diffForHumans($topic->updated_at); }}</small> 
-                    </a> 
+                        <small>{{ diffForHumans($topic->lm_date); }}</small>
+                    </a>
                 </li>
                 @endforeach
             </ul>
         </div>
-           
+
         <a class="download" href="http://docs.laraveldev.fr/4.0/quick"><i class="icon-rocket"></i> Démarrage rapide</a>
 
     </div>
@@ -36,7 +36,7 @@
             </p>
         </section>
 
-        
+
             <section>
                 <h2>Rapide à mettre en place</h2>
                 <p>Grâce à composer, vous pouvez créer un projet Laravel en une simple commande :</p>

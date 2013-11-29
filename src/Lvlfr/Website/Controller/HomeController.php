@@ -8,7 +8,7 @@ class HomeController extends BaseController {
 
     public function getIndex()
     {
-        $topics = \Lvlfr\Forums\Models\Topic::orderBy('updated_at', 'desc')->take(5)->get();
+        $topics = \Lvlfr\Forums\Models\Topic::orderBy('lm_date', 'desc')->take(3)->get();
 
         return View::make(
             'LvlfrWebsite::index',
