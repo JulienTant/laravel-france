@@ -1,29 +1,18 @@
 @import url(http://fonts.googleapis.com/css?family=Ubuntu:400,700|Open+Sans:400,700);
+* {-webkit-box-sizing: border-box;  -moz-box-sizing: border-box;  box-sizing: border-box; }
 /*
-    Color scheme
-    Orange  :   #f0523f
-    Grey    :   #4c4c4c
+ Color scheme
+ Orange : #f0523f
+ Grey : #4c4c4c
 */
-html, body {padding: 0;margin: 0; font-size: 14px; font-family: 'Open Sans', sans-serif;color:#808080; padding-bottom: 25px;}
+html, body {padding: 0;margin: 0; font-size: 14px; font-family: 'Open Sans', sans-serif;color:#808080; padding-bottom: 25px;min-height: 100%}
 
 h1 {font-weight: normal;}
 h2 {font-weight: normal;color: #f0523f;}
+p {line-height: 1.6;}
 a {color: #f0523f; text-decoration: none}
 a:hover {text-decoration: underline;}
-pre {
-    padding: 9.5px;
-    margin: 0 0 10px;
-    font-size: 13px;
-    line-height: 20px;
-    word-break: break-all;
-    word-wrap: break-word;
-    white-space: pre;
-    white-space: pre-wrap;
-    background-color: #f5f5f5;
-    border: 1px solid #ccc;
-    border: 1px solid rgba(0,0,0,0.15);
-    border-radius: 4px;
-}
+pre { padding: 9.5px; margin: 0 0 10px; font-size: 13px; line-height: 20px;word-break: break-all; word-wrap: break-word; white-space: pre; white-space: pre-wrap; background-color: #f5f5f5; border: 1px solid #ccc; border: 1px solid rgba(0,0,0,0.15); border-radius: 4px;}
 
 .container {width: 1060px; margin: 0 auto}
 
@@ -38,53 +27,68 @@ input:focus, textarea:focus {box-shadow: inset 0 0 2px #8B8B8B;}
 .alert i {font-size: 2em;float: left;margin: 0 .5em 0 0;}
 
 /* top messages */
-div.top_msg {cursor: pointer; text-align: center; padding: 5px;  font-weight: bold;}
+div.top_msg {cursor: pointer; text-align: center; padding: 5px; font-weight: bold;}
 div.top_error {background-color: red; color: white;}
 div.top_success {background-color: green; color: white;}
 
 /* header */
-body > header {background: #4c4c4c}
+body {padding-top:50px;}
+body > header {float: left;background: #5B4C4A;background: rgba(91, 76, 74, 0.9);position: fixed;top: 0;left: 0;right: 0;z-index: 1;}
 body > header nav {width: 1060px; margin:0 auto;font-family: 'Ubuntu', sans-serif;}
-body > header h1 {height: 68px; padding: 0;margin: 0;display: inline-block;font-weight: normal;line-height: 69px; width:320px; float:left;}
-body > header h1 img {float:left;margin: .5em;height: 45px;}
-body > header a {color : #A8A8A8;text-decoration: none;padding: 0 .6em;}
-body > header a:hover, body > header li.active > a {color: #F4F4F4;text-decoration: none}
-body > header ul.menu {display: inline-block;font-size: 1.2em;text-align: right; width: 635px; margin-top: 30px;}
-body > header ul li {display: inline-block;position: relative; float:left;}
-/* body > header ul li a {padding: 1.5em 0 1.5em 2em;} */
+body > header h1 {margin: 0;line-height: 2.3em;float: left;font-size: 1.4em;}
+body > header h1 a {padding: 0 0 0 1em;}
+body > header h1 img {float:left;margin: .5em 0;height: 30px;}
+body > header a {color : #F4F4F4;text-decoration: none;padding: 2em 0 2em 2em;}
+body > header a:hover, body > header li.active > a {color: #FFE4CF;text-decoration: none}
+body > header a i {margin-right: .5em;}
+body > header ul.menu {float: right;font-size: 1.1em;text-align: right;}
+body > header ul li {position: relative; float:left;}
+body > header ul li.toggle {display: none}
 body > header ul ul {display: none;position: absolute;top: 1em;left: 1.3em;background: #4c4c4c;line-height: normal;padding: 0;border:1px solid #CCC;border-top:none;box-shadow: #474747 1px 1px 1px;}
 body > header ul ul:before{content: ' ';border-bottom: 10px solid #777;width: 0;height: 0;border-left: 10px solid transparent;border-right: 10px solid transparent;position: absolute;left: 9px;top: -10px;}
 body > header ul ul li {display: block;text-align: left;}
 body > header ul ul a {padding: 0.5em 6em 0.5em 1em;display: block;font-size: .9em;}
-body > header ul li.account {display:block; float:right}
+body > header ul li.account {float:right}
 
 /* Orange sub-nav */
-.orangebox {background: #f0523f;}
+.orangebox {background: #F0523F;float: left;width: 100%;padding-bottom: 1em;}
 .orangebox h2 {font-weight: normal;color: #FFF;font-size: 1.6em;padding: .3em 0;margin: 0;}
-.orangebox ul {padding: 0 0 1em 0;margin:0;}
-.orangebox li {color: #FFF;display: block;padding: .2em 0;}
-.orangebox li a {color: #FFF; text-decoration: underline;}
-.orangebox li a.forum-link{display: inline-block;  width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;}
-.orangebox .col {width: 49.8%;display: inline-block;}
-.orangebox .download {float: right;font-size: 2em;color: #FCC5B7;}
+.orangebox ul {padding:0;margin:0;width: 740px;}
+.orangebox li {color: #FFF;display: block;border-bottom: 1px solid #FFAC7E;transition: .5s;}
+.orangebox li:hover {background: #FFAD86;padding-left: 1em}
+.orangebox li a {color: #FFF;}
+.orangebox li a.forum-link{overflow: hidden;display: block;padding: .4em 0;}
+.orangebox li a.forum-link:hover{text-decoration: none;color:#5B4C4A;}
+.orangebox .container {position: relative;}
+.orangebox .download {position: absolute;right:0;bottom: .2em;font-size: 2em;color: #FCC5B7;}
 .orangebox .download:hover {text-decoration: none;color: #F4F4F4;cursor: pointer;}
 
 /* homepage */
 #indexPage article#homepageContent {width: 720px; float:left;}
-#indexPage div.side {float:left; padding: 15px; width:266px; margin-left: 40px; background: #FFFCF9; min-height: 150px; margin-top: 20px; border:2px solid #f0523f; border-radius: 2px}
+#indexPage div.side {float:right; padding: 15px; width:266px; margin-left: 40px; background: #FFFCF9; min-height: 150px; margin-top: 20px; border:2px solid #f0523f; border-radius: 2px}
 #indexPage div.side ul {margin:0; padding:0;}
 #indexPage div.side li {margin:0; padding:0; list-style-type: none;}
 
+#page {clear:both;}
+
+
+/* Login */
+ul.login-list {list-style: none;padding: 0;margin: 0;}
+ul.login-list li {font-size: 4em;float: left;margin: 0 1em 1em 0;}
+ul.login-list li a {color: #ccc;}
+ul.login-list li a i {color: #5B4C4A;}
+ul.login-list li a:hover, ul.login-list li a:hover i {color: #F0523F;text-decoration: none}
+
 
 /* BreadCrumb */
-ul.breadcrumb {background: #F7E9DE;border-radius: .5em;color: #BB761E;padding: .5em; padding-left: 15px}
+ul.breadcrumb {background: #F7E9DE;border-radius: .5em;color: #BB761E;padding: .5em 1em;}
 ul.breadcrumb a {color: #B97702; text-decoration: underline;}
 ul.breadcrumb li {display: inline-block; list-style-type: none;}
 ul.breadcrumb li:first-child a {text-decoration: none;}
 ul.breadcrumb span.divider {display: inline-block; margin: 3px;}
 
 /* Forums */
-#forums .mainTable, #forums #forum-message-list {margin-top: 1em; width:100%; }
+#forums .mainTable, #forums #forum-message-list {margin: 1em 0; width:100%;border-radius: .5em;overflow: hidden;}
 #forums #forum-message-list {padding: 0; list-style-type: none;}
 #forums .forum-message {padding: .5em; min-height: 200px;position: relative;margin-bottom: 1em; border-radius:.5em;border:1px solid #ccc;}
 #forums .forum-message.even {background-color: #fff;}
@@ -97,8 +101,8 @@ ul.breadcrumb span.divider {display: inline-block; margin: 3px;}
 #forums .btn-new, #forums .btn-reply, #forums .btn-valider {display: inline-block;background-color: #DAF084;color: #607A51;padding: .5em 1em;border-radius: .5em;}
 #forums .btn-new:hover, #forums .btn-reply:hover, #forums .btn-valider:hover {background-color: #4EA832;color: #E0FFCF;text-decoration: none;}
 #forums .btn-valider {margin:15px auto 15px 15px;}
-#forums th {font-weight: 400;text-align: left;background: #F1F1F1;padding: 1em;}
-#forums td {padding: 1em;background: #FFFCF9;}
+#forums th {font-weight: 400;text-align: left;background: #5B4C4A;padding: 1em;color: #F4F4F4;}
+#forums td {padding: 1em;background: #F4F4F4;}
 #forums td.ico-read {text-align: center}
 #forums tr:nth-child(even) td {background: #FAF2EA}
 #forums .legend {border-top: 1px solid #CCC;margin: 1em 0 0 0;padding: 1em 0 0 0;}
@@ -113,10 +117,12 @@ ul.breadcrumb span.divider {display: inline-block; margin: 3px;}
 
 /* Docs */
 .sidebar {width: 25%;float: left;}
-.sidebar ul {padding: 0;list-style: none;}
-.sidebar ul a {color: #9C9C9C;padding: .2em 1em;display: block;margin: 0 2em 0 0;}
-.sidebar ul a:hover {background: #FAFAFA;color: #F0523F;text-decoration: none;font-weight: bold;}
-.documentationContent {width: 74%;display: inline-block;}
+.sidebar ul {padding: 0;margin: 0;list-style: none;color: #F0523F;font-weight: 700;}
+.sidebar ul a {color: #5A5A5A;padding: .4em 0;float: left;font-weight: 400;width: 100%;transition:.5s;}
+.sidebar ul a:hover {background: #5B4C4A;color: #FFE4CF;text-decoration: none;text-indent: 1em}
+.sidebar ul li {padding-top: 2em;clear: left}
+.sidebar ul ul li {padding-top: 0;}
+.documentationContent {width: 74%;float: right}
 
 /* wiki */
 #wiki header .page-title {float:left;}
@@ -141,3 +147,42 @@ ul.breadcrumb span.divider {display: inline-block; margin: 3px;}
 .pagination ul > li { display: inline-block; }
 .pagination ul > li:first-child > a, .pagination ul > li:first-child > span { border-left-width: 1px; border-bottom-left-radius: 4px; border-top-left-radius: 4px; }
 .pagination ul > li > a, .pagination ul > li > span { padding: 4px 12px; line-height: 20px; text-decoration: none; background-color: rgb(255, 255, 255); border-width: 1px 1px 1px 0px; border-style: solid; border-color: rgb(221, 221, 221); }
+
+
+/* Pretty */
+pre.prettyprint { font-family: Monaco, Consolas, "Lucida Console", monospace; background-color: #333; padding: 20x; font-size: 0.7em; border: 0; color: #e9e4e5; line-height: 1.9em; margin: 1em 0; border-top: 1px solid #eee border-bottom: 1px solid #eee;}
+pre.prettyprint .pln { color: #e9e4e5;}
+pre.prettyprint .str { color: #bcd42a;}
+pre.prettyprint .kwd { color: #4bb1b1;}
+pre.prettyprint .com { color: #888888;}
+pre.prettyprint .typ { color: #ef7c61;}
+pre.prettyprint .lit { color: #bcd42a;}
+pre.prettyprint .pun,pre.prettyprint .opn,pre.prettyprint .clo { color: #ffffff;}
+pre.prettyprint .tag { color: #4bb1b1;}
+pre.prettyprint .atn { color: #ef7c61;}
+pre.prettyprint .atv { color: #bcd42a;}
+pre.prettyprint .dec,pre.prettyprint .var { color: #660066;}
+pre.prettyprint .fun { color: #ff0000;}
+pre.prettyprint code { font-family: Monaco, Consolas, "Lucida Console", monospace; }
+
+
+/* responsiv */
+
+@media screen and (max-width: 1060px) {
+
+    body > header nav, .container {width: 100%; padding: 0 1em}
+
+
+    body {padding-top:0;}
+    body > header {position: relative;width: 100%;margin-bottom: 2em}
+    body > header h1 {position: absolute;right: 1em;top: .45em;}
+    body > header ul.menu {float: left;margin:0;padding: 0;width: 100%;}
+    body > header ul li {padding: 0;width: 100%;float: left;text-align: left;display: none}
+    body > header ul li a {padding: 0;float: left;width: 100%;padding: .5em 0;}
+    body > header ul li.toggle {display: block;padding: 1em 0;}
+    body > header ul li.account {margin-bottom: 1em;}
+    body > header ul ul {display: none;float: left;position: relative;top: 0;left: 0;background: none;border: none;box-shadow: none}
+    body > header ul ul li a {padding-left: 2em;}
+    body > header ul ul:before {display: none}
+
+}

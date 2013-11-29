@@ -11,15 +11,18 @@
             <h2>En direct des forums</h2>
             <ul>
                 @foreach($topics as $topic)
-                <li><a href="{{ action('\Lvlfr\Forums\Controller\TopicsController@moveToLast', array($topic->slug, $topic->id), true) }}" title="{{ $topic->title }} - Dans : {{ $topic->category->title }}" class="forum-link">{{ $topic->title }}</a> <small>{{ diffForHumans($topic->updated_at); }}</small></li>
+                <li>
+                    <a href="{{ action('\Lvlfr\Forums\Controller\TopicsController@moveToLast', array($topic->slug, $topic->id), true) }}" title="{{ $topic->title }} - Dans : {{ $topic->category->title }}" class="forum-link">
+                        {{ $topic->title }} <br>
+                        <small>{{ diffForHumans($topic->updated_at); }}</small> 
+                    </a> 
+                </li>
                 @endforeach
             </ul>
         </div>
-        <div class="col">
-            <a class="download" href="http://docs.laraveldev.fr/4.0/quick">
-                <i class="icon-rocket"></i> Démarrage rapide
-            </a>
-        </div>
+           
+        <a class="download" href="http://docs.laraveldev.fr/4.0/quick"><i class="icon-rocket"></i> Démarrage rapide</a>
+
     </div>
 </div>
 

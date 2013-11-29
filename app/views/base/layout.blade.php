@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="/css/normalize.css">
     <link rel="stylesheet" href="/css/font-awesome.min.css">
     <link rel="stylesheet" href="/css/app.css">
-    <link rel="stylesheet" href="/css/prettify.css">
     @yield('add_css')
 </head>
 <body class="@yield('page_class') preload">
@@ -33,6 +32,7 @@
                 <a href="{{ Config::get('app.url') }}"><img src="/img/laravel_logo.png" alt="Laravel logo"> Laravel France</a>
             </h1>
             <ul class="menu">
+                <li class="toggle"><a href="javascript:void(0);"><i class="icon-reorder"></i> Menu</a></li>
                 <li @if(str_is('*docs.*', Request::root()))class='active'@endif><a href="{{ action('\Lvlfr\Documentation\Controller\DocumentationController@showDocs') }}"><i class="icon-book"></i> Documentation</a></li>
 
                 <li @if(Request::is('*irc') || str_is('*forums.*', Request::root()) || str_is('*wiki.*', Request::root()))class='active'@endif>
