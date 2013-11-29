@@ -19,7 +19,8 @@
             "app/tests/TestCase.php"
         ],
         "psr-0": {
-            "Lvlfr": "src"
+            "Lvlfr": "src",
+            "AoSiX": "src"
         }
     },
     "scripts": {
