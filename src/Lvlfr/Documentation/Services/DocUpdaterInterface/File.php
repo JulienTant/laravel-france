@@ -19,12 +19,11 @@ class File implements DocUpdaterInterface {
 
     protected function getContent()
     {
+        $retour = copy($this->filePath, $this->tmpDir . '/doc_last.zip');
 
-        if (!file_exists($this->filePath)) {
-            throw new \Exception("The file '".$this->filePath."' does not exist.", 1);
-            
+        if (!$retour) {
+            throw new Exception("Unable to copy file '" . $this->filePath . "' to '". $this->tmpDir . "/doc_last.zip'", 1);
         }
-        copy($this->filePath, $this->tmpDir . '/doc_last.zip');
 
         $zip = new \ZipArchive();
         $res = $zip->open($this->tmpDir . '/doc_last.zip');
@@ -56,8 +55,6 @@ class File implements DocUpdaterInterface {
     protected function copyContent()
     {
         $copyTo = base_path().Config::get('LvlfrDocumentation::docs.path');
-        dd($copyTo);
-
         recursiveCopy($this->putFilesIn . '/documentation-master', $copyTo);
     }
 

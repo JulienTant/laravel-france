@@ -13,7 +13,7 @@ return array(
             return sys_get_temp_dir();
         },
         'filePath' => function() {
-            return app('path.storage') . '/documentation-master.zip';
+            return 'https://github.com/laravel-france/documentation/archive/master.zip';
         }
     ),
 );
