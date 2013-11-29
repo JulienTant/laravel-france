@@ -37,7 +37,13 @@ $dbv4 = new PDO($dsnV4, $user, $password);
 /*************************
 *** INSERTION DES GROUPS *
 **************************/
-$dbv4->query('INSERT INTO groups VALUES (1, "SuperAdmin", NOW(), NOW()), (2, "Forums", NOW(), NOW())');
+$dbv4->query('
+    INSERT INTO groups VALUES 
+    (1, "SuperAdmin", NOW(), NOW()),
+    (2, "Forums", NOW(), NOW()),
+    (3, "Wiki", NOW(), NOW()),
+    (4, "Doc", NOW(), NOW())
+');
 
 /************
 *** USERS  **
