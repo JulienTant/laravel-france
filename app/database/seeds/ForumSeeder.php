@@ -48,6 +48,7 @@ class ForumSeeder extends Seeder
                 'sticky' => '0',
                 'title' => 'Topic 1',
                 'slug' => 'topic-1',
+                'lm_date' => new DateTime(),
             ),
             array(
                 'forum_category_id' => '2',
@@ -55,6 +56,7 @@ class ForumSeeder extends Seeder
                 'sticky' => '0',
                 'title' => 'Topic 2',
                 'slug' => 'topic-2',
+                'lm_date' => new DateTime(),
             ),
             array(
                 'forum_category_id' => '1',
@@ -62,6 +64,7 @@ class ForumSeeder extends Seeder
                 'sticky' => '1',
                 'title' => 'Topic 3',
                 'slug' => 'topic-3',
+                'lm_date' => new DateTime(),
             ),
         );
     }
