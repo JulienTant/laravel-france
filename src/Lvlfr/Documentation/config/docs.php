@@ -8,6 +8,11 @@ return array(
         'menu' => 'documentation',
         'path' => '4'
     ),
+    '3' => array(
+        'default' => 'home',
+        'menu' => 'contents',
+        'path' => '3'
+    ),
     'admin' => array(
         'tmpDir' => function() {
             return sys_get_temp_dir();
