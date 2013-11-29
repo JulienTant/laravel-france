@@ -87,6 +87,9 @@ ul.breadcrumb li {display: inline-block; list-style-type: none;}
 ul.breadcrumb li:first-child a {text-decoration: none;}
 ul.breadcrumb span.divider {display: inline-block; margin: 3px;}
 
+/* SCEditor */
+.sceditor-container * {box-sizing: content-box;}
+
 /* Forums */
 #forums .mainTable, #forums #forum-message-list {margin: 1em 0; width:100%;border-radius: .5em;overflow: hidden;}
 #forums #forum-message-list {padding: 0; list-style-type: none;}
