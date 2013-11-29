@@ -6,6 +6,11 @@ Route::group(array('domain' => 'wiki.'. Config::get('app.domain')), function () 
     
     Route::any('list', '\Lvlfr\Wiki\Controller\HomeController@listAll');
 
+    Route::get('{slug}/lock', array(
+        'uses'=>'\Lvlfr\Wiki\Controller\HomeController@lock',
+        'before' => 'auth|hasRole:Wiki'
+    ));
+
     Route::get('new', array(
         'uses'=>'\Lvlfr\Wiki\Controller\HomeController@create',
         'before' => 'auth'

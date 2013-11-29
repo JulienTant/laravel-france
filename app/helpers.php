@@ -76,3 +76,8 @@ function recursiveCopy($src, $dst) {
     }
     closedir($dir);
 }
+
+function hasRole($role)
+{
+    return Auth::guest() ? false : Auth::user()->hasRole($role);
+}

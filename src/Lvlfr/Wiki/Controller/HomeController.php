@@ -32,7 +32,7 @@ class HomeController extends \BaseController
 
         $isHomepage = ($slug === $default) && ($version === null);
 
-        return View::make('LvlfrWiki::page', array("slug" => $slug, "content" => $page, "isHomepage" => $isHomepage));
+        return View::make('LvlfrWiki::page', array("slug" => $slug, "content" => $page, "isHomepage" => $isHomepage, 'version' => $version));
     }
 
     public function edit($slug)
@@ -109,5 +109,14 @@ class HomeController extends \BaseController
         $pages = $this->page->all();
         
         return View::make('LvlfrWiki::list', array("pages" => $pages));
+    }
+
+    public function lock($slug)
+    {
+        $page = $this->page->find($slug);
+        $page->lock = !$page->lock;
+        $page->save();
+
+        return Redirect::back();
     }
 }

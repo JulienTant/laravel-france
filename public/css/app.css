@@ -119,7 +119,8 @@ ul.breadcrumb span.divider {display: inline-block; margin: 3px;}
 .documentationContent {width: 74%;display: inline-block;}
 
 /* wiki */
-#wiki header .page-title {float:left; font-size: 26px; margin:16px 0 0 0;}
+#wiki header .page-title {float:left;}
+#wiki header .page-title h1 {font-size: 26px; margin:16px 0 0 0;}
 #wiki .page-actions {float:right; margin:16px 0px;}
 #wiki header ul {margin:0; padding:0; list-style-type: none;}
 #wiki header ul li {margin-left:5px; display: inline-block;}

@@ -6,5 +6,6 @@ return array(
         "new",
         "login",
         'list',
+        'lock',
     ]
 );

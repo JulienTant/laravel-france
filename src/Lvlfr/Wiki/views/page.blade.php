@@ -8,15 +8,29 @@
 <div class="container" id="wiki">
     <article @if($isHomepage)class="homepage"@endif>
         <header>
-            <h1 class="page-title">
-                {{ $content->title }}
-            </h1>
+            <div class="page-title">
+                <h1>{{ $content->title }}</h1>
+                @if(!is_null($version))
+                    <small>version #{{ $version }}</small>
+                @endif
+            </div>
 
             <div class="page-actions">
                 <ul>
-                    <li><a class="btn-action" href="{{ URL::action('\Lvlfr\Wiki\Controller\HomeController@edit', array('slug' => $content->slug)) }}"><i class="icon-edit"></i> Modifier</a></li>
+                    @if(is_null($version) && (!$content->lock || hasRole('Forums')))
+                        <li><a class="btn-action" href="{{ URL::action('\Lvlfr\Wiki\Controller\HomeController@edit', array('slug' => $content->slug)) }}"><i class="icon-edit"></i> Modifier</a></li>
+                    @endif
 
                     <li><a class="btn-action" rel="nofollow" href="{{ URL::action('\Lvlfr\Wiki\Controller\HomeController@versions', array('slug' => $content->slug)) }}"><i class="icon-time"></i> Versions</a></li>
+
+
+                    @if(is_null($version) && hasRole('Forums'))
+                        @if(!$content->lock) 
+                        <li><a class="btn-action" href="{{ URL::action('\Lvlfr\Wiki\Controller\HomeController@lock', array('slug' => $content->slug)) }}"><i class="icon-unlock"></i> Cette page est déverrouillée</a></li>
+                        @else
+                        <li><a class="btn-action" href="{{ URL::action('\Lvlfr\Wiki\Controller\HomeController@lock', array('slug' => $content->slug)) }}"><i class="icon-lock"></i> Cette page est verrouillée</a></li>
+                        @endif
+                    @endif
             </ul>
             </div>
         </header>
