@@ -20,6 +20,7 @@ class WikiServiceProvider extends ServiceProvider {
             return new \Lvlfr\Wiki\Validation\WikiValidator($translator, $data, $rules, $messages);
         });
 
+        include __DIR__.'/filters.php';
         include __DIR__.'/routes.php';
     }
     

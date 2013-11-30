@@ -13,19 +13,19 @@ Route::group(array('domain' => 'wiki.'. Config::get('app.domain')), function () 
 
     Route::get('new', array(
         'uses'=>'\Lvlfr\Wiki\Controller\HomeController@create',
-        'before' => 'auth'
+        'before' => 'auth|canUpdateWiki'
     ));
     Route::post('new', array(
         'uses'=>'\Lvlfr\Wiki\Controller\HomeController@createPage',
-        'before' => 'csrf|auth'
+        'before' => 'csrf|auth|canUpdateWiki'
     ));
     Route::get('{slug}/edit', array(
         'uses'=>'\Lvlfr\Wiki\Controller\HomeController@edit',
-        'before' => 'auth'
+        'before' => 'auth|canUpdateWiki'
     ));
     Route::post('{slug}/edit', array(
         'uses'=>'\Lvlfr\Wiki\Controller\HomeController@editPage',
-        'before' => 'csrf|auth'
+        'before' => 'csrf|auth|canUpdateWiki'
     ));
 
     Route::get('{slug}/versions', '\Lvlfr\Wiki\Controller\HomeController@versions');

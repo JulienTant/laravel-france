@@ -17,14 +17,14 @@
 
             <div class="page-actions">
                 <ul>
-                    @if(is_null($version) && (!$content->lock || hasRole('Forums')))
+                    @if((Auth::check() && Auth::user()->canUpdateWiki()) && is_null($version) && (!$content->lock || hasRole('Wiki')))
                         <li><a class="btn-action" href="{{ URL::action('\Lvlfr\Wiki\Controller\HomeController@edit', array('slug' => $content->slug)) }}"><i class="icon-edit"></i> Modifier</a></li>
                     @endif
 
                     <li><a class="btn-action" rel="nofollow" href="{{ URL::action('\Lvlfr\Wiki\Controller\HomeController@versions', array('slug' => $content->slug)) }}"><i class="icon-time"></i> Versions</a></li>
 
 
-                    @if(is_null($version) && hasRole('Forums'))
+                    @if(is_null($version) && hasRole('Wiki'))
                         @if(!$content->lock) 
                         <li><a class="btn-action" href="{{ URL::action('\Lvlfr\Wiki\Controller\HomeController@lock', array('slug' => $content->slug)) }}"><i class="icon-unlock"></i> Cette page est déverrouillée</a></li>
                         @else
