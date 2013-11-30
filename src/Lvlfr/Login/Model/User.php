@@ -68,6 +68,20 @@ class User extends Eloquent implements UserInterface, RemindableInterface
         return $this->belongsToMany('Lvlfr\Login\Model\Group')->withTimestamps();
     }
 
+    public function toggleCanUpdateWiki()
+    {
+        $this->canUpdateWiki = !$this->canUpdateWiki;
+        $this->save();
+    }
+
+    public function canUpdateWiki()
+    {
+        if ($this->hasRole('Wiki')) {
+            return true;
+        }
+        return $this->canUpdateWiki;
+    }
+
     public function isSuperAdmin()
     {
         return $this->groups->contains(1);
@@ -85,6 +99,6 @@ class User extends Eloquent implements UserInterface, RemindableInterface
             }
         }
 
-        return $this->groups->contains($role) || $this->isSuperAdmin();
+        return $this->groups->contains($roleId) || $this->isSuperAdmin();
     }
 }

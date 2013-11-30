@@ -49,6 +49,9 @@ Route::group(array('domain' => Config::get('app.domain')), function () {
      */
     Route::group(array('prefix' => 'admin/users', 'before' => 'hasRole:SuperAdmin'), function () {
         Route::get('list', 'Lvlfr\Login\Controller\Admin\UsersController@lists'); 
+        Route::get('details/{id}', 'Lvlfr\Login\Controller\Admin\UsersController@details'); 
+        Route::post('details/{id}', 'Lvlfr\Login\Controller\Admin\UsersController@postDetails'); 
+        Route::post('details/{id}/groups', 'Lvlfr\Login\Controller\Admin\UsersController@postGroups'); 
     });   
 
     

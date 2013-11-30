@@ -20,7 +20,7 @@
         @foreach($users as $user)
         <tr>
             <td>#{{ $user->id }}</td>
-            <td><a href="#">{{ $user->username }}</a></td>
+            <td><a href="{{ action('Lvlfr\Login\Controller\Admin\UsersController@details', [$user->id]) }}">{{ $user->username }}</a></td>
             <td>{{ $user->email }}</td>
             <td>{{ $user->created_at->format('d-m-Y') }}</td>
         </tr>
