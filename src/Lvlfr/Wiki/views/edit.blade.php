@@ -38,13 +38,34 @@
         @endif
         <div class="form-line">
             {{ Form::label('content', 'Contenu') }}
-            <div class="form-item">
-                {{ Form::textarea('content', Input::old('content') ?: $content) }}
+            <div class="form-item wmd-panel">
+                <div id="wmd-button-bar"></div>
+                {{ Form::textarea('content', Input::old('content') ?: $content, ["class"=>"wmd-input", "id"=>"wmd-input"]) }}
             </div>
         </div>
+        <div id="wmd-preview" class="wmd-panel wmd-preview"></div>
+
 
         {{ Form::submit('Valider')}}
 
     {{ Form::close()}}
 </div>
+@endsection
+
+@section("add_css")
+<link rel="stylesheet" href="/js/pagedown/pagedown.css">
+@endsection
+
+@section("add_js")
+<script type="text/javascript" src="/js/pagedown/Markdown.Converter.js"></script>
+<script type="text/javascript" src="/js/pagedown/Markdown.Sanitizer.js"></script>
+<script type="text/javascript" src="/js/pagedown/Markdown.Editor.js"></script>
+<script type="text/javascript">
+(function () {
+    var converter1 = Markdown.getSanitizingConverter();        
+    var editor1 = new Markdown.Editor(converter1);
+    editor1.run();
+})();
+</script>
+
 @endsection
