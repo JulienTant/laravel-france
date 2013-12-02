@@ -5,11 +5,11 @@ namespace Lvlfr\Login\Controller;
 use \Auth;
 use \BaseController;
 use \Input;
-use \OAuth;
 use \Session;
 use \Redirect;
 use \Response;
 use Lvlfr\Login\Model\User;
+use Lvlfr\Login\Model\OAuth;
 use \Validator;
 use \View;
 
@@ -19,6 +19,33 @@ class ProfileController extends BaseController
     public function index()
     {
         return Redirect::action('Lvlfr\Login\Controller\ProfileController@avatar');
+    }
+
+    public function applications()
+    {
+        $onGoogle = $onGitHub = $onTwitter = false;
+
+        $oauths = OAuth::whereUserId(Auth::user()->id)->get();
+        foreach ($oauths as $oauth) {
+            switch ($oauth->provider) {
+                case 'Google':
+                    $onGoogle=true;
+                    break;
+
+                case 'GitHub':
+                    $onGitHub=true;
+                    break;
+
+                case 'Twitter':
+                    $onTwitter=true;
+                    break;
+            }
+        }
+
+        return View::make('LvlfrLogin::profile.applications')
+            ->with('onGoogle', $onGoogle)
+            ->with('onGitHub', $onGitHub)
+            ->with('onTwitter', $onTwitter);
     }
 
     public function pseudo()

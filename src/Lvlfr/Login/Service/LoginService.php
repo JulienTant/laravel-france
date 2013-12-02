@@ -73,10 +73,16 @@ class LoginService
 
                 $finalUser = $user;
             }
+            Auth::login($finalUser);
+        } else { // Already logged in ?
+            $oauth = OAuthModel::with('user')->where('uid', '=', $userInfos['uid'])->where('provider', '=', $userInfos['type'])->first();
+            if($oauth === null) {
+                $oAuth = new OAuthModel();
+                $oAuth->provider = $userInfos['type'];
+                $oAuth->uid = $userInfos['uid'];
+                $oAuth->user_id = Auth::user()->id;
+                $oAuth->save();
+            }
         }
-        // Already logged in ?
-        // --> Check if uid exist for given Provider for this user, and update
-        // --> Register now provider for current user  
-        Auth::login($finalUser);
     }
 }

@@ -6,6 +6,7 @@
     <div class="sidebar">
         <h3>Mon profil</h3>
         <ul>
+            <li><a href="{{ action('Lvlfr\Login\Controller\ProfileController@applications') }}">Applications</a></li>
             <li><a href="{{ action('Lvlfr\Login\Controller\ProfileController@avatar') }}">Modifier mon avatar</a></li>
             <li><a href="{{ action('Lvlfr\Login\Controller\ProfileController@pseudo') }}">Modifier mon pseudo</a></li>
         </ul>

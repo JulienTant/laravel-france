@@ -24,6 +24,8 @@ class LoginController extends BaseController
 
     public function login($provider = 'Google')
     {
+        $isAlreadyConnected = Auth::check();
+
         $provider = ucfirst($provider);
         $validProviders = array('Google', 'Twitter', 'GitHub');
 
@@ -45,7 +47,11 @@ class LoginController extends BaseController
                 $infos = $this->loginService->getUserInfos($oAuthService, $provider, $token);
                 $this->loginService->login($infos);
 
-                Session::flash('top_success', 'Vous êtes maintenant connecté !');
+                if($isAlreadyConnected) {
+                    Session::flash('top_success', 'Votre compte '.$provider.' est maintenant lié !');
+                } else {
+                    Session::flash('top_success', 'Vous êtes maintenant connecté !');
+                }
                 return Redirect::intended(Session::get('prevUrl', action('Lvlfr\Website\Controller\HomeController@getIndex')));
             } catch (\OAuth\Common\Http\Exception\TokenResponseException $ex) {
                 $url = $oAuthService->getAuthorizationUri();
