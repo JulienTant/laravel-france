@@ -52,8 +52,6 @@ class HomeController extends \BaseController
             $page->title = Input::get('title');
             if (strlen(slugWithSlash(Input::get('slug'), '_')) > 0 && Auth::user()->hasRole('Wiki')) {
                 $page->slug = slugWithSlash(Input::get('slug'), '_');
-            } else {
-                $page->slug = slugWithSlash(Input::get('title'), '_');
             }
             $page->content = Input::get('content');
 
@@ -100,14 +98,14 @@ class HomeController extends \BaseController
     public function versions($slug)
     {
         $page = $this->page->find($slug);
-        
+
         return View::make('LvlfrWiki::versions', array("page" => $page));
     }
 
     public function listAll()
     {
         $pages = $this->page->all();
-        
+
         return View::make('LvlfrWiki::list', array("pages" => $pages));
     }
 
