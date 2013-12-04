@@ -12,8 +12,8 @@ return array(
         ),
 
         'GitHub' => array(
-            'client_id'     => '7c85c12a871d84800769',
-            'client_secret' => '52a6bd5fd562ef1090d7c5a63ff340657ffd1613',
+            'client_id'     => '4f904d8022cc8a454d09',
+            'client_secret' => '76ae30937da6086210b90fe6a238c2ed1da9e93f',
             'scope'  => array('user:email'),
         ),
 
