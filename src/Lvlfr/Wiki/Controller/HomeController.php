@@ -50,10 +50,10 @@ class HomeController extends \BaseController
 
         if ($validator->passes()) {
             $page->title = Input::get('title');
-            if (strlen(wiki_slugWithSlash(Input::get('slug'), '_')) > 0 && Auth::user()->hasRole('Wiki')) {
-                $page->slug = wiki_slugWithSlash(Input::get('slug'), '_');
+            if (strlen(slugWithSlash(Input::get('slug'), '_')) > 0 && Auth::user()->hasRole('Wiki')) {
+                $page->slug = slugWithSlash(Input::get('slug'), '_');
             } else {
-                $page->slug = wiki_slugWithSlash(Input::get('title'), '_');
+                $page->slug = slugWithSlash(Input::get('title'), '_');
             }
             $page->content = Input::get('content');
 
@@ -82,10 +82,10 @@ class HomeController extends \BaseController
 
         if ($validator->passes()) {
             $page->title = Input::get('title');
-            if (strlen(wiki_slugWithSlash(Input::get('slug'), '_')) > 0) {
-                $page->slug = wiki_slugWithSlash(Input::get('slug'), '_');
+            if (strlen(slugWithSlash(Input::get('slug'), '_')) > 0) {
+                $page->slug = slugWithSlash(Input::get('slug'), '_');
             } else {
-                $page->slug = wiki_slugWithSlash(Input::get('title'), '_');
+                $page->slug = slugWithSlash(Input::get('title'), '_');
             }
             $page->content = Input::get('content');
 

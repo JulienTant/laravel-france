@@ -1,6 +1,6 @@
 <?php
 
-function wiki_slugWithSlash($str, $sep)
+function slugWithSlash($str, $sep)
 {
     $parts = explode('/', $str);
     foreach ($parts as &$part) {
