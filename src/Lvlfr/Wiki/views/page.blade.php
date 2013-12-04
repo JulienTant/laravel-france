@@ -42,7 +42,10 @@
     <div class="page-actions">
         <a href="{{ URL::action('\Lvlfr\Wiki\Controller\HomeController@listAll') }}" class="btn-action"><i class="icon-th-list"></i> Liste des pages</a>
     </div>
-    @endif
+    @else
+    <div class="page-actions">
+        <a href="{{ URL::action('\Lvlfr\Wiki\Controller\HomeController@index') }}" class="btn-action"><i class="icon-home"></i> Page d'accueil</a>
+    </div>    @endif
 
 </div>
 @endsection

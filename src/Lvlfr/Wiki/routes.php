@@ -1,5 +1,7 @@
 <?php
 
+Route::pattern('slug', '(.*)?');
+
 Route::group(array('domain' => 'wiki.'. Config::get('app.domain')), function () {
 
     Route::any('login', '\Lvlfr\Login\Controller\LoginController@index');
@@ -30,5 +32,5 @@ Route::group(array('domain' => 'wiki.'. Config::get('app.domain')), function () 
 
     Route::get('{slug}/versions', '\Lvlfr\Wiki\Controller\HomeController@versions');
 
-    Route::get('/{slug?}/{version?}', '\Lvlfr\Wiki\Controller\HomeController@index');
+    Route::get('/{slug?}', '\Lvlfr\Wiki\Controller\HomeController@index');
 });

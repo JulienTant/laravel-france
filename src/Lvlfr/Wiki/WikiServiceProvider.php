@@ -21,6 +21,7 @@ class WikiServiceProvider extends ServiceProvider {
         });
 
         include __DIR__.'/filters.php';
+        include __DIR__.'/helpers.php';
         include __DIR__.'/routes.php';
     }
     

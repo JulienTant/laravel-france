@@ -6,7 +6,6 @@ use \Auth;
 use \Config;
 use \Input;
 use \Redirect;
-use \Str;
 use \View;
 use Lvlfr\Wiki\Repositories\Page as PageRepo;
 
@@ -19,10 +18,11 @@ class HomeController extends \BaseController
 
     public function index($slug = null, $version = null)
     {
+
         $default = Config::get('LvlfrWiki::wiki.default_page');
 
-        if (is_null($slug)) {
-            return Redirect::action('\Lvlfr\Wiki\Controller\HomeController@index', array('slug' => $default));
+        if (is_null($slug) or !strlen($slug)) {
+            return Redirect::action('\Lvlfr\Wiki\Controller\HomeController@index', array('slug' => $default), 301);
         }
 
         $page = $this->page->find($slug, $version);
@@ -50,10 +50,10 @@ class HomeController extends \BaseController
 
         if ($validator->passes()) {
             $page->title = Input::get('title');
-            if (strlen(Str::slug(Input::get('slug'), '_')) > 0 && Auth::user()->hasRole('Wiki')) {
-                $page->slug = Str::slug(Input::get('slug'), '_');
+            if (strlen(wiki_slugWithSlash(Input::get('slug'), '_')) > 0 && Auth::user()->hasRole('Wiki')) {
+                $page->slug = wiki_slugWithSlash(Input::get('slug'), '_');
             } else {
-                $page->slug = Str::slug(Input::get('title'), '_');
+                $page->slug = wiki_slugWithSlash(Input::get('title'), '_');
             }
             $page->content = Input::get('content');
 
@@ -82,10 +82,10 @@ class HomeController extends \BaseController
 
         if ($validator->passes()) {
             $page->title = Input::get('title');
-            if (strlen(Str::slug(Input::get('slug'), '_')) > 0) {
-                $page->slug = Str::slug(Input::get('slug'), '_');
+            if (strlen(wiki_slugWithSlash(Input::get('slug'), '_')) > 0) {
+                $page->slug = wiki_slugWithSlash(Input::get('slug'), '_');
             } else {
-                $page->slug = Str::slug(Input::get('title'), '_');
+                $page->slug = wiki_slugWithSlash(Input::get('title'), '_');
             }
             $page->content = Input::get('content');
 
