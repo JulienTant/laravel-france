@@ -117,4 +117,20 @@ class HomeController extends \BaseController
 
         return Redirect::back();
     }
+
+    public function changes()
+    {
+        return
+            \Response::make(
+                View::make(
+                    'LvlfrWiki::changes',
+                    array("versions" => \Lvlfr\Wiki\Entities\Version::with(array('page', 'user'))->orderBy('created_at', 'desc')->get())
+                ),
+                200,
+                array(
+                    "Content-Type" => "application/rss+xml"
+                )
+            );
+        return ;
+    }
 }

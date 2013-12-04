@@ -4,8 +4,10 @@ Route::group(array('domain' => 'wiki.'. Config::get('app.domain')), function () 
     Route::pattern('slug', '(.*)?');
 
     Route::any('login', '\Lvlfr\Login\Controller\LoginController@index');
-    
+
     Route::any('list', '\Lvlfr\Wiki\Controller\HomeController@listAll');
+
+    Route::any('changes.rss', '\Lvlfr\Wiki\Controller\HomeController@changes');
 
     Route::get('{slug}/lock', array(
         'uses'=>'\Lvlfr\Wiki\Controller\HomeController@lock',
