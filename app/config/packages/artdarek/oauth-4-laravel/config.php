@@ -6,8 +6,8 @@ return array(
     'consumers' => array(
 
         'Google' => array(
-            'client_id'     => '718908900119.apps.googleusercontent.com',
-            'client_secret' => 'DgV2a4BeRy5hLi8c7tmg-ksu',
+            'client_id'     => '886357248945.apps.googleusercontent.com',
+            'client_secret' => 'YErWpdupkof7wceQ4Q97Q-Bj',
             'scope' => array('userinfo_email', 'userinfo_profile'),
         ),
 
