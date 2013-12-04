@@ -25,7 +25,7 @@ class LoginService
             $filled = true;
 
             $result = json_decode($provider->request('https://www.googleapis.com/oauth2/v1/userinfo'), true);
-            $model['uid'] = $result['id'];
+            $model['uid'] = $result['email'];
             $model['email'] = $result['email'];
             $model['username'] = $result['name'];
         } elseif ($providerName == 'GitHub') {
