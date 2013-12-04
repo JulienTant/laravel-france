@@ -1,8 +1,7 @@
 <?php
 
-Route::pattern('slug', '(.*)?');
-
 Route::group(array('domain' => 'wiki.'. Config::get('app.domain')), function () {
+    Route::pattern('slug', '(.*)?');
 
     Route::any('login', '\Lvlfr\Login\Controller\LoginController@index');
     
