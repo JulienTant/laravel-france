@@ -113,10 +113,9 @@ $ composer require dflydev/markdown v1.0.3
     <div class="side">
         <h3>Participer à la vie du site</h3>
         <ul>
-            <li><a href="#">Traduction de la documentation</a></li>
-            <li><a href="#">Développement de Laravel.fr</a></li>
-            <li><a href="#">Participer sur les forums</a></li>
-            <li><a href="#">Proposer un projet communautaire</a></li>
+            <li><a href="{{ URL::action('\Lvlfr\Wiki\Controller\HomeController@index', array('traduction_de_la_documentation'))  }}">Traduction de la documentation</a></li>
+            <li><a href="https://github.com/laravel-france/website">Développement de Laravel.fr</a></li>
+            <li><a href="{{ URL::action('\Lvlfr\Forums\Controller\HomeController@index')  }}">Participer sur les forums</a></li>
         </ul>
     </div>
 </div>
