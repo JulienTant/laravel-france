@@ -154,7 +154,7 @@ ul.breadcrumb span.divider {display: inline-block; margin: 3px;}
 
 
 /* Pretty */
-pre.prettyprint { font-family: Monaco, Consolas, "Lucida Console", monospace; background-color: #333; padding: 20x; font-size: 0.7em; border: 0; color: #e9e4e5; line-height: 1.9em; margin: 1em 0; border-top: 1px solid #eee border-bottom: 1px solid #eee;}
+pre.prettyprint { font-family: Monaco, Consolas, "Lucida Console", monospace; background-color: #333; padding: 1em; font-size: 0.8em; border: 0; color: #e9e4e5; line-height: 1.9em; margin: 1em 0; border-top: 1px solid #eee border-bottom: 1px solid #eee;}
 pre.prettyprint .pln { color: #e9e4e5;}
 pre.prettyprint .str { color: #bcd42a;}
 pre.prettyprint .kwd { color: #4bb1b1;}
