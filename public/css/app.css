@@ -38,7 +38,7 @@ body > header nav {width: 1060px; margin:0 auto;font-family: 'Ubuntu', sans-seri
 body > header h1 {margin: 0;line-height: 2.3em;float: left;font-size: 1.4em;}
 body > header h1 a {padding: 0 0 0 1em;}
 body > header h1 img {float:left;margin: .5em 0;height: 30px;}
-body > header a {color : #F4F4F4;text-decoration: none;padding: 2em 0 2em 2em;}
+body > header a {color : #F4F4F4;text-decoration: none;padding: 1em 0 1em 2em;}
 body > header a:hover, body > header li.active > a {color: #FFE4CF;text-decoration: none}
 body > header a i {margin-right: .5em;}
 body > header ul.menu {float: right;font-size: 1.1em;text-align: right;}
