@@ -6,3 +6,4 @@ composer.lock
 /nbproject
 *.sublime*
 app/storage/documentation-master.zip
+docs/*

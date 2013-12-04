@@ -117,7 +117,7 @@ return array(
 
         'AoSiX\BBCode\BBCodeServiceProvider',
 
-
+        'Lvlfr\Backward\BackwardServiceProvider',
         'Lvlfr\Documentation\DocumentationServiceProvider',
         'Lvlfr\Forums\ForumsServiceProvider',
         'Lvlfr\Wiki\WikiServiceProvider',
