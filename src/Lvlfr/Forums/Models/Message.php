@@ -34,6 +34,12 @@ class Message extends \Eloquent
         return $message;
     }
 
+    public function save(array $options = [])
+    {
+        parent::save($options);
+        View::where('topic_id', '=', $this->forum_topic_id)->delete();
+    }
+
     public function firstOfTopic()
     {
         return 
