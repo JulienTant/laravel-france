@@ -123,7 +123,7 @@ ul.breadcrumb span.divider {display: inline-block; margin: 3px;}
 .sidebar h3 {font-weight: normal;color: #F0523F;font-size: 1.2em;margin: 0;padding: 1em 0 0 0;clear: both;}
 .sidebar ul {padding: 0;margin: 0;list-style: none;color: #F0523F;font-weight: 700;}
 .sidebar ul a {color: #5A5A5A;padding: .4em 0;float: left;font-weight: 400;width: 100%;transition:.5s;}
-.sidebar ul a:hover {background: #5B4C4A;color: #FFE4CF;text-decoration: none;text-indent: 1em}
+.sidebar ul a[href]:hover {background: #5B4C4A;color: #FFE4CF;text-decoration: none;text-indent: 1em}
 .sidebar ul li {clear: left}
 .sidebar ul ul li {padding-top: 0;}
 .documentationContent {width: 74%;float: right}
