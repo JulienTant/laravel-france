@@ -3,7 +3,6 @@
 namespace Lvlfr\Documentation\Controller;
 
 use \Config;
-use \dflydev\markdown\MarkdownParser as Markdown;
 use \File;
 use \DOMDocument;
 use \View;
@@ -27,12 +26,10 @@ class DocumentationController extends \BaseController
         );
 
         try {
-            $markdown = new Markdown();
-
-            array_walk($data, function (&$raw) use ($markdown, $versionConfig) {
+            array_walk($data, function (&$raw) use ($versionConfig) {
                 $path = base_path().Config::get('LvlfrDocumentation::docs.path', '/docs') . '/' . $versionConfig['path'];
                 $raw = File::get($path."/{$raw}.md");
-                $raw = $markdown->transformMarkdown($raw);
+                $raw = markdownThis($raw);
             });
 
         } catch (Exception $e) {

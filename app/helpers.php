@@ -56,9 +56,7 @@ function diffForHumans(Carbon $initial)
 
 function markdownThis($text)
 {
-    $markdown = new \dflydev\markdown\MarkdownParser();
-
-    return $markdown->transformMarkdown($text);
+    return \Michelf\MarkdownExtra::defaultTransform($text);
 }
 
 function recursiveCopy($src, $dst) {
