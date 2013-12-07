@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "2d545b9bbee6caa81f0a74405f70d4e8",
+    "hash": "ac507ee4a04d61e435fd48cca90313da",
     "packages": [
         {
             "name": "artdarek/oauth-4-laravel",
@@ -689,6 +689,60 @@
             "time": "2013-06-10 12:22:13"
         },
         {
+            "name": "hashids/hashids",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ivanakimov/hashids.php.git",
+                "reference": "2255e6a189b258e2af58c0ac84295990d590979e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ivanakimov/hashids.php/zipball/2255e6a189b258e2af58c0ac84295990d590979e",
+                "reference": "2255e6a189b258e2af58c0ac84295990d590979e",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.3.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Hashids": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ivan Akimov",
+                    "email": "ivan@barreleye.com",
+                    "homepage": "https://twitter.com/ivanakimov",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Generate hashes like YouTube or Bitly from numbers to obfuscate your database IDs, or navigate to the right shard.",
+            "homepage": "http://www.hashids.org/php/",
+            "keywords": [
+                "bitly",
+                "decrypt",
+                "encrypt",
+                "hash",
+                "hashids",
+                "ids",
+                "obfuscate",
+                "youtube"
+            ],
+            "time": "2013-11-09 20:49:40"
+        },
+        {
             "name": "ircmaxell/password-compat",
             "version": "1.0.x-dev",
             "source": {
@@ -950,6 +1004,43 @@
                 "security"
             ],
             "time": "2013-11-09 14:55:37"
+        },
+        {
+            "name": "mitch/hashids",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mitchellvanw/hashids.git",
+                "reference": "d893e1856f33498bf5762510cb965819a670e429"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mitchellvanw/hashids/zipball/d893e1856f33498bf5762510cb965819a670e429",
+                "reference": "d893e1856f33498bf5762510cb965819a670e429",
+                "shasum": ""
+            },
+            "require": {
+                "hashids/hashids": "*",
+                "illuminate/support": "4.0.x",
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Mitch\\Hashids": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "Mitchell van Wijngaarden",
+                    "email": "hey@mitchellvanwijngaarden.nl",
+                    "homepage": "http://mitchellvanwijngaarden.nl",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Laravel package for Hashids",
+            "time": "2013-09-18 18:58:24"
         },
         {
             "name": "monolog/monolog",
@@ -2039,7 +2130,8 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "artdarek/oauth-4-laravel": 20,
-        "phpspec/php-diff": 20
+        "phpspec/php-diff": 20,
+        "mitch/hashids": 20
     },
     "platform": [
 

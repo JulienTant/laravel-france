@@ -7,7 +7,8 @@
         "laravel/framework": "4.0.*",
         "dflydev/markdown": "v1.0.3",
         "artdarek/oauth-4-laravel": "dev-master",
-        "phpspec/php-diff": "dev-master"
+        "phpspec/php-diff": "dev-master",
+        "mitch/hashids": "dev-master"
     },
     "autoload": {
         "classmap": [

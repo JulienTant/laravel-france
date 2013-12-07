@@ -118,6 +118,7 @@ return array(
         'AoSiX\BBCode\BBCodeServiceProvider',
 
         'Lvlfr\Backward\BackwardServiceProvider',
+        'Lvlfr\PasteApi\PasteApiServiceProvider',
         'Lvlfr\Documentation\DocumentationServiceProvider',
         'Lvlfr\Forums\ForumsServiceProvider',
         'Lvlfr\Wiki\WikiServiceProvider',
@@ -125,6 +126,7 @@ return array(
         'Lvlfr\Website\WebsiteServiceProvider',
 
         'Artdarek\OAuth\OAuthServiceProvider',
+        'Mitch\Hashids\HashidsServiceProvider',
     ),
 
     /*
@@ -191,7 +193,7 @@ return array(
         'View'            => 'Illuminate\Support\Facades\View',
 
         'OAuth' => 'Artdarek\OAuth\Facade\OAuth',
-
+        'Hashids' => 'Mitch\Hashids\Hashids',
 
         'BBCodeParser' => 'AoSiX\BBCode\Facade\BBCodeParser',
     ),
