@@ -16,7 +16,7 @@ App::before(function ($request) {
         $statusCode = 204;
 
         $headers = [
-            'Access-Control-Allow-Origin'      => 'paste.laravel.fr',
+            'Access-Control-Allow-Origin'      => 'http://paste.laravel.fr',
             'Access-Control-Allow-Methods'     => 'GET, POST, OPTIONS',
             'Access-Control-Allow-Headers'     => 'Origin, Content-Type, Accept, Authorization, X-Requested-With',
             'Access-Control-Allow-Credentials' => 'true'
@@ -32,7 +32,7 @@ App::after(function ($request, $response) {
         Session::put('prevUrl', $request->fullUrl());
     }
 
-    $response->headers->set('Access-Control-Allow-Origin', 'paste.laravel.fr');
+    $response->headers->set('Access-Control-Allow-Origin', 'http://paste.laravel.fr');
     $response->headers->set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
     $response->headers->set('Access-Control-Allow-Headers', 'Origin, Content-Type, Accept, Authorization, X-Requested-With');
     $response->headers->set('Access-Control-Allow-Credentials', 'true');
