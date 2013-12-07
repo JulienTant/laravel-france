@@ -98,7 +98,7 @@ class Topic extends \Eloquent
 
         $daysUntilRead = \Config::get('LvlfrForums::forums.day_mark_until_mark_as_read');
         $markAsReadAfter = new \DateTime($daysUntilRead .'days ago');
-        if ($this->updated_at < $markAsReadAfter) {
+        if ($this->lm_date < $markAsReadAfter) {
             return false;
         }
 

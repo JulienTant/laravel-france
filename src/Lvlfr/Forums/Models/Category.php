@@ -51,7 +51,7 @@ class Category extends \Eloquent
         $tv = app()->make('forums.allUnreadTopics');
         $nb = count($tv);
 
-        $view = Topic::where('forum_category_id', '=', $this->id)->where('updated_at', '>=', $markAsReadAfter->format('Y-m-d H:i:s'));
+        $view = Topic::where('forum_category_id', '=', $this->id)->where('lm_date', '>=', $markAsReadAfter->format('Y-m-d H:i:s'));
         if ($nb > 0) {
             $view = $view->whereNotIn('id', $tv);
         }
