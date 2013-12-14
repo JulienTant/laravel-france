@@ -1,17 +1,29 @@
 <?php
 
 return array(
-    'defaultVersion' => '4',
+    'defaultVersion' => '4.1',
     'path' => '/docs',
-    '4' => array(
-        'default' => 'introduction',
-        'menu' => 'documentation',
-        'path' => '4'
-    ),
-    '3' => array(
-        'default' => 'home',
-        'menu' => 'contents',
-        'path' => '3'
+    'versions' => array(
+        'dev' => array(
+            'default' => 'introduction',
+            'menu' => 'documentation',
+            'path' => 'dev'
+        ),
+        '4.1' => array(
+            'default' => 'introduction',
+            'menu' => 'documentation',
+            'path' => '4.1'
+        ),
+        '4.0' => array(
+            'default' => 'introduction',
+            'menu' => 'documentation',
+            'path' => '4.0'
+        ),
+        '3' => array(
+            'default' => 'home',
+            'menu' => 'contents',
+            'path' => '3'
+        ),
     ),
     'admin' => array(
         'tmpDir' => function() {
