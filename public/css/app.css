@@ -129,6 +129,28 @@ ul.breadcrumb span.divider {display: inline-block; margin: 3px;}
 .sidebar ul ul li {padding-top: 0;}
 .documentationContent {width: 74%;float: right}
 
+#doc-versions {
+    padding:10px;
+    background-color: #f0523f;
+    color: white;
+    height: 145px;
+}
+#doc-versions a {
+    color:white;
+}
+.changeVersionLink {
+    display: inline-block;
+    background-color: #f0523f;
+    color: white;
+    padding: .5em 1em;
+    margin-top: 10px;
+    border-radius: 0.5em;
+}
+.activeChangeVersionLink {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
 /* wiki */
 #wiki header .page-title {float:left;}
 #wiki header .page-title h1 {font-size: 26px; margin:16px 0 0 0;}

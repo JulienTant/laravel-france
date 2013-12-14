@@ -13,8 +13,9 @@ class DocumentationController extends \BaseController
     {
         if ($version === null) {
             $version = Config::get('LvlfrDocumentation::docs.defaultVersion');
+            return \Redirect::action('\Lvlfr\Documentation\Controller\DocumentationController@showDocs', [$version]);
         }
-        $versionConfig = Config::get('LvlfrDocumentation::docs.'.$version);
+        $versionConfig = Config::get('LvlfrDocumentation::docs.versions')[(string)$version];
 
         if ($document === null) {
             $document = $versionConfig['default'];
