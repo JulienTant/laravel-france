@@ -138,7 +138,7 @@ ul.breadcrumb span.divider {display: inline-block; margin: 3px;}
 #doc-versions a {
     color:white;
 }
-.changeVersionLink {
+.btn-orange {
     display: inline-block;
     background-color: #f0523f;
     color: white;
@@ -150,6 +150,14 @@ ul.breadcrumb span.divider {display: inline-block; margin: 3px;}
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
 }
+
+.PrevNextPage { list-style-type: none; padding: 0; }
+
+.PrevNextPage li{display: block;}
+.PrevNextPage .empty{display: none;}
+.PrevNextPage .prev {float:left;}
+.PrevNextPage .next {float:right; text-align: right}
+
 
 /* wiki */
 #wiki header .page-title {float:left;}

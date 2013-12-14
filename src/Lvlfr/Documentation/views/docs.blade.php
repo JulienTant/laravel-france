@@ -1,10 +1,10 @@
 @extends('LvlfrDocumentation::layout')
 
 @section('sidebar')
-    <strong><a href="#" onclick="toggleDocVersions(); return false;" class="changeVersionLink">Changer de version</a></strong>
+    <a href="#" onclick="toggleDocVersions(); return false;" class="btn-orange changeVersionLink">Changer de version</a>
 
 
-    <ul id="doc-versions" style="">
+    <ul id="doc-versions">
         <li><a rel="nofollow" href="{{ action('\Lvlfr\Documentation\Controller\DocumentationController@showDocs', ['dev']) }}">Laravel Dev</a></li>
         <li><a rel="nofollow" href="{{ action('\Lvlfr\Documentation\Controller\DocumentationController@showDocs', ['4.1']) }}">Laravel 4.1</a></li>
         <li><a rel="nofollow" href="{{ action('\Lvlfr\Documentation\Controller\DocumentationController@showDocs', ['4.0']) }}">Laravel 4.0</a></li>
