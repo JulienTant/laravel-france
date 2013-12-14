@@ -14,15 +14,16 @@
     <div class="documentationContent">
         @yield('documentationContent')
 
+        <hr />
         <ul class="PrevNextPage">
             @if($prev)
-                <li class="prev"><a href="{{ $prev['URI'] }}">&lArr; {{ $prev['title'] }}</a></li>
+                <li class="prev"><a href="{{ $prev['URI'] }}" class="btn-orange">&lArr; {{ $prev['title'] }}</a></li>
             @else
                 <li class="prev empty"></li>
             @endif
 
             @if($next)
-                <li class="next"><a href="{{ $next['URI'] }}">{{ $next['title'] }} &rArr;</a></li>
+                <li class="next"><a href="{{ $next['URI'] }}" class="btn-orange">{{ $next['title'] }} &rArr;</a></li>
             @else
                 <li class="next empty"></li>
             @endif
