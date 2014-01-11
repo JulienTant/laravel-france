@@ -21,7 +21,7 @@
             </ul>
         </div>
 
-        <a class="download" href="{{ URL::action('\Lvlfr\Documentation\Controller\DocumentationController@showDocs', array(4, 'quick'))  }}"><i class="icon-rocket"></i> Démarrage rapide</a>
+        <a class="download" href="{{ URL::action('\Lvlfr\Documentation\Controller\DocumentationController@showDocs', array(4.1, 'quick'))  }}"><i class="icon-rocket"></i> Démarrage rapide</a>
 
     </div>
 </div>

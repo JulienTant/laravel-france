@@ -61,11 +61,12 @@
             </tbody>
         </table>
 
-        <div class="pagination">
-            {{ $topics->links() }}
-        </div>
+        <a class="btn-new" href="{{ action('\Lvlfr\Forums\Controller\TopicsController@newTopic', array($category->slug, $category->id), true)}}"><i class="icon-plus icon-white"></i> Nouveau sujet</a>
 
-        <div>
+
+        {{ $topics->links() }}
+
+        <div class="legende">
             <strong>Légende :</strong>
             <p class="ico-read">
                 <i class="icon-circle"></i> : Messages non lus<br>
@@ -76,9 +77,5 @@
         @else
             <h2>Aucun sujet pour le moment</h2>
         @endif
-
-
-        <a class="btn-new" href="{{ action('\Lvlfr\Forums\Controller\TopicsController@newTopic', array($category->slug, $category->id), true)}}"><i class="icon-plus icon-white"></i> Nouveau sujet</a>
-
     </div>
 @endsection
