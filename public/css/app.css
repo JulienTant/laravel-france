@@ -102,7 +102,7 @@ ul.breadcrumb span.divider {display: inline-block; margin: 3px;}
 #forums .forum-message .user-infos img { height: 100px; width: 100px; float:left; margin: 0px 10px 10px 10px;}
 #forums .forum-message .forum-text-zone { margin-left:270px;}
 #forums .forum-message .forum-text-tools { position: absolute; bottom: 15px; right: 15px;}
-#forums .btn-new, #forums .btn-reply, #forums .btn-valider {display: inline-block;background-color: #DAF084;color: #607A51;padding: .5em 1em;border-radius: .5em;}
+#forums .btn-new, #forums .btn-reply, #forums .btn-valider {display: inline-block;background-color: #DAF084;color: #607A51;padding: .5em 1em;border-radius: .5em; float:right; margin-bottom: 5px;}
 #forums .btn-new:hover, #forums .btn-reply:hover, #forums .btn-valider:hover {background-color: #4EA832;color: #E0FFCF;text-decoration: none;}
 #forums .btn-valider {margin:15px auto 15px 15px;}
 #forums th {font-weight: 400;text-align: left;background: #5B4C4A;padding: 1em;color: #F4F4F4;}
@@ -177,12 +177,13 @@ ul.breadcrumb span.divider {display: inline-block; margin: 3px;}
 .profileContentSection {width: 74%;display: inline-block;}
 
 /* PAGINATION */
-.pagination { float:left; }
 .pagination ul { display: inline-block; margin-bottom: 0px; margin-left: 0px; padding-left: 0px; border-radius: 4px 4px 4px 4px; box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.05); }
 .pagination ul > li { display: inline-block; }
 .pagination ul > li:first-child > a, .pagination ul > li:first-child > span { border-left-width: 1px; border-bottom-left-radius: 4px; border-top-left-radius: 4px; }
 .pagination ul > li > a, .pagination ul > li > span { padding: 4px 12px; line-height: 20px; text-decoration: none; background-color: rgb(255, 255, 255); border-width: 1px 1px 1px 0px; border-style: solid; border-color: rgb(221, 221, 221); }
 
+/** FORUMS LEGENDES **/
+.legende {margin-top: 10px;}
 
 /* Pretty */
 pre.prettyprint { font-family: Monaco, Consolas, "Lucida Console", monospace; background-color: #333; padding: 1em; font-size: 0.8em; border: 0; color: #e9e4e5; line-height: 1.9em; margin: 1em 0; border-top: 1px solid #eee border-bottom: 1px solid #eee;}
