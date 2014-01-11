@@ -73,7 +73,7 @@ class LoginService
 
                 $finalUser = $user;
             }
-            Auth::login($finalUser);
+            Auth::login($finalUser, true);
         } else { // Already logged in ?
             $oauth = OAuthModel::with('user')->where('uid', '=', $userInfos['uid'])->where('provider', '=', $userInfos['type'])->first();
             if($oauth === null) {
