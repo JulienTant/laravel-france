@@ -51,7 +51,7 @@ $ composer create-project laravel/laravel nom-de-votre-projet
                 <p>Laravel est simple, voyez par vous même :</p>
 
 <pre class="prettyprint">
-Route::get('user/{id}', function($id)
+Route::get('user/{id}', function($id) {
     // On récupère l'utilisateur
     $user = User::find($id);
 
