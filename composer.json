@@ -5,7 +5,7 @@
     "license": "MIT",
     "require": {
         "laravel/framework": "4.2.*",
-        "artdarek/oauth-4-laravel": "dev-master",
+        "artdarek/oauth-4-laravel": "dev-master#066e483575b338598b38ed12d60e9723b755ede0",
         "phpspec/php-diff": "dev-master",
 	    "michelf/php-markdown": "1.4.0",
         "mitch/hashids": "dev-master"

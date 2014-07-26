@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "3a9343756937add8d9400b434a18f963",
+    "hash": "629da33eb1886ba8b3019ed65c539812",
     "packages": [
         {
             "name": "artdarek/oauth-4-laravel",
@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/artdarek/oauth-4-laravel.git",
-                "reference": "6952bbdbd622107efaadb1645eced8565d8c309b"
+                "reference": "066e483575b338598b38ed12d60e9723b755ede0"
             },
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/artdarek/oauth-4-laravel/zipball/6952bbdbd622107efaadb1645eced8565d8c309b",
-                "reference": "6952bbdbd622107efaadb1645eced8565d8c309b",
+                "reference": "066e483575b338598b38ed12d60e9723b755ede0",
                 "shasum": ""
             },
             "require": {
