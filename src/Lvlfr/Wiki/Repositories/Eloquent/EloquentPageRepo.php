@@ -27,6 +27,9 @@ class EloquentPageRepo implements BasePageRepo
     function save(
         $page
     ) {
+        if ($page->version) {
+            unset($page->version);
+        }
         $page->save();
         return $page;
     }

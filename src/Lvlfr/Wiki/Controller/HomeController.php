@@ -161,6 +161,5 @@ class HomeController extends \BaseController
                     "Content-Type" => "application/rss+xml"
                 )
             );
-        return;
     }
 }
