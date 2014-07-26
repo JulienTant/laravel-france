@@ -2,6 +2,6 @@
 
 return array(
     'debug' => true,
-    'url' => 'http://laraveldev.fr',
-    'domain' => 'laraveldev.fr',
+    'url' => 'http://laravelfr.app',
+    'domain' => 'laravelfr.app',
 );

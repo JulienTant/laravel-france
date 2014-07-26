@@ -1,5 +1,5 @@
 <?php
 
 return array(
-    'domain' => '.laraveldev.fr',
+    'domain' => '.laravelfr.app',
 );

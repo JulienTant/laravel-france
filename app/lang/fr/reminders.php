@@ -14,9 +14,8 @@ return array(
     */
 
     "password" => "Les mots de passe doivent avoir au moins six caractères et doivent être identiques.",
-
-    "user"     => "Nous ne pouvons trouver cet utilisateur avec cette adresse e-mail.",
-
-    "token"    => "Ce jeton de réinitialisation du mot de passe n'est pas valide.",
+    "user" => "Nous ne pouvons trouver cet utilisateur avec cette adresse e-mail.",
+    "token" => "Ce jeton de réinitialisation du mot de passe n'est pas valide.",
+    "sent" => "Mail de réinitialisation envoyé !",
 
 );

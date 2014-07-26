@@ -6,3 +6,4 @@ composer.phar
 *.sublime*
 app/storage/documentation-master.zip
 docs/*
+.idea/

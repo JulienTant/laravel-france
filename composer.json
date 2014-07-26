@@ -4,7 +4,7 @@
     "keywords": ["framework", "laravel"],
     "license": "MIT",
     "require": {
-        "laravel/framework": "4.0.*",
+        "laravel/framework": "4.1.*",
         "artdarek/oauth-4-laravel": "dev-master",
         "phpspec/php-diff": "dev-master",
 	    "michelf/php-markdown": "1.4.0",
