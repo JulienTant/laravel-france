@@ -172,6 +172,19 @@ ul.breadcrumb span.divider {display: inline-block; margin: 3px;}
 #wiki form .form-line {margin-bottom: 10px;}
 #wiki ul.errors {background: hsl(0, 100%, 95%); border-radius: 4px; border: 2px solid red; padding: 10px 0 10px 40px;}
 #wiki ul.errors li {color:red;}
+/* wiki diff */
+#wiki .Differences { width: 100%; border-collapse: collapse; border-spacing: 0; empty-cells: show;}
+#wiki .Differences thead th { text-align: left; border-bottom: 1px solid #463C3B; background: #5B4C4A; color: #FFF; padding: 4px;}
+#wiki .Differences tbody th { text-align: right; background: #5B4C4A; width: 4em; padding: 1px 2px; border-right: 1px solid #463C3B; vertical-align: top; font-size: 13px; color: #fff;}
+#wiki .Differences td { padding: 1px 2px; font-family: Consolas, monospace; font-size: 13px;}
+#wiki .Differences ins, #wiki .Differences del { text-decoration: none;}
+#wiki .Differences .Skipped { background: #f7f7f7;}
+#wiki .DifferencesInline .ChangeReplace .Left,
+#wiki .DifferencesInline .ChangeDelete .Left { background: #fdd;}
+#wiki .DifferencesInline .ChangeReplace .Right,
+#wiki .DifferencesInline .ChangeInsert .Right { background: #dfd;}
+#wiki .DifferencesInline .ChangeReplace ins { background: #9e9;}
+#wiki .DifferencesInline .ChangeReplace del { background: #e99;}
 
 /* Profile */
 .profileContentSection {width: 74%;display: inline-block;}
@@ -186,7 +199,7 @@ ul.breadcrumb span.divider {display: inline-block; margin: 3px;}
 .legende {margin-top: 10px;}
 
 /* Pretty */
-pre.prettyprint { font-family: Monaco, Consolas, "Lucida Console", monospace; background-color: #333; padding: 1em; font-size: 0.8em; border: 0; color: #e9e4e5; line-height: 1.9em; margin: 1em 0; border-top: 1px solid #eee border-bottom: 1px solid #eee;}
+pre.prettyprint { font-family: Monaco, Consolas, "Lucida Console", monospace; background-color: #333; padding: 1em; font-size: 0.8em; border: 0; color: #e9e4e5; line-height: 1.9em; margin: 1em 0; border-top: 1px solid #eee; border-bottom: 1px solid #eee;}
 pre.prettyprint .pln { color: #e9e4e5;}
 pre.prettyprint .str { color: #bcd42a;}
 pre.prettyprint .kwd { color: #4bb1b1;}
