@@ -59,7 +59,7 @@ class ProfileController extends BaseController
 
         $user = User::whereUsername($pseudo)->first(array('id'));
         if ($user != null && $user->id != Auth::user()->id) return Response::make(json_encode(array('message' => 'Le pseudo est déjà utilisé')), 400);
-        elseif ($user != null && $user->id == Auth::user()->id) return Response::make(json_encode(array('message' => 'Ce pseudo est le votre')), 200);
+        elseif ($user != null && $user->id == Auth::user()->id && $pseudo == Auth::user()->username) return Response::make(json_encode(array('message' => 'Ce pseudo est le votre')), 200);
 
         $validator = Validator::make(array('pseudo' => $pseudo), array('pseudo' => 'min:3|required'));
         if ($validator->fails()) return Response::make(json_encode(array('message' => 'Pseudo invalide (min: 3 caractères)')), 400);
