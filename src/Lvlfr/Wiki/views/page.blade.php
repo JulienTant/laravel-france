@@ -18,7 +18,11 @@
             <div class="page-actions">
                 <ul>
                     @if((Auth::check() && Auth::user()->canUpdateWiki()) && is_null($version) && (!$content->lock || hasRole('Wiki')))
-                        <li><a class="btn-action" href="{{ URL::action('\Lvlfr\Wiki\Controller\HomeController@edit', array('slug' => $content->slug)) }}"><i class="icon-edit"></i> Modifier</a></li>
+                    <li><a class="btn-action" href="{{ URL::action('\Lvlfr\Wiki\Controller\HomeController@edit', array('slug' => $content->slug)) }}"><i class="icon-edit"></i> Modifier</a></li>
+                    @endif
+
+                    @if((Auth::check() && Auth::user()->canUpdateWiki()) && is_null($version) && (!$content->lock || hasRole('Wiki')))
+                        <li><a class="btn-action" href="{{ URL::action('\Lvlfr\Wiki\Controller\HomeController@diff', array('slug' => $content->slug, 'version' => $content->version)) }}"><i class="icon-double-angle-right"></i> Diff</a></li>
                     @endif
 
                     <li><a class="btn-action" rel="nofollow" href="{{ URL::action('\Lvlfr\Wiki\Controller\HomeController@versions', array('slug' => $content->slug)) }}"><i class="icon-time"></i> Versions</a></li>

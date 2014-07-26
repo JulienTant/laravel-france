@@ -4,6 +4,8 @@ namespace Lvlfr\Wiki\Controller;
 
 use \Auth;
 use \Config;
+use Diff;
+use Illuminate\Http\Response;
 use \Input;
 use \Redirect;
 use \View;
@@ -16,23 +18,28 @@ class HomeController extends \BaseController
         $this->page = $page;
     }
 
-    public function index($slug = null, $version = null)
+    public function index($slug = null)
     {
 
         $default = Config::get('LvlfrWiki::wiki.default_page');
 
-        if (is_null($slug) or !strlen($slug)) {
+        if (is_null($slug) or !strlen($slug) or ($slug) == '/') {
             return Redirect::action('\Lvlfr\Wiki\Controller\HomeController@index', array('slug' => $default), 301);
         }
 
+        $version = Input::get('version');
+
         $page = $this->page->find($slug, $version);
-        if(is_null($page)) {
+        if (is_null($page)) {
             return Redirect::action('\Lvlfr\Wiki\Controller\HomeController@create', array('slug' => $slug));
         }
 
         $isHomepage = ($slug === $default) && ($version === null);
 
-        return View::make('LvlfrWiki::page', array("slug" => $slug, "content" => $page, "isHomepage" => $isHomepage, 'version' => $version));
+        return View::make(
+            'LvlfrWiki::page',
+            array("slug" => $slug, "content" => $page, "isHomepage" => $isHomepage, 'version' => $version)
+        );
     }
 
     public function edit($slug)
@@ -118,19 +125,42 @@ class HomeController extends \BaseController
         return Redirect::back();
     }
 
+    public function diff($slug, $version)
+    {
+        $pageRecent = $this->page->find($slug, $version);
+
+        if (!$pageRecent || $pageRecent->version <= 1) {
+            return Redirect::action('\Lvlfr\Wiki\Controller\HomeController@index', array('slug' => $slug));
+        }
+
+        $pageAvant = $this->page->find($slug, $version-1);
+
+        $diff = with(new Diff(explode("\n", $pageAvant->content), explode("\n", $pageRecent->content)))->render(
+            new \Diff_Renderer_Html_Inline()
+        );
+
+        return View::make('LvlfrWiki::diff', ["page" => $pageRecent, "diff" => $diff]);
+
+    }
+
     public function changes()
     {
         return
             \Response::make(
                 View::make(
                     'LvlfrWiki::changes',
-                    array("versions" => \Lvlfr\Wiki\Entities\Version::with(array('page', 'user'))->orderBy('created_at', 'desc')->get())
+                    array(
+                        "versions" => \Lvlfr\Wiki\Entities\Version::with(array('page', 'user'))->orderBy(
+                                'created_at',
+                                'desc'
+                            )->get()
+                    )
                 ),
                 200,
                 array(
                     "Content-Type" => "application/rss+xml"
                 )
             );
-        return ;
+        return;
     }
 }

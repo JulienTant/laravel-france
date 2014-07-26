@@ -24,9 +24,9 @@ $app = new Illuminate\Foundation\Application;
 |
 */
 
-$env = $app->detectEnvironment(array(
-    'local' => array('*laraveldev.fr', '*laravelfr.app'),
-));
+$env = $app->detectEnvironment(function() {
+        return getenv('APP_ENV') ?: 'prod';
+});
 
 /*
 |--------------------------------------------------------------------------
