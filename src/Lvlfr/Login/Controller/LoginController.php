@@ -6,6 +6,7 @@ use \BaseController;
 use \Input;
 use \OAuth;
 use \Session;
+use \Str;
 use \Redirect;
 use \Response;
 use \View;
@@ -25,6 +26,8 @@ class LoginController extends BaseController
     public function login($provider = 'Google')
     {
         $retour = null;
+        OAuth::setHttpClient('CurlClient');
+
         switch (ucfirst($provider)) {
             case 'Google':
                 $retour = $this->loginToGoogle();
