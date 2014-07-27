@@ -33,6 +33,9 @@ class LoginController extends BaseController
             case 'GitHub':
                 $retour = $this->loginToAuth2($providerGoodName);
                 break;
+            case 'Twitter':
+
+                break;
         }
         return $retour;
     }
@@ -57,17 +60,8 @@ class LoginController extends BaseController
             $infos = $this->loginService->getUserInfos($OAuth2Service, $provider, $token);
             $this->loginService->login($infos);
 
-            if ($isAlreadyConnected) {
-                Session::flash('top_success', 'Votre compte ' . $provider . ' est maintenant lié !');
-            } else {
-                Session::flash('top_success', 'Vous êtes maintenant connecté !');
-            }
-
-
-            $url = Session::get('prevUrl', action('Lvlfr\Website\Controller\HomeController@getIndex'));
-            if (Str::contains($url, '/login/')) {
-                $url = action('Lvlfr\Website\Controller\HomeController@getIndex');
-            }
+            $this->determineFlashMessage($provider, $isAlreadyConnected);
+            $url = $this->determineUrl();
 
             return Redirect::intended(
                 $url
@@ -76,11 +70,51 @@ class LoginController extends BaseController
         } else {
             // get googleService authorization
             $url = $OAuth2Service->getAuthorizationUri();
-
             // return to google login url
             return Redirect::to((string)$url);
         }
+    }
 
+    public function loginToAuth1($provider)
+    {
+        // get data from input
+        // get data from input
+        $token = Input::get('oauth_token');
+        $verify = Input::get('oauth_verifier');
+
+        // get twitter service
+        $OAuth1Service = OAuth::consumer($provider);
+
+        // check if code is valid
+        // if code is provided get user data and sign in
+        if (!empty($token) && !empty($verify)) {
+
+            // This was a callback request from twitter, get the token
+            $token = $OAuth1Service->requestAccessToken($token, $verify);
+
+            // Send a request with it
+            $isAlreadyConnected = Auth::check();
+            // Send a request with it
+            $infos = $this->loginService->getUserInfos($OAuth1Service, $provider, $token);
+            $this->loginService->login($infos);
+
+            $this->determineFlashMessage($provider, $isAlreadyConnected);
+            $url = $this->determineUrl();
+
+            return Redirect::intended(
+                $url
+            );
+
+        } else {
+            // get request token
+            $reqToken = $OAuth1Service->requestRequestToken();
+
+            // get Authorization Uri sending the request token
+            $url = $OAuth1Service->getAuthorizationUri(array('oauth_token' => $reqToken->getRequestToken()));
+
+            // return to twitter login url
+            return Redirect::to((string)$url);
+        }
     }
 
     public function logout()
@@ -92,5 +126,31 @@ class LoginController extends BaseController
     public function check()
     {
         return json_encode(\Auth::check());
+    }
+
+    /**
+     * @param $provider
+     * @param $isAlreadyConnected
+     */
+    private function determineFlashMessage($provider, $isAlreadyConnected)
+    {
+        if ($isAlreadyConnected) {
+            Session::flash('top_success', 'Votre compte ' . $provider . ' est maintenant lié !');
+        } else {
+            Session::flash('top_success', 'Vous êtes maintenant connecté !');
+        }
+    }
+
+    /**
+     * @return string
+     */
+    private function determineUrl()
+    {
+        $url = Session::get('prevUrl', action('Lvlfr\Website\Controller\HomeController@getIndex'));
+        if (Str::contains($url, '/login/')) {
+            $url = action('Lvlfr\Website\Controller\HomeController@getIndex');
+            return $url;
+        }
+        return $url;
     }
 }
