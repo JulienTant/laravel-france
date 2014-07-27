@@ -34,7 +34,7 @@ class LoginController extends BaseController
                 $retour = $this->loginToAuth2($providerGoodName);
                 break;
             case 'Twitter':
-
+                $retour = $this->loginToAuth1($providerGoodName);
                 break;
         }
         return $retour;
