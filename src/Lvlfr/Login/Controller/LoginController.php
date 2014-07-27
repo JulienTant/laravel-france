@@ -24,11 +24,13 @@ class LoginController extends BaseController
 
     public function login($provider = 'Google')
     {
+        $retour = null;
         switch (ucfirst($provider)) {
             case 'Google':
-                $this->loginToGoogle();
+                $retour = $this->loginToGoogle();
                 break;
         }
+        return $retour;
     }
 
     public function loginToGoogle()
