@@ -28,35 +28,33 @@ class LoginController extends BaseController
         $retour = null;
         OAuth::setHttpClient('CurlClient');
 
-        switch (ucfirst($provider)) {
+        switch ($providerGoodName = ucfirst($provider)) {
             case 'Google':
-                $retour = $this->loginToGoogle();
+            case 'GitHub':
+                $retour = $this->loginToAuth2($providerGoodName);
                 break;
         }
         return $retour;
     }
 
-    public function loginToGoogle()
+    public function loginToAuth2($provider)
     {
-        $provider = 'Google';
-
         // get data from input
         $code = Input::get('code');
 
         // get google service
-        $googleService = OAuth::consumer($provider);
+        $OAuth2Service = OAuth::consumer($provider);
 
         // check if code is valid
         // if code is provided get user data and sign in
         if (!empty($code)) {
 
             // This was a callback request from google, get the token
-            $token = $googleService->requestAccessToken($code);
+            $token = $OAuth2Service->requestAccessToken($code);
 
             $isAlreadyConnected = Auth::check();
-
             // Send a request with it
-            $infos = $this->loginService->getUserInfos($googleService, $provider, $token);
+            $infos = $this->loginService->getUserInfos($OAuth2Service, $provider, $token);
             $this->loginService->login($infos);
 
             if ($isAlreadyConnected) {
@@ -77,7 +75,7 @@ class LoginController extends BaseController
 
         } else {
             // get googleService authorization
-            $url = $googleService->getAuthorizationUri();
+            $url = $OAuth2Service->getAuthorizationUri();
 
             // return to google login url
             return Redirect::to((string)$url);
