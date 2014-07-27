@@ -61,8 +61,15 @@ class LoginController extends BaseController
             } else {
                 Session::flash('top_success', 'Vous êtes maintenant connecté !');
             }
+
+
+            $url = Session::get('prevUrl', action('Lvlfr\Website\Controller\HomeController@getIndex'));
+            if (Str::contains($url, '/login/')) {
+                $url = action('Lvlfr\Website\Controller\HomeController@getIndex');
+            }
+
             return Redirect::intended(
-                Session::get('prevUrl', action('Lvlfr\Website\Controller\HomeController@getIndex'))
+                $url
             );
 
         } else {
