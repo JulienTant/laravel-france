@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "629da33eb1886ba8b3019ed65c539812",
+    "hash": "3a9343756937add8d9400b434a18f963",
     "packages": [
         {
             "name": "artdarek/oauth-4-laravel",
@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/artdarek/oauth-4-laravel.git",
-                "reference": "066e483575b338598b38ed12d60e9723b755ede0"
+                "reference": "6952bbdbd622107efaadb1645eced8565d8c309b"
             },
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/artdarek/oauth-4-laravel/zipball/6952bbdbd622107efaadb1645eced8565d8c309b",
-                "reference": "066e483575b338598b38ed12d60e9723b755ede0",
+                "reference": "6952bbdbd622107efaadb1645eced8565d8c309b",
                 "shasum": ""
             },
             "require": {
@@ -343,12 +343,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "e6849dcfaf90e16c9ec1c87cd0a42264c9e6afff"
+                "reference": "c5e266caae34c1458bac9ceb0b85b0724cea9fda"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/e6849dcfaf90e16c9ec1c87cd0a42264c9e6afff",
-                "reference": "e6849dcfaf90e16c9ec1c87cd0a42264c9e6afff",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/c5e266caae34c1458bac9ceb0b85b0724cea9fda",
+                "reference": "c5e266caae34c1458bac9ceb0b85b0724cea9fda",
                 "shasum": ""
             },
             "require": {
@@ -450,7 +450,7 @@
                 "framework",
                 "laravel"
             ],
-            "time": "2014-07-25 01:41:42"
+            "time": "2014-07-27 01:54:02"
         },
         {
             "name": "lusitanian/oauth",

@@ -24,47 +24,53 @@ class LoginController extends BaseController
 
     public function login($provider = 'Google')
     {
-        $isAlreadyConnected = Auth::check();
-
-        $provider = ucfirst($provider);
-        $validProviders = array('Google', 'Twitter', 'GitHub');
-
-        if (in_array($provider, $validProviders)) {
-            $oAuthService = OAuth::consumer($provider);
-
-            try {
-                $token = null;
-                if ($provider == 'Twitter') {
-                    if (Input::get('oauth_token') == "" || Input::get('oauth_verifier') == "") {
-                        $oAuthService->getStorage()->clearAllTokens();
-                        throw new \OAuth\Common\Storage\Exception\TokenNotFoundException('Login Twitter');
-                    }
-                    $token = $oAuthService->getStorage()->retrieveAccessToken('Twitter');
-                    $token = $oAuthService->requestAccessToken(Input::get('oauth_token'), Input::get('oauth_verifier'), $token->getRequestTokenSecret());
-                } else {
-                    $token = $oAuthService->requestAccessToken(Input::get('code'));
-                }
-                $infos = $this->loginService->getUserInfos($oAuthService, $provider, $token);
-                $this->loginService->login($infos);
-
-                if($isAlreadyConnected) {
-                    Session::flash('top_success', 'Votre compte '.$provider.' est maintenant lié !');
-                } else {
-                    Session::flash('top_success', 'Vous êtes maintenant connecté !');
-                }
-                return Redirect::intended(Session::get('prevUrl', action('Lvlfr\Website\Controller\HomeController@getIndex')));
-            } catch (\OAuth\Common\Http\Exception\TokenResponseException $ex) {
-                $url = $oAuthService->getAuthorizationUri();
-                return Response::make()->header('Location', (string)$url);
-            }  catch (\OAuth\Common\Storage\Exception\TokenNotFoundException $ex) {
-                $token = $oAuthService->requestRequestToken();
-                $url = $oAuthService->getAuthorizationUri(array('oauth_token' => $token->getRequestToken()));
-                return Response::make()->header('Location', (string)$url);
-            } catch (\Exception $ex) {
-                Session::flash('top_error', 'Un compte avec cet identifiant ou cette adresse email existe déjà. Peut-être vous êtes vous déjà connecté avec un autre fournisseur ?');
-                return Redirect::intended(Session::get('prevUrl', action('Lvlfr\Website\Controller\HomeController@getIndex')));
-            }
+        switch (ucfirst($provider)) {
+            case 'Google':
+                $this->loginToGoogle();
+                break;
         }
+    }
+
+    public function loginToGoogle()
+    {
+        $provider = 'Google';
+
+        // get data from input
+        $code = Input::get('code');
+
+        // get google service
+        $googleService = OAuth::consumer($provider);
+
+        // check if code is valid
+        // if code is provided get user data and sign in
+        if (!empty($code)) {
+
+            // This was a callback request from google, get the token
+            $token = $googleService->requestAccessToken($code);
+
+            $isAlreadyConnected = Auth::check();
+
+            // Send a request with it
+            $infos = $this->loginService->getUserInfos($googleService, $provider, $token);
+            $this->loginService->login($infos);
+
+            if ($isAlreadyConnected) {
+                Session::flash('top_success', 'Votre compte ' . $provider . ' est maintenant lié !');
+            } else {
+                Session::flash('top_success', 'Vous êtes maintenant connecté !');
+            }
+            return Redirect::intended(
+                Session::get('prevUrl', action('Lvlfr\Website\Controller\HomeController@getIndex'))
+            );
+
+        } else {
+            // get googleService authorization
+            $url = $googleService->getAuthorizationUri();
+
+            // return to google login url
+            return Redirect::to((string)$url);
+        }
+
     }
 
     public function logout()
