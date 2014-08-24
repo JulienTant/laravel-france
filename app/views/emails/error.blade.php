@@ -26,12 +26,6 @@
     </pre>
 </div>
 
-<div>
-    Trace :<br />
-    <pre>
-        {{ print_r($exception->getTrace(), true) }}
-    </pre>
-</div>
 
 <div>
     Trace As String : <br />
