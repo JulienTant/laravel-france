@@ -51,6 +51,26 @@ Log::useFiles(storage_path() . '/logs/laravel-' . php_sapi_name() . '.log');
 App::error(
     function (Exception $exception, $code) {
         Log::error($exception);
+        if (App::environment() == 'production') {
+
+            $data = array('exception' => $exception);
+
+            Mail::send(
+                'emails.error',
+                $data,
+                function ($message) {
+                    $message->from('root@laravel.fr');
+                    $message->to('julien@laravel.fr')->subject(
+                        'Laravel France Error'
+                    );
+                }
+            );
+
+            Log::info('Error Email sent to julien@laravel.fr');
+
+            return Response::view('errors.500', array(), 500);
+        }
+
     }
 );
 

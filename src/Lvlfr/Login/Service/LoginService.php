@@ -33,7 +33,7 @@ class LoginService
 
             $result = json_decode($provider->request('user'), true);
             $model['uid'] = $result['id'];
-            $model['email'] = $result['email'];
+            $model['email'] = array_key_exists('email', $result) ? $result['email'] : $result['login'] . '@' . 'from_github.com';
             $model['username'] = $result['login'];
         } elseif ($providerName == 'Twitter') {
             $filled = true;
