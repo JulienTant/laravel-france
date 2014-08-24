@@ -60,9 +60,7 @@ App::error(
                 $data,
                 function ($message) {
                     $message->from('root@laravel.fr');
-                    $message->to('julien@laravel.fr')->subject(
-                        'Laravel France Error'
-                    );
+                    $message->to('julien@laravel.fr')->subject('Laravel France Error');
                 }
             );
 
@@ -70,7 +68,6 @@ App::error(
 
             return Response::view('errors.500', array(), 500);
         }
-
     }
 );
 
