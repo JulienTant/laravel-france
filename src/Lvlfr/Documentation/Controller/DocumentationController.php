@@ -6,6 +6,10 @@ use \Config;
 use \File;
 use \DOMDocument;
 use \View;
+use Str;
+use Redirect;
+use App;
+
 
 class DocumentationController extends \BaseController
 {
@@ -13,13 +17,22 @@ class DocumentationController extends \BaseController
     {
         if ($version === null) {
             $version = Config::get('LvlfrDocumentation::docs.defaultVersion');
-            return \Redirect::action('\Lvlfr\Documentation\Controller\DocumentationController@showDocs', [$version]);
+            return Redirect::action('\Lvlfr\Documentation\Controller\DocumentationController@showDocs', [$version]);
         }
 
-        if (\Str::startsWith($version, ['v'])) {
-            return \Redirect::action('\Lvlfr\Documentation\Controller\DocumentationController@showDocs', [str_replace('v', '', $version)], 301);
+        if (Str::startsWith($version, ['v'])) {
+            return Redirect::action(
+                '\Lvlfr\Documentation\Controller\DocumentationController@showDocs',
+                [str_replace('v', '', $version)],
+                301
+            );
         }
 
+
+        $versionConfig = Config::get('LvlfrDocumentation::docs.versions');
+        if (!array_key_exists((string)$version, $versionConfig)) {
+            App::abort(404);
+        }
 
         $versionConfig = Config::get('LvlfrDocumentation::docs.versions')[(string)$version];
 
