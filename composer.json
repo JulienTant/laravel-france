@@ -8,7 +8,8 @@
         "artdarek/oauth-4-laravel": "dev-master",
         "phpspec/php-diff": "dev-master",
 	    "michelf/php-markdown": "1.4.0",
-        "mitch/hashids": "dev-master"
+        "mitch/hashids": "dev-master",
+        "guzzlehttp/guzzle": "~4.0"
     },
     "autoload": {
         "classmap": [
