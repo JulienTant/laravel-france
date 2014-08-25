@@ -5,6 +5,7 @@ namespace Lvlfr\Documentation\Controller;
 use \Config;
 use \File;
 use \DOMDocument;
+use Illuminate\Filesystem\FileNotFoundException;
 use \View;
 use Str;
 use Redirect;
@@ -53,8 +54,12 @@ class DocumentationController extends \BaseController
                             'LvlfrDocumentation::docs.path',
                             '/docs'
                         ) . '/' . $versionConfig['path'];
+                    try {
                     $raw = File::get($path . "/{$raw}.md");
                     $raw = markdownThis($raw);
+                    } catch (FileNotFoundException $ex) {
+                        App::abort(404);
+                    }
                 }
             );
 
