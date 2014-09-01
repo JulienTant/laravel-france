@@ -53,7 +53,11 @@ App::error(
         Log::error($exception);
         if (App::environment() == 'production') {
 
-            $data = array('exception' => $exception);
+            $data = array(
+                'exception' => $exception,
+                'url' => Request::url(),
+                'method' => Request::method,
+            );
 
             Mail::send(
                 'emails.error',

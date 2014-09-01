@@ -1,4 +1,12 @@
 <div>
+    URL :<br />
+    <pre>
+        {{ print_r($url . ' - ' . $method, true) }}
+    </pre>
+</div>
+
+
+<div>
     Message :<br />
     <pre>
         {{ print_r($exception->getMessage(), true) }}
