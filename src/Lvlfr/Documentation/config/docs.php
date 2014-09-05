@@ -9,6 +9,11 @@ return array(
             'menu' => 'documentation',
             'path' => 'dev'
         ),
+        '4.2' => array(
+            'default' => 'introduction',
+            'menu' => 'documentation',
+            'path' => '4.2'
+        ),
         '4.1' => array(
             'default' => 'introduction',
             'menu' => 'documentation',
