@@ -53,16 +53,18 @@ App::error(
         Log::error($exception);
         if (App::environment() == 'production') {
 
-            $data = array('exception' => $exception);
+            $data = array(
+                'exception' => $exception,
+                'url' => Request::url(),
+                'method' => Request::method,
+            );
 
             Mail::send(
                 'emails.error',
                 $data,
                 function ($message) {
                     $message->from('root@laravel.fr');
-                    $message->to('julien@laravel.fr')->subject(
-                        'Laravel France Error'
-                    );
+                    $message->to('julien@laravel.fr')->subject('Laravel France Error');
                 }
             );
 
@@ -70,7 +72,6 @@ App::error(
 
             return Response::view('errors.500', array(), 500);
         }
-
     }
 );
 

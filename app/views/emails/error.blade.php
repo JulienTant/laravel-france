@@ -1,41 +1,43 @@
 <div>
+    URL :<br />
+    <pre>
+        {{ print_r($url . ' - ' . $method, true) }}
+    </pre>
+</div>
+
+
+<div>
     Message :<br />
     <pre>
-        {{ $exception->getMessage() }}
+        {{ print_r($exception->getMessage(), true) }}
     </pre>
 </div>
 
 <div>
     Code :<br />
     <pre>
-        {{ $exception->getCode() }}
+        {{ print_r($exception->getCode(), true) }}
     </pre>
 </div>
 
 <div>
     File :<br />
     <pre>
-        {{ $exception->getFile() }}
+        {{ print_r($exception->getFile(), true) }}
     </pre>
 </div>
 
 <div>
     Line :<br />
     <pre>
-        {{ $exception->getLine() }}
+        {{ print_r($exception->getLine(), true) }}
     </pre>
 </div>
 
-<div>
-    Trace :<br />
-    <pre>
-        {{ $exception->getTrace() }}
-    </pre>
-</div>
 
 <div>
     Trace As String : <br />
     <pre>
-        {{ $exception->getTraceAsString() }}
+        {{ print_r($exception->getTraceAsString(), true) }}
     </pre>
 </div>

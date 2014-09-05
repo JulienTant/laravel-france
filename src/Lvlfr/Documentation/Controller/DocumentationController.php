@@ -5,7 +5,12 @@ namespace Lvlfr\Documentation\Controller;
 use \Config;
 use \File;
 use \DOMDocument;
+use Illuminate\Filesystem\FileNotFoundException;
 use \View;
+use Str;
+use Redirect;
+use App;
+
 
 class DocumentationController extends \BaseController
 {
@@ -13,8 +18,23 @@ class DocumentationController extends \BaseController
     {
         if ($version === null) {
             $version = Config::get('LvlfrDocumentation::docs.defaultVersion');
-            return \Redirect::action('\Lvlfr\Documentation\Controller\DocumentationController@showDocs', [$version]);
+            return Redirect::action('\Lvlfr\Documentation\Controller\DocumentationController@showDocs', [$version]);
         }
+
+        if (Str::startsWith($version, ['v'])) {
+            return Redirect::action(
+                '\Lvlfr\Documentation\Controller\DocumentationController@showDocs',
+                [str_replace('v', '', $version)],
+                301
+            );
+        }
+
+
+        $versionConfig = Config::get('LvlfrDocumentation::docs.versions');
+        if (!array_key_exists((string)$version, $versionConfig)) {
+            App::abort(404);
+        }
+
         $versionConfig = Config::get('LvlfrDocumentation::docs.versions')[(string)$version];
 
         if ($document === null) {
@@ -22,16 +42,26 @@ class DocumentationController extends \BaseController
         }
 
         $data = array(
-            'document'   => $document,
-            'menu'     => $versionConfig['menu']
+            'document' => $document,
+            'menu' => $versionConfig['menu']
         );
 
         try {
-            array_walk($data, function (&$raw) use ($versionConfig) {
-                $path = base_path().Config::get('LvlfrDocumentation::docs.path', '/docs') . '/' . $versionConfig['path'];
-                $raw = File::get($path."/{$raw}.md");
-                $raw = markdownThis($raw);
-            });
+            array_walk(
+                $data,
+                function (&$raw) use ($versionConfig) {
+                    $path = base_path() . Config::get(
+                            'LvlfrDocumentation::docs.path',
+                            '/docs'
+                        ) . '/' . $versionConfig['path'];
+                    try {
+                    $raw = File::get($path . "/{$raw}.md");
+                    $raw = markdownThis($raw);
+                    } catch (FileNotFoundException $ex) {
+                        App::abort(404);
+                    }
+                }
+            );
 
         } catch (Exception $e) {
             App::abort(404);
@@ -57,7 +87,7 @@ class DocumentationController extends \BaseController
                 $data['next'] = $link;
                 break;
             } else {
-                $foundCurrent = (str_replace('/'.$version.'/', '', $link['URI']) == $document);
+                $foundCurrent = (str_replace('/' . $version . '/', '', $link['URI']) == $document);
 
                 if (!$foundCurrent) {
                     $data['prev'] = (!$link['title']) ? null : $link;
