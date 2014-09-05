@@ -6,6 +6,7 @@
 
     <ul id="doc-versions">
         <li><a rel="nofollow" href="{{ action('\Lvlfr\Documentation\Controller\DocumentationController@showDocs', ['dev']) }}">Laravel Dev</a></li>
+        <li><a rel="nofollow" href="{{ action('\Lvlfr\Documentation\Controller\DocumentationController@showDocs', ['4.2']) }}">Laravel 4.2</a></li>
         <li><a rel="nofollow" href="{{ action('\Lvlfr\Documentation\Controller\DocumentationController@showDocs', ['4.1']) }}">Laravel 4.1</a></li>
         <li><a rel="nofollow" href="{{ action('\Lvlfr\Documentation\Controller\DocumentationController@showDocs', ['4.0']) }}">Laravel 4.0</a></li>
         <li><a rel="nofollow" href="{{ action('\Lvlfr\Documentation\Controller\DocumentationController@showDocs', ['3']) }}">Laravel 3</a></li>
