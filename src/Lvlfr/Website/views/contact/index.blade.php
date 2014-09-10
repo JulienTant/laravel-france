@@ -25,11 +25,21 @@
         </div>
 
         <div class="form-line">
-            {{ Form::label('email', 'Email* :')}}
+            {{ Form::label('phone', 'Email* :')}}
             <div class="form-item">
-                {{ Form::text('email', Input::old('email')) }}
-                @if ($errors->has('email'))
-                <span class="error">{{ $errors->first('email') }}</span>
+                {{ Form::text('phone', Input::old('phone')) }}
+                @if ($errors->has('phone'))
+                <span class="error">{{ $errors->first('phone') }}</span>
+                @endif
+            </div>
+        </div>
+
+        <div class="form-line emailLine">
+            {{ Form::label('phone', 'Email* :')}}
+            <div class="form-item">
+                {{ Form::text('phone', Input::old('phone')) }}
+                @if ($errors->has('phone'))
+                <span class="error">{{ $errors->first('phone') }}</span>
                 @endif
             </div>
         </div>
@@ -66,3 +76,11 @@
 </div>
 
 @stop
+
+@section('add_js')
+<script>
+$(document).ready(function() {
+    $('.emailLine').hide();
+});
+</script>
+@endsection
