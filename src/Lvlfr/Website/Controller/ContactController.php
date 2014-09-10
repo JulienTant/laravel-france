@@ -27,14 +27,10 @@ class ContactController extends BaseController
         $fields['honey_pot'] = $fields['email'];
         $fields['email'] = $fields['phone'];
         unset($fields['phone']);
-
-        $honeyPostPass = $this->checkHoneyPot($fields['honey_pot']);
-
-
+        
         $validator = new \Lvlfr\Website\Validation\ContactValidator($fields);
 
-
-        if ($validator->passes() && $honeyPostPass) {
+        if ($validator->passes() && $this->checkHoneyPot($fields['honey_pot'])) {
             Mail::queue(
                 'LvlfrWebsite::contact.email_content',
                 $fields,
@@ -56,7 +52,7 @@ class ContactController extends BaseController
 
     private function checkHoneyPot($honePot)
     {
-        return strlen($honePot === 0);
+        return strlen($honePot) === 0;
     }
 
 }
