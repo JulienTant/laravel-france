@@ -35,11 +35,11 @@
         </div>
 
         <div class="form-line emailLine">
-            {{ Form::label('phone', 'Email* :')}}
+            {{ Form::label('email', 'Email* :')}}
             <div class="form-item">
-                {{ Form::text('phone', Input::old('phone')) }}
-                @if ($errors->has('phone'))
-                <span class="error">{{ $errors->first('phone') }}</span>
+                {{ Form::text('email', Input::old('email')) }}
+                @if ($errors->has('email'))
+                <span class="error">{{ $errors->first('email') }}</span>
                 @endif
             </div>
         </div>
