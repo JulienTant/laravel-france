@@ -11,6 +11,11 @@ class EloquentPageRepo implements BasePageRepo
     public function find($slug, $version = null)
     {
         $page = Page::whereSlug($slug)->first();
+
+        if (!$page) {
+            return null;
+        }
+
         if ($version != null) {
             $version = $page->versions()->whereVersion($version)->first();
         } else {
@@ -23,8 +28,7 @@ class EloquentPageRepo implements BasePageRepo
         return $page;
     }
 
-    public
-    function save(
+    public function save(
         $page
     ) {
         if ($page->version) {
@@ -34,8 +38,7 @@ class EloquentPageRepo implements BasePageRepo
         return $page;
     }
 
-    public
-    function all(
+    public function all(
         $orderBy = []
     ) {
         $query = Page::query();
@@ -47,8 +50,7 @@ class EloquentPageRepo implements BasePageRepo
         return $query->get();
     }
 
-    public
-    function allWithLastVersion(
+    public function allWithLastVersion(
         $orderBy = []
     ) {
         $query = Page::with('lastVersion');
