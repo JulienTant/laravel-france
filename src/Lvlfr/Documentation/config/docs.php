@@ -1,7 +1,7 @@
 <?php
 
 return array(
-    'defaultVersion' => '4.1',
+    'defaultVersion' => '4.2',
     'path' => '/docs',
     'versions' => array(
         'dev' => array(
