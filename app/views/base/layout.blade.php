@@ -7,7 +7,7 @@
 
     <link rel="stylesheet" href="/css/normalize.css">
     <link rel="stylesheet" href="/css/font-awesome.min.css">
-    <link rel="stylesheet" href="/css/app.css">
+    <link rel="stylesheet" href="/css/app.css?v=20141211">
     @yield('add_css')
 </head>
 <body class="@yield('page_class') preload">

@@ -41,7 +41,9 @@
                         <td>
                             <strong>
                                 <a href="{{ action('\Lvlfr\Forums\Controller\TopicsController@show', array($topic->slug, $topic->id), true) }}">
-                                   @if($topic->sticky)<i class="icon-flag"></i> @endif {{ $topic->title }}
+                                    @if($topic->sticky)<i class="icon-flag"></i> @endif
+                                    @if($topic->solved)<i class="icon-ok"></i> @endif
+                                    {{ $topic->title }}
                                 </a>
                             </strong><br>
                             <small>Par {{ $topic->user->username }} le {{ $topic->created_at->format('d/m/Y à H:i:s') }}</small>

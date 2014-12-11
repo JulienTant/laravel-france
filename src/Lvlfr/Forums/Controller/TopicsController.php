@@ -165,4 +165,31 @@ class TopicsController extends \BaseController
 
         return Redirect::back()->withInput()->withErrors($validator->getErrors());
     }
+
+    public function solve()
+    {
+        $topic = Topic::find(Input::get('topic'));
+        if (!$topic || $topic->solved == true) {
+            App::abort('404', 'Sujet non trouvé');
+        }
+
+        $message = Message::find(Input::get('message'));
+        if (!$message || !$message->editable()) {
+            App::abort('404', 'Message non trouvé');
+        }
+
+        if ($message->user_id != \Auth::user()->id) {
+            App::abort('404', 'Message non trouvé');
+        }
+
+        $topic->solved = true;
+        $topic->solvedBy = $message->id;
+
+        $message->solveTopic = true;
+
+        $topic->save();
+        $message->save();
+
+        return Redirect::back();
+    }
 }

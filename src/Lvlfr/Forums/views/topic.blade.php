@@ -30,7 +30,7 @@
         <?php $i = 0; ?>
         @foreach($messages as $message)
         <a name="message{{ $message->id }}" id="message{{ $message->id }}"></a>
-        <li class="forum-message @if($i % 2) odd @else even @endif">
+        <li class="forum-message @if($i % 2) odd @else even @endif @if($message->solveTopic) solve @endif">
             <div class="user-infos">
                 <img src="{{ $message->user->getAvatarUrl() }}" class="img-polaroid">
                 <strong>{{ $message->user->username }}</strong><br />
@@ -46,13 +46,23 @@
                     @if($message->editable())
                     - <a href="{{ action('\Lvlfr\Forums\Controller\TopicsController@editMessage', array($topic->slug, $topic->id, $message->id)) }}">Editer</a>
                     @endif
+                    @if($message->solveTopic)
+                     - <i class="icon-ok"></i> Ce message répond à la question de l'auteur
+                    @endif
                 </small>
                 <div class="forum-text " data-post-id="{{$message->id}}">
                     {{ $message->html }}
                 </div>
-                <div class="forum-text-tools">
-                        <a href="{{ action('\Lvlfr\Forums\Controller\TopicsController@newReply', array('slug' => $topic->slug, 'topicId' => $topic->id, 'quote' => $message->id)) }}">Citer</a>
-                </div>
+                <ul class="forum-text-tools">
+                    @if($i > 0 && !$topic->solved && $message->user_id === \Auth::user()->id)
+                        <li>{{ Form::open(['action' => '\Lvlfr\Forums\Controller\TopicsController@solve']) }}
+                            {{ Form::hidden('topic', $topic->id) }}
+                            {{ Form::hidden('message', $message->id) }}
+                            <button><i class="icon-ok"></i> Ce message répond à ma question</button>
+                        {{ Form::close() }}</li>
+                    @endif
+                    <li><a href="{{ action('\Lvlfr\Forums\Controller\TopicsController@newReply', array('slug' => $topic->slug, 'topicId' => $topic->id, 'quote' => $message->id)) }}">Citer</a></li>
+                </ul>
             </div>
         </li>
         <?php $i++; ?>

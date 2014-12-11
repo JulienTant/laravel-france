@@ -66,5 +66,6 @@ Route::group(array('domain' => 'forums.'. Config::get('app.domain')), function (
 
     Route::get('{slug}-c{categoryId}', '\Lvlfr\Forums\Controller\TopicsController@index');
     Route::get('{slug}-t{topicId}', '\Lvlfr\Forums\Controller\TopicsController@show');
+    Route::post('solveTopic', '\Lvlfr\Forums\Controller\TopicsController@solve');
     Route::get('{slug}-t{topicId}/lastpage', '\Lvlfr\Forums\Controller\TopicsController@moveToLast');
 });
