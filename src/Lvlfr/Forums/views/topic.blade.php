@@ -54,7 +54,7 @@
                     {{ $message->html }}
                 </div>
                 <ul class="forum-text-tools">
-                    @if($i > 0 && !$topic->solved && $topic->user_id === \Auth::user()->id)
+                    @if($i > 0 && !$topic->solved && $topic->isWrittenBy(\Auth::user()))
                         <li>{{ Form::open(['action' => '\Lvlfr\Forums\Controller\TopicsController@solve']) }}
                             {{ Form::hidden('topic', $topic->id) }}
                             {{ Form::hidden('message', $message->id) }}
