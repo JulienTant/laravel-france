@@ -2,6 +2,7 @@
 namespace Lvlfr\Forums\Models;
 
 use \Auth;
+use Lvlfr\Login\Model\User;
 use \Str;
 
 class Topic extends \Eloquent
@@ -10,7 +11,7 @@ class Topic extends \Eloquent
 
     public function getDates()
     {
-        return array('created_at', 'updated_at', 'lm_date');
+        return ['created_at', 'updated_at', 'lm_date'];
     }
 
     public function category()
@@ -81,13 +82,18 @@ class Topic extends \Eloquent
             if (!is_null($fv)) {
                 $fv->touch();
             } else {
-                View::create(array(
+                View::create([
                     'topic_id' => $this->id,
                     'category_id' => $this->category->id,
                     'user_id' => \Auth::user()->id
-                ));
+                ]);
             }
         }
+    }
+
+    public function isWrittenBy(User $user = null)
+    {
+        return $user != null && $this->user_id == $user->id;
     }
 
     public function isUnread()
