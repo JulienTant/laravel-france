@@ -174,11 +174,11 @@ class TopicsController extends \BaseController
         }
 
         $message = Message::find(Input::get('message'));
-        if (!$message || !$message->editable()) {
+        if (!$message) {
             App::abort('404', 'Message non trouvé');
         }
 
-        if ($message->user_id != \Auth::user()->id) {
+        if ($topic->user_id != \Auth::user()->id) {
             App::abort('404', 'Message non trouvé');
         }
 
