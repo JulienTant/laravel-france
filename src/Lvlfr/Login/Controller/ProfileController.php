@@ -5,6 +5,8 @@ namespace Lvlfr\Login\Controller;
 use \Auth;
 use \BaseController;
 use \Input;
+use Lvlfr\Forums\Models\Category as ForumCategory;
+use Lvlfr\Forums\Models\Topic as ForumTopic;
 use \Session;
 use \Redirect;
 use \Response;
@@ -29,15 +31,15 @@ class ProfileController extends BaseController
         foreach ($oauths as $oauth) {
             switch ($oauth->provider) {
                 case 'Google':
-                    $onGoogle=true;
+                    $onGoogle = true;
                     break;
 
                 case 'GitHub':
-                    $onGitHub=true;
+                    $onGitHub = true;
                     break;
 
                 case 'Twitter':
-                    $onTwitter=true;
+                    $onTwitter = true;
                     break;
             }
         }
@@ -57,29 +59,39 @@ class ProfileController extends BaseController
     {
         $pseudo = Input::get('pseudo');
 
-        $user = User::whereUsername($pseudo)->first(array('id'));
-        if ($user != null && $user->id != Auth::user()->id) return Response::make(json_encode(array('message' => 'Le pseudo est déjà utilisé')), 400);
-        elseif ($user != null && $user->id == Auth::user()->id && $pseudo == Auth::user()->username) return Response::make(json_encode(array('message' => 'Ce pseudo est le votre')), 200);
+        $user = User::whereUsername($pseudo)->first(['id']);
+        if ($user != null && $user->id != Auth::user()->id) {
+            return Response::make(json_encode(['message' => 'Le pseudo est déjà utilisé']), 400);
+        } elseif ($user != null && $user->id == Auth::user()->id && $pseudo == Auth::user()->username) {
+            return Response::make(json_encode(['message' => 'Ce pseudo est le votre']), 200);
+        }
 
-        $validator = Validator::make(array('pseudo' => $pseudo), array('pseudo' => 'min:3|required'));
-        if ($validator->fails()) return Response::make(json_encode(array('message' => 'Pseudo invalide (min: 3 caractères)')), 400);
+        $validator = Validator::make(['pseudo' => $pseudo], ['pseudo' => 'min:3|required']);
+        if ($validator->fails()) {
+            return Response::make(json_encode(['message' => 'Pseudo invalide (min: 3 caractères)']), 400);
+        }
 
-        Auth::user()->username = trim($pseudo);
-        Auth::user()->save();
-        return Response::make(json_encode(array('message' => 'Pseudo mis à jour')), 200);
+        $this->changeUsername($pseudo);
+
+        return Response::make(json_encode(['message' => 'Pseudo mis à jour']), 200);
 
     }
-    
+
     public function checkPseudo()
     {
         $pseudo = Input::get('pseudo');
-        $user = User::whereUsername($pseudo)->first(array('id'));
+        $user = User::whereUsername($pseudo)->first(['id']);
 
-        if ($user != null && $user->id != Auth::user()->id) return 'nok';
-        elseif ($user != null && $user->id == Auth::user()->id) return 'ok';
+        if ($user != null && $user->id != Auth::user()->id) {
+            return 'nok';
+        } elseif ($user != null && $user->id == Auth::user()->id) {
+            return 'ok';
+        }
 
-        $validator = Validator::make(array('pseudo' => $pseudo), array('pseudo' => 'min:3|required'));
-        if ($validator->fails()) return 'nok';
+        $validator = Validator::make(['pseudo' => $pseudo], ['pseudo' => 'min:3|required']);
+        if ($validator->fails()) {
+            return 'nok';
+        }
         return 'ok';
     }
 
@@ -92,24 +104,43 @@ class ProfileController extends BaseController
     {
         $email = Input::get('email');
 
-        $user = \Lvlfr\Login\Model\User::where('email', '=', $email)->first(array('id'));
+        $user = \Lvlfr\Login\Model\User::where('email', '=', $email)->first(['id']);
 
         if ($user != null && $user->id != Auth::user()->id) {
-            return Response::make(json_encode(array('message' => 'Adresse email déjà attribuée')), 400);
+            return Response::make(json_encode(['message' => 'Adresse email déjà attribuée']), 400);
         } elseif ($user != null && $user->id == Auth::user()->id) {
-            return Response::make(json_encode(array('message' => 'Cette adresse email est déjà la votre')), 200);
+            return Response::make(json_encode(['message' => 'Cette adresse email est déjà la votre']), 200);
         }
 
-        $validator = Validator::make(array('email' => $email), array('email' => 'email|required'));
+        $validator = Validator::make(['email' => $email], ['email' => 'email|required']);
 
         if ($validator->fails()) {
-            return Response::make(json_encode(array('message' => 'Adresse email invalide')), 400);
+            return Response::make(json_encode(['message' => 'Adresse email invalide']), 400);
         }
 
 
         Auth::user()->email = trim($email);
         Auth::user()->save();
-        return Response::make(json_encode(array('message' => 'Adresse email mise à jour')), 200);
+        return Response::make(json_encode(['message' => 'Adresse email mise à jour']), 200);
+    }
+
+    /**
+     * @todo deserve it's own service
+     * 
+     * @param $pseudo
+     * @return string
+     */
+    private function changeUsername($pseudo)
+    {
+        $trimedUsername = trim($pseudo);
+        $loggedInUser = Auth::user();
+        $loggedInUser->username = $trimedUsername;
+
+        ForumTopic::where('lm_user_id', $loggedInUser->id)->update(['lm_user_name' => $trimedUsername]);
+        ForumCategory::where('lm_user_id', $loggedInUser->id)->update(['lm_user_name' => $trimedUsername]);
+
+        $loggedInUser->save();
+        return $trimedUsername;
     }
 
 }
