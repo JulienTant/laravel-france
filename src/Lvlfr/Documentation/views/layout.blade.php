@@ -12,6 +12,12 @@
     </div>
 
     <div class="documentationContent">
+
+        <div class="alert">
+            <p>Attention. La traduction de la documentation n'est plus à jour depuis Septembre 2014. Pour avoir les informations à jour, rendez vous sur la <a href="http://laravel.com/docs" target="_blank">documentation officielle de Laravel</a>.</p>
+            <p><a href="http://forums.laravel.fr/vers-la-fin-de-la-mise-a-disposition-de-la-documentation-francaise-t428">Avoir plus d'informations à ce sujet</a></p>
+        </div>
+
         @yield('documentationContent')
 
         <hr />
