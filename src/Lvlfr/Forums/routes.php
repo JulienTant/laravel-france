@@ -8,6 +8,7 @@ Route::group(array('domain' => 'forums.'. Config::get('app.domain')), function (
     Route::pattern('messageId', '\d+');
 
     Route::get('/', '\Lvlfr\Forums\Controller\HomeController@index');
+    Route::get('mark_all_as_read', ['uses' => '\Lvlfr\Forums\Controller\HomeController@markAllAsRead', 'before' => 'auth']);
     Route::any('login', 'Lvlfr\Login\Controller\LoginController@index');
 
     /*********************************************
