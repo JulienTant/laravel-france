@@ -1,15 +1,16 @@
 <?php
 namespace Lvlfr\Login\Controller;
 
-use \Auth;
-use \BaseController;
-use \Input;
-use \OAuth;
-use \Session;
-use \Str;
-use \Redirect;
-use \Response;
-use \View;
+use Auth;
+use BaseController;
+use Input;
+use OAuth;
+use OAuth\Common\Http\Exception\TokenResponseException;
+use Redirect;
+use Response;
+use Session;
+use Str;
+use View;
 
 class LoginController extends BaseController
 {
@@ -52,9 +53,14 @@ class LoginController extends BaseController
         // if code is provided get user data and sign in
         if (!empty($code)) {
 
-            // This was a callback request from google, get the token
-            $token = $OAuth2Service->requestAccessToken($code);
-
+            try {
+                // This was a callback request from google, get the token
+                $token = $OAuth2Service->requestAccessToken($code);
+            } catch (TokenResponseException $tokenResponseException) {
+                $url = $OAuth2Service->getAuthorizationUri();
+                // return to google login url
+                return Redirect::to((string)$url);
+            }
             $isAlreadyConnected = Auth::check();
             // Send a request with it
             $infos = $this->loginService->getUserInfos($OAuth2Service, $provider, $token);
@@ -110,7 +116,7 @@ class LoginController extends BaseController
             $reqToken = $OAuth1Service->requestRequestToken();
 
             // get Authorization Uri sending the request token
-            $url = $OAuth1Service->getAuthorizationUri(array('oauth_token' => $reqToken->getRequestToken()));
+            $url = $OAuth1Service->getAuthorizationUri(['oauth_token' => $reqToken->getRequestToken()]);
 
             // return to twitter login url
             return Redirect::to((string)$url);

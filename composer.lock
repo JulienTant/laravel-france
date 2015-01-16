@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/artdarek/oauth-4-laravel.git",
-                "reference": "6952bbdbd622107efaadb1645eced8565d8c309b"
+                "reference": "d7226ea17932ee31143bb33b499e6f0aeb7d8ce2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/artdarek/oauth-4-laravel/zipball/6952bbdbd622107efaadb1645eced8565d8c309b",
-                "reference": "6952bbdbd622107efaadb1645eced8565d8c309b",
+                "url": "https://api.github.com/repos/artdarek/oauth-4-laravel/zipball/d7226ea17932ee31143bb33b499e6f0aeb7d8ce2",
+                "reference": "d7226ea17932ee31143bb33b499e6f0aeb7d8ce2",
                 "shasum": ""
             },
             "require": {
@@ -52,7 +52,7 @@
                 "oauth",
                 "php"
             ],
-            "time": "2014-07-23 06:35:49"
+            "time": "2015-01-08 16:40:21"
         },
         {
             "name": "classpreloader/classpreloader",
@@ -572,16 +572,16 @@
         },
         {
             "name": "lusitanian/oauth",
-            "version": "v0.3.0",
+            "version": "v0.3.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Lusitanian/PHPoAuthLib.git",
-                "reference": "f981b349c03f7e233b7058a9d30903809898659c"
+                "reference": "ac5a1cd5a4519143728dce2213936eea302edf8a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Lusitanian/PHPoAuthLib/zipball/f981b349c03f7e233b7058a9d30903809898659c",
-                "reference": "f981b349c03f7e233b7058a9d30903809898659c",
+                "url": "https://api.github.com/repos/Lusitanian/PHPoAuthLib/zipball/ac5a1cd5a4519143728dce2213936eea302edf8a",
+                "reference": "ac5a1cd5a4519143728dce2213936eea302edf8a",
                 "shasum": ""
             },
             "require": {
@@ -620,9 +620,7 @@
                 },
                 {
                     "name": "Pieter Hordijk",
-                    "email": "info@pieterhordijk.com",
-                    "homepage": "https://pieterhordijk.com",
-                    "role": "developer"
+                    "email": "info@pieterhordijk.com"
                 }
             ],
             "description": "PHP 5.3+ oAuth 1/2 Library",
@@ -632,7 +630,7 @@
                 "oauth",
                 "security"
             ],
-            "time": "2014-03-30 13:50:10"
+            "time": "2014-09-05 15:19:58"
         },
         {
             "name": "michelf/php-markdown",
@@ -2060,12 +2058,8 @@
             "time": "2014-07-24 17:01:56"
         }
     ],
-    "packages-dev": [
-
-    ],
-    "aliases": [
-
-    ],
+    "packages-dev": [],
+    "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
         "artdarek/oauth-4-laravel": 20,
@@ -2073,10 +2067,7 @@
         "mitch/hashids": 20
     },
     "prefer-stable": false,
-    "platform": [
-
-    ],
-    "platform-dev": [
-
-    ]
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": []
 }
