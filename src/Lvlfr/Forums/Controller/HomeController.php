@@ -3,6 +3,7 @@
 namespace Lvlfr\Forums\Controller;
 
 use \Lvlfr\Forums\Models\Category;
+use Lvlfr\Forums\Services\MarkAllAsRead;
 use \View;
 
 class HomeController extends \BaseController
@@ -12,8 +13,15 @@ class HomeController extends \BaseController
         $categories = Category::orderBy('order', 'asc')->get();
 
 
-        return View::make('LvlfrForums::home', array(
+        return View::make('LvlfrForums::home', [
             'categories' => $categories,
-        ));
+        ]);
+    }
+
+    public function markAllAsRead()
+    {
+        \App::make(MarkAllAsRead::class)->forUser(\Auth::user());
+
+        return \Redirect::action('\\'.self::class . '@index');
     }
 }

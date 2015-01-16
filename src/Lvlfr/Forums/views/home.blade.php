@@ -59,6 +59,8 @@
                 </tbody>
             </table>
 
+            <a href="{{ action('\Lvlfr\Forums\Controller\HomeController@markAllAsRead') }}">Tout marquer comme lu</a>
+
             <div class="legend">
                 <strong>Légende :</strong>
                 <p class="ico-read">
