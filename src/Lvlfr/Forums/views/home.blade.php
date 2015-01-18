@@ -10,6 +10,8 @@
     <ul class="breadcrumb">
         <li><a title="Retour à la page d'accueil" href="{{ route('home') }}"><i class="icon-home"></i></a> <span class="divider">/</span></li>
         <li>Forums - Accueil</li>
+
+        @include('LvlfrForums::searchForm')
     </ul>
 
     <div class="row">

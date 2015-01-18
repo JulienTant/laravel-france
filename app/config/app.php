@@ -121,6 +121,8 @@ return array(
         'Lvlfr\Login\LoginServiceProvider',
         'Lvlfr\Website\WebsiteServiceProvider',
 
+        \Lvlfr\Elasticsearch\ElasticsearchServiceProvider::class,
+
         'Artdarek\OAuth\OAuthServiceProvider',
         'Mitch\Hashids\HashidsServiceProvider',
     ),

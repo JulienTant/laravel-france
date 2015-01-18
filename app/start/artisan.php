@@ -13,3 +13,4 @@
 
 Artisan::add(new CreateDbCommand);
 Artisan::add(new ProjectInstallCommand);
+Artisan::add(new ElasticsearchForumsFillCommand);

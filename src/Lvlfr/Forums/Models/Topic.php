@@ -43,6 +43,8 @@ class Topic extends \Eloquent
         $topic->setLastMessage($message, true);
         $category->setLastMessage($message, true);
 
+        $topic->indexInSearchEngine();
+
         return $topic;
     }
 
@@ -121,5 +123,41 @@ class Topic extends \Eloquent
             return false;
         }
         return true;
+    }
+
+    public function toElasticsearchArray($update = false)
+    {
+        $params = [];
+         $doc = [
+            'title' => $this->title,
+            'message' => html_entity_decode(strip_tags($this->messages->first()->html), ENT_QUOTES | ENT_HTML5, 'UTF-8'),
+            'message_id' => $this->messages->first()->id,
+            'topic_id' => $this->id,
+            'category_id' => $this->forum_category_id,
+            'author_id' => $this->user->id,
+            'updated_at' => $this->updated_at->format('Y-m-d H:i:s')
+        ];
+        if ($update) {
+            $params['body']['doc'] = $doc;
+        } else {
+            $params['body'] = $doc;
+        }
+        $params['index'] = 'forums';
+        $params['type'] = 'messages';
+        $params['id'] = $this->id;
+
+        return $params;
+    }
+
+    public function indexInSearchEngine($updating = false)
+    {
+        $message = $this->messages->first();
+        if (!is_null($message)) {
+            if ($updating) {
+                \Elasticsearch::update($this->toElasticsearchArray(true));
+            } else {
+                \Elasticsearch::index($this->toElasticsearchArray());
+            }
+        }
     }
 }

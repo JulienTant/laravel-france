@@ -7,3 +7,4 @@ composer.phar
 app/storage/documentation-master.zip
 docs/*
 .idea/
+_ide_helper.php

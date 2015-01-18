@@ -109,6 +109,7 @@ class TopicsController extends \BaseController
 
     public function postReply($slug, $topicId)
     {
+        /** @var Topic $topic */
         $topic = Topic::find($topicId);
         if (!$topic) {
             App::abort('404', 'Sujet non trouvé');
@@ -119,9 +120,10 @@ class TopicsController extends \BaseController
         if ($validator->passes()) {
             $message = Message::createNew($topic->category, $topic, Auth::user(), Input::all());
             $topic->setLastMessage($message);
+            $topic->indexInSearchEngine($update = true);
             $topic->category->setLastMessage($message);
 
-            return Redirect::action('\Lvlfr\Forums\Controller\TopicsController@moveToLast', array($topic->slug, $topic->id));
+            return Redirect::action('\Lvlfr\Forums\Controller\TopicsController@moveToLast', [$topic->slug, $topic->id]);
         }
 
         return Redirect::back()->withInput()->withErrors($validator->getErrors());
