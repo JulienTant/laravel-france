@@ -269,7 +269,7 @@ class Node_Container_Document extends Node_Container
                     $content .= $child->get_text(false);
 
                 return "<pre>" . htmlspecialchars($content, ENT_COMPAT | ENT_HTML401, 'UTF-8', true) . "</pre>";
-            }, BBCode::BLOCK_TAG),
+            }, BBCode::BLOCK_TAG, false, array(),  array(), BBCode::AUTO_DETECT_EXCLUDE_EMOTICON),
             new BBCode('php', function ($content, $attribs, $node) {
                 ob_start();
                 highlight_string($node->get_text());
