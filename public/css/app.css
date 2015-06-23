@@ -5,7 +5,7 @@
  Orange : #f0523f
  Grey : #443d3c
 */
-html, body {padding: 0;margin: 0; font-size: 1em; font-family: 'Open Sans', sans-serif;color:#808080; padding-bottom: 25px;min-height: 100%}
+html, body {padding: 0;margin: 0; font-size: 1em; font-family: 'Open Sans', sans-serif;color:#808080; ;min-height: 100%}
 
 h1 {font-weight: normal;}
 h2 {font-weight: normal;color: #f0523f;}
@@ -52,6 +52,15 @@ body > header ul ul:before{content: ' ';border-bottom: 10px solid #777;width: 0;
 body > header ul ul li {display: block;text-align: left;}
 body > header ul ul a {padding: 0.5em 6em 0.5em 1em;display: block;font-size: .9em;}
 body > header ul li.account {float:right}
+
+/* footer */
+body > footer {
+    clear: both;
+    background: #5B4C4A;
+    background: rgba(49, 42, 41, 0.9);
+    line-height: 44px;
+    color: white;
+}
 
 /* Orange sub-nav */
 .orangebox {background: #F0523F;float: left;width: 100%;padding-bottom: 1em;}

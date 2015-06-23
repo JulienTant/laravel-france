@@ -1,9 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
     <title>
         @yield('title')
     </title>
+
+    <meta name="author" content="Craftyx" />
 
     <link rel="stylesheet" href="/css/normalize.css">
     <link rel="stylesheet" href="/css/font-awesome.min.css">
@@ -67,7 +72,9 @@
     </div><!--/.container-->
     
     <footer>
-        @yield('footer')
+        <div class="container">
+            Développement et maintenance : <a href="http://craftyx.fr">Craftyx</a>
+        </div>
     </footer>
 </body>
 </html>
