@@ -1,4 +1,6 @@
 var elixir = require('laravel-elixir');
+require('laravel-elixir-stylus');
+var postStylus = require('poststylus');
 
 /*
  |--------------------------------------------------------------------------
@@ -12,5 +14,10 @@ var elixir = require('laravel-elixir');
  */
 
 elixir(function(mix) {
-    mix.sass('app.scss');
+    mix.stylus('app.styl', null, {
+        "include css": true,
+        use: [postStylus(['lost', 'postcss-position'])]
+    }).browserSync({
+        proxy: 'localhost:8000'
+    });
 });
