@@ -18,6 +18,6 @@ elixir(function(mix) {
         "include css": true,
         use: [postStylus(['lost', 'postcss-position'])]
     }).browserSync({
-        proxy: 'localhost:8000'
+        proxy: 'homestead.app'
     });
 });
