@@ -13,5 +13,6 @@
 
 Route::get('/', ['as' => 'forums.index', 'uses' => 'ForumsController@topics']);
 Route::get('c/{slug}', ['as' => 'forums.by-category', 'uses' => 'ForumsController@topics']);
+Route::get('search', ['as' => 'forums.search', 'uses' => 'ForumsController@search']);
 
 Route::get('/t/{categorySlug}/{topicSlug}', ['as' => 'forums.show-topic', 'uses' => 'ForumsController@topic']);

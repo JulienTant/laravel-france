@@ -14,6 +14,7 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         \LaravelFrance\Console\Commands\Inspire::class,
+        \LaravelFrance\Console\Commands\RebuildElasticSearchIndexes::class,
     ];
 
     /**

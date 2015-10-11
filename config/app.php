@@ -145,6 +145,9 @@ return [
         LaravelFrance\Providers\EventServiceProvider::class,
         LaravelFrance\Providers\RouteServiceProvider::class,
 
+
+        Fadion\Bouncy\BouncyServiceProvider::class,
+
     ],
 
     /*
