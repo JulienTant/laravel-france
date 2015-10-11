@@ -17,7 +17,10 @@
                     <div class="Forums__TopicList__Item__Content">
                         <h3 class="Forums__TopicList__Item__Subject">{{ $topic->title }}</h3>
                         <span class="Forums__CategoryLabel" style="background-color: {{ $topic->forumsCategory->background_color }}; color: {{ $topic->forumsCategory->font_color }}">{{ $topic->forumsCategory->name }}</span>
-                        <span class="Forums__TopicList__Item__Metas__Authoring">Dernier message : {{ str_random(rand(5, 10)) }} il y a X jours</span>
+                        <span class="Forums__TopicList__Item__Metas__Authoring">
+                            Dernier message : {{ $topic->lastMessage->user->username }}
+                            <span class="momentify" data-date="{{ $topic->lastMessage->created_at->format('Y-m-d H:i:s') }}"></span>
+                        </span>
                         <p class="Forums__TopicList__Item__Excerpt">
                             {{ str_limit('We track all of our issues on GitHub, so it\'d be really great if you could save us the trouble and create an issue there instead of starting a new discussion on this forum. save us the trouble and create an issue there instead of starting a new discussion on this forum', 200) }}
                         </p>

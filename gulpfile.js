@@ -14,10 +14,13 @@ var postStylus = require('poststylus');
  */
 
 elixir(function(mix) {
-    mix.stylus('app.styl', null, {
-        "include css": true,
-        use: [postStylus(['lost', 'postcss-position'])]
-    }).browserSync({
-        proxy: 'homestead.app'
-    });
+    mix
+        .stylus('app.styl', null, {
+            "include css": true,
+            use: [postStylus(['lost', 'postcss-position'])]
+        })
+        .browserify('app.js')
+        .browserSync({
+            proxy: 'homestead.app'
+        });
 });

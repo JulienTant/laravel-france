@@ -26,4 +26,9 @@ class ForumsTopic extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function lastMessage()
+    {
+        return $this->belongsTo(ForumsMessage::class, 'last_message_id');
+    }
 }

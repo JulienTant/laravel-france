@@ -560,6 +560,41 @@ body {
 .Forums__Content:nth-child(20n + 1){
     clear: left;
 }
+.Forums__Paginator {
+  margin-top: 2rem;
+}
+.Forums__Paginator ul {
+  padding: 0;
+  margin: 0;
+  text-align: center;
+}
+.Forums__Paginator li {
+  list-style: none;
+  display: inline-block;
+}
+.Forums__Paginator li a {
+  display: inline-block;
+  margin-bottom: 0;
+  text-align: center;
+  vertical-align: middle;
+  cursor: pointer;
+  white-space: nowrap;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  background: #f55247;
+  color: #fff;
+  padding: 0.3rem 1rem;
+  font-weight: bold;
+  text-decoration: none;
+}
+.Forums__Paginator li a:hover {
+  color: #fff;
+}
+.Forums__Paginator li.disabled {
+  display: none;
+}
 .Forums__Sidebar {
   margin-top: 2rem;
   width: calc(99.99% * 4/20 - (30px - 30px * 4/20));

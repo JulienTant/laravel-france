@@ -8,11 +8,13 @@
 
 <header class="SiteHeader">
     <div class="SiteHeader__Inner">
-        <h1 class="SiteHeader__Inner__SiteTitle">Laravel France</h1>
+        <a href="/">
+            <h1 class="SiteHeader__Inner__SiteTitle">Laravel France</h1>
+        </a>
 
         <nav class="SiteHeader__Inner__Nav">
             <ul class="SiteHeader__Inner__Nav__Links">
-                <li class="SiteHeader__Inner__Nav__Links__Link"><a href="#">Forums</a></li>
+                <li class="SiteHeader__Inner__Nav__Links__Link"><a href="{{ route('forums.index') }}">Forums</a></li>
                 <li class="SiteHeader__Inner__Nav__Links__Link"><a href="#">Discussion</a></li>
                 <li class="SiteHeader__Inner__Nav__Links__Link"><a href="#">Mon compte</a></li>
             </ul>
@@ -30,4 +32,6 @@
 
 
 </body>
+<script src="/js/app.js"></script>
+
 </html>
