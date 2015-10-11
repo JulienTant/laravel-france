@@ -1,0 +1,45 @@
+.Forums__MessageList {
+  margin 0;
+  padding 0;
+}
+
+.Forums__MessageList__Message {
+  list-style none;
+  lost-utility: clearfix;
+  padding: 1rem 0 3rem 0;
+  border-bottom 1px solid #ddd;
+}
+
+
+.Forums__MessageList__Message__Avatar {
+  lost-column: 11/100;
+}
+
+.Forums__MessageList__Message__Content {
+  lost-column: 89/100;
+}
+  
+.Forums__MessageList__Message__Content__Html {
+  margin-top: 0.8rem;
+
+  & a {
+    color: $orange;
+    text-decoration none;
+    border-bottom 1px solid lightgrey;
+    &:hover {
+      border-color: $orange;
+    }
+  }
+}
+
+.Forums__MessageList_Message__Content__Authoring {
+  font-size 0.8rem;
+}
+
+.Forums__MessageList_Message__Content__Authoring--Author {
+  font-size 1rem;
+  font-weight bold;
+  margin-right: 2rem;
+}
+
+

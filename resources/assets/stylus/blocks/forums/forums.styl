@@ -1,10 +1,23 @@
-.Forums {
-  margin-top: 2rem;
-  lost-center: $siteWidth;
-  lost-utility: clearfix;
+.Forums_ChosenCategory {
+  padding:3em;
+  lost-position: middle-center;
+  a {
+    color: white;
+  }
+}
+
+.Forums_TopicHeader {
+  padding:1.5em;
+  lost-position: middle-center;
+  a {
+    color: white;
+  }
+
+  text-align center;
 }
 
 .Forums__Content {
+  margin-top: 2rem;
   lost-offset: -1/20
   lost-column: 15/20
 }
@@ -13,4 +26,5 @@
 @import "./forums_sidebar"
 @import "./forums_categorylabel"
 @import "./forums_topiclist"
+@import "./forums_messagelist"
 @import './forums_searchbar'

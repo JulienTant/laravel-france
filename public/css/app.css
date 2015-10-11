@@ -435,6 +435,21 @@ html {
 body {
   font-size: 16px;
 }
+.Utility__Container {
+  *zoom: 1;
+  max-width: 1180px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.Utility__Container:before{
+    content: '';
+    display: table;
+}
+.Utility__Container:after{
+    content: '';
+    display: table;
+    clear: both;
+}
 .SiteHeader {
   background-color: #f55247;
   padding: 20px 0;
@@ -511,33 +526,23 @@ body {
 .SiteHeader__Inner__Nav__Links__Link > a:hover {
   text-decoration: underline;
 }
-.Forums {
-  margin-top: 2rem;
-  *zoom: 1;
-  max-width: 1180px;
-  margin-left: auto;
-  margin-right: auto;
-  *zoom: 1;
+.Forums_ChosenCategory {
+  padding: 3em;
+  lost-position: middle-center;
 }
-.Forums:before{
-    content: '';
-    display: table;
+.Forums_ChosenCategory a {
+  color: #fff;
 }
-.Forums:after{
-    content: '';
-    display: table;
-    clear: both;
+.Forums_TopicHeader {
+  padding: 1.5em;
+  lost-position: middle-center;
+  text-align: center;
 }
-.Forums:before{
-    content: '';
-    display: table;
-}
-.Forums:after{
-    content: '';
-    display: table;
-    clear: both;
+.Forums_TopicHeader a {
+  color: #fff;
 }
 .Forums__Content {
+  margin-top: 2rem;
   margin-left: calc(99.99% * (-1/20 * -1) - (30px - 30px * (-1/20 * -1)) + 30px) !important;
   width: calc(99.99% * 15/20 - (30px - 30px * 15/20));
 }
@@ -556,6 +561,7 @@ body {
     clear: left;
 }
 .Forums__Sidebar {
+  margin-top: 2rem;
   width: calc(99.99% * 4/20 - (30px - 30px * 4/20));
   padding: gutter(1);
 }
@@ -622,6 +628,7 @@ body {
   border: 1px solid #dcdcdc;
   border-radius: 4px;
   font-size: 0.8rem;
+  font-weight: bold;
 }
 .Forums__TopicList {
   margin: 0;
@@ -629,8 +636,8 @@ body {
 }
 .Forums__TopicList__Item {
   list-style: none;
-  padding: 0.8rem 1rem;
   *zoom: 1;
+  padding: 0.8rem 1rem;
 }
 .Forums__TopicList__Item:before{
     content: '';
@@ -643,6 +650,20 @@ body {
 }
 .Forums__TopicList__Item:hover {
   background: #eee;
+}
+.Forums__TopicList__Item__Link {
+  display: block;
+  color: #000;
+  *zoom: 1;
+}
+.Forums__TopicList__Item__Link:before{
+    content: '';
+    display: table;
+}
+.Forums__TopicList__Item__Link:after{
+    content: '';
+    display: table;
+    clear: both;
 }
 .Forums__TopicList__Item__Avatar {
   width: calc(99.99% * 11/100 - (30px - 30px * 11/100));
@@ -703,6 +724,78 @@ body {
 }
 .Forums__TopicList__Item__NbReplies:nth-child(100n + 1){
     clear: left;
+}
+.Forums__MessageList {
+  margin: 0;
+  padding: 0;
+}
+.Forums__MessageList__Message {
+  list-style: none;
+  *zoom: 1;
+  padding: 1rem 0 3rem 0;
+  border-bottom: 1px solid #ddd;
+}
+.Forums__MessageList__Message:before{
+    content: '';
+    display: table;
+}
+.Forums__MessageList__Message:after{
+    content: '';
+    display: table;
+    clear: both;
+}
+.Forums__MessageList__Message__Avatar {
+  width: calc(99.99% * 11/100 - (30px - 30px * 11/100));
+}
+.Forums__MessageList__Message__Avatar:nth-child(n){
+    float: left;
+    margin-right: 30px;
+    clear: none;
+}
+.Forums__MessageList__Message__Avatar:last-child{
+    margin-right: 0;
+}
+.Forums__MessageList__Message__Avatar:nth-child(100n){
+    margin-right: 0;
+}
+.Forums__MessageList__Message__Avatar:nth-child(100n + 1){
+    clear: left;
+}
+.Forums__MessageList__Message__Content {
+  width: calc(99.99% * 89/100 - (30px - 30px * 89/100));
+}
+.Forums__MessageList__Message__Content:nth-child(n){
+    float: left;
+    margin-right: 30px;
+    clear: none;
+}
+.Forums__MessageList__Message__Content:last-child{
+    margin-right: 0;
+}
+.Forums__MessageList__Message__Content:nth-child(100n){
+    margin-right: 0;
+}
+.Forums__MessageList__Message__Content:nth-child(100n + 1){
+    clear: left;
+}
+.Forums__MessageList__Message__Content__Html {
+  margin-top: 0.8rem;
+}
+.Forums__MessageList__Message__Content__Html a {
+  color: #f55247;
+  text-decoration: none;
+  border-bottom: 1px solid #d3d3d3;
+}
+.Forums__MessageList__Message__Content__Html a:hover {
+  border-color: #f55247;
+}
+.Forums__MessageList_Message__Content__Authoring {
+  font-size: 0.8rem;
+}
+.Forums__MessageList_Message__Content__Authoring--Author {
+  font-size: 1rem;
+  font-weight: bold;
+  margin-right: 2rem;
 }
 .Forums__Searchbar {
   margin-bottom: 1rem;
