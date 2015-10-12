@@ -15,7 +15,7 @@
         <nav class="SiteHeader__Inner__Nav">
             <ul class="SiteHeader__Inner__Nav__Links">
                 <li class="SiteHeader__Inner__Nav__Links__Link"><a href="{{ route('forums.index') }}">Forums</a></li>
-                <li class="SiteHeader__Inner__Nav__Links__Link"><a href="#">Discussion</a></li>
+                <li class="SiteHeader__Inner__Nav__Links__Link"><a href="{{ route('slack') }}">Discussion</a></li>
                 <li class="SiteHeader__Inner__Nav__Links__Link"><a href="#">Mon compte</a></li>
             </ul>
         </nav>
