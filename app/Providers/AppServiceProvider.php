@@ -16,12 +16,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        view()->composer('forums._sidebar', function(View $view) {
-            return $view->with(
-                'categories',
-                \LaravelFrance\ForumsCategory::orderBy('order', 'asc')->get()
-            );
-        });
     }
 
     /**

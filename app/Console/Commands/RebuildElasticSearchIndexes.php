@@ -42,8 +42,10 @@ class RebuildElasticSearchIndexes extends Command
         $client = app('elastic');
 
 
+        $this->info('Recreationg the index');
         $this->rebuildIndex($client);
 
+        $this->info('Indexing Forums Topics');
         $this->handleForumsTopic();
     }
 

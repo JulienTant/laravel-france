@@ -21,8 +21,8 @@ class CreateForumsTopicsTable extends Migration
             $table->string('title');
             $table->string('slug');
             $table->boolean('solved')->default(0);
-            $table->integer('solved_by')->nullable();
-            $table->integer('last_message_id')->nullable();
+            $table->integer('solved_by')->unsigned()->nullable();
+            $table->integer('last_message_id')->unsigned()->nullable();
 
             $table->timestamps();
 

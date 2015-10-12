@@ -55,7 +55,7 @@ class ForumsTopic extends Model
         return [
             'id' => $this->id,
             'title' => $this->title,
-            'content' => $firstMessage ? $firstMessage->html : '',
+            'content' => $firstMessage ? $firstMessage->markdown : '',
             'forums_category_id' => $this->forums_category_id,
             'created_at' => $this->created_at->format('Y-m-d H:i:s')
         ];

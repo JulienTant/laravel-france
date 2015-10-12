@@ -144,6 +144,8 @@ return [
         LaravelFrance\Providers\AuthServiceProvider::class,
         LaravelFrance\Providers\EventServiceProvider::class,
         LaravelFrance\Providers\RouteServiceProvider::class,
+        LaravelFrance\Providers\MarkdownServiceProvider::class,
+        LaravelFrance\Providers\ViewComposerServiceProvider::class,
 
 
         Fadion\Bouncy\BouncyServiceProvider::class,

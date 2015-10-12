@@ -30,10 +30,10 @@
             <div class="Forums__MessageList__Message__Content">
                 <span class="Forums__MessageList_Message__Content__Authoring">
                     <span class="Forums__MessageList_Message__Content__Authoring--Author">{{ $message->user->username }}</span>
-                    il y a X jours
+                    <span class="momentify" data-date="{{ $message->created_at->format('Y-m-d H:i:s') }}">{{ $message->created_at->format('Y-m-d H:i:s') }}</span>
                 </span>
                 <div class="Forums__MessageList__Message__Content__Html">
-                    {!! $message->html !!}
+                    @markdown($message->markdown)
                 </div>
             </div>
         </li>

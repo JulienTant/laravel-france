@@ -1,4 +1,5 @@
 @import url("http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,400,700,200italic,400italic,700italic");
+@import url("https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,400italic,700,700italic");
 /*! normalize.css v3.0.2 | MIT License | git.io/normalize */
 
 /**
@@ -823,6 +824,20 @@ body {
 }
 .Forums__MessageList__Message__Content__Html a:hover {
   border-color: #f55247;
+}
+.Forums__MessageList__Message__Content__Html blockquote {
+  background-color: #fde4e2;
+  margin: 0;
+  padding: 0.8rem 0 0.8rem 2rem;
+  border: 1px solid #f9aea9;
+}
+.Forums__MessageList__Message__Content__Html blockquote p {
+  margin: 0;
+  padding: 0;
+}
+.Forums__MessageList__Message__Content__Html pre > code {
+  font-family: 'Ubuntu Mono';
+  padding: 1rem;
 }
 .Forums__MessageList_Message__Content__Authoring {
   font-size: 0.8rem;
