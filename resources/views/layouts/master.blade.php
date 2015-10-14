@@ -16,7 +16,14 @@
             <ul class="SiteHeader__Inner__Nav__Links">
                 <li class="SiteHeader__Inner__Nav__Links__Link"><a href="{{ route('forums.index') }}">Forums</a></li>
                 <li class="SiteHeader__Inner__Nav__Links__Link"><a href="{{ route('slack') }}">Discussion</a></li>
-                <li class="SiteHeader__Inner__Nav__Links__Link"><a href="#">Mon compte</a></li>
+                <li class="SiteHeader__Inner__Nav__Links__Link">
+                    <a href="#">Mon compte</a>
+                    <ul class="SiteHeader__Inner__Nav__Links__Link__Sub">
+                        <li class="SiteHeader__Inner__Nav__Links__Link__Sub__Link"><a href="{{ route('forums.index') }}">Forums</a></li>
+                        <li class="SiteHeader__Inner__Nav__Links__Link__Sub__Link"><a href="{{ route('slack') }}">Discussion</a></li>
+                        <li class="SiteHeader__Inner__Nav__Links__Link__Sub__Link"><a href="#">Mon compte</a></li>
+                    </ul>
+                </li>
             </ul>
         </nav>
 

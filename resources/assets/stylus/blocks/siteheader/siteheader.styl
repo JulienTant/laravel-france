@@ -1,6 +1,6 @@
 .SiteHeader {
   background-color: $orange;
-  padding: 20px 0;
+  border-bottom 1px solid grey;
 }
 
 .SiteHeader__Inner {
@@ -11,17 +11,59 @@
   lost-column: 3 / 12
   margin 0;
   color: $white;
+  padding: 20px 0;
 }
 
 .SiteHeader__Inner__Nav {
   lost-column: 9 / 12
-  lost-align:middle-right;
+}
 
+.SiteHeader__Inner__Nav__Links {
+  margin: 0;
+  float right;
 }
 
 .SiteHeader__Inner__Nav__Links__Link {
   display: inline-block;
-  padding: 0 1rem 0 1rem;
+  padding: 2rem 1rem;
+  position relative;
+
+  & > a {
+    padding: 2rem 0px;
+    color: white;
+    text-decoration none;
+    &:hover {
+      text-decoration underline;
+    }
+  }
+}
+
+.SiteHeader__Inner__Nav__Links__Link__Sub {
+  padding: .3rem 1rem 1em 1em;
+  position: absolute;
+  top: 84px;
+  left: 0;
+  width: 150px;
+  box-shadow: none;
+  display: none;
+  opacity: 0;
+  visibility: hidden;
+  background: $orange;
+  border: 1px solid grey;
+  border-top: 0;
+
+  .SiteHeader__Inner__Nav__Links .SiteHeader__Inner__Nav__Links__Link:hover & {
+    display: block;
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+.SiteHeader__Inner__Nav__Links__Link__Sub__Link {
+  background: $orange;
+  display: block;
+  color: #fff;
+  text-shadow: 0 -1px 0 #000;
   & > a {
     color: white;
     text-decoration none;
@@ -29,4 +71,5 @@
       text-decoration underline;
     }
   }
+
 }

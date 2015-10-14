@@ -13,7 +13,8 @@
     "fadion/bouncy": "dev-l5",
     "doctrine/dbal": "~2.3",
     "league/html-to-markdown": "^4.1@dev",
-    "league/commonmark": "^0.11"
+    "league/commonmark": "^0.11",
+    "laravel/socialite": "^3.0@dev"
   },
   "require-dev": {
     "fzaninotto/faker": "~1.4",

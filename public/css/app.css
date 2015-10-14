@@ -453,7 +453,7 @@ body {
 }
 .SiteHeader {
   background-color: #f55247;
-  padding: 20px 0;
+  border-bottom: 1px solid #808080;
 }
 .SiteHeader__Inner {
   *zoom: 1;
@@ -474,6 +474,7 @@ body {
   width: calc(99.99% * 3/12 - (30px - 30px * 3/12));
   margin: 0;
   color: #fdfdfd;
+  padding: 20px 0;
 }
 .SiteHeader__Inner__SiteTitle:nth-child(n){
     float: left;
@@ -491,7 +492,6 @@ body {
 }
 .SiteHeader__Inner__Nav {
   width: calc(99.99% * 9/12 - (30px - 30px * 9/12));
-  position: relative;
 }
 .SiteHeader__Inner__Nav:nth-child(n){
     float: left;
@@ -507,24 +507,53 @@ body {
 .SiteHeader__Inner__Nav:nth-child(12n + 1){
     clear: left;
 }
-.SiteHeader__Inner__Nav > *{
-    position: absolute;
-    top: 50%;
-    right: 0;
-    bottom: auto;
-    left: auto;
-    -webkit-transform: translate(0, -50%);
-    transform: translate(0, -50%);
+.SiteHeader__Inner__Nav__Links {
+  margin: 0;
+  float: right;
 }
 .SiteHeader__Inner__Nav__Links__Link {
   display: inline-block;
-  padding: 0 1rem 0 1rem;
+  padding: 2rem 1rem;
+  position: relative;
 }
 .SiteHeader__Inner__Nav__Links__Link > a {
+  padding: 2rem 0px;
   color: #fff;
   text-decoration: none;
 }
 .SiteHeader__Inner__Nav__Links__Link > a:hover {
+  text-decoration: underline;
+}
+.SiteHeader__Inner__Nav__Links__Link__Sub {
+  padding: 0.3rem 1rem 1em 1em;
+  position: absolute;
+  top: 84px;
+  left: 0;
+  width: 150px;
+  box-shadow: none;
+  display: none;
+  opacity: 0;
+  visibility: hidden;
+  background: #f55247;
+  border: 1px solid #808080;
+  border-top: 0;
+}
+.SiteHeader__Inner__Nav__Links .SiteHeader__Inner__Nav__Links__Link:hover .SiteHeader__Inner__Nav__Links__Link__Sub {
+  display: block;
+  opacity: 1;
+  visibility: visible;
+}
+.SiteHeader__Inner__Nav__Links__Link__Sub__Link {
+  background: #f55247;
+  display: block;
+  color: #fff;
+  text-shadow: 0 -1px 0 #000;
+}
+.SiteHeader__Inner__Nav__Links__Link__Sub__Link > a {
+  color: #fff;
+  text-decoration: none;
+}
+.SiteHeader__Inner__Nav__Links__Link__Sub__Link > a:hover {
   text-decoration: underline;
 }
 .Forums_ChosenCategory {
