@@ -32,13 +32,11 @@ return [
     'google' => array(
         'client_id'     => env('GOOGLE_CLIENT_ID'),
         'client_secret' => env('GOOGLE_CLIENT_SECRET'),
-        'scope' => array('userinfo_email', 'userinfo_profile'),
     ),
 
     'github' => array(
         'client_id'     => env('GITHUB_CLIENT_ID'),
         'client_secret' => env('GITHUB_CLIENT_SECRET'),
-        'scope'  => array('user:email'),
     ),
 
     'twitter' => array(

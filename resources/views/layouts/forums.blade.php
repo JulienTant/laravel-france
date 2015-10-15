@@ -1,5 +1,7 @@
 @extends('layouts.master')
 
+@section('page_class', 'PageForums')
+
 @section('content')
 
 <div class="Forums">
