@@ -1,9 +1,9 @@
-"use strict";
+export default function (document, moment) {
 
-
-module.exports = function (moment) {
     var momentifys = document.getElementsByClassName('momentify');
+
     if (momentifys.length) {
+
         var momentifyAllTheThings = function () {
             for (var momentifyMe in momentifys) {
                 if (momentifys.hasOwnProperty(momentifyMe)) {
@@ -11,7 +11,8 @@ module.exports = function (moment) {
                 }
             }
         };
+
         momentifyAllTheThings();
         setInterval(momentifyAllTheThings, 10000);
     }
-};
+}

@@ -4,7 +4,7 @@
     <title>Laravel</title>
     <link rel="stylesheet" href="/css/app.css">
 </head>
-<body class="@yield('page_class')">
+<body class="@yield('page_class')" id="app">
 
 <header class="SiteHeader">
     <div class="SiteHeader__Inner">
@@ -49,8 +49,7 @@
     </div>
 </footer>
 
-
+@include('vendor.sweet.alert')
 </body>
-<script src="/js/app.js"></script>
-@include('sweet::alert')
+<script src="/js/main.js"></script>
 </html>

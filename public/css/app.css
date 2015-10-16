@@ -843,6 +843,9 @@ body {
 .Forums__MessageList__Message__Content:nth-child(100n + 1){
     clear: left;
 }
+.Forums__MessageList__Message__Content .hljs {
+  padding: 1rem;
+}
 .Forums__MessageList__Message__Content__Html {
   margin-top: 0.8rem;
 }
@@ -909,6 +912,47 @@ body {
   text-decoration: none;
   font-weight: bold;
   font-size: 1.1rem;
+}
+.modal-mask {
+  position: fixed;
+  z-index: 9998;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.3);
+  display: table;
+  transition: opacity 0.3s ease;
+}
+.modal-wrapper {
+  display: table-cell;
+  vertical-align: bottom;
+}
+.modal-container {
+  width: 826px;
+  margin: 0 auto;
+  padding: 1.7rem 2.2rem;
+  background-color: #fdfdfd;
+  transition: all 0.3s ease;
+}
+.modal-header h3 {
+  margin-top: 0;
+  color: #f55247;
+}
+.modal-body {
+  margin: 1.3rem 0;
+}
+.modal-footer {
+  text-align: right;
+}
+.modal-enter,
+.modal-leave {
+  opacity: 0;
+}
+.modal-enter .modal-container,
+.modal-leave .modal-container {
+  -webkit-transform: scale(1.1);
+  transform: scale(1.1);
 }
 .SiteFooter {
   background-color: #f55247;

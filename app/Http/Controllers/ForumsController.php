@@ -20,7 +20,7 @@ class ForumsController extends Controller
 
         $topicsQuery = \LaravelFrance\ForumsTopic::join('forums_messages', 'last_message_id', '=', 'forums_messages.id')
             ->select('forums_topics.*')
-            ->with('user', 'forumsCategory', 'lastMessage', 'lastMessage.user')
+            ->with('user', 'forumsCategory', 'lastMessage', 'lastMessage.user',  'firstMessage')
             ->orderBy('forums_messages.created_at', 'DESC')
             ->orderBy('id', 'DESC');
         if ($chosenCategory instanceof ForumsCategory) {

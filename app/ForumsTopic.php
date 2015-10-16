@@ -20,6 +20,11 @@ class ForumsTopic extends Model
         return $this->hasMany(ForumsMessage::class);
     }
 
+    public function firstMessage()
+    {
+        return $this->hasOne(ForumsMessage::class)->orderBy('created_at', 'ASC');
+    }
+
     public function forumsCategory()
     {
         return $this->belongsTo(ForumsCategory::class);

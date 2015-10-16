@@ -1,14 +1,17 @@
-"use strict";
+import Alert from './components/alert.vue'
+import RelativeDate from './components/relative-date.vue'
+import HighlightedCode from './components/highlighted-code.vue'
+import NewTopic from './components/new-topic.vue'
 
 
-var moment = require('./vendor/moment-with-locales');
-moment.locale('fr');
-
-
-require('./momentify')(moment);
-
-var hljs = require('highlight.js');
-hljs.initHighlightingOnLoad();
-
-
-var swal = require('sweetalert');
+export default {
+    data: {
+        showModal: false
+    },
+    components: {
+        'alert': Alert,
+        'relative-date': RelativeDate,
+        'highlighted-code': HighlightedCode,
+        'new-topic': NewTopic
+    }
+}

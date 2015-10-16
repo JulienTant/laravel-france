@@ -1,5 +1,10 @@
 <aside class="Forums__Sidebar">
-    <a href="#" class="Button Button_NewTopic">Créer un sujet</a>
+
+    @if(Auth::user())
+        <new-topic>Créer un sujet</new-topic>
+    @else
+        <a href="#" class="Button Button_NewTopic">Se connecter</a>
+    @endif
 
     <ul class="Forums__Sidebar__CategoriesList">
         <li class="Forums__Sidebar__CategoriesList__Item Forums__Sidebar__CategoriesList__Item--All">

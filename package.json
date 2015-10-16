@@ -1,13 +1,18 @@
 {
   "private": true,
   "devDependencies": {
+    "babel": "^5.8.23",
     "gulp": "^3.8.8",
+    "highlight.js": "^8.8.0",
+    "insert-css": "^0.2.0",
     "laravel-elixir": "^3.0.0",
     "laravel-elixir-stylus": "^1.0.1",
+    "moment": "^2.10.6",
     "postcss-position": "^0.4.0",
-    "poststylus": "^0.2.1"
+    "poststylus": "^0.2.1",
+    "sweetalert": "^1.1.0",
+    "vue": "github:yyx990803/vue#dev",
+    "vueify": "^1.1.5"
   },
-  "dependencies": {
-    "highlight.js": "^8.8.0"
-  }
+  "dependencies": {}
 }

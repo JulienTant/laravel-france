@@ -9,7 +9,8 @@ namespace LaravelFrance\Providers;
 
 
 use Illuminate\Support\ServiceProvider;
-use League\CommonMark\CommonMarkConverter;
+use LaravelFrance\CommonMark\CommonMarkConverter;
+
 
 class MarkdownServiceProvider extends ServiceProvider
 {

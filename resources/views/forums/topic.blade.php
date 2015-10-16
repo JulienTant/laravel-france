@@ -30,7 +30,7 @@
             <div class="Forums__MessageList__Message__Content">
                 <span class="Forums__MessageList_Message__Content__Authoring">
                     <span class="Forums__MessageList_Message__Content__Authoring--Author">{{ $message->user->username }}</span>
-                    <span class="momentify" data-date="{{ $message->created_at->format('Y-m-d H:i:s') }}">{{ $message->created_at->format('Y-m-d H:i:s') }}</span>
+                    <relative-date date="{{ $message->created_at->format('Y-m-d H:i:s') }}" />
                 </span>
                 <div class="Forums__MessageList__Message__Content__Html">
                     @markdown($message->markdown)

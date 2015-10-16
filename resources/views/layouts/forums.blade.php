@@ -20,16 +20,16 @@
     @show
 
     <div class="Utility__Container">
-
         @include('forums._sidebar')
-
         <section class="Forums__Content">
-
             @yield('forums_content')
-
         </section>
+
+
+
     </div>
 </div>
 
 
 @endsection
+

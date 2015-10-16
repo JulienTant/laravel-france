@@ -18,9 +18,11 @@ elixir(function(mix) {
         .stylus('app.styl', null, {
             "include css": true,
             use: [postStylus(['lost', 'postcss-position'])]
-        })
-        .browserify('app.js')
-        .browserSync({
+        });
+        mix.browserify('main.js');
+        mix.browserSync({
             proxy: 'homestead.app'
         });
 });
+
+elixir.Task.find("browserify").watch("resources/assets/**/*.vue");
