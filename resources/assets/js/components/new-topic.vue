@@ -44,6 +44,7 @@
 
 <script lang="es6" type="text/ecmascript-6">
     import Modal from './modal.vue'
+    import Laroute from '../laroute'
 
     export default {
         components: {
@@ -53,7 +54,7 @@
             submitForm(newTopic, event) {
                 event.preventDefault();
 
-                this.$http.post('test', newTopic)
+                this.$http.post(Laroute.route('api.forums.store'), newTopic)
                         .success((data, status, request) => {
                             console.log(status);
                         })

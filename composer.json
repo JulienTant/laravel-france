@@ -15,7 +15,8 @@
     "league/html-to-markdown": "^4.1@dev",
     "league/commonmark": "^0.11",
     "laravel/socialite": "^3.0@dev",
-    "uxweb/sweet-alert": "~1.1"
+    "uxweb/sweet-alert": "~1.1",
+    "lord/laroute": "^2"
   },
   "require-dev": {
     "fzaninotto/faker": "~1.4",

@@ -11,19 +11,24 @@
 |
 */
 
-Route::get('/', ['as' => 'forums.index', 'uses' => 'ForumsController@topics']);
+get('/', ['as' => 'forums.index', 'uses' => 'ForumsController@topics']);
 
-Route::get('c/{slug}', ['as' => 'forums.by-category', 'uses' => 'ForumsController@topics']);
-Route::get('search', ['as' => 'forums.search', 'uses' => 'ForumsController@search']);
-Route::get('/t/{categorySlug}/{topicSlug}', ['as' => 'forums.show-topic', 'uses' => 'ForumsController@topic']);
+get('c/{slug}', ['as' => 'forums.by-category', 'uses' => 'ForumsController@topics']);
+get('search', ['as' => 'forums.search', 'uses' => 'ForumsController@search']);
+get('/t/{categorySlug}/{topicSlug}', ['as' => 'forums.show-topic', 'uses' => 'ForumsController@topic']);
 
-Route::get('socialite/{driver}', ['as' => 'socialite.login', 'uses' => 'SocialiteController@redirectToProvider'])
+get('socialite/{driver}', ['as' => 'socialite.login', 'uses' => 'SocialiteController@redirectToProvider'])
     ->where('driver', 'google|github|twitter');
-Route::get('socialite/{driver}/callback', ['as' => 'socialite.callback', 'uses' => 'SocialiteController@handleProviderCallback'])
+get('socialite/{driver}/callback', ['as' => 'socialite.callback', 'uses' => 'SocialiteController@handleProviderCallback'])
     ->where('driver', 'google|github|twitter');
-Route::get('logout', ['as' => 'logout', 'uses' => 'SocialiteController@logout']);
+get('logout', ['as' => 'logout', 'uses' => 'SocialiteController@logout']);
 
 
-Route::get('slack', ['as' => 'slack', 'uses' => 'StaticController@slack']);
+get('slack', ['as' => 'slack', 'uses' => 'StaticController@slack']);
+get('contact', ['as' => 'contact', 'uses' => 'ContactController@index']);
 
-Route::get('contact', ['as' => 'contact', 'uses' => 'ContactController@index']);
+
+/** @var \Illuminate\Routing\Router $router */
+$router->group(['laroute' => true, 'namespace' => 'Api', 'prefix' => 'api'], function () {
+    resource('forums', 'ForumsController', ['only' => ['store', 'update', 'destroy']]);
+});

@@ -149,9 +149,9 @@ return [
 
 
         Fadion\Bouncy\BouncyServiceProvider::class,
-        \Laravel\Socialite\SocialiteServiceProvider::class,
-        \UxWeb\SweetAlert\SweetAlertServiceProvider::class,
-
+        Laravel\Socialite\SocialiteServiceProvider::class,
+        UxWeb\SweetAlert\SweetAlertServiceProvider::class,
+        Lord\Laroute\LarouteServiceProvider::class,
     ],
 
     /*

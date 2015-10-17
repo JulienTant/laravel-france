@@ -26,6 +26,7 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $routeMiddleware = [
+        'local' => \LaravelFrance\Http\Middleware\LocalEnvironment::class,
         'auth' => \LaravelFrance\Http\Middleware\Authenticate::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'guest' => \LaravelFrance\Http\Middleware\RedirectIfAuthenticated::class,

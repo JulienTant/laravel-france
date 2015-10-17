@@ -27826,6 +27826,10 @@ var _modalVue = require('./modal.vue');
 
 var _modalVue2 = _interopRequireDefault(_modalVue);
 
+var _laroute = require('../laroute');
+
+var _laroute2 = _interopRequireDefault(_laroute);
+
 exports['default'] = {
     components: {
         Modal: _modalVue2['default']
@@ -27834,7 +27838,7 @@ exports['default'] = {
         submitForm: function submitForm(newTopic, event) {
             event.preventDefault();
 
-            this.$http.post('test', newTopic).success(function (data, status, request) {
+            this.$http.post(_laroute2['default'].route('api.forums.store'), newTopic).success(function (data, status, request) {
                 console.log(status);
             }).error(function (data, status, request) {
                 console.log(status);
@@ -27874,7 +27878,7 @@ exports['default'] = {
 module.exports = exports['default'];
 ;(typeof module.exports === "function"? module.exports.options: module.exports).template = __vue_template__;
 
-},{"./modal.vue":221}],223:[function(require,module,exports){
+},{"../laroute":224,"./modal.vue":221}],223:[function(require,module,exports){
 var __vue_template__ = "<span>{{ result }}</span>";
 'use strict';
 
@@ -27916,6 +27920,181 @@ module.exports = exports['default'];
 ;(typeof module.exports === "function"? module.exports.options: module.exports).template = __vue_template__;
 
 },{"moment":206,"moment/locale/fr":205}],224:[function(require,module,exports){
+"use strict";
+
+(function () {
+
+    var laroute = (function () {
+
+        var routes = {
+
+            absolute: false,
+            rootUrl: 'http://localhost',
+            routes: [{ "host": null, "methods": ["POST"], "uri": "api\/forums", "name": "api.forums.store", "action": "Api\ForumsController@store" }, { "host": null, "methods": ["PUT"], "uri": "api\/forums\/{forums}", "name": "api.forums.update", "action": "Api\ForumsController@update" }, { "host": null, "methods": ["PATCH"], "uri": "api\/forums\/{forums}", "name": null, "action": "Api\ForumsController@update" }, { "host": null, "methods": ["DELETE"], "uri": "api\/forums\/{forums}", "name": "api.forums.destroy", "action": "Api\ForumsController@destroy" }],
+
+            route: function route(name, parameters, _route) {
+                _route = _route || this.getByName(name);
+
+                if (!_route) {
+                    return undefined;
+                }
+
+                return this.toRoute(_route, parameters);
+            },
+
+            url: function url(_url, parameters) {
+                parameters = parameters || [];
+
+                var uri = _url + '/' + parameters.join('/');
+
+                return this.getCorrectUrl(uri);
+            },
+
+            toRoute: function toRoute(route, parameters) {
+                var uri = this.replaceNamedParameters(route.uri, parameters);
+                var qs = this.getRouteQueryString(parameters);
+
+                return this.getCorrectUrl(uri + qs);
+            },
+
+            replaceNamedParameters: function replaceNamedParameters(uri, parameters) {
+                uri = uri.replace(/\{(.*?)\??\}/g, function (match, key) {
+                    if (parameters.hasOwnProperty(key)) {
+                        var value = parameters[key];
+                        delete parameters[key];
+                        return value;
+                    } else {
+                        return match;
+                    }
+                });
+
+                // Strip out any optional parameters that were not given
+                uri = uri.replace(/\/\{.*?\?\}/g, '');
+
+                return uri;
+            },
+
+            getRouteQueryString: function getRouteQueryString(parameters) {
+                var qs = [];
+                for (var key in parameters) {
+                    if (parameters.hasOwnProperty(key)) {
+                        qs.push(key + '=' + parameters[key]);
+                    }
+                }
+
+                if (qs.length < 1) {
+                    return '';
+                }
+
+                return '?' + qs.join('&');
+            },
+
+            getByName: function getByName(name) {
+                for (var key in this.routes) {
+                    if (this.routes.hasOwnProperty(key) && this.routes[key].name === name) {
+                        return this.routes[key];
+                    }
+                }
+            },
+
+            getByAction: function getByAction(action) {
+                for (var key in this.routes) {
+                    if (this.routes.hasOwnProperty(key) && this.routes[key].action === action) {
+                        return this.routes[key];
+                    }
+                }
+            },
+
+            getCorrectUrl: function getCorrectUrl(uri) {
+                var url = '/' + uri.replace(/^\/?/, '');
+
+                if (!this.absolute) return url;
+
+                return this.rootUrl.replace('/\/?$/', '') + url;
+            }
+        };
+
+        var getLinkAttributes = function getLinkAttributes(attributes) {
+            if (!attributes) {
+                return '';
+            }
+
+            var attrs = [];
+            for (var key in attributes) {
+                if (attributes.hasOwnProperty(key)) {
+                    attrs.push(key + '="' + attributes[key] + '"');
+                }
+            }
+
+            return attrs.join(' ');
+        };
+
+        var getHtmlLink = function getHtmlLink(url, title, attributes) {
+            title = title || url;
+            attributes = getLinkAttributes(attributes);
+
+            return '<a href="' + url + '" ' + attributes + '>' + title + '</a>';
+        };
+
+        return {
+            // Generate a url for a given controller action.
+            // laroute.action('HomeController@getIndex', [params = {}])
+            action: function action(name, parameters) {
+                parameters = parameters || {};
+
+                return routes.route(name, parameters, routes.getByAction(name));
+            },
+
+            // Generate a url for a given named route.
+            // laroute.route('routeName', [params = {}])
+            route: function route(_route2, parameters) {
+                parameters = parameters || {};
+
+                return routes.route(_route2, parameters);
+            },
+
+            // Generate a fully qualified URL to the given path.
+            // laroute.route('url', [params = {}])
+            url: function url(route, parameters) {
+                parameters = parameters || {};
+
+                return routes.url(route, parameters);
+            },
+
+            // Generate a html link to the given url.
+            // laroute.link_to('foo/bar', [title = url], [attributes = {}])
+            link_to: function link_to(url, title, attributes) {
+                url = this.url(url);
+
+                return getHtmlLink(url, title, attributes);
+            },
+
+            // Generate a html link to the given route.
+            // laroute.link_to_route('route.name', [title=url], [parameters = {}], [attributes = {}])
+            link_to_route: function link_to_route(route, title, parameters, attributes) {
+                var url = this.route(route, parameters);
+
+                return getHtmlLink(url, title, attributes);
+            },
+
+            // Generate a html link to the given controller action.
+            // laroute.link_to_action('HomeController@getIndex', [title=url], [parameters = {}], [attributes = {}])
+            link_to_action: function link_to_action(action, title, parameters, attributes) {
+                var url = this.action(action, parameters);
+
+                return getHtmlLink(url, title, attributes);
+            }
+
+        };
+    }).call(this);
+
+    /**
+     * Expose the class via CommonJSt
+     */
+    module.exports = laroute;
+}).call(undefined);
+
+},{}],225:[function(require,module,exports){
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -27933,8 +28112,8 @@ var _app = require('./app');
 var _app2 = _interopRequireDefault(_app);
 
 _Vue2['default'].use(_vueResource2['default']);
-_Vue2['default'].http.headers.common['X-CSRF-TOKEN'] = window.document.querySelector('meta#token').value;
+_Vue2['default'].http.headers.common['X-CSRF-TOKEN'] = window.document.querySelector('meta#token').getAttribute('value');
 
 new _Vue2['default'](_app2['default']).$mount('#app');
 
-},{"./app":217,"Vue":66,"vue-resource":210}]},{},[224]);
+},{"./app":217,"Vue":66,"vue-resource":210}]},{},[225]);
