@@ -29,12 +29,12 @@ class OAuth extends Model
     }
 
 
-    public function scopeTwitter()
+    public function scopeTwitter($query)
     {
         return $query->whereProvider('Twitter');
     }
 
-    public function scopeGithub()
+    public function scopeGithub($query)
     {
         return $query->whereProvider('Github');
     }

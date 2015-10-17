@@ -1,0 +1,31 @@
+.Modal--NewTopic {
+
+  .Modal__Wrapper {
+    vertical-align bottom;
+    }
+
+    .Form__Row--Category {
+        lost-utility: clearfix;
+
+        input[type=radio] {
+            width: 0;
+            height: 0;
+            display: none;
+        }
+
+        input[type=radio] + label {
+            padding: .5rem 1rem;
+            background: #bbb;
+            color: black;
+            display inline-block;
+            margin .5rem .5rem;
+        }
+
+        input[type=radio]:checked + label {
+            color: white;
+            background: orangered;
+        }
+    }
+
+
+}

@@ -4,8 +4,10 @@ import swal from 'sweetalert'
 export default {
     props: {
         config: {
-            type: String,
-            default: () => "{title:''}"
+          twoWay: false,
+            validator (value) {
+                return typeof JSON.parse(value) == 'object'
+            }
         }
     },
     ready() {

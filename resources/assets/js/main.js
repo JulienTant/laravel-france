@@ -1,6 +1,7 @@
 import Vue from 'Vue'
-Vue.config.strict = true;
+import VueResource from 'vue-resource'
+Vue.use(VueResource);
+Vue.http.headers.common['X-CSRF-TOKEN'] = window.document.querySelector('meta#token').value;
 
 import app from './app'
-
 new Vue(app).$mount('#app');

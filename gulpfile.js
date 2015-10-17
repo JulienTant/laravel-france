@@ -24,5 +24,3 @@ elixir(function(mix) {
             proxy: 'homestead.app'
         });
 });
-
-elixir.Task.find("browserify").watch("resources/assets/**/*.vue");

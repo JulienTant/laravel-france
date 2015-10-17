@@ -40,16 +40,13 @@ class ForumsController extends Controller
                     'query' => [
                         'multi_match' => [
                             'query' => $request->get('q'),
-                            'fields' => ["title", "content"]
+                            'fields' => ["title^2", "content"]
                         ],
                     ],
                 ],
             ],
             'sort' => [
                 '_score' => [
-                    'order' => 'desc'
-                ],
-                'created_at' => [
                     'order' => 'desc'
                 ]
             ]
@@ -63,14 +60,15 @@ class ForumsController extends Controller
 
         $ids = ForumsTopic::search($searchArray)->toBase()->lists('id');
 
-        $topics = ForumsTopic::with('user', 'forumsCategory', 'lastMessage', 'lastMessage.user')->findMany($ids);
+        $topics = ForumsTopic::with('user', 'forumsCategory', 'lastMessage', 'lastMessage.user',  'firstMessage')->findMany($ids);
 
         $sortedTopics = collect();
         foreach($ids as $id) {
             $sortedTopics->push($topics->find($id));
         }
 
-        return view('forums.search', compact('topics'));
+
+        return view('forums.search', ['topics' => $sortedTopics]);
 
     }
 

@@ -1,0 +1,27 @@
+.Form__Row {
+  margin-top 2rem;
+}
+
+.Form__Row__Label {
+  height 2rem;
+  display block
+  font-weight bold;
+}
+
+.Form__Row__Control {
+  height 2rem;
+  width 100%
+  padding: 5px 10px;
+
+  &:not([type=file]) {
+    border 1px solid $black;
+  }
+
+  textarea& {
+    min-height 10rem;
+  }
+}
+
+.Form__Row--Buttons {
+  text-align right;
+}

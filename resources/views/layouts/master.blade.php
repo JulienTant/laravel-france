@@ -2,6 +2,7 @@
 <html>
 <head>
     <title>Laravel</title>
+    <meta id="token" name="token" value="{{ csrf_token() }}" />
     <link rel="stylesheet" href="/css/app.css">
 </head>
 <body class="@yield('page_class')" id="app">
@@ -24,12 +25,7 @@
                             <li class="SiteHeader__Inner__Nav__Links__Link__Sub__Link"><a href="{{ route('logout') }}">Déconnexion</a></li>
                         </ul>
                     @else
-                        <a href="#">Connexion</a>
-                        <ul class="SiteHeader__Inner__Nav__Links__Link__Sub">
-                            <li class="SiteHeader__Inner__Nav__Links__Link__Sub__Link"><a href="{{ route('socialite.login', ['google']) }}">Google</a></li>
-                            <li class="SiteHeader__Inner__Nav__Links__Link__Sub__Link"><a href="{{ route('socialite.login', ['github']) }}">Github</a></li>
-                            <li class="SiteHeader__Inner__Nav__Links__Link__Sub__Link"><a href="{{ route('socialite.login', ['twitter']) }}">Twitter</a></li>
-                        </ul>
+                        <a href="javascript:void()" @click="showLoginBox = true">Connexion</a>
                     @endif
                 </li>
             </ul>
@@ -41,6 +37,8 @@
 
 @yield('content')
 
+
+
 <footer class="SiteFooter">
     <div class="Utility__Container">
         <div class="SiteFooter__Inner">
@@ -49,6 +47,10 @@
     </div>
 </footer>
 
+
+@if(!Auth::user())
+    <login-box :show-modal.sync="showLoginBox"></login-box>
+@endif
 @include('vendor.sweet.alert')
 </body>
 <script src="/js/main.js"></script>

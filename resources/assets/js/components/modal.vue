@@ -1,20 +1,20 @@
 <template>
-    <div class="modal-mask" v-show="show" transition="modal">
-        <div class="modal-wrapper">
-            <div class="modal-container">
-                <div class="modal-header">
+    <div class="Modal {{* class }}" v-show="show" transition="Modal" @click="clickOnMask">
+        <div class="Modal__Wrapper" @click="clickOnMask">
+            <div class="Modal__Wrapper__Container">
+                <div class="Modal__Wrapper__Container__Header">
                     <slot name="header">
                         Laravel France
                     </slot>
                 </div>
 
-                <div class="modal-body">
+                <div class="Modal__Wrapper__Container__Body">
                     <slot name="body"></slot>
                 </div>
 
-                <div class="modal-footer">
+                <div class="Modal__Wrapper__Container__Footer">
                     <slot name="footer">
-                        <button class="modal-default-button" @click="show = false">
+                        <button @click="show = false">
                             OK
                         </button>
                     </slot>
@@ -26,7 +26,18 @@
 
 <script lang="es6" type="text/ecmascript-6">
     export default {
+        methods: {
+            clickOnMask(e) {
+                e.stopPropagation();
+                if (e.target != e.currentTarget) return;
+
+                this.show = false;
+            }
+        },
         props: {
+            class: {
+                type: String
+            },
             show: {
                 type: Boolean,
                 required: true,

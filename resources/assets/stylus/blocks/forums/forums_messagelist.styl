@@ -7,7 +7,7 @@
   list-style none;
   lost-utility: clearfix;
   padding: 1rem 0 3rem 0;
-  border-bottom 1px solid #ddd;
+  border-bottom 1px solid $lightgrey;
 }
 
 
@@ -36,19 +36,28 @@
   }
 
   & blockquote {
-    background-color: #FDE4E2;
+    background-color: lighten($orange, 80%);
     margin: 0;
     padding: .8rem 0 .8rem 2rem;
-    border: 1px solid #F9AEA9;
+    border: 1px solid lighten($orange, 60%);
 
     & p {
       margin 0;
       padding 0;
     }
   }
+  
+  & code {
+    font-family: 'Ubuntu Mono';
+  }
+  
+  & p > code {
+    padding: 0 .3rem .1rem;
+    border: 1px solid $lightgrey;
+    background-clip: padding-box;
+  }
 
   & pre > code {
-    font-family: 'Ubuntu Mono';
     padding: 1rem;
   }
 }
