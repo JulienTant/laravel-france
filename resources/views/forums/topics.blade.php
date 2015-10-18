@@ -1,4 +1,4 @@
-@extends('layouts.forums')
+@extends('layouts.forums_sidebar')
 
 @section('forums_content')
 

@@ -1,4 +1,4 @@
-@extends('layouts.forums')
+@extends('layouts.forums_fullpage')
 
 @section('top_forums')
     <div class="Forums_TopicHeader" style="background-color: {{ $chosenCategory->background_color }}; color: {{ $chosenCategory->font_color }};">

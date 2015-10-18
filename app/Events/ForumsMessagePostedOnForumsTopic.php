@@ -36,7 +36,6 @@ class ForumsMessagePostedOnForumsTopic extends Event
      */
     public function __construct(User $user, ForumsTopic $topic, ForumsMessage $message)
     {
-        //
         $this->user = $user;
         $this->topic = $topic;
         $this->message = $message;

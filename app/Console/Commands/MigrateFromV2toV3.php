@@ -4,6 +4,7 @@ namespace LaravelFrance\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Database\Connection;
+use LaravelFrance\ForumsCategory;
 use LaravelFrance\ForumsTopic;
 use LaravelFrance\Group;
 use LaravelFrance\User;
@@ -191,6 +192,35 @@ class MigrateFromV2toV3 extends Command
 
             unset($oldForumCategories);
         });
+
+        $this->info('> Assigning colors');
+
+        $colors = [
+            '#D24D57' => '#FFF',
+            '#19B5FE' => '#FFF',
+            '#26C281' => '#FFF',
+            '#FFB61E' => '#FFF',
+            '#6C7A89' => '#FFF',
+            '#4B77BE' => '#FFF',
+            '#87D37C' => '#FFF',
+            '#9B59B6' => '#FFF',
+            '#C93756' => '#FFF',
+        ];
+        /** @var ForumsCategory $category */
+        foreach(ForumsCategory::orderBy('order', 'ASC')->get() as $category) {
+            reset($colors);
+            $background = key($colors);
+            $front = array_shift($colors);
+
+            $category->background_color = $background;
+            $category->font_color = $front;
+
+            $category->save();
+        }
+
+
+
+
         $this->line('');
         $this->line('');
         unset($bar);

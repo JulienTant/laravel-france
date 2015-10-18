@@ -92,6 +92,10 @@
                 validator (value) {
                     return typeof JSON.parse(value) == 'object'
                 }
+            },
+            current_category: {
+                type: String,
+                twoWay: false
             }
         },
         data() {
@@ -107,6 +111,10 @@
             }
         },
         ready() {
+            console.log(this.current_category);
+            if (!!this.current_category) {
+                this.newTopic.category = this.current_category;
+            }
             this.categoriesJson = JSON.parse(this.categories);
         }
     }
