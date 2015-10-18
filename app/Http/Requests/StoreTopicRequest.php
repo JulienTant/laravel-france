@@ -38,7 +38,7 @@ class StoreTopicRequest extends Request
             'title.required' => 'Veuillez insérer un titre',
             'title.min' => 'Votre titre est trop court (min: 3)',
             'markdown.required' => 'Veuillez insérer un message',
-            'markdown.min' => 'Votre titre est trop court (min: 20)',
+            'markdown.min' => 'Votre message est trop court (min: 20)',
             'category.required' => 'Veuillez selectionner une catégorie',
             'category.exists' => 'La catégorie selectionnée n\'existe pas',
         ];

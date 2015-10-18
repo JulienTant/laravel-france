@@ -61,7 +61,7 @@
                 event.preventDefault();
 
                 var that = this;
-                this.$http.post(Laroute.route('api.forums.store'), newTopic)
+                this.$http.post(Laroute.route('api.forums.post'), newTopic)
                         .success((topic, status, request) => {
                             document.location.href = Laroute.route('forums.show-topic', {categorySlug: topic.forums_category.slug, topicSlug: topic.slug});
 

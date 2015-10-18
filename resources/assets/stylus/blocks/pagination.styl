@@ -1,0 +1,40 @@
+.pagination {
+    padding 0;
+    margin 0;
+    text-align center;
+    display: inline-block;
+    lost-utility: clearfix;
+
+  li {
+    display inline;
+
+    a, &.active span {
+      position: relative;
+      float: left;
+      padding: .3rem 1rem;
+      margin-left: -1px;
+      border: 1px solid $orange;
+    }
+
+    &.active span {
+      background $orange;
+      color white;
+    }
+
+     a {
+      background $white;
+      color $orange;
+      border-color $orange
+      text-decoration: none;
+       &:hover {
+         color: white;
+         background $orange;
+       }
+
+     }
+
+    &.disabled {
+      display none;
+    }
+  }
+}

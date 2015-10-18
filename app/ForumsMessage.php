@@ -32,7 +32,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class ForumsMessage extends Model
 {
-    public function forumTopic()
+    public function forumsTopic()
     {
         return $this->belongsTo(ForumsTopic::class);
     }

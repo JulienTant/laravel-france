@@ -439,7 +439,7 @@ body {
 }
 .Utility__Container {
   *zoom: 1;
-  max-width: 1180px;
+  max-width: 980px;
   margin-left: auto;
   margin-right: auto;
 }
@@ -458,7 +458,7 @@ body {
 }
 .SiteHeader__Inner {
   *zoom: 1;
-  max-width: 1180px;
+  max-width: 980px;
   margin-left: auto;
   margin-right: auto;
 }
@@ -593,38 +593,7 @@ body {
 }
 .Forums__Paginator {
   margin-top: 2rem;
-}
-.Forums__Paginator ul {
-  padding: 0;
-  margin: 0;
-  text-align: center;
-}
-.Forums__Paginator li {
-  list-style: none;
-  display: inline-block;
-}
-.Forums__Paginator li a {
-  display: inline-block;
-  margin-bottom: 0;
-  text-align: center;
-  vertical-align: middle;
-  cursor: pointer;
-  white-space: nowrap;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  background: #f55247;
-  color: #fff;
-  padding: 0.3rem 1rem;
-  font-weight: bold;
-  text-decoration: none;
-}
-.Forums__Paginator li a:hover {
-  color: #fff;
-}
-.Forums__Paginator li.disabled {
-  display: none;
+  float: right;
 }
 .Forums__Sidebar {
   margin-top: 2rem;
@@ -810,25 +779,39 @@ body {
     display: table;
     clear: both;
 }
-.Forums__MessageList__Message__Avatar {
-  width: calc(99.99% * 11/100 - (30px - 30px * 11/100));
+.Forums__MessageList__Message:last-child {
+  border-bottom: 1px solid transparent;
 }
-.Forums__MessageList__Message__Avatar:nth-child(n){
+.Forums__MessageList__Message__Side {
+  width: calc(99.99% * 20/100 - (30px - 30px * 20/100));
+}
+.Forums__MessageList__Message__Side:nth-child(n){
     float: left;
     margin-right: 30px;
     clear: none;
 }
-.Forums__MessageList__Message__Avatar:last-child{
+.Forums__MessageList__Message__Side:last-child{
     margin-right: 0;
 }
-.Forums__MessageList__Message__Avatar:nth-child(100n){
+.Forums__MessageList__Message__Side:nth-child(100n){
     margin-right: 0;
 }
-.Forums__MessageList__Message__Avatar:nth-child(100n + 1){
+.Forums__MessageList__Message__Side:nth-child(100n + 1){
     clear: left;
 }
+.Forums__MessageList__Message__Side__Avatar {
+  text-align: center;
+}
+.Forums__MessageList__Message__Side__UserInfos__Label {
+  font-weight: bold;
+}
+.Forums__MessageList__Message__Side__UserInfos__Info {
+  margin: 0;
+}
 .Forums__MessageList__Message__Content {
-  width: calc(99.99% * 89/100 - (30px - 30px * 89/100));
+  width: calc(99.99% * 80/100 - (30px - 30px * 80/100));
+  border-left: 1px solid #ddd;
+  padding-left: 0.7rem;
 }
 .Forums__MessageList__Message__Content:nth-child(n){
     float: left;
@@ -844,8 +827,15 @@ body {
 .Forums__MessageList__Message__Content:nth-child(100n + 1){
     clear: left;
 }
+.Forums__MessageList__Message__Content a {
+  color: #696969;
+}
 .Forums__MessageList__Message__Content .hljs {
-  padding: 1rem;
+  padding: 0.8rem;
+  padding-right: 0;
+}
+.Forums__MessageList__Message__Content pre {
+  overflow: hidden;
 }
 .Forums__MessageList__Message__Content__Html {
   margin-top: 0.8rem;
@@ -970,7 +960,7 @@ body {
   vertical-align: middle;
 }
 .Modal__Wrapper__Container {
-  width: 826px;
+  width: 686px;
   margin: 0 auto;
   padding: 1.7rem 2.2rem;
   background-color: #fdfdfd;
@@ -1070,6 +1060,50 @@ textarea.Form__Row__Control {
 }
 .SiteFooter__Inner {
   text-align: center;
+}
+.pagination {
+  padding: 0;
+  margin: 0;
+  text-align: center;
+  display: inline-block;
+  *zoom: 1;
+}
+.pagination:before{
+    content: '';
+    display: table;
+}
+.pagination:after{
+    content: '';
+    display: table;
+    clear: both;
+}
+.pagination li {
+  display: inline;
+}
+.pagination li a,
+.pagination li.active span {
+  position: relative;
+  float: left;
+  padding: 0.3rem 1rem;
+  margin-left: -1px;
+  border: 1px solid #f55247;
+}
+.pagination li.active span {
+  background: #f55247;
+  color: #fff;
+}
+.pagination li a {
+  background: #fdfdfd;
+  color: #f55247;
+  border-color: #f55247;
+  text-decoration: none;
+}
+.pagination li a:hover {
+  color: #fff;
+  background: #f55247;
+}
+.pagination li.disabled {
+  display: none;
 }
 .PageForums .SiteFooter__Inner {
   width: calc(99.99% * 3/4 - (30px - 30px * 3/4));

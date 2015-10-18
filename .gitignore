@@ -10,3 +10,4 @@
 _ide_helper.php
 _ide_helper_models.php
 app/Http/routes_dev.php
+public/css/app.css.map

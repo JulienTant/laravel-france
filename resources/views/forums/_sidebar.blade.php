@@ -1,7 +1,9 @@
 <aside class="Forums__Sidebar">
 
     @if(Auth::user())
-        <new-topic {{ $chosenCategory ? 'current_category='.$chosenCategory->id : '' }} categories="{{ $categories->toJson() }}">Créer un sujet</new-topic>
+        @can('forums.can_create_topic', isset($chosenCategory) ? $chosenCategory : null)
+            <new-topic {{ isset($chosenCategory) ? 'current_category='.$chosenCategory->id : '' }} categories="{{ $categories->toJson() }}">Créer un sujet</new-topic>
+        @endcan
     @else
         <button class="Button Button--NewTopic" @click="showLoginBox = true">Se connecter</button>
     @endif

@@ -15,5 +15,6 @@
     "vue-resource": "^0.1.16",
     "vueify": "^1.1.5"
   },
-  "dependencies": {}
+  "dependencies": {
+  }
 }

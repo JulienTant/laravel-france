@@ -16,6 +16,7 @@ get('/', ['as' => 'forums.index', 'uses' => 'ForumsController@topics']);
 get('c/{slug}', ['as' => 'forums.by-category', 'uses' => 'ForumsController@topics']);
 get('search', ['as' => 'forums.search', 'uses' => 'ForumsController@search']);
 get('/t/{categorySlug}/{topicSlug}', ['as' => 'forums.show-topic', 'uses' => 'ForumsController@topic']);
+get('/m/{messageId}', ['as' => 'forums.show-message', 'uses' => 'ForumsController@message']);
 
 get('socialite/{driver}', ['as' => 'socialite.login', 'uses' => 'SocialiteController@redirectToProvider'])
     ->where('driver', 'google|github|twitter');
@@ -30,5 +31,6 @@ get('contact', ['as' => 'contact', 'uses' => 'ContactController@index']);
 
 /** @var \Illuminate\Routing\Router $router */
 $router->group(['laroute' => true, 'namespace' => 'Api', 'prefix' => 'api'], function () {
-    resource('forums', 'ForumsController', ['only' => ['store', 'update', 'destroy']]);
+    post('forums/post', ['as' => 'api.forums.post', 'uses' => 'ForumsController@post']);
+    post('forums/{topicId}/reply', ['as' => 'api.forums.reply', 'uses' => 'ForumsController@reply']);
 });

@@ -47,6 +47,7 @@ use LaravelFrance\Events\ForumsTopicPosted;
  * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\ForumsTopic whereCreatedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\ForumsTopic whereUpdatedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\ForumsTopic whereNbMessages($value)
+ * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\ForumsTopic forListing()
  */
 class ForumsTopic extends Model implements SluggableInterface
 {
@@ -60,6 +61,15 @@ class ForumsTopic extends Model implements SluggableInterface
     public function forumsMessages()
     {
         return $this->hasMany(ForumsMessage::class);
+    }
+
+    public function scopeForListing($query)
+    {
+        return $query->join('forums_messages', 'last_message_id', '=', 'forums_messages.id')
+            ->select('forums_topics.*')
+            ->with('user', 'forumsCategory', 'lastMessage', 'lastMessage.user',  'firstMessage')
+            ->orderBy('forums_messages.created_at', 'DESC')
+            ->orderBy('id', 'DESC');
     }
 
     public function firstMessage()

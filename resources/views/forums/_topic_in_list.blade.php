@@ -12,7 +12,7 @@
                             <relative-date date="{{ $topic->lastMessage->created_at->format('Y-m-d H:i:s') }}"></relative-date>
                         </span>
             <p class="Forums__TopicList__Item__Excerpt">
-                {{ str_limit($topic->firstMessage->markdown, 200) }}
+                {{ str_limit($topic->firstMessage->markdown, 150) }}
             </p>
         </div>
 

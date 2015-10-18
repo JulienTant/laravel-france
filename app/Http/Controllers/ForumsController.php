@@ -2,15 +2,26 @@
 
 namespace LaravelFrance\Http\Controllers;
 
+use Illuminate\Config\Repository;
 use Illuminate\Http\Request;
-use Illuminate\Pagination\Paginator;
 use LaravelFrance\ForumsCategory;
+use LaravelFrance\ForumsMessage;
 use LaravelFrance\ForumsTopic;
 use LaravelFrance\Http\Requests;
-use LaravelFrance\Http\Controllers\Controller;
 
 class ForumsController extends Controller
 {
+    /**
+     * @var Repository
+     */
+    private $config;
+
+    function __construct(Repository $config)
+    {
+        $this->config = $config;
+    }
+
+
     public function topics($categorySlug = null)
     {
         $chosenCategory = null;
@@ -18,15 +29,11 @@ class ForumsController extends Controller
             $chosenCategory = \LaravelFrance\ForumsCategory::whereSlug($categorySlug)->firstOrFail();
         }
 
-        $topicsQuery = \LaravelFrance\ForumsTopic::join('forums_messages', 'last_message_id', '=', 'forums_messages.id')
-            ->select('forums_topics.*')
-            ->with('user', 'forumsCategory', 'lastMessage', 'lastMessage.user',  'firstMessage')
-            ->orderBy('forums_messages.created_at', 'DESC')
-            ->orderBy('id', 'DESC');
-        if ($chosenCategory instanceof ForumsCategory) {
-            $topicsQuery = $topicsQuery->where('forums_category_id', $chosenCategory->id);
+        $topicsQuery = \LaravelFrance\ForumsTopic::forListing();
+        if (!!$chosenCategory) {
+            $topicsQuery = $topicsQuery->whereForumsCategoryId($chosenCategory->id);
         }
-       $topics =  $topicsQuery->simplePaginate(20);
+       $topics =  $topicsQuery->simplePaginate($this->config->get('laravelfrance.forums.topics_per_page'));
 
         return view('forums.topics', compact('topics', 'chosenCategory'));
     }
@@ -75,16 +82,33 @@ class ForumsController extends Controller
     public function topic($categorySlug, $topicSlug)
     {
         $chosenCategory = \LaravelFrance\ForumsCategory::whereSlug($categorySlug)->firstOrFail();
-        $topic = \LaravelFrance\ForumsTopic::where('forums_category_id', $chosenCategory->id)
+        $topic = \LaravelFrance\ForumsTopic::whereForumsCategoryId($chosenCategory->id)
             ->whereSlug($topicSlug)
             ->orderBy('updated_at', 'DESC')
             ->first();
 
         $messages = \LaravelFrance\ForumsMessage::with('user')
-            ->where('forums_topic_id', $topic->id)
+            ->whereForumsTopicId($topic->id)
             ->orderBy('created_at', 'asc')
-            ->simplePaginate(20);
+            ->paginate($this->config->get('laravelfrance.forums.messages_per_page'));
 
         return view('forums.topic', compact('topic', 'chosenCategory', 'messages'));
+    }
+
+    public function message($messageId)
+    {
+        /** @var ForumsMessage $message */
+        $message = ForumsMessage::findOrFail($messageId);
+
+        $messagesId = $message->forumsTopic->forumsMessages()
+            ->orderBy('created_at',  'asc')
+            ->select(['id'])->get(['id'])
+            ->lists('id');
+
+        $index = array_search($message->id, $messagesId->toArray());
+
+        $page = ceil(($index+1) / $this->config->get('laravelfrance.forums.messages_per_page'));
+
+        return redirect(route('forums.show-topic', [$message->forumsTopic->forumsCategory->slug, $message->forumsTopic->slug]) . '?page=' . $page . '#message-' . $messageId);
     }
 }

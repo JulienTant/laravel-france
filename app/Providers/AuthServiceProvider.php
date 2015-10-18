@@ -5,6 +5,7 @@ namespace LaravelFrance\Providers;
 use Illuminate\Contracts\Auth\Access\Gate as GateContract;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use LaravelFrance\ForumsCategory;
+use LaravelFrance\ForumsTopic;
 use LaravelFrance\Group;
 use LaravelFrance\User;
 
@@ -31,12 +32,17 @@ class AuthServiceProvider extends ServiceProvider
         /** @var \Illuminate\Auth\Access\Gate $gate */
         $this->giveSuperAdminSuperPower($gate);
 
-        $gate->define('forums.can_create_topic', function (User $user, ForumsCategory $category) {
+        $gate->define('forums.can_create_topic', function (User $user, ForumsCategory $category = null) {
             if (in_array(Group::FORUMS_MODERATOR, $user->groups)) {
                 return true;
             }
+            return true;
+        });
 
-            // for the moment, everyone connected in allowed to post everywhere
+        $gate->define('forums.can_reply_to_topic', function (User $user, ForumsTopic $topic) {
+            if (in_array(Group::FORUMS_MODERATOR, $user->groups)) {
+                return true;
+            }
             return true;
         });
     }

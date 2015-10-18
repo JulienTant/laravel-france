@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use LaravelFrance\ForumsTopic;
 use LaravelFrance\Http\Requests;
 use LaravelFrance\Http\Controllers\Controller;
+use LaravelFrance\Http\Requests\AnswerToTopicRequest;
 use LaravelFrance\Http\Requests\StoreTopicRequest;
 
 /**
@@ -15,34 +16,39 @@ use LaravelFrance\Http\Requests\StoreTopicRequest;
 class ForumsController extends Controller
 {
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created topic
      *
      * @return StoreTopicRequest
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreTopicRequest $request)
+    public function post(StoreTopicRequest $request)
     {
         $topic = ForumsTopic::post(
             $request->user(),
-            $request->get('title'),
-            $request->get('category'),
-            $request->get('markdown')
+            $request->title,
+            $request->category,
+            $request->markdown
         );
 
         return $topic->load('forumsCategory');
     }
 
     /**
-     * Update the specified resource in storage.
+     * Store a reply.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param AnswerToTopicRequest $request
+     * @param $topicId
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function reply(AnswerToTopicRequest $request, $topicId)
     {
-        //
+        /** @var ForumsTopic $topic */
+        $topic = ForumsTopic::findOrFail($topicId);
+
+        return $topic->addMessage($request->user(), $request->markdown);
     }
+
+
 
     /**
      * Remove the specified resource from storage.
