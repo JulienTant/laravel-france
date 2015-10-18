@@ -5,7 +5,13 @@
         <h3 slot="header">Créer un sujet</h3>
 
         <div slot="body">
-            <form class="Form Form--NewTopic" @submit="submitForm(newTopic, $event)">
+            <form class="Form Form--NewTopic" @submit="submitForm(newTopic, $event)" >
+
+                <ul class="Form__ErrorList" v-if="errors.length > 0">
+                    <li class="Form__ErrorList__Item" v-for="error in errors">{{ error }}</li>
+                </ul>
+
+
                 <div class="Form__Row">
                     <label class="Form__Row__Label" for="new-topic-title">Titre</label>
                     <input type="text" class="Form__Row__Control" id="new-topic-title" name="new-topic[title]" v-model="newTopic.title"/>
@@ -54,21 +60,31 @@
             submitForm(newTopic, event) {
                 event.preventDefault();
 
+                var that = this;
                 this.$http.post(Laroute.route('api.forums.store'), newTopic)
-                        .success((data, status, request) => {
-                            console.log(status);
+                        .success((topic, status, request) => {
+                            document.location.href = Laroute.route('forums.show-topic', {categorySlug: topic.forums_category.slug, topicSlug: topic.slug});
+
                         })
                         .error((data, status, request) => {
-                            console.log(status);
+                            that.errors = [];
+                            if (status == 422) {
+                                for(var element in data) {
+                                    var elementWithError = data[element];
+                                    for(var idx in elementWithError) {
+                                        this.errors.push(elementWithError[idx]);
+                                    }
+                                }
+                            }
                         });
-
-                console.log(newTopic);
             },
             closeModal() {
                 this.showModal = false;
                 this.newTopic.title = "";
                 this.newTopic.markdown = "";
-                this.newTopic.category = -1;
+                this.newTopic.category = null;
+
+                this.errors = [];
             }
         },
         props: {
@@ -82,10 +98,11 @@
             return {
                 showModal: false,
                 categoriesJson: [],
+                errors: [],
                 newTopic: {
                     title: '',
                     markdown: '',
-                    category: -1
+                    category: null
                 }
             }
         },

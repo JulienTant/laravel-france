@@ -4,6 +4,9 @@ namespace LaravelFrance\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Database\Connection;
+use LaravelFrance\ForumsTopic;
+use LaravelFrance\Group;
+use LaravelFrance\User;
 use League\HTMLToMarkdown\HtmlConverter;
 
 class MigrateFromV2toV3 extends Command
@@ -38,11 +41,11 @@ class MigrateFromV2toV3 extends Command
      */
     public function handle()
     {
-/*
-        $host = $this->forceAsk('old DB host');
-        $database = $this->forceAsk('old DB database');
-        $username = $this->forceAsk('old DB username');
-        $password = $this->forceAsk('old DB password', true);   */
+        /*
+                $host = $this->forceAsk('old DB host');
+                $database = $this->forceAsk('old DB database');
+                $username = $this->forceAsk('old DB username');
+                $password = $this->forceAsk('old DB password', true);   */
 
         $host = 'localhost';
         $database = 'homestead2';
@@ -69,10 +72,14 @@ class MigrateFromV2toV3 extends Command
             $newConnection->beginTransaction();
         }
 
+        $this->call('migrate');
+        $this->call('migrate:refresh');
+
 
         $this->migrateUsers($oldConnection, $newConnection);
         $this->migrateoAuth($oldConnection, $newConnection);
-        $this->migrateGroups($oldConnection, $newConnection);
+        $this->defineSuperAdmin();
+
 
         $this->migrateForumsCategories($oldConnection, $newConnection);
         $this->migrateForumsTopics($oldConnection, $newConnection);
@@ -154,46 +161,6 @@ class MigrateFromV2toV3 extends Command
         unset($bar);
     }
 
-    private function migrateGroups($oldConnection, $newConnection)
-    {
-        $this->info('> Transfering Groups (only SuperAdmin & Forums)');
-        $nbGroupUser = $oldConnection->table('groups')->whereIn('id', [1, 2])->count(['id']);
-        $bar = $this->output->createProgressBar($nbGroupUser);
-        $oldConnection->table('groups')->whereIn('id', [1, 2])->chunk(100, function ($oldGroups) use ($newConnection, $bar) {
-
-            foreach ($oldGroups as &$group) {
-                $group = (array)$group;
-            }
-
-            $newConnection->table('groups')->insert($oldGroups);
-            $bar->advance(count($oldGroups));
-
-            unset($oldGroups);
-        });
-        $this->line('');
-        $this->line('');
-        unset($bar);
-
-
-        $this->info('> Transfering Link Between Groups And Users');
-        $nbGroupUser = $oldConnection->table('group_user')->whereIn('group_id', [1, 2])->count(['id']);
-        $bar = $this->output->createProgressBar($nbGroupUser);
-        $oldConnection->table('group_user')->whereIn('group_id', [1, 2])->chunk(100, function ($oldGroupUser) use ($newConnection, $bar) {
-
-            foreach ($oldGroupUser as &$groupUser) {
-                $groupUser = (array)$groupUser;
-            }
-
-            $newConnection->table('group_user')->insert($oldGroupUser);
-            $bar->advance(count($oldGroupUser));
-
-            unset($oldGroupUser);
-        });
-        $this->line('');
-        $this->line('');
-        unset($bar);
-    }
-
     private function migrateForumsCategories($oldConnection, $newConnection)
     {
         $this->info('> Transfering Forums Categories');
@@ -231,25 +198,28 @@ class MigrateFromV2toV3 extends Command
 
     private function migrateForumsTopics($oldConnection, $newConnection)
     {
+
         $this->info('> Transfering Forums Topics');
 
         $nbForumsTopics = $oldConnection->table('forum_topics')->count(['id']);
         $bar = $this->output->createProgressBar($nbForumsTopics);
         $oldConnection->table('forum_topics')->chunk(100, function ($oldForumTopics) use ($newConnection, $bar) {
 
-            foreach ($oldForumTopics as &$forumCategory) {
-                $forumCategory = (array)$forumCategory;
+            foreach ($oldForumTopics as &$forumTopic) {
+                $forumTopic = (array)$forumTopic;
 
-                $forumCategory['forums_category_id'] = $forumCategory['forum_category_id'];
-                unset($forumCategory['forum_category_id']);
+                $forumTopic['forums_category_id'] = $forumTopic['forum_category_id'];
+                unset($forumTopic['forum_category_id']);
 
-                unset($forumCategory['nb_messages']);
-                unset($forumCategory['nb_views']);
-                unset($forumCategory['lm_user_name']);
-                unset($forumCategory['lm_user_id']);
-                unset($forumCategory['lm_post_id']);
-                unset($forumCategory['lm_date']);
-                unset($forumCategory['solvedBy']);
+                $forumTopic['slug'] = $forumTopic['id'];
+
+                unset($forumTopic['nb_messages']);
+                unset($forumTopic['nb_views']);
+                unset($forumTopic['lm_user_name']);
+                unset($forumTopic['lm_user_id']);
+                unset($forumTopic['lm_post_id']);
+                unset($forumTopic['lm_date']);
+                unset($forumTopic['solvedBy']);
             }
 
             $newConnection->table('forums_topics')->insert($oldForumTopics);
@@ -257,6 +227,17 @@ class MigrateFromV2toV3 extends Command
 
             unset($oldForumTopics);
         });
+        $this->line('');
+        $this->info('> Rebuilding slugs');
+
+        $topics = ForumsTopic::orderBy('created_at', 'DESC')->get();
+        $bar = $this->output->createProgressBar($topics->count());
+        /** @var ForumsTopic $topic */
+        foreach($topics as $topic) {
+            $topic->resluggify(true)->save();;
+            $bar->advance();
+        }
+
         $this->line('');
         $this->line('');
         unset($bar);
@@ -399,5 +380,16 @@ class MigrateFromV2toV3 extends Command
         );
         $this->info('> ... Done');
 
+    }
+
+    private function defineSuperAdmin()
+    {
+        $this->line('> Define user 1 as SuperAdmin...');
+        /** @var User $user */
+        $user = User::find(1);
+        $user->groups = [Group::SUPERADMIN];
+        $user->save();
+        $this->line(' ');
+        $this->line(' ');
     }
 }

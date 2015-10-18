@@ -12,6 +12,27 @@ use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Laravel\Socialite\Contracts\User as SocialiteUser;
 
 
+/**
+ * LaravelFrance\User
+ *
+ * @property integer $id
+ * @property string $username
+ * @property string $email
+ * @property integer $nb_messages
+ * @property string $remember_token
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|OAuth[] $oauth
+ * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\User whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\User whereUsername($value)
+ * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\User whereEmail($value)
+ * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\User whereNbMessages($value)
+ * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\User whereRememberToken($value)
+ * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\User whereCreatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\User whereUpdatedAt($value)
+ * @property string $groups
+ * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\User whereGroups($value)
+ */
 class User extends Model implements AuthenticatableContract,
     AuthorizableContract,
     CanResetPasswordContract
@@ -39,7 +60,22 @@ class User extends Model implements AuthenticatableContract,
      */
     protected $hidden = ['password', 'remember_token'];
 
+    /**
+     * The attributes that needs cast
+     *
+     * @var array
+     */
+    protected $casts = [
+        'groups' => 'array',
+    ];
 
+
+
+    /**
+     * @param $driver
+     * @param SocialiteUser $socialiteUser
+     * @return User
+     */
     public static function createFromSocialUser($driver, SocialiteUser $socialiteUser)
     {
         $user = new self;
@@ -53,10 +89,20 @@ class User extends Model implements AuthenticatableContract,
         return $user;
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function oauth()
     {
         return $this->hasMany(OAuth::class);
     }
 
-
+    /**
+     * @return $this
+     */
+    public function incrementNbMessages()
+    {
+        $this->nb_messages++;
+        return $this;
+    }
 }

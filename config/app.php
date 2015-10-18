@@ -52,7 +52,7 @@ return [
     |
     */
 
-    'locale' => 'en',
+    'locale' => 'fr',
 
     /*
     |--------------------------------------------------------------------------
@@ -152,6 +152,7 @@ return [
         Laravel\Socialite\SocialiteServiceProvider::class,
         UxWeb\SweetAlert\SweetAlertServiceProvider::class,
         Lord\Laroute\LarouteServiceProvider::class,
+        Cviebrock\EloquentSluggable\SluggableServiceProvider::class,
     ],
 
     /*

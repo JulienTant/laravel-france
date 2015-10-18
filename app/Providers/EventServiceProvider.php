@@ -5,6 +5,10 @@ namespace LaravelFrance\Providers;
 use Illuminate\Contracts\Events\Dispatcher as DispatcherContract;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
+/**
+ * Class EventServiceProvider
+ * @package LaravelFrance\Providers
+ */
 class EventServiceProvider extends ServiceProvider
 {
     /**
@@ -13,8 +17,11 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        'LaravelFrance\Events\SomeEvent' => [
-            'LaravelFrance\Listeners\EventListener',
+        'LaravelFrance\Events\ForumsTopicPosted' => [],
+        'LaravelFrance\Events\ForumsMessagePostedOnForumsTopic' => [
+            'LaravelFrance\Listeners\ManageNbMessagesOnTopic@whenForumsMessagePostedOnForumsTopic',
+            'LaravelFrance\Listeners\ManageLastMessageOnTopic@whenForumsMessagePostedOnForumsTopic',
+            'LaravelFrance\Listeners\ManageNbMessagesOnUser@whenForumsMessagePostedOnForumsTopic',
         ],
     ];
 

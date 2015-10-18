@@ -27813,7 +27813,7 @@ module.exports = exports["default"];
 ;(typeof module.exports === "function"? module.exports.options: module.exports).template = __vue_template__;
 
 },{}],222:[function(require,module,exports){
-var __vue_template__ = "<button class=\"Button Button--NewTopic\" id=\"show-modal\" @click=\"showModal = true\"><slot></slot></button>\n\n    <modal :show.sync=\"showModal\" class=\"Modal--NewTopic\">\n        <h3 slot=\"header\">Créer un sujet</h3>\n\n        <div slot=\"body\">\n            <form class=\"Form Form--NewTopic\" @submit=\"submitForm(newTopic, $event)\">\n                <div class=\"Form__Row\">\n                    <label class=\"Form__Row__Label\" for=\"new-topic-title\">Titre</label>\n                    <input type=\"text\" class=\"Form__Row__Control\" id=\"new-topic-title\" name=\"new-topic[title]\" v-model=\"newTopic.title\">\n                </div>\n\n                <div class=\"Form__Row Form__Row--Category\">\n                    <label class=\"Form__Row__Label\">Catégorie</label>\n\n                    <template v-for=\"category in categoriesJson\" track-by=\"id\">\n                        <input id=\"category-id-{{ category.id }}\" type=\"radio\" name=\"new-topic[category]\" v-model=\"newTopic.category\" value=\"{{ category.id }}\"> \n                        <label for=\"category-id-{{ category.id }}\">{{ category.name }}</label>\n                    </template>\n                </div>\n\n                <div class=\"Form__Row\">\n                    <label for=\"new-topic-markdown\" class=\"Form__Row__Label\">Message</label>\n                    <textarea type=\"text\" id=\"new-topic-markdown\" name=\"new-topic[markdown]\" class=\"Form__Row__Control\" v-model=\"newTopic.markdown\"></textarea>\n                </div>\n\n            </form>\n        </div>\n\n\n        <div slot=\"footer\">\n            <button type=\"reset\" class=\"Button Button--Cancel\" @click=\"closeModal\">\n                Annuler\n            </button>\n\n            <button type=\"submit\" class=\"Button Button--Submit\" @click=\"submitForm(newTopic, $event)\">Créer un sujet</button>\n\n        </div>\n\n\n    </modal>";
+var __vue_template__ = "<button class=\"Button Button--NewTopic\" id=\"show-modal\" @click=\"showModal = true\"><slot></slot></button>\n\n    <modal :show.sync=\"showModal\" class=\"Modal--NewTopic\">\n        <h3 slot=\"header\">Créer un sujet</h3>\n\n        <div slot=\"body\">\n            <form class=\"Form Form--NewTopic\" @submit=\"submitForm(newTopic, $event)\">\n\n                <ul class=\"Form__ErrorList\" v-if=\"errors.length > 0\">\n                    <li class=\"Form__ErrorList__Item\" v-for=\"error in errors\">{{ error }}</li>\n                </ul>\n\n\n                <div class=\"Form__Row\">\n                    <label class=\"Form__Row__Label\" for=\"new-topic-title\">Titre</label>\n                    <input type=\"text\" class=\"Form__Row__Control\" id=\"new-topic-title\" name=\"new-topic[title]\" v-model=\"newTopic.title\">\n                </div>\n\n                <div class=\"Form__Row Form__Row--Category\">\n                    <label class=\"Form__Row__Label\">Catégorie</label>\n\n                    <template v-for=\"category in categoriesJson\" track-by=\"id\">\n                        <input id=\"category-id-{{ category.id }}\" type=\"radio\" name=\"new-topic[category]\" v-model=\"newTopic.category\" value=\"{{ category.id }}\"> \n                        <label for=\"category-id-{{ category.id }}\">{{ category.name }}</label>\n                    </template>\n                </div>\n\n                <div class=\"Form__Row\">\n                    <label for=\"new-topic-markdown\" class=\"Form__Row__Label\">Message</label>\n                    <textarea type=\"text\" id=\"new-topic-markdown\" name=\"new-topic[markdown]\" class=\"Form__Row__Control\" v-model=\"newTopic.markdown\"></textarea>\n                </div>\n\n            </form>\n        </div>\n\n\n        <div slot=\"footer\">\n            <button type=\"reset\" class=\"Button Button--Cancel\" @click=\"closeModal\">\n                Annuler\n            </button>\n\n            <button type=\"submit\" class=\"Button Button--Submit\" @click=\"submitForm(newTopic, $event)\">Créer un sujet</button>\n\n        </div>\n\n\n    </modal>";
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -27836,21 +27836,32 @@ exports['default'] = {
     },
     methods: {
         submitForm: function submitForm(newTopic, event) {
+            var _this = this;
+
             event.preventDefault();
 
-            this.$http.post(_laroute2['default'].route('api.forums.store'), newTopic).success(function (data, status, request) {
-                console.log(status);
+            var that = this;
+            this.$http.post(_laroute2['default'].route('api.forums.store'), newTopic).success(function (topic, status, request) {
+                document.location.href = _laroute2['default'].route('forums.show-topic', { categorySlug: topic.forums_category.slug, topicSlug: topic.slug });
             }).error(function (data, status, request) {
-                console.log(status);
+                that.errors = [];
+                if (status == 422) {
+                    for (var element in data) {
+                        var elementWithError = data[element];
+                        for (var idx in elementWithError) {
+                            _this.errors.push(elementWithError[idx]);
+                        }
+                    }
+                }
             });
-
-            console.log(newTopic);
         },
         closeModal: function closeModal() {
             this.showModal = false;
             this.newTopic.title = "";
             this.newTopic.markdown = "";
-            this.newTopic.category = -1;
+            this.newTopic.category = null;
+
+            this.errors = [];
         }
     },
     props: {
@@ -27864,10 +27875,11 @@ exports['default'] = {
         return {
             showModal: false,
             categoriesJson: [],
+            errors: [],
             newTopic: {
                 title: '',
                 markdown: '',
-                category: -1
+                category: null
             }
         };
     },
@@ -27930,7 +27942,7 @@ module.exports = exports['default'];
 
             absolute: false,
             rootUrl: 'http://localhost',
-            routes: [{ "host": null, "methods": ["POST"], "uri": "api\/forums", "name": "api.forums.store", "action": "Api\ForumsController@store" }, { "host": null, "methods": ["PUT"], "uri": "api\/forums\/{forums}", "name": "api.forums.update", "action": "Api\ForumsController@update" }, { "host": null, "methods": ["PATCH"], "uri": "api\/forums\/{forums}", "name": null, "action": "Api\ForumsController@update" }, { "host": null, "methods": ["DELETE"], "uri": "api\/forums\/{forums}", "name": "api.forums.destroy", "action": "Api\ForumsController@destroy" }],
+            routes: [{ "host": null, "methods": ["GET", "HEAD"], "uri": "_debugbar\/open", "name": "debugbar.openhandler", "action": "Barryvdh\Debugbar\Controllers\OpenHandlerController@handle" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "_debugbar\/clockwork\/{id}", "name": "debugbar.clockwork", "action": "Barryvdh\Debugbar\Controllers\OpenHandlerController@clockwork" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "_debugbar\/assets\/stylesheets", "name": "debugbar.assets.css", "action": "Barryvdh\Debugbar\Controllers\AssetController@css" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "_debugbar\/assets\/javascript", "name": "debugbar.assets.js", "action": "Barryvdh\Debugbar\Controllers\AssetController@js" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "\/", "name": "forums.index", "action": "ForumsController@topics" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "c\/{slug}", "name": "forums.by-category", "action": "ForumsController@topics" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "search", "name": "forums.search", "action": "ForumsController@search" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "t\/{categorySlug}\/{topicSlug}", "name": "forums.show-topic", "action": "ForumsController@topic" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "socialite\/{driver}", "name": "socialite.login", "action": "SocialiteController@redirectToProvider" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "socialite\/{driver}\/callback", "name": "socialite.callback", "action": "SocialiteController@handleProviderCallback" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "logout", "name": "logout", "action": "SocialiteController@logout" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "slack", "name": "slack", "action": "StaticController@slack" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "contact", "name": "contact", "action": "ContactController@index" }, { "host": null, "methods": ["POST"], "uri": "api\/forums", "name": "api.forums.store", "action": "Api\ForumsController@store" }, { "host": null, "methods": ["PUT"], "uri": "api\/forums\/{forums}", "name": "api.forums.update", "action": "Api\ForumsController@update" }, { "host": null, "methods": ["PATCH"], "uri": "api\/forums\/{forums}", "name": null, "action": "Api\ForumsController@update" }, { "host": null, "methods": ["DELETE"], "uri": "api\/forums\/{forums}", "name": "api.forums.destroy", "action": "Api\ForumsController@destroy" }],
 
             route: function route(name, parameters, _route) {
                 _route = _route || this.getByName(name);

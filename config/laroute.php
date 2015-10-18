@@ -32,7 +32,7 @@ return [
      * 'only' => Only "'laroute' => true" routes
      * 'force' => All routes, ignored "laroute" route parameter
      */
-    'filter' => 'only',
+    'filter' => 'all',
 
     /*
      * Controller Namespace

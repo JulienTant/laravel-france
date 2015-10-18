@@ -8,12 +8,54 @@
 namespace LaravelFrance;
 
 
+use Cviebrock\EloquentSluggable\SluggableInterface;
+use Cviebrock\EloquentSluggable\SluggableTrait;
 use Fadion\Bouncy\BouncyTrait;
 use Illuminate\Database\Eloquent\Model;
+use LaravelFrance\Events\ForumsMessagePostedOnForumsTopic;
+use LaravelFrance\Events\ForumsTopicPosted;
 
-class ForumsTopic extends Model
+/**
+ * LaravelFrance\ForumsTopic
+ *
+ * @property integer $id
+ * @property integer $forums_category_id
+ * @property integer $user_id
+ * @property boolean $sticky
+ * @property string $title
+ * @property string $slug
+ * @property boolean $solved
+ * @property integer $solved_by
+ * @property integer $last_message_id
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * @property integer $nb_messages
+ * @property-read \Illuminate\Database\Eloquent\Collection|ForumsMessage[] $forumsMessages
+ * @property-read ForumsMessage $firstMessage
+ * @property-read ForumsCategory $forumsCategory
+ * @property-read User $user
+ * @property-read ForumsMessage $lastMessage
+ * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\ForumsTopic whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\ForumsTopic whereForumsCategoryId($value)
+ * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\ForumsTopic whereUserId($value)
+ * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\ForumsTopic whereSticky($value)
+ * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\ForumsTopic whereTitle($value)
+ * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\ForumsTopic whereSlug($value)
+ * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\ForumsTopic whereSolved($value)
+ * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\ForumsTopic whereSolvedBy($value)
+ * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\ForumsTopic whereLastMessageId($value)
+ * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\ForumsTopic whereCreatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\ForumsTopic whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\ForumsTopic whereNbMessages($value)
+ */
+class ForumsTopic extends Model implements SluggableInterface
 {
-    use BouncyTrait;
+    use BouncyTrait, SluggableTrait;
+
+    protected $sluggable = [
+        'build_from' => 'title',
+    ];
+
 
     public function forumsMessages()
     {
@@ -38,6 +80,37 @@ class ForumsTopic extends Model
     public function lastMessage()
     {
         return $this->belongsTo(ForumsMessage::class, 'last_message_id');
+    }
+
+    public static function post(User $author, $title, $category, $markdown)
+    {
+        $topic = new static;
+
+        $topic->user_id = $author->getKey();
+        $topic->forums_category_id = $category;
+        $topic->title = $title;
+        $topic->save();
+
+        \Event::fire(new ForumsTopicPosted($author, $topic));
+
+        $topic->addMessage($author, $markdown);
+
+        return $topic;
+    }
+
+    public function addMessage(User $author, $markdown)
+    {
+        $message = ForumsMessage::post($author, $markdown);
+        $this->forumsMessages()->save($message);
+
+        \Event::fire(new ForumsMessagePostedOnForumsTopic($author, $this, $message));
+
+        return $message;
+    }
+
+    public function incrementNbMessages()
+    {
+        $this->nb_messages += 1;
     }
 
 

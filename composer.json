@@ -16,7 +16,8 @@
     "league/commonmark": "^0.11",
     "laravel/socialite": "^3.0@dev",
     "uxweb/sweet-alert": "~1.1",
-    "lord/laroute": "^2"
+    "lord/laroute": "^2",
+    "cviebrock/eloquent-sluggable": "dev-master"
   },
   "require-dev": {
     "fzaninotto/faker": "~1.4",
@@ -51,7 +52,7 @@
     "post-update-cmd": [
       "php artisan clear-compiled",
       "php artisan ide-helper:generate",
-      "php artisan ide-helper:models -N",
+      "php artisan ide-helper:models -W",
       "php artisan ide-helper:meta",
       "php artisan optimize"
     ],

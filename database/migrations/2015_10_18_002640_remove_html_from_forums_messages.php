@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddNbMessagesInForumsTopics extends Migration
+class RemoveHtmlFromForumsMessages extends Migration
 {
     /**
      * Run the migrations.
@@ -12,8 +12,8 @@ class AddNbMessagesInForumsTopics extends Migration
      */
     public function up()
     {
-        Schema::table('forums_topics', function (Blueprint $table) {
-            $table->integer('nb_messages', false, true)->default(0)->after('last_message_id');
+        Schema::table('forums_messages', function (Blueprint $table) {
+            $table->dropColumn('html');
         });
     }
 
@@ -24,8 +24,8 @@ class AddNbMessagesInForumsTopics extends Migration
      */
     public function down()
     {
-        Schema::table('forums_topics', function (Blueprint $table) {
-            $table->dropColumn('nb_messages');
+        Schema::table('forums_messages', function (Blueprint $table) {
+            $table->text('html')->nullable();
         });
     }
 }
