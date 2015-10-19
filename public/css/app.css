@@ -773,6 +773,7 @@ body {
   *zoom: 1;
   padding: 1rem 0 3rem 0;
   border-bottom: 1px solid #ddd;
+  position: relative;
 }
 .Forums__MessageList__Message:before{
     content: '';
@@ -813,6 +814,7 @@ body {
   margin: 0;
 }
 .Forums__MessageList__Message__Content {
+  padding-bottom: 1rem;
   width: calc(99.99% * 80/100 - (30px - 30px * 80/100));
   border-left: 1px solid #ddd;
   padding-left: 0.7rem;
@@ -881,6 +883,12 @@ body {
   font-weight: bold;
   margin-right: 2rem;
 }
+.Forums_MessageList__Message__Content__Buttons {
+  position: absolute;
+  top: 1rem;
+  right: 0;
+  margin-bottom: 1rem;
+}
 .Forums__Searchbar {
   margin-bottom: 1rem;
 }
@@ -918,12 +926,17 @@ body {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  line-height: 20px;
-  padding: 8px 13px;
+  line-height: 1.4rem;
+  padding: 0.6rem 1rem;
   border: 1px solid #ddd;
 }
 .Button:focus {
   outline: 1px solid #ddd;
+}
+.Button--Small {
+  line-height: 1rem;
+  padding: 0.3rem 0.7rem;
+  font-size: 0.8rem;
 }
 .Button--Submit {
   background-color: #f55247;

@@ -25,7 +25,7 @@ export default {
 
 
         this.frenchDate = momentedDate.format('LLL');
-        setTimeout(() => this.relativeTime = momentedDate.fromNow() , 10000);
+        setInterval(() => this.relativeTime = momentedDate.fromNow(), 10000);
         this.relativeTime = momentedDate.fromNow();
     }
 }

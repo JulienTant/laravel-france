@@ -28,9 +28,11 @@ get('logout', ['as' => 'logout', 'uses' => 'SocialiteController@logout']);
 get('slack', ['as' => 'slack', 'uses' => 'StaticController@slack']);
 get('contact', ['as' => 'contact', 'uses' => 'ContactController@index']);
 
-
 /** @var \Illuminate\Routing\Router $router */
 $router->group(['laroute' => true, 'namespace' => 'Api', 'prefix' => 'api'], function () {
     post('forums/post', ['as' => 'api.forums.post', 'uses' => 'ForumsController@post']);
     post('forums/{topicId}/reply', ['as' => 'api.forums.reply', 'uses' => 'ForumsController@reply']);
+
+    get('forums/{topicId}/messages/{messageId}', ['as' => 'api.forums.message', 'uses' => 'ForumsController@message']);
+    put('forums/{topicId}/messages/{messageId}', ['as' => 'api.forums.message.update', 'uses' => 'ForumsController@updateMessage']);
 });

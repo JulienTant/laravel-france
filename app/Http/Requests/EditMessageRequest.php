@@ -3,19 +3,18 @@
 namespace LaravelFrance\Http\Requests;
 
 use Illuminate\Contracts\Auth\Access\Gate;
-use LaravelFrance\ForumsTopic;
+use LaravelFrance\ForumsMessage;
 
-class AnswerToTopicRequest extends Request
+class EditMessageRequest extends Request
 {
     /**
      * Determine if the user is authorized to make this request.
      *
-     * @param Gate $gate
      * @return bool
      */
     public function authorize(Gate $gate)
     {
-        return $gate->check('forums.can_reply_to_topic', ['topic' => ForumsTopic::find($this->route('topicId'))]);
+        return $gate->check('forums.can_reply_to_topic', ['topic' => ForumsMessage::find($this->route('messageId'))]);
     }
 
     /**
@@ -25,8 +24,13 @@ class AnswerToTopicRequest extends Request
      */
     public function rules()
     {
+        /** @var ForumsMessage $message */
+        $message = ForumsMessage::findOrFail($this->route('messageId'));
+
+        $max = $message->forumsTopic->firstMessage->id == $message->id ? 20 : 2;
+
         return [
-            'markdown' => 'required|min:2',
+            'markdown' => 'required|min:' . $max,
         ];
     }
 
@@ -34,9 +38,7 @@ class AnswerToTopicRequest extends Request
     {
         return [
             'markdown.required' => 'Veuillez insérer un message',
-            'markdown.min' => 'Votre réponse est trop courte (min: 2)',
+            'markdown.min' => 'Votre réponse est trop courte (min: :min)',
         ];
     }
-
-
 }

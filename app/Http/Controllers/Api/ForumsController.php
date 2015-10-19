@@ -3,10 +3,12 @@
 namespace LaravelFrance\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
+use LaravelFrance\ForumsMessage;
 use LaravelFrance\ForumsTopic;
 use LaravelFrance\Http\Requests;
 use LaravelFrance\Http\Controllers\Controller;
 use LaravelFrance\Http\Requests\AnswerToTopicRequest;
+use LaravelFrance\Http\Requests\EditMessageRequest;
 use LaravelFrance\Http\Requests\StoreTopicRequest;
 
 /**
@@ -49,6 +51,33 @@ class ForumsController extends Controller
     }
 
 
+    /**
+     * Get a Message From its ID
+     * 
+     * @param $messageId
+     * @return mixed
+     */
+    public function message($topicId, $messageId)
+    {
+        $topic = ForumsTopic::findOrFail($topicId);
+        return $topic->forumsMessages()->findOrFail($messageId);
+    }
+
+
+    /**
+     * @param EditMessageRequest $request
+     * @param $topicId
+     * @param $messageId
+     *
+     * @return ForumsMessage
+     */
+    public function updateMessage(EditMessageRequest $request, $topicId, $messageId)
+    {
+        /** @var ForumsTopic $topic */
+        $topic = ForumsTopic::findOrFail($topicId);
+        return $topic->editMessage($messageId, $request->markdown);
+    }
+    
 
     /**
      * Remove the specified resource from storage.

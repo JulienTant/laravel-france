@@ -1,26 +1,32 @@
+var gulp = require('gulp');
+var shell = require('gulp-shell');
 var elixir = require('laravel-elixir');
 require('laravel-elixir-stylus');
 var postStylus = require('poststylus');
 
-/*
- |--------------------------------------------------------------------------
- | Elixir Asset Management
- |--------------------------------------------------------------------------
- |
- | Elixir provides a clean, fluent API for defining some basic Gulp tasks
- | for your Laravel application. By default, we are compiling the Sass
- | file for our application, as well as publishing vendor resources.
- |
- */
+
+var Task = elixir.Task;
+
+elixir.extend('laroute', function(message) {
+    new Task('laroute', function() {
+        return gulp
+            .src('')
+            .pipe(shell('php artisan laroute:generate'))
+            .pipe(new elixir.Notification('Laroute generated!'));
+    }).watch('app/Http/routes.php');
+});
+
 
 elixir(function(mix) {
-    mix
-        .stylus('app.styl', null, {
-            "include css": true,
-            use: [postStylus(['lost', 'postcss-position'])]
-        });
-        mix.browserify('main.js');
-        mix.browserSync({
-            proxy: 'homestead.app'
-        });
+    mix.laroute();
+
+    mix.stylus('app.styl', null, {
+        "include css": true,
+        use: [postStylus(['lost', 'postcss-position'])]
+    });
+    mix.browserify('main.js');
+    mix.browserSync({
+        proxy: 'homestead.app',
+        open: false
+    });
 });

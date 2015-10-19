@@ -9,6 +9,8 @@
   padding: 1rem 0 3rem 0;
   border-bottom 1px solid $lightgrey;
 
+  position relative;
+
   &:last-child {
     border-bottom 1px solid transparent;
   }
@@ -32,6 +34,8 @@
 }
 
 .Forums__MessageList__Message__Content {
+
+  padding-bottom: 1rem;
 
   & a {
     color: $black;
@@ -101,3 +105,9 @@
 }
 
 
+.Forums_MessageList__Message__Content__Buttons {
+  position absolute;
+  top 1rem;
+  right: 0;
+  margin-bottom 1rem;
+}

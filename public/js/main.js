@@ -27688,6 +27688,10 @@ var _componentsNewTopicVue = require('./components/new-topic.vue');
 
 var _componentsNewTopicVue2 = _interopRequireDefault(_componentsNewTopicVue);
 
+var _componentsEditMessageVue = require('./components/edit-message.vue');
+
+var _componentsEditMessageVue2 = _interopRequireDefault(_componentsEditMessageVue);
+
 var _componentsLoginBoxVue = require('./components/login-box.vue');
 
 var _componentsLoginBoxVue2 = _interopRequireDefault(_componentsLoginBoxVue);
@@ -27706,12 +27710,13 @@ exports['default'] = {
         HighlightedCode: _componentsHighlightedCodeVue2['default'],
         NewTopic: _componentsNewTopicVue2['default'],
         LoginBox: _componentsLoginBoxVue2['default'],
-        AnswerTopic: _componentsAnswerTopicVue2['default']
+        AnswerTopic: _componentsAnswerTopicVue2['default'],
+        EditMessage: _componentsEditMessageVue2['default']
     }
 };
 module.exports = exports['default'];
 
-},{"./components/alert.vue":218,"./components/answer-topic.vue":219,"./components/highlighted-code.vue":220,"./components/login-box.vue":221,"./components/new-topic.vue":223,"./components/relative-date.vue":224}],218:[function(require,module,exports){
+},{"./components/alert.vue":218,"./components/answer-topic.vue":219,"./components/edit-message.vue":220,"./components/highlighted-code.vue":221,"./components/login-box.vue":222,"./components/new-topic.vue":224,"./components/relative-date.vue":225}],218:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -27799,7 +27804,91 @@ exports['default'] = {
 module.exports = exports['default'];
 ;(typeof module.exports === "function"? module.exports.options: module.exports).template = __vue_template__;
 
-},{"../laroute":225}],220:[function(require,module,exports){
+},{"../laroute":226}],220:[function(require,module,exports){
+var __vue_template__ = "<button class=\"Button Button--Small Button--EditMessage\" id=\"show-modal\" @click=\"fillModal\"><slot></slot></button>\n\n    <modal :show.sync=\"showModal\" class=\"Modal---EditMessage\">\n        <h3 slot=\"header\">Modifier un message</h3>\n\n        <div slot=\"body\">\n            <form class=\"Form Form--EditMessage\" @submit=\"submitForm(editedMessage, $event)\">\n\n                <ul class=\"Form__ErrorList\" v-if=\"errors.length > 0\">\n                    <li class=\"Form__ErrorList__Item\" v-for=\"error in errors\">{{ error }}</li>\n                </ul>\n\n\n                <div class=\"Form__Row\">\n                    <label for=\"edit-message-markdown\" class=\"Form__Row__Label\">Message</label>\n                    <textarea type=\"text\" id=\"edit-message-markdown\" name=\"edit-message[markdown]\" class=\"Form__Row__Control\" v-model=\"editMessage.markdown\"></textarea>\n                </div>\n\n            </form>\n        </div>\n\n\n        <div slot=\"footer\">\n            <button type=\"reset\" class=\"Button Button--Cancel\" @click=\"closeModal\">\n                Annuler\n            </button>\n\n            <button type=\"submit\" class=\"Button Button--Submit\" @click=\"submitForm(editMessage, $event)\">Modifier le message</button>\n        </div>\n\n\n    </modal>";
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+    value: true
+});
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _modalVue = require('./modal.vue');
+
+var _modalVue2 = _interopRequireDefault(_modalVue);
+
+var _laroute = require('../laroute');
+
+var _laroute2 = _interopRequireDefault(_laroute);
+
+exports['default'] = {
+    components: {
+        Modal: _modalVue2['default']
+    },
+    methods: {
+        fillModal: function fillModal() {
+            var component = this;
+            this.$http.get(_laroute2['default'].route('api.forums.message', { topicId: this.topicId, messageId: this.messageId })).success(function (message) {
+                component.editMessage.markdown = message.markdown;
+                component.showModal = true;
+            });
+        },
+        submitForm: function submitForm(editMessage, event) {
+            var _this = this;
+
+            event.preventDefault();
+
+            var that = this;
+            this.$http.put(_laroute2['default'].route('api.forums.message.update', { topicId: this.topicId, messageId: this.messageId }), editMessage).success(function (topic, status, request) {
+                document.location.href = _laroute2['default'].route('forums.show-message', { messageId: that.messageId });
+            }).error(function (data, status, request) {
+
+                that.errors = [];
+                if (status == 422) {
+                    for (var element in data) {
+                        var elementWithError = data[element];
+                        for (var idx in elementWithError) {
+                            _this.errors.push(elementWithError[idx]);
+                        }
+                    }
+                }
+            });
+        },
+        closeModal: function closeModal() {
+            this.showModal = false;
+            this.editMessage.markdown = "";
+            this.errors = [];
+        }
+    },
+    props: {
+        messageId: {
+            type: String,
+            validator: function validator(value) {
+                return parseInt(value, 10) > 0;
+            }
+        },
+        topicId: {
+            type: String,
+            validator: function validator(value) {
+                return parseInt(value, 10) > 0;
+            }
+        }
+    },
+    data: function data() {
+        return {
+            showModal: false,
+            errors: [],
+            editMessage: {
+                markdown: ''
+            }
+        };
+    }
+};
+module.exports = exports['default'];
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = __vue_template__;
+
+},{"../laroute":226,"./modal.vue":223}],221:[function(require,module,exports){
 var __vue_template__ = "<pre class=\"{{ language ? 'language-' + language : '' }}\"><code><slot></slot></code></pre>";
 'use strict';
 
@@ -27817,7 +27906,7 @@ exports['default'] = {
 module.exports = exports['default'];
 ;(typeof module.exports === "function"? module.exports.options: module.exports).template = __vue_template__;
 
-},{"highlight.js":69}],221:[function(require,module,exports){
+},{"highlight.js":69}],222:[function(require,module,exports){
 var __vue_template__ = "<modal :show.sync=\"showModal\" class=\"Modal--LoginBox\">\n        <h3 slot=\"header\">Connexion</h3>\n\n        <div slot=\"body\">\n            <ul class=\"\">\n                <li class=\"\"><a href=\"/socialite/google\">Google</a></li>\n                <li class=\"\"><a href=\"/socialite/github\">Github</a></li>\n                <li class=\"\"><a href=\"/socialite/twitter\">Twitter</a></li>\n            </ul>\n        </div>\n\n\n        <div slot=\"footer\"></div>\n\n\n    </modal>";
 'use strict';
 
@@ -27846,7 +27935,7 @@ exports['default'] = {
 module.exports = exports['default'];
 ;(typeof module.exports === "function"? module.exports.options: module.exports).template = __vue_template__;
 
-},{"./modal.vue":222}],222:[function(require,module,exports){
+},{"./modal.vue":223}],223:[function(require,module,exports){
 var __vue_template__ = "<div class=\"Modal {{* class }}\" v-show=\"show\" transition=\"Modal\" @click=\"clickOnMask\">\n        <div class=\"Modal__Wrapper\" @click=\"clickOnMask\">\n            <div class=\"Modal__Wrapper__Container\">\n                <div class=\"Modal__Wrapper__Container__Header\">\n                    <slot name=\"header\">\n                        Laravel France\n                    </slot>\n                </div>\n\n                <div class=\"Modal__Wrapper__Container__Body\">\n                    <slot name=\"body\"></slot>\n                </div>\n\n                <div class=\"Modal__Wrapper__Container__Footer\">\n                    <slot name=\"footer\">\n                        <button @click=\"show = false\">\n                            OK\n                        </button>\n                    </slot>\n                </div>\n            </div>\n        </div>\n    </div>";
 "use strict";
 
@@ -27876,7 +27965,7 @@ exports["default"] = {
 module.exports = exports["default"];
 ;(typeof module.exports === "function"? module.exports.options: module.exports).template = __vue_template__;
 
-},{}],223:[function(require,module,exports){
+},{}],224:[function(require,module,exports){
 var __vue_template__ = "<button class=\"Button Button--NewTopic\" id=\"show-modal\" @click=\"showModal = true\"><slot></slot></button>\n\n    <modal :show.sync=\"showModal\" class=\"Modal--NewTopic\">\n        <h3 slot=\"header\">Créer un sujet</h3>\n\n        <div slot=\"body\">\n            <form class=\"Form Form--NewTopic\" @submit=\"submitForm(newTopic, $event)\">\n\n                <ul class=\"Form__ErrorList\" v-if=\"errors.length > 0\">\n                    <li class=\"Form__ErrorList__Item\" v-for=\"error in errors\">{{ error }}</li>\n                </ul>\n\n\n                <div class=\"Form__Row\">\n                    <label class=\"Form__Row__Label\" for=\"new-topic-title\">Titre</label>\n                    <input type=\"text\" class=\"Form__Row__Control\" id=\"new-topic-title\" name=\"new-topic[title]\" v-model=\"newTopic.title\">\n                </div>\n\n                <div class=\"Form__Row Form__Row--Category\">\n                    <label class=\"Form__Row__Label\">Catégorie</label>\n\n                    <template v-for=\"category in categoriesJson\" track-by=\"id\">\n                        <input id=\"category-id-{{ category.id }}\" type=\"radio\" name=\"new-topic[category]\" v-model=\"newTopic.category\" value=\"{{ category.id }}\"> \n                        <label for=\"category-id-{{ category.id }}\">{{ category.name }}</label>\n                    </template>\n                </div>\n\n                <div class=\"Form__Row\">\n                    <label for=\"new-topic-markdown\" class=\"Form__Row__Label\">Message</label>\n                    <textarea type=\"text\" id=\"new-topic-markdown\" name=\"new-topic[markdown]\" class=\"Form__Row__Control\" v-model=\"newTopic.markdown\"></textarea>\n                </div>\n\n            </form>\n        </div>\n\n\n        <div slot=\"footer\">\n            <button type=\"reset\" class=\"Button Button--Cancel\" @click=\"closeModal\">\n                Annuler\n            </button>\n\n            <button type=\"submit\" class=\"Button Button--Submit\" @click=\"submitForm(newTopic, $event)\">Créer un sujet</button>\n\n        </div>\n\n\n    </modal>";
 'use strict';
 
@@ -27962,7 +28051,7 @@ exports['default'] = {
 module.exports = exports['default'];
 ;(typeof module.exports === "function"? module.exports.options: module.exports).template = __vue_template__;
 
-},{"../laroute":225,"./modal.vue":222}],224:[function(require,module,exports){
+},{"../laroute":226,"./modal.vue":223}],225:[function(require,module,exports){
 var __vue_template__ = "<span :title=\"frenchDate\">{{ relativeTime }}</span>";
 'use strict';
 
@@ -27998,7 +28087,7 @@ exports['default'] = {
         var momentedDate = (0, _moment2['default'])(this.date);
 
         this.frenchDate = momentedDate.format('LLL');
-        setTimeout(function () {
+        setInterval(function () {
             return _this.relativeTime = momentedDate.fromNow();
         }, 10000);
         this.relativeTime = momentedDate.fromNow();
@@ -28007,7 +28096,7 @@ exports['default'] = {
 module.exports = exports['default'];
 ;(typeof module.exports === "function"? module.exports.options: module.exports).template = __vue_template__;
 
-},{"moment":206,"moment/locale/fr":205}],225:[function(require,module,exports){
+},{"moment":206,"moment/locale/fr":205}],226:[function(require,module,exports){
 "use strict";
 
 (function () {
@@ -28018,7 +28107,7 @@ module.exports = exports['default'];
 
             absolute: false,
             rootUrl: 'http://localhost',
-            routes: [{ "host": null, "methods": ["GET", "HEAD"], "uri": "_debugbar\/open", "name": "debugbar.openhandler", "action": "Barryvdh\Debugbar\Controllers\OpenHandlerController@handle" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "_debugbar\/clockwork\/{id}", "name": "debugbar.clockwork", "action": "Barryvdh\Debugbar\Controllers\OpenHandlerController@clockwork" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "_debugbar\/assets\/stylesheets", "name": "debugbar.assets.css", "action": "Barryvdh\Debugbar\Controllers\AssetController@css" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "_debugbar\/assets\/javascript", "name": "debugbar.assets.js", "action": "Barryvdh\Debugbar\Controllers\AssetController@js" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "\/", "name": "forums.index", "action": "ForumsController@topics" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "c\/{slug}", "name": "forums.by-category", "action": "ForumsController@topics" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "search", "name": "forums.search", "action": "ForumsController@search" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "t\/{categorySlug}\/{topicSlug}", "name": "forums.show-topic", "action": "ForumsController@topic" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "m\/{messageId}", "name": "forums.show-message", "action": "ForumsController@message" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "socialite\/{driver}", "name": "socialite.login", "action": "SocialiteController@redirectToProvider" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "socialite\/{driver}\/callback", "name": "socialite.callback", "action": "SocialiteController@handleProviderCallback" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "logout", "name": "logout", "action": "SocialiteController@logout" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "slack", "name": "slack", "action": "StaticController@slack" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "contact", "name": "contact", "action": "ContactController@index" }, { "host": null, "methods": ["POST"], "uri": "api\/forums\/post", "name": "api.forums.post", "action": "Api\ForumsController@post" }, { "host": null, "methods": ["POST"], "uri": "api\/forums\/{topicId}\/reply", "name": "api.forums.reply", "action": "Api\ForumsController@reply" }],
+            routes: [{ "host": null, "methods": ["GET", "HEAD"], "uri": "_debugbar\/open", "name": "debugbar.openhandler", "action": "Barryvdh\Debugbar\Controllers\OpenHandlerController@handle" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "_debugbar\/clockwork\/{id}", "name": "debugbar.clockwork", "action": "Barryvdh\Debugbar\Controllers\OpenHandlerController@clockwork" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "_debugbar\/assets\/stylesheets", "name": "debugbar.assets.css", "action": "Barryvdh\Debugbar\Controllers\AssetController@css" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "_debugbar\/assets\/javascript", "name": "debugbar.assets.js", "action": "Barryvdh\Debugbar\Controllers\AssetController@js" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "\/", "name": "forums.index", "action": "ForumsController@topics" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "c\/{slug}", "name": "forums.by-category", "action": "ForumsController@topics" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "search", "name": "forums.search", "action": "ForumsController@search" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "t\/{categorySlug}\/{topicSlug}", "name": "forums.show-topic", "action": "ForumsController@topic" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "m\/{messageId}", "name": "forums.show-message", "action": "ForumsController@message" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "socialite\/{driver}", "name": "socialite.login", "action": "SocialiteController@redirectToProvider" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "socialite\/{driver}\/callback", "name": "socialite.callback", "action": "SocialiteController@handleProviderCallback" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "logout", "name": "logout", "action": "SocialiteController@logout" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "slack", "name": "slack", "action": "StaticController@slack" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "contact", "name": "contact", "action": "ContactController@index" }, { "host": null, "methods": ["POST"], "uri": "api\/forums\/post", "name": "api.forums.post", "action": "Api\ForumsController@post" }, { "host": null, "methods": ["POST"], "uri": "api\/forums\/{topicId}\/reply", "name": "api.forums.reply", "action": "Api\ForumsController@reply" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "api\/forums\/{topicId}\/messages\/{messageId}", "name": "api.forums.message", "action": "Api\ForumsController@message" }, { "host": null, "methods": ["PUT"], "uri": "api\/forums\/{topicId}\/messages\/{messageId}", "name": "api.forums.message.update", "action": "Api\ForumsController@updateMessage" }],
 
             route: function route(name, parameters, _route) {
                 _route = _route || this.getByName(name);
@@ -28182,7 +28271,7 @@ module.exports = exports['default'];
     module.exports = laroute;
 }).call(undefined);
 
-},{}],226:[function(require,module,exports){
+},{}],227:[function(require,module,exports){
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -28207,4 +28296,4 @@ _Vue2['default'].http.headers.common['X-CSRF-TOKEN'] = window.document.querySele
 
 new _Vue2['default'](_app2['default']).$mount('#app');
 
-},{"./app":217,"Vue":66,"vue-resource":210}]},{},[226]);
+},{"./app":217,"Vue":66,"vue-resource":210}]},{},[227]);

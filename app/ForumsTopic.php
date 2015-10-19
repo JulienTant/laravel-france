@@ -13,6 +13,7 @@ use Cviebrock\EloquentSluggable\SluggableTrait;
 use Fadion\Bouncy\BouncyTrait;
 use Illuminate\Database\Eloquent\Model;
 use LaravelFrance\Events\ForumsMessagePostedOnForumsTopic;
+use LaravelFrance\Events\ForumsMessageWasEdited;
 use LaravelFrance\Events\ForumsTopicPosted;
 
 /**
@@ -114,6 +115,18 @@ class ForumsTopic extends Model implements SluggableInterface
         $this->forumsMessages()->save($message);
 
         \Event::fire(new ForumsMessagePostedOnForumsTopic($author, $this, $message));
+
+        return $message;
+    }
+
+    public function editMessage($messageId, $markdown)
+    {
+        /** @var ForumsMessage $message */
+        $message = $this->forumsMessages->find($messageId);
+        $message->editMarkdown($markdown);
+        $message->save();
+
+        \Event::fire(new ForumsMessageWasEdited($message));
 
         return $message;
     }

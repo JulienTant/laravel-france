@@ -20,7 +20,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property boolean $solve_topic
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
- * @property-read ForumsTopic $forumTopic
+ * @property-read ForumsTopic $forumsTopic
  * @property-read User $user
  * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\ForumsMessage whereId($value)
  * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\ForumsMessage whereForumsTopicId($value)
@@ -49,5 +49,12 @@ class ForumsMessage extends Model
         $message->markdown = $markdown;
 
         return $message;
+    }
+
+    public function editMarkdown($markdown)
+    {
+        $this->markdown = $markdown;
+
+        return $this;
     }
 }
