@@ -13,7 +13,7 @@ class AddGroupsFieldToUsers extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->json('groups')->after('email');
+            $table->json('groups')->nullable()->after('email');
         });
     }
 
