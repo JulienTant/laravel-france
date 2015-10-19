@@ -1,7 +1,7 @@
 <template>
     <button class="Button Button--Small Button--EditMessage" id="show-modal" @click="fillModal"><slot /></button>
 
-    <modal :show.sync="showModal" class="Modal---EditMessage">
+    <modal :show.sync="showModal" class="Modal---EditMessage" with-fullscreen="true">
         <h3 slot="header">Modifier un message</h3>
 
         <div slot="body">
@@ -13,7 +13,7 @@
 
 
                 <div class="Form__Row">
-                    <label for="edit-message-markdown" class="Form__Row__Label">Message</label>
+                    <label for="edit-message-markdown" class="Form__Row__Label">Message <small>(Le message doit être rédigé au format <a href="https://help.github.com/articles/markdown-basics/">Markdown</a>)</small></label>
                     <textarea type="text" id="edit-message-markdown" name="edit-message[markdown]" class="Form__Row__Control" v-model="editMessage.markdown"></textarea>
                 </div>
 

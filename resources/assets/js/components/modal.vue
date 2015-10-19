@@ -1,8 +1,11 @@
 <template>
-    <div class="Modal {{* class }}" v-show="show" transition="Modal" @click="clickOnMask">
+    <div class="Modal {{* class }}" v-show="show" transition="Modal" @click="clickOnMask" :class="{ 'Modal--Fullscreen': fullScreen }">
         <div class="Modal__Wrapper" @click="clickOnMask">
             <div class="Modal__Wrapper__Container">
                 <div class="Modal__Wrapper__Container__Header">
+                    <div class="Modal__Wrapper__Container__Header__Buttons" v-if="withFullscreen != false">
+                        <button class="Button Button--Small Button--Cancel" @click="this.fullScreen = !this.fullScreen">Plein écran</button>
+                    </div>
                     <slot name="header">
                         Laravel France
                     </slot>
@@ -32,11 +35,22 @@
                 if (e.target != e.currentTarget) return;
 
                 this.show = false;
+            },
+            toggleFullScreen () {
+                this.fullScreen = !this.fullScreen;
+            }
+        },
+        data() {
+            return {
+                fullScreen: false
             }
         },
         props: {
             class: {
                 type: String
+            },
+            withFullscreen: {
+                default: false
             },
             show: {
                 type: Boolean,

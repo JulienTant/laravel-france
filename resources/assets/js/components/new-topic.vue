@@ -1,7 +1,7 @@
 <template>
     <button class="Button Button--NewTopic" id="show-modal" @click="showModal = true"><slot /></button>
 
-    <modal :show.sync="showModal" class="Modal--NewTopic">
+    <modal :show.sync="showModal" class="Modal--NewTopic" with-fullscreen="true">
         <h3 slot="header">Créer un sujet</h3>
 
         <div slot="body">
@@ -27,7 +27,7 @@
                 </div>
 
                 <div class="Form__Row">
-                    <label for="new-topic-markdown" class="Form__Row__Label">Message</label>
+                    <label for="new-topic-markdown" class="Form__Row__Label">Message <small>(Le message doit être rédigé au format <a href="https://help.github.com/articles/markdown-basics/">Markdown</a>)</small></label>
                     <textarea type="text" id="new-topic-markdown" name="new-topic[markdown]" class="Form__Row__Control" v-model="newTopic.markdown"></textarea>
                 </div>
 

@@ -23,7 +23,7 @@
             </div>
 
             <p style="float: left">
-                <small>Les messages doivent être rédigé au format <a href="https://help.github.com/articles/markdown-basics/">Markdown</a></small>
+                <small>Le message doit être rédigé au format <a href="https://help.github.com/articles/markdown-basics/">Markdown</a></small>
             </p>
         </form>
     </div>

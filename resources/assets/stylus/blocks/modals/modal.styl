@@ -17,11 +17,15 @@
 }
 
 .Modal__Wrapper__Container {
-  width: $siteWidth * 0.7;
+  width: $siteWidth * 0.9;
   margin: 0 auto;
   padding: 1.7rem 2.2rem;
   background-color: $white;
   transition: all .3s ease;
+}
+
+.Modal__Wrapper__Container__Header__Buttons {
+  float: right;
 }
 
 .Modal__Wrapper__Container__Header h3 {
@@ -56,7 +60,17 @@
   transform: scale(1.1);
 }
 
-
+.Modal--Fullscreen {
+  .Modal__Wrapper__Container {
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+}
 
 
 @import "new-topic"

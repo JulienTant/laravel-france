@@ -815,6 +815,7 @@ body {
 }
 .Forums__MessageList__Message__Content {
   padding-bottom: 1rem;
+  min-height: 190px;
   width: calc(99.99% * 80/100 - (30px - 30px * 80/100));
   border-left: 1px solid #ddd;
   padding-left: 0.7rem;
@@ -889,6 +890,10 @@ body {
   right: 0;
   margin-bottom: 1rem;
 }
+.Forums_MessageList__Message__Content__Buttons > .Button {
+  background-color: #f55247;
+  color: #fdfdfd;
+}
 .Forums__Searchbar {
   margin-bottom: 1rem;
 }
@@ -899,6 +904,8 @@ body {
   border: 1px solid #d3d3d3;
 }
 .Forums--Fullpage .Forums__Content {
+  margin-left: 0 !important;
+  margin-right: 30px !important;
   width: calc(99.99% * 1/1 - (30px - 30px * 1/1));
 }
 .Forums--Fullpage .Forums__Content:nth-child(n){
@@ -977,11 +984,14 @@ body {
   vertical-align: middle;
 }
 .Modal__Wrapper__Container {
-  width: 686px;
+  width: 882px;
   margin: 0 auto;
   padding: 1.7rem 2.2rem;
   background-color: #fdfdfd;
   transition: all 0.3s ease;
+}
+.Modal__Wrapper__Container__Header__Buttons {
+  float: right;
 }
 .Modal__Wrapper__Container__Header h3 {
   margin-top: 0;
@@ -1001,6 +1011,15 @@ body {
 .Modal-leave .Modal__Wrapper__Container {
   -webkit-transform: scale(1.1);
   transform: scale(1.1);
+}
+.Modal--Fullscreen .Modal__Wrapper__Container {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }
 .Modal--NewTopic .Modal__Wrapper {
   vertical-align: bottom;

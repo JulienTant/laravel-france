@@ -32,11 +32,11 @@
             @endcan
 
             @can('forums.can_remove_message', $message)
-                <button>Supprimer</button>
+                <button class="Button Button--Small">Supprimer</button>
             @endcan
 
             @can('forums.can_reply_to_topic', $message->topic)
-                <button>Citer</button>
+                <button class="Button Button--Small">Citer</button>
             @endcan
         </div>
     </div>
