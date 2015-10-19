@@ -593,7 +593,11 @@ body {
 }
 .Forums__Paginator {
   margin-top: 2rem;
+  text-align: center;
+}
+.Forums__Paginator.Forums__Paginator--Right {
   float: right;
+  text-align: right;
 }
 .Forums__Sidebar {
   margin-top: 2rem;
@@ -1061,32 +1065,46 @@ textarea.Form__Row__Control {
 .SiteFooter__Inner {
   text-align: center;
 }
-.pagination {
+.pagination,
+.pager {
   padding: 0;
   margin: 0;
   text-align: center;
   display: inline-block;
   *zoom: 1;
 }
-.pagination:before{
+.pagination:before,
+.pager:before{
     content: '';
     display: table;
 }
-.pagination:after{
+.pagination:after,
+.pager:after{
     content: '';
     display: table;
     clear: both;
 }
-.pagination li {
+.pagination li,
+.pager li {
   display: inline;
 }
 .pagination li a,
-.pagination li.active span {
+.pager li a,
+.pagination li.active span,
+.pager li.active span {
   position: relative;
   float: left;
   padding: 0.3rem 1rem;
   margin-left: -1px;
   border: 1px solid #f55247;
+}
+.pagination li a,
+.pager li a {
+  text-decoration: none;
+}
+.pagination li.disabled,
+.pager li.disabled {
+  display: none;
 }
 .pagination li.active span {
   background: #f55247;
@@ -1095,15 +1113,19 @@ textarea.Form__Row__Control {
 .pagination li a {
   background: #fdfdfd;
   color: #f55247;
-  border-color: #f55247;
-  text-decoration: none;
 }
 .pagination li a:hover {
   color: #fff;
   background: #f55247;
 }
-.pagination li.disabled {
-  display: none;
+.pager li a {
+  margin-left: 2rem;
+  background: #f55247;
+  color: #fdfdfd;
+}
+.pager li a:hover {
+  color: #f55247;
+  background: #fff;
 }
 .PageForums .SiteFooter__Inner {
   width: calc(99.99% * 3/4 - (30px - 30px * 3/4));

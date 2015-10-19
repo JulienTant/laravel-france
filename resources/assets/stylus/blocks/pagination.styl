@@ -1,4 +1,4 @@
-.pagination {
+.pagination, .pager {
     padding 0;
     margin 0;
     text-align center;
@@ -16,25 +16,42 @@
       border: 1px solid $orange;
     }
 
-    &.active span {
-      background $orange;
-      color white;
-    }
-
      a {
-      background $white;
-      color $orange;
-      border-color $orange
       text-decoration: none;
-       &:hover {
-         color: white;
-         background $orange;
-       }
-
      }
 
     &.disabled {
       display none;
     }
+  }
+}
+
+
+.pagination {
+  li.active span {
+    background $orange;
+    color white;
+  }
+
+  li a {
+    background $white;
+    color $orange;
+    &:hover {
+      color: white;
+      background $orange;
+    }
+  }
+}
+
+.pager {
+
+  li a {
+    margin-left: 2rem;
+    background $orange;
+      color $white;
+      &:hover {
+        color: $orange;
+        background white;
+      }
   }
 }

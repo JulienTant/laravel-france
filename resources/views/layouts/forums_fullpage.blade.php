@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('page_class', 'PageForums')
+@section('page_class', 'PageForums PageForums--Fullpage')
 
 @section('content')
 

@@ -54,7 +54,7 @@
     </ul>
 
     @if($messages->hasPages())
-        <div class="Forums__Paginator">
+        <div class="Forums__Paginator Forums__Paginator--Right">
             {!! $messages->render() !!}
         </div>
     @endif
