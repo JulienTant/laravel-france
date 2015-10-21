@@ -11,7 +11,7 @@
 
             <div class="Form__Row">
                 <label for="answer-topic-markdown" class="Form__Row__Label">Message</label>
-                <textarea type="text" id="answer-topic-markdown" name="answer-topic[markdown]" class="Form__Row__Control" v-model="answer.markdown"></textarea>
+                <textarea type="text" id="answer-topic-markdown" name="answer-topic[markdown]" class="Form__Row__Control" v-simplemde="answer.markdown"></textarea>
             </div>
 
             <div class="Form__Row Form__Row--Buttons" style="float: right">
@@ -31,6 +31,7 @@
 
 <script lang="es6" type="text/ecmascript-6">
     import Laroute from '../laroute'
+    import SimpleMDE from '../directives/simplemde.vue'
 
     export default {
         methods: {
@@ -76,6 +77,9 @@
                     markdown: '',
                 }
             }
+        },
+        directives: {
+            'simplemde': SimpleMDE
         }
     }
 

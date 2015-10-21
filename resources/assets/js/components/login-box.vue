@@ -1,12 +1,22 @@
 <template>
-    <modal :show.sync="showModal" class="Modal--LoginBox">
+    <modal :show.sync="showModal" class="LoginBox Modal--LoginBox">
         <h3 slot="header">Connexion</h3>
 
+
         <div slot="body">
-            <ul class="">
-                <li class=""><a href="/socialite/google">Google</a></li>
-                <li class=""><a href="/socialite/github">Github</a></li>
-                <li class=""><a href="/socialite/twitter">Twitter</a></li>
+
+            <p>Afin de vous connecter à Laravel France, merci d'utiliser un des services externe suivant : </p>
+
+            <ul class="LoginBox__Providers">
+                <li class="LoginBox__Providers__Provider LoginBox__Providers__Provider--Google">
+                    <a href="/socialite/google">Google</a>
+                </li>
+                <li class="LoginBox__Providers__Provider LoginBox__Providers__Provider--Github">
+                    <a href="/socialite/github">Github</a>
+                </li>
+                <li class="LoginBox__Providers__Provider LoginBox__Providers__Provider--Twitter">
+                    <a href="/socialite/twitter">Twitter</a>
+                </li>
             </ul>
         </div>
 

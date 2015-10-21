@@ -1,7 +1,7 @@
 <template>
     <button class="Button Button--NewTopic" id="show-modal" @click="showModal = true"><slot /></button>
 
-    <modal :show.sync="showModal" class="Modal--NewTopic" :full-screen.sync="isFullScreen" with-fullscreen="true">
+    <modal :show.sync="showModal" class="Modal--NewTopic">
         <h3 slot="header">Créer un sujet</h3>
 
         <div slot="body">
@@ -28,7 +28,7 @@
 
                 <div class="Form__Row">
                     <label for="new-topic-markdown" class="Form__Row__Label">Message <small>(Le message doit être rédigé au format <a href="https://help.github.com/articles/markdown-basics/">Markdown</a>)</small></label>
-                    <textarea type="text" id="new-topic-markdown" name="new-topic[markdown]" class="Form__Row__Control" v-model="newTopic.markdown"></textarea>
+                    <textarea v-if="showModal" v-simplemde="newTopic.markdown" type="text" id="new-topic-markdown" name="new-topic[markdown]" class="Form__Row__Control"></textarea>
                 </div>
 
             </form>
@@ -51,11 +51,14 @@
 <script lang="es6" type="text/ecmascript-6">
     import Modal from './modal.vue'
     import Laroute from '../laroute'
-    import Autosize from 'autosize'
+    import SimpleMDE from '../directives/simplemde.vue'
 
     export default {
         components: {
            Modal
+        },
+        directives: {
+            'simplemde': SimpleMDE
         },
         methods: {
             submitForm(newTopic, event) {
@@ -105,7 +108,6 @@
         data() {
             return {
                 isDisabled: false,
-                isFullScreen: false,
                 showModal: false,
                 categoriesJson: [],
                 errors: [],
@@ -117,19 +119,12 @@
             }
         },
         ready() {
+            var that = this;
+
             if (!!this.current_category) {
                 this.newTopic.category = this.current_category;
             }
             this.categoriesJson = JSON.parse(this.categories);
-
-            this.$watch('isFullScreen', function (newValue, oldValue) {
-                if  (newValue == true) {
-                    Autosize(document.querySelector('#new-topic-markdown'));
-                } else {
-                    Autosize.destroy(document.querySelector('#new-topic-markdown'));
-                }
-            });
-
-    }
+        }
     }
 </script>

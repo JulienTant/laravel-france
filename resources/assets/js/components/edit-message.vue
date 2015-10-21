@@ -1,7 +1,7 @@
 <template>
     <button class="Button Button--Small Button--EditMessage" id="show-modal" @click="fillModal"><slot /></button>
 
-    <modal :show.sync="showModal" class="Modal---EditMessage" :full-screen.sync="isFullScreen" with-fullscreen="true">
+    <modal :show.sync="showModal" class="Modal---EditMessage">
         <h3 slot="header">Modifier un message</h3>
 
         <div slot="body">
@@ -15,7 +15,7 @@
 
                 <div class="Form__Row">
                     <label for="edit-message-markdown" class="Form__Row__Label">Message <small>(Le message doit être rédigé au format <a href="https://help.github.com/articles/markdown-basics/">Markdown</a>)</small></label>
-                    <textarea type="text" id="edit-message-markdown" name="edit-message[markdown]" class="Form__Row__Control" v-model="editMessage.markdown"></textarea>
+                    <textarea v-if="showModal" type="text" id="edit-message-markdown" name="edit-message[markdown]" class="Form__Row__Control" v-simplemde="editMessage.markdown"></textarea>
                 </div>
 
             </form>
@@ -36,6 +36,7 @@
     import Modal from './modal.vue'
     import Autosize from 'autosize'
     import Laroute from '../laroute'
+    import SimpleMDE from '../directives/simplemde.vue'
 
     export default {
         components: {
@@ -94,7 +95,6 @@
         data() {
             return {
                 isDisabled: false,
-                isFullScreen: false,
                 showModal: false,
                 errors: [],
                 editMessage: {
@@ -102,14 +102,8 @@
                 }
             }
         },
-        ready() {
-            this.$watch('isFullScreen', function (newValue, oldValue) {
-                if  (newValue == true) {
-                    Autosize(document.querySelector('#edit-message-markdown'));
-                } else {
-                    Autosize.destroy(document.querySelector('#edit-message-markdown'));
-                }
-            });
+        directives: {
+            'simplemde': SimpleMDE
         }
     }
 </script>

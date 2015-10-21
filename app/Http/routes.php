@@ -30,6 +30,8 @@ get('contact', ['as' => 'contact', 'uses' => 'ContactController@index']);
 
 /** @var \Illuminate\Routing\Router $router */
 $router->group(['laroute' => true, 'namespace' => 'Api', 'prefix' => 'api'], function () {
+    post('renderMarkdown', ['as' => 'api.markdown', 'uses' => 'MarkdownController@render']);
+
     post('forums/post', ['as' => 'api.forums.post', 'uses' => 'ForumsController@post']);
     post('forums/{topicId}/reply', ['as' => 'api.forums.reply', 'uses' => 'ForumsController@reply']);
 

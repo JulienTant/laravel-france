@@ -24,7 +24,11 @@ elixir(function(mix) {
         "include css": true,
         use: [postStylus(['lost', 'postcss-position'])]
     });
+
+    mix.copy('node_modules/font-awesome/fonts', 'public/fonts');
+
     mix.browserify('main.js');
+
     mix.browserSync({
         proxy: 'homestead.app',
         open: false
