@@ -572,6 +572,13 @@ body {
 .Forums_TopicHeader a {
   color: #fff;
 }
+.Forums__TopicHeader__Title--Solved:before {
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  font-family: FontAwesome;
+  margin-right: 0.1rem;
+  content: "\f00c";
+}
 .Forums__Content {
   margin-top: 2rem;
   margin-left: calc(99.99% * (-1/20 * -1) - (30px - 30px * (-1/20 * -1)) + 30px) !important;
@@ -764,6 +771,14 @@ body {
 .Forums__TopicList__Item__NbReplies:nth-child(100n + 1){
     clear: left;
 }
+.Forums__TopicList__Item__Subject--Solved:before {
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  font-family: FontAwesome;
+  margin-right: 0.1rem;
+  content: "\f00c";
+  color: #f55247;
+}
 .Forums__MessageList {
   margin: 0;
   padding: 0;
@@ -771,7 +786,8 @@ body {
 .Forums__MessageList__Message {
   list-style: none;
   *zoom: 1;
-  padding: 1rem 0 3rem 0;
+  padding: 1rem;
+  margin-bottom: 2rem;
   border-bottom: 1px solid #ddd;
   position: relative;
 }
@@ -786,6 +802,9 @@ body {
 }
 .Forums__MessageList__Message:last-child {
   border-bottom: 1px solid transparent;
+}
+.Forums__MessageList__Message--SolveTopic {
+  background: #fee5e3;
 }
 .Forums__MessageList__Message__Side {
   width: calc(99.99% * 20/100 - (30px - 30px * 20/100));
@@ -876,6 +895,9 @@ body {
 .Forums__MessageList__Message__Content__Html pre {
   padding: 1rem;
 }
+.Forums__MessageList__Message__Content__Html img {
+  max-width: 100%;
+}
 .Forums__MessageList_Message__Content__Authoring {
   font-size: 0.8rem;
 }
@@ -887,7 +909,7 @@ body {
 .Forums_MessageList__Message__Content__Buttons {
   position: absolute;
   top: 1rem;
-  right: 0;
+  right: 1rem;
   margin-bottom: 1rem;
 }
 .Forums_MessageList__Message__Content__Buttons > .Button {

@@ -12,9 +12,7 @@
     </div>
 
     <ul class="Forums__TopicList">
-        @foreach($topics as $topic)
-            @include('forums._topic_in_list', ['topic' => $topic])
-        @endforeach
+        @each('forums._topic_in_list', $topics, 'topic');
     </ul>
 
 

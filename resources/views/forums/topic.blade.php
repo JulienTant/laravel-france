@@ -9,7 +9,7 @@
                 </h3>
             </a>
 
-            <h2>
+            <h2 class="Forums__TopicHeader__Title {{ $topic->solved ? 'Forums__TopicHeader__Title--Solved' : '' }}">
                 {{ $topic->title }}
             </h2>
         </div>

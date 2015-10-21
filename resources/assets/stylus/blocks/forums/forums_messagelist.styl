@@ -6,9 +6,9 @@
 .Forums__MessageList__Message {
   list-style none;
   lost-utility: clearfix;
-  padding: 1rem 0 3rem 0;
+  padding: 1rem;
+  margin-bottom 2rem;
   border-bottom 1px solid $lightgrey;
-
   position relative;
 
   &:last-child {
@@ -16,6 +16,10 @@
   }
 }
 
+
+.Forums__MessageList__Message--SolveTopic {
+  background lighten($orange, 85%)
+}
 
 .Forums__MessageList__Message__Side {
   lost-column: 20/100;
@@ -93,6 +97,10 @@
   & pre {
     padding: 1rem;
   }
+
+  & img {
+    max-width 100%
+  }
 }
 
 .Forums__MessageList_Message__Content__Authoring {
@@ -109,7 +117,7 @@
 .Forums_MessageList__Message__Content__Buttons {
   position absolute;
   top 1rem;
-  right: 0;
+  right: 1rem;
   margin-bottom 1rem;
 
   & > .Button {

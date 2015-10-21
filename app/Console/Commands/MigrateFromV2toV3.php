@@ -122,18 +122,44 @@ class MigrateFromV2toV3 extends Command
         $this->info('> Transfering Users');
         $nbUsers = $oldConnection->table('users')->count(['id']);
         $bar = $this->output->createProgressBar($nbUsers);
-        $oldConnection->table('users')->chunk(100, function ($oldUsers) use ($newConnection, $bar) {
+
+        $changedUsername = [];
+        $changedUsernameDuplicate = [];
+        $oldConnection->table('users')->chunk(1, function ($oldUsers) use ($newConnection, $bar, &$changedUsername, &$changedUsernameDuplicate) {
 
             foreach ($oldUsers as &$user) {
                 $user = (array)$user;
+                $originalUserName = $user['username'];
+                $user['username'] = preg_replace('/\s+/', '', $user['username']);
+                if ($originalUserName != $user['username']) {
+                    $changedUsername[] = ['id' => $user['id'], 'old' => $originalUserName, 'new' => $user['username']];
+                }
                 unset($user['canUpdateWiki']);
             }
 
-            $newConnection->table('users')->insert($oldUsers);
+            try {
+                $newConnection->table('users')->insert($oldUsers);
+            } catch (\Illuminate\Database\QueryException $q) {
+                if ($q->getCode() == 23000 && str_contains($q->getMessage(), 'Duplicate entry')) {
+                    $old = $oldUsers[0]['username'];
+                    $oldUsers[0]['username'] .= '_dup_'.str_random(2);
+                    $changedUsernameDuplicate[] = ['id' => $oldUsers[0]['id'], 'old' => $old, 'new' => $oldUsers[0]['username']];
+                    $newConnection->table('users')->insert($oldUsers[0]);
+                }
+            }
             $bar->advance(count($oldUsers));
 
             unset($oldUsers);
         });
+
+        foreach($changedUsername as $usernames) {
+            $this->line('Changement de username par suppression d\'espace pour #' . $usernames['id'] . ' : ' . $usernames['old'] . ' => ' . $usernames['new']);
+        }
+
+        foreach($changedUsernameDuplicate as $usernames) {
+            $this->line('Changement de username cause duplicata pour #' . $usernames['id'] . ' : ' . $usernames['old'] . ' => ' . $usernames['new']);
+        }
+
         $this->line('');
         $this->line('');
         unset($bar);

@@ -1,4 +1,4 @@
-<li class="Forums__MessageList__Message">
+<li class="Forums__MessageList__Message {{ $message->solve_topic ? 'Forums__MessageList__Message--SolveTopic': '' }}">
 
     <div class="Forums__MessageList__Message__Side">
         <div class="Forums__MessageList__Message__Side__Avatar">

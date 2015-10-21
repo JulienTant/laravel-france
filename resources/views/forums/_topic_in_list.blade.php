@@ -5,7 +5,7 @@
         </div>
 
         <div class="Forums__TopicList__Item__Content">
-            <h3 class="Forums__TopicList__Item__Subject">{{ $topic->title }}</h3>
+            <h3 class="Forums__TopicList__Item__Subject {{ $topic->solved ? 'Forums__TopicList__Item__Subject--Solved' : '' }}">{{ $topic->title }}</h3>
             <span class="Forums__CategoryLabel" style="background-color: {{ $topic->forumsCategory->background_color }}; color: {{ $topic->forumsCategory->font_color }}">{{ $topic->forumsCategory->name }}</span>
                         <span class="Forums__TopicList__Item__Metas__Authoring">
                             Dernier message : {{ $topic->lastMessage->user->username }}
