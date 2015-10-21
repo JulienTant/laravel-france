@@ -13,6 +13,11 @@ export default {
     data: {
         showLoginBox: false
     },
+    methods: {
+        citeMe: function(event) {
+            this.$broadcast('cite-this', {username: event.target.dataset.quoteUsername, message: event.target.dataset.quoteMessage});
+        }
+    },
     components: {
         Alert,
         RelativeDate,

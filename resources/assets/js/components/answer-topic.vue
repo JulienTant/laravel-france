@@ -63,6 +63,34 @@
                 this.errors = [];
             }
         },
+        events: {
+            'cite-this': function (payload) {
+
+                var user = JSON.parse(payload.username);
+                var message = JSON.parse(payload.message);
+
+
+                var userLine = '> <cite>'+ user +'</cite>' + "\n";
+
+                var arrayOfLines = message.split("\n");
+                arrayOfLines.forEach(function (value, k) {
+                    arrayOfLines[k] = '> '+ value
+                });
+
+                var twoNewLines = "\n\n";
+
+                this.answer.markdown = userLine + arrayOfLines.join("\n") + twoNewLines;
+
+                var myTextarea = document.querySelector('#answer-topic-markdown');
+                myTextarea.editor.codemirror.focus();
+
+                if (myTextarea.editor) {
+                    setTimeout(function () {
+                        myTextarea.editor.codemirror.setCursor(1e8, 0)
+                    }, 50);
+                }
+            }
+        },
         props: {
             topic: {
                 required: true,

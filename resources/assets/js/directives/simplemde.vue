@@ -24,6 +24,8 @@
                 toolbarTips: true
             });
 
+            self.el.editor = self.editor;
+
             self.editor.codemirror.on("change", function() {
                 self.set(self.editor.value());
             });

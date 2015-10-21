@@ -43594,6 +43594,11 @@ exports['default'] = {
     data: {
         showLoginBox: false
     },
+    methods: {
+        citeMe: function citeMe(event) {
+            this.$broadcast('cite-this', { username: event.target.dataset.quoteUsername, message: event.target.dataset.quoteMessage });
+        }
+    },
     components: {
         Alert: _componentsAlertVue2['default'],
         RelativeDate: _componentsRelativeDateVue2['default'],
@@ -43683,6 +43688,33 @@ exports['default'] = {
         reset: function reset() {
             this.answer.markdown = "";
             this.errors = [];
+        }
+    },
+    events: {
+        'cite-this': function citeThis(payload) {
+
+            var user = JSON.parse(payload.username);
+            var message = JSON.parse(payload.message);
+
+            var userLine = '> <cite>' + user + '</cite>' + "\n";
+
+            var arrayOfLines = message.split("\n");
+            arrayOfLines.forEach(function (value, k) {
+                arrayOfLines[k] = '> ' + value;
+            });
+
+            var twoNewLines = "\n\n";
+
+            this.answer.markdown = userLine + arrayOfLines.join("\n") + twoNewLines;
+
+            var myTextarea = document.querySelector('#answer-topic-markdown');
+            myTextarea.editor.codemirror.focus();
+
+            if (myTextarea.editor) {
+                setTimeout(function () {
+                    myTextarea.editor.codemirror.setCursor(1e8, 0);
+                }, 50);
+            }
         }
     },
     props: {
@@ -44187,6 +44219,8 @@ exports['default'] = {
             toolbar: ["bold", "italic", "heading", "|", "quote", "code", "unordered-list", "ordered-list", "|", "link", "image", "|", "preview", "side-by-side", "fullscreen"],
             toolbarTips: true
         });
+
+        self.el.editor = self.editor;
 
         self.editor.codemirror.on("change", function () {
             self.set(self.editor.value());

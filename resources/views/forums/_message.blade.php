@@ -41,7 +41,7 @@
             @endcan
 
             @can('forums.can_reply_to_topic', $message->topic)
-                <button class="Button Button--Small">Citer</button>
+                <button class="Button Button--Small" data-quote-username="{{ json_encode($message->user->username) }}" data-quote-message="{{ json_encode($message->markdown) }}" @click="citeMe">Citer</button>
             @endcan
         </div>
     </div>
