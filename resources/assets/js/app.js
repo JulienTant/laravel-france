@@ -6,6 +6,7 @@ import EditMessage from './components/edit-message.vue'
 import LoginBox from './components/login-box.vue'
 import AnswerTopic from './components/answer-topic.vue'
 import RemoveMessage from './components/remove-message.vue'
+import MarkTopicSolved from './components/mark-topic-solved.vue'
 
 
 export default {
@@ -20,6 +21,7 @@ export default {
         LoginBox,
         AnswerTopic,
         EditMessage,
-        RemoveMessage
+        RemoveMessage,
+        MarkTopicSolved
     }
 }

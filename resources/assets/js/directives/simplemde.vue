@@ -1,18 +1,21 @@
 <script lang="es6" type="text/ecmascript-6">
     import SimpleMDE from 'simplemde'
+    import Laroute from '../laroute'
 
     export default {
         twoWay: true,
         bind: function () {
             var self = this;
+            var previousResult = '';
 
             self.editor = new SimpleMDE({
                 element: self.el,
                 indentWithTabs: false,
                 previewRender: function(plainText, preview) { // Async method
-                    preview.innerHTML = self.$http.post(Laroute.route('api.markdown'), {markdown: plainText})
-                            .success((data) => { preview.innerHTML = data.html });
-                    return preview.innerHTML;
+                    preview.innerHTML = self.vm.$http.post(Laroute.route('api.markdown'), {markdown: plainText})
+                            .success((data) => { preview.innerHTML = previousResult =data.html });
+
+                    return previousResult;
                 },
                 spellChecker: false,
                 status: ['lines', 'words', 'cursor'],

@@ -10,6 +10,7 @@ use LaravelFrance\Http\Controllers\Controller;
 use LaravelFrance\Http\Requests\AnswerToTopicRequest;
 use LaravelFrance\Http\Requests\DeleteMessageRequest;
 use LaravelFrance\Http\Requests\EditMessageRequest;
+use LaravelFrance\Http\Requests\SolveTopicRequest;
 use LaravelFrance\Http\Requests\StoreTopicRequest;
 
 /**
@@ -99,5 +100,14 @@ class ForumsController extends Controller
 
         return $topic->exists ? $topic->load('forumsCategory') : null;
 
+    }
+
+    public function solveTopic(SolveTopicRequest $request, $topicId, $messageId)
+    {
+        /** @var ForumsTopic $topic */
+        $topic = ForumsTopic::findOrFail($topicId);
+        $topic->solve($messageId);
+
+        return $topic->load('forumsCategory');
     }
 }

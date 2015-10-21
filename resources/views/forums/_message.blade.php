@@ -36,6 +36,10 @@
                 <remove-message message-id="{{ $message->id }}" topic-id="{{ $message->forums_topic_id }}">Supprimer</remove-message>
             @endcan
 
+            @can('forums.can_mark_as_solve', $message)
+                <mark-topic-solved message-id="{{ $message->id }}" topic-id="{{ $message->forums_topic_id }}">Ce message répond à ma question</mark-topic-solved>
+            @endcan
+
             @can('forums.can_reply_to_topic', $message->topic)
                 <button class="Button Button--Small">Citer</button>
             @endcan

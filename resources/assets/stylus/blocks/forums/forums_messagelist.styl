@@ -123,5 +123,10 @@
   & > .Button {
     background-color: $orange;
     color: $white;
+
+    &[disabled] {
+      background lighten($orange, 12);
+      cursor: not-allowed
+    }
   }
 }

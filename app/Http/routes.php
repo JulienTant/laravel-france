@@ -38,4 +38,5 @@ $router->group(['laroute' => true, 'namespace' => 'Api', 'prefix' => 'api'], fun
     get('forums/{topicId}/messages/{messageId}', ['as' => 'api.forums.message', 'uses' => 'ForumsController@message']);
     put('forums/{topicId}/messages/{messageId}', ['as' => 'api.forums.message.update', 'uses' => 'ForumsController@updateMessage']);
     delete('forums/{topicId}/messages/{messageId}', ['as' => 'api.forums.message.delete', 'uses' => 'ForumsController@deleteMessage']);
+    post('forums/{topicId}/messages/{messageId}/solve_topic', ['as' => 'api.forums.message.solved_topic', 'uses' => 'ForumsController@solveTopic']);
 });

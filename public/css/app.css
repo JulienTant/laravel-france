@@ -916,6 +916,10 @@ body {
   background-color: #f55247;
   color: #fdfdfd;
 }
+.Forums_MessageList__Message__Content__Buttons > .Button[disabled] {
+  background: #f88981;
+  cursor: not-allowed;
+}
 .Forums__Searchbar {
   margin-bottom: 1rem;
 }

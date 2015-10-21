@@ -57,4 +57,9 @@ class ForumsMessage extends Model
 
         return $this;
     }
+
+    public function setAsTheHeroOfTheDay()
+    {
+        $this->solve_topic = true;
+    }
 }

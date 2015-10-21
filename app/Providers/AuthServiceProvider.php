@@ -13,6 +13,8 @@ use LaravelFrance\User;
 
 class AuthServiceProvider extends ServiceProvider
 {
+
+    static $noSuperPowersFor = ['forums.can_mark_as_solve'];
     /**
      * The policy mappings for the application.
      *
@@ -33,6 +35,33 @@ class AuthServiceProvider extends ServiceProvider
 
         /** @var \Illuminate\Auth\Access\Gate $gate */
         $this->giveAdminsSuperPower($gate);
+
+        $this->defineForumsRules($gate);
+    }
+
+    /**
+     * @param GateContract $gate
+     */
+    private function giveAdminsSuperPower(GateContract $gate)
+    {
+        $gate->before(function (User $user, $ability) {
+            // SuperAdmin
+            if (!in_array($ability, self::$noSuperPowersFor) && in_array(Group::SUPERADMIN, $user->groups)) {
+                return true;
+            }
+        });
+    }
+
+    /**
+     * @param GateContract $gate
+     */
+    private function defineForumsRules(GateContract $gate)
+    {
+        $gate->before(function (User $user, $ability) {
+            if (!in_array($ability, self::$noSuperPowersFor) && str_is('forums.*', $ability) && in_array(Group::FORUMS_MODERATOR, $user->groups)) {
+                return true;
+            }
+        });
 
         $gate->define('forums.can_create_topic', function (User $user, ForumsCategory $category = null) {
             return true;
@@ -59,22 +88,22 @@ class AuthServiceProvider extends ServiceProvider
 
             return true;
         });
-    }
 
-    /**
-     * @param GateContract $gate
-     */
-    private function giveAdminsSuperPower(GateContract $gate)
-    {
-        $gate->before(function (User $user, $ability) {
-            // SuperAdmin
-            if (in_array(Group::SUPERADMIN, $user->groups)) {
-                return true;
+        $gate->define('forums.can_mark_as_solve', function (User $user, ForumsMessage $message) {
+
+            if ($message->forumsTopic->solved) {
+                return false;
             }
 
-            if (str_is('forums.*', $ability) && in_array(Group::FORUMS_MODERATOR, $user->groups)) {
-                return true;
+            if ($message->forumsTopic->user_id != $user->id) {
+                return false;
             }
+
+            if ($message->id == $message->forumsTopic->firstMessage->id) {
+                return false;
+            }
+
+            return true;
         });
     }
 }

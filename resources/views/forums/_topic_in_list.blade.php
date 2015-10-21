@@ -8,7 +8,10 @@
             <h3 class="Forums__TopicList__Item__Subject {{ $topic->solved ? 'Forums__TopicList__Item__Subject--Solved' : '' }}">{{ $topic->title }}</h3>
             <span class="Forums__CategoryLabel" style="background-color: {{ $topic->forumsCategory->background_color }}; color: {{ $topic->forumsCategory->font_color }}">{{ $topic->forumsCategory->name }}</span>
                         <span class="Forums__TopicList__Item__Metas__Authoring">
-                            Dernier message : {{ $topic->lastMessage->user->username }}
+                            Par <strong>{{ $topic->user->username }}</strong>
+                            @if($topic->nb_messages > 1)
+                                , dernier message : <strong>{{ $topic->lastMessage->user->username }}</strong>
+                            @endif
                             <relative-date date="{{ $topic->lastMessage->created_at->format('Y-m-d H:i:s') }}"></relative-date>
                         </span>
             <p class="Forums__TopicList__Item__Excerpt">

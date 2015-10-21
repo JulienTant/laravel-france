@@ -17,6 +17,7 @@ use LaravelFrance\Events\ForumsMessageWasDeleted;
 use LaravelFrance\Events\ForumsMessageWasEdited;
 use LaravelFrance\Events\ForumsTopicPosted;
 use LaravelFrance\Events\ForumsTopicWasDeleted;
+use LaravelFrance\Events\ForumsTopicWasSolved;
 
 /**
  * LaravelFrance\ForumsTopic
@@ -51,6 +52,7 @@ use LaravelFrance\Events\ForumsTopicWasDeleted;
  * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\ForumsTopic whereUpdatedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\ForumsTopic whereNbMessages($value)
  * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\ForumsTopic forListing()
+ * @property-read ForumsMessage $solvedBy
  */
 class ForumsTopic extends Model implements SluggableInterface
 {
@@ -95,6 +97,11 @@ class ForumsTopic extends Model implements SluggableInterface
         return $this->belongsTo(ForumsMessage::class, 'last_message_id');
     }
 
+    public function solvedBy()
+    {
+        return $this->belongsTo(ForumsMessage::class, 'solved_by');
+    }
+
     public static function post(User $author, $title, $category, $markdown)
     {
         $topic = new static;
@@ -131,6 +138,23 @@ class ForumsTopic extends Model implements SluggableInterface
         \Event::fire(new ForumsMessageWasEdited($message));
 
         return $message;
+    }
+
+
+    public function solve($messageId)
+    {
+        /** @var ForumsMessage $message */
+        $message = $this->forumsMessages->find($messageId);
+        $message->setAsTheHeroOfTheDay();
+        $message->save();
+
+        $this->solved = true;
+        $this->solvedBy()->associate($message);
+        $this->save();
+
+        \Event::fire(new ForumsTopicWasSolved($this, $message));
+
+        return $this;
     }
 
     public function incrementNbMessages($step = 1)
@@ -197,4 +221,5 @@ class ForumsTopic extends Model implements SluggableInterface
             'created_at' => $this->created_at->format('Y-m-d H:i:s')
         ];
     }
+
 }
