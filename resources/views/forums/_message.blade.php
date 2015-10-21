@@ -32,7 +32,8 @@
             @endcan
 
             @can('forums.can_remove_message', $message)
-                <button class="Button Button--Small">Supprimer</button>
+
+                <remove-message message-id="{{ $message->id }}" topic-id="{{ $message->forums_topic_id }}">Supprimer</remove-message>
             @endcan
 
             @can('forums.can_reply_to_topic', $message->topic)

@@ -1,10 +1,11 @@
 <template>
     <button class="Button Button--Small Button--EditMessage" id="show-modal" @click="fillModal"><slot /></button>
 
-    <modal :show.sync="showModal" class="Modal---EditMessage" with-fullscreen="true">
+    <modal :show.sync="showModal" class="Modal---EditMessage" :full-screen.sync="isFullScreen" with-fullscreen="true">
         <h3 slot="header">Modifier un message</h3>
 
         <div slot="body">
+
             <form class="Form Form--EditMessage" @submit="submitForm(editedMessage, $event)" >
 
                 <ul class="Form__ErrorList" v-if="errors.length > 0">
@@ -26,15 +27,14 @@
                 Annuler
             </button>
 
-            <button type="submit" class="Button Button--Submit" @click="submitForm(editMessage, $event)">Modifier le message</button>
+            <button type="submit" class="Button Button--Submit" @click="submitForm(editMessage, $event)" :disabled="isDisabled">Modifier le message</button>
         </div>
-
-
     </modal>
 </template>
 
 <script lang="es6" type="text/ecmascript-6">
     import Modal from './modal.vue'
+    import Autosize from 'autosize'
     import Laroute from '../laroute'
 
     export default {
@@ -53,12 +53,14 @@
             submitForm(editMessage, event) {
                 event.preventDefault();
 
+                this.isDisabled = true;
                 var that = this;
                 this.$http.put(Laroute.route('api.forums.message.update', {topicId: this.topicId, messageId: this.messageId}), editMessage)
                         .success((topic, status, request) => {
                             document.location.href = Laroute.route('forums.show-message', {messageId: that.messageId});
                         })
                         .error((data, status, request) => {
+                            this.isDisabled = false;
 
                             that.errors = [];
                             if (status == 422) {
@@ -91,12 +93,23 @@
         },
         data() {
             return {
+                isDisabled: false,
+                isFullScreen: false,
                 showModal: false,
                 errors: [],
                 editMessage: {
                     markdown: ''
                 }
             }
+        },
+        ready() {
+            this.$watch('isFullScreen', function (newValue, oldValue) {
+                if  (newValue == true) {
+                    Autosize(document.querySelector('#edit-message-markdown'));
+                } else {
+                    Autosize.destroy(document.querySelector('#edit-message-markdown'));
+                }
+            });
         }
     }
 </script>

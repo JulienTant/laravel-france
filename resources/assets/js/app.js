@@ -5,6 +5,7 @@ import NewTopic from './components/new-topic.vue'
 import EditMessage from './components/edit-message.vue'
 import LoginBox from './components/login-box.vue'
 import AnswerTopic from './components/answer-topic.vue'
+import RemoveMessage from './components/remove-message.vue'
 
 
 export default {
@@ -18,6 +19,7 @@ export default {
         NewTopic,
         LoginBox,
         AnswerTopic,
-        EditMessage
+        EditMessage,
+        RemoveMessage
     }
 }

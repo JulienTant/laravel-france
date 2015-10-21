@@ -85,7 +85,7 @@ class ForumsController extends Controller
         $topic = \LaravelFrance\ForumsTopic::whereForumsCategoryId($chosenCategory->id)
             ->whereSlug($topicSlug)
             ->orderBy('updated_at', 'DESC')
-            ->first();
+            ->firstOrFail();
 
         $messages = \LaravelFrance\ForumsMessage::with('user')
             ->whereForumsTopicId($topic->id)

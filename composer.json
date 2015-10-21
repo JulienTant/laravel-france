@@ -13,12 +13,12 @@
     "fadion/bouncy": "dev-l5",
     "doctrine/dbal": "~2.3",
     "league/html-to-markdown": "^4.1@dev",
-    "league/commonmark": "^0.11",
     "laravel/socialite": "^3.0@dev",
     "uxweb/sweet-alert": "~1.1",
     "lord/laroute": "^2",
     "cviebrock/eloquent-sluggable": "dev-master",
-    "predis/predis": "~1.0"
+    "predis/predis": "~1.0",
+    "erusev/parsedown": "dev-master"
   },
   "require-dev": {
     "fzaninotto/faker": "~1.4",

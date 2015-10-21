@@ -3,17 +3,23 @@
   z-index: 9998;
   top: 0;
   left: 0;
+  right: 0;
+  botom: 0;
   width: 100%;
   height: 100%;
   display: table;
   transition: opacity .3s ease;
   background rgba(0, 0, 0, 0.3);
+  overflow-y: scroll;
+  overflow-x: hidden;
 }
 
 .Modal__Wrapper {
   position relative;
   display table-cell;
   vertical-align middle
+  overflow-y: scroll;
+  overflow-x: hidden;
 }
 
 .Modal__Wrapper__Container {
@@ -61,14 +67,25 @@
 }
 
 .Modal--Fullscreen {
-  .Modal__Wrapper__Container {
+  background-color: $white;
+
+  .Modal__Wrapper {
     position: absolute;
-    width: 100vw;
-    height: 100vh;
+    min-width: 100%;
+    min-height: 100%;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
+    background-color: $white;
+    vertical-align: top;
+  }
+
+  .Modal__Wrapper__Container {
+    top: 0;
+    bottom: 0;
+    width $siteWidth;
+    margin 0 auto;
   }
 }
 

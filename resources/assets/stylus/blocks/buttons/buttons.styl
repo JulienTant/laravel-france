@@ -23,6 +23,11 @@
   &:focus {
     outline 1px solid darken($orange, 15%);
   }
+
+  &[disabled] {
+    background lighten($orange, 12);
+    cursor: not-allowed
+  }
 }
 
 .Button--Cancel{

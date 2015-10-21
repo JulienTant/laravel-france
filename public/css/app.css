@@ -954,6 +954,10 @@ body {
 .Button--Submit:focus {
   outline: 1px solid #f3281a;
 }
+.Button--Submit[disabled] {
+  background: #f88981;
+  cursor: not-allowed;
+}
 .Button--Cancel {
   background-color: #fdfdfd;
   color: #696969;
@@ -972,16 +976,22 @@ body {
   z-index: 9998;
   top: 0;
   left: 0;
+  right: 0;
+  botom: 0;
   width: 100%;
   height: 100%;
   display: table;
   transition: opacity 0.3s ease;
   background: rgba(0,0,0,0.3);
+  overflow-y: scroll;
+  overflow-x: hidden;
 }
 .Modal__Wrapper {
   position: relative;
   display: table-cell;
   vertical-align: middle;
+  overflow-y: scroll;
+  overflow-x: hidden;
 }
 .Modal__Wrapper__Container {
   width: 882px;
@@ -1012,14 +1022,25 @@ body {
   -webkit-transform: scale(1.1);
   transform: scale(1.1);
 }
-.Modal--Fullscreen .Modal__Wrapper__Container {
+.Modal--Fullscreen {
+  background-color: #fdfdfd;
+}
+.Modal--Fullscreen .Modal__Wrapper {
   position: absolute;
-  width: 100vw;
-  height: 100vh;
+  min-width: 100%;
+  min-height: 100%;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
+  background-color: #fdfdfd;
+  vertical-align: top;
+}
+.Modal--Fullscreen .Modal__Wrapper__Container {
+  top: 0;
+  bottom: 0;
+  width: 980px;
+  margin: 0 auto;
 }
 .Modal--NewTopic .Modal__Wrapper {
   vertical-align: bottom;
@@ -1073,6 +1094,16 @@ textarea.Form__Row__Control {
 }
 .Form__Row--Buttons {
   text-align: right;
+}
+.Form__ErrorList {
+  background: #ffd2d2;
+  border: 1px solid #ff8383;
+  padding: 1rem;
+}
+.Form__ErrorList__Item {
+  margin: 0;
+  margin-left: 1rem;
+  padding: 0;
 }
 .SiteFooter {
   background-color: #f55247;

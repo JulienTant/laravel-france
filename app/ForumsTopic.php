@@ -13,8 +13,10 @@ use Cviebrock\EloquentSluggable\SluggableTrait;
 use Fadion\Bouncy\BouncyTrait;
 use Illuminate\Database\Eloquent\Model;
 use LaravelFrance\Events\ForumsMessagePostedOnForumsTopic;
+use LaravelFrance\Events\ForumsMessageWasDeleted;
 use LaravelFrance\Events\ForumsMessageWasEdited;
 use LaravelFrance\Events\ForumsTopicPosted;
+use LaravelFrance\Events\ForumsTopicWasDeleted;
 
 /**
  * LaravelFrance\ForumsTopic
@@ -131,12 +133,46 @@ class ForumsTopic extends Model implements SluggableInterface
         return $message;
     }
 
-    public function incrementNbMessages()
+    public function incrementNbMessages($step = 1)
     {
         $this->nb_messages += 1;
     }
 
+    public function decrementNbMessages()
+    {
+        $this->incrementNbMessages(-1);
+    }
 
+    public function deleteMessage($messageId, $force = false)
+    {
+        $message = $this->forumsMessages->find($messageId);
+
+        // If the message is the first message of a topic, then
+        // we have to remove all messages and then the topic
+        if (($message->id == $this->firstMessage->id) && $force == false) {
+            return $this->deleteTopic();
+        }
+
+        $message->delete();
+        \Event::fire(new ForumsMessageWasDeleted($message, $updateTopic = !$force));
+
+        return $message;
+    }
+
+
+    /**
+     * @return $this
+     */
+    public function deleteTopic()
+    {
+        foreach($this->forumsMessages->lists('id') as $messageId) {
+            $this->deleteMessage($messageId, $force = true);
+        }
+        $this->delete();
+        \Event::fire(new ForumsTopicWasDeleted($this));
+
+        return $this;
+    }
 
     /* ELATISCSEARCH */
 
@@ -161,5 +197,4 @@ class ForumsTopic extends Model implements SluggableInterface
             'created_at' => $this->created_at->format('Y-m-d H:i:s')
         ];
     }
-
 }

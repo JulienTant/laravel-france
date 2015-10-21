@@ -14,7 +14,7 @@ class EditMessageRequest extends Request
      */
     public function authorize(Gate $gate)
     {
-        return $gate->check('forums.can_reply_to_topic', ['topic' => ForumsMessage::find($this->route('messageId'))]);
+        return $gate->check('forums.can_reply_to_topic', ['message' => ForumsMessage::find($this->route('messageId'))]);
     }
 
     /**

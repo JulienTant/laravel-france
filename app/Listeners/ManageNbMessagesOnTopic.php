@@ -5,6 +5,8 @@ namespace LaravelFrance\Listeners;
 use LaravelFrance\Events\ForumsMessagePostedOnForumsTopic;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use LaravelFrance\Events\ForumsMessageWasDeleted;
+use LaravelFrance\ForumsTopic;
 
 class ManageNbMessagesOnTopic
 {
@@ -15,6 +17,18 @@ class ManageNbMessagesOnTopic
     {
         $topic = $event->getTopic();
         $topic->incrementNbMessages();
+        $topic->save();
+    }
+
+    /**
+     * @param ForumsMessageWasDeleted $event
+     */
+    public function whenForumsMessageWasDeleted(ForumsMessageWasDeleted $event)
+    {
+        if (!$event->getUpdateTopic()) return;
+
+        $topic = ForumsTopic::find($event->getMessage()->forums_topic_id);
+        $topic->decrementNbMessages();
         $topic->save();
     }
 }

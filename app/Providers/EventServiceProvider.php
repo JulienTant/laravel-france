@@ -4,6 +4,8 @@ namespace LaravelFrance\Providers;
 
 use Illuminate\Contracts\Events\Dispatcher as DispatcherContract;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
+use LaravelFrance\Events\ForumsMessagePostedOnForumsTopic;
+use LaravelFrance\Events\ForumsMessageWasDeleted;
 
 /**
  * Class EventServiceProvider
@@ -17,11 +19,15 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        'LaravelFrance\Events\ForumsTopicPosted' => [],
-        'LaravelFrance\Events\ForumsMessagePostedOnForumsTopic' => [
+        ForumsMessagePostedOnForumsTopic::class => [
             'LaravelFrance\Listeners\ManageNbMessagesOnTopic@whenForumsMessagePostedOnForumsTopic',
             'LaravelFrance\Listeners\ManageLastMessageOnTopic@whenForumsMessagePostedOnForumsTopic',
             'LaravelFrance\Listeners\ManageNbMessagesOnUser@whenForumsMessagePostedOnForumsTopic',
+        ],
+        ForumsMessageWasDeleted::class => [
+            'LaravelFrance\Listeners\ManageNbMessagesOnTopic@whenForumsMessageWasDeleted',
+            'LaravelFrance\Listeners\ManageLastMessageOnTopic@whenForumsMessageWasDeleted',
+            'LaravelFrance\Listeners\ManageNbMessagesOnUser@whenForumsMessageWasDeleted',
         ],
     ];
 

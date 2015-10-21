@@ -34,18 +34,20 @@
                 e.stopPropagation();
                 if (e.target != e.currentTarget) return;
 
+                if (this.fullScreen)  return;
+
                 this.show = false;
             },
             toggleFullScreen () {
                 this.fullScreen = !this.fullScreen;
             }
         },
-        data() {
-            return {
-                fullScreen: false
-            }
-        },
         props: {
+            fullScreen: {
+                type: Boolean,
+                default: false,
+                twoWay: true
+            },
             class: {
                 type: String
             },

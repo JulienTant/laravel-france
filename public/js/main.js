@@ -801,7 +801,7 @@ exports.$compile = function (el, host, scope, frag) {
 }
 
 }).call(this,require('_process'))
-},{"../compiler":10,"../util":63,"_process":207}],6:[function(require,module,exports){
+},{"../compiler":10,"../util":63,"_process":208}],6:[function(require,module,exports){
 (function (process){
 var _ = require('./util')
 var config = require('./config')
@@ -903,7 +903,7 @@ exports.push = function (watcher) {
 }
 
 }).call(this,require('_process'))
-},{"./config":12,"./util":63,"_process":207}],7:[function(require,module,exports){
+},{"./config":12,"./util":63,"_process":208}],7:[function(require,module,exports){
 /**
  * A doubly linked list-based Least Recently Used (LRU)
  * cache. Will keep most recently used items while
@@ -1023,6 +1023,7 @@ var _ = require('../util')
 var dirParser = require('../parsers/directive')
 var propDef = require('../directives/internal/prop')
 var propBindingModes = require('../config')._propBindingModes
+var empty = {}
 
 // regexes
 var identRE = require('../parsers/path').identRE
@@ -1039,11 +1040,12 @@ var settablePathRE = /^[A-Za-z_$][\w$]*(\.[A-Za-z_$][\w$]*|\[[^\[\]]+\])*$/
 
 module.exports = function compileProps (el, propOptions) {
   var props = []
-  var i = propOptions.length
+  var names = Object.keys(propOptions)
+  var i = names.length
   var options, name, attr, value, path, parsed, prop
   while (i--) {
-    options = propOptions[i]
-    name = options.name
+    name = names[i]
+    options = propOptions[name] || empty
 
     if (process.env.NODE_ENV !== 'production' && name === '$data') {
       _.warn('Do not use $data as prop.')
@@ -1225,7 +1227,7 @@ function getDefault (vm, options) {
 }
 
 }).call(this,require('_process'))
-},{"../config":12,"../directives/internal/prop":20,"../parsers/directive":51,"../parsers/path":53,"../util":63,"_process":207}],9:[function(require,module,exports){
+},{"../config":12,"../directives/internal/prop":20,"../parsers/directive":51,"../parsers/path":53,"../util":63,"_process":208}],9:[function(require,module,exports){
 (function (process){
 var _ = require('../util')
 var publicDirectives = require('../directives/public')
@@ -1408,10 +1410,11 @@ exports.compileAndLinkProps = function (vm, el, props, scope) {
  * @param {Vue} vm
  * @param {Element} el
  * @param {Object} options
+ * @param {Object} contextOptions
  * @return {Function}
  */
 
-exports.compileRoot = function (el, options) {
+exports.compileRoot = function (el, options, contextOptions) {
   var containerAttrs = options._containerAttrs
   var replacerAttrs = options._replacerAttrs
   var contextLinkFn, replacerLinkFn
@@ -1423,8 +1426,8 @@ exports.compileRoot = function (el, options) {
     // compiled separately and linked in different scopes.
     if (options._asComponent) {
       // 2. container attributes
-      if (containerAttrs) {
-        contextLinkFn = compileDirectives(containerAttrs, options)
+      if (containerAttrs && contextOptions) {
+        contextLinkFn = compileDirectives(containerAttrs, contextOptions)
       }
       if (replacerAttrs) {
         // 3. replacer attributes
@@ -1937,7 +1940,7 @@ function makeNodeLinkFn (directives) {
 }
 
 }).call(this,require('_process'))
-},{"../directives/internal":19,"../directives/public":29,"../parsers/directive":51,"../parsers/template":54,"../parsers/text":55,"../util":63,"./compile-props":8,"_process":207}],10:[function(require,module,exports){
+},{"../directives/internal":19,"../directives/public":29,"../parsers/directive":51,"../parsers/template":54,"../parsers/text":55,"../util":63,"./compile-props":8,"_process":208}],10:[function(require,module,exports){
 var _ = require('../util')
 
 _.extend(exports, require('./compile'))
@@ -2095,7 +2098,7 @@ function mergeAttrs (from, to) {
 }
 
 }).call(this,require('_process'))
-},{"../parsers/template":54,"../util":63,"_process":207}],12:[function(require,module,exports){
+},{"../parsers/template":54,"../util":63,"_process":208}],12:[function(require,module,exports){
 module.exports = {
 
   /**
@@ -2282,6 +2285,9 @@ Directive.prototype._bind = function () {
     _.extend(this, def)
   }
 
+  // setup directive params
+  this._setupParams()
+
   // initial bind
   if (this.bind) {
     this.bind()
@@ -2290,7 +2296,7 @@ Directive.prototype._bind = function () {
   if (this.literal) {
     this.update && this.update(descriptor.raw)
   } else if (
-    this.expression &&
+    (this.expression || this.modifiers) &&
     (this.update || this.twoWay) &&
     !this._checkStatement()
   ) {
@@ -2337,6 +2343,65 @@ Directive.prototype._bind = function () {
 }
 
 /**
+ * Setup all param attributes, e.g. track-by,
+ * transition-mode, etc...
+ */
+
+Directive.prototype._setupParams = function () {
+  if (!this.params) {
+    return
+  }
+  var params = this.params
+  // swap the params array with a fresh object.
+  this.params = Object.create(null)
+  var i = params.length
+  var key, val, mappedKey
+  while (i--) {
+    key = params[i]
+    mappedKey = _.camelize(key)
+    val = _.attr(this.el, key)
+    if (val != null) {
+      // static
+      this.params[mappedKey] = val === '' ? true : val
+    } else {
+      // dynamic
+      val = _.getBindAttr(this.el, key)
+      if (val != null) {
+        this._setupParamWatcher(mappedKey, val)
+      }
+    }
+  }
+}
+
+/**
+ * Setup a watcher for a dynamic param.
+ *
+ * @param {String} key
+ * @param {String} expression
+ */
+
+Directive.prototype._setupParamWatcher = function (key, expression) {
+  var self = this
+  var called = false
+  var unwatch = (this._scope || this.vm).$watch(expression, function (val, oldVal) {
+    self.params[key] = val
+    // since we are in immediate mode,
+    // only call the param change callbacks if this is not the first update.
+    if (called) {
+      var cb = self.paramWatchers && self.paramWatchers[key]
+      if (cb) {
+        cb.call(self, val, oldVal)
+      }
+    } else {
+      called = true
+    }
+  }, {
+    immediate: true
+  })
+  ;(this._paramUnwatchFns || (this._paramUnwatchFns = [])).push(unwatch)
+}
+
+/**
  * Check if the directive is a function caller
  * and if the expression is a callable one. If both true,
  * we wrap up the expression and use it as the event
@@ -2364,30 +2429,6 @@ Directive.prototype._checkStatement = function () {
     this.update(handler)
     return true
   }
-}
-
-/**
- * Check for an attribute directive param, e.g. lazy
- *
- * @param {String} name
- * @return {String}
- */
-
-Directive.prototype.param = function (name) {
-  var param = _.attr(this.el, name)
-  if (param != null) {
-    param = (this._scope || this.vm).$interpolate(param)
-  } else {
-    param = _.getBindAttr(this.el, name)
-    if (param != null) {
-      param = (this._scope || this.vm).$eval(param)
-      process.env.NODE_ENV !== 'production' && _.log(
-        'You are using bind- syntax on "' + name + '", which ' +
-        'is a directive param. It will be evaluated only once.'
-      )
-    }
-  }
-  return param
 }
 
 /**
@@ -2458,62 +2499,57 @@ Directive.prototype._teardown = function () {
       this._watcher.teardown()
     }
     var listeners = this._listeners
+    var i
     if (listeners) {
-      for (var i = 0; i < listeners.length; i++) {
+      i = listeners.length
+      while (i--) {
         _.off(this.el, listeners[i][0], listeners[i][1])
       }
     }
-    this.vm = this.el =
-    this._watcher = this._listeners = null
+    var unwatchFns = this._paramUnwatchFns
+    if (unwatchFns) {
+      i = unwatchFns.length
+      while (i--) {
+        unwatchFns[i]()
+      }
+    }
+    this.vm = this.el = this._watcher = this._listeners = null
   }
 }
 
 module.exports = Directive
 
 }).call(this,require('_process'))
-},{"./parsers/expression":52,"./util":63,"./watcher":67,"_process":207}],14:[function(require,module,exports){
+},{"./parsers/expression":52,"./util":63,"./watcher":67,"_process":208}],14:[function(require,module,exports){
 exports.slot = require('./slot')
 exports.partial = require('./partial')
 
 },{"./partial":15,"./slot":16}],15:[function(require,module,exports){
 (function (process){
 var _ = require('../../util')
-var FragmentFactory = require('../../fragment/factory')
 var vIf = require('../public/if')
-var Watcher = require('../../watcher')
+var FragmentFactory = require('../../fragment/factory')
 
 module.exports = {
 
   priority: 1750,
 
-  bind: function () {
-    var el = this.el
-    this.anchor = _.createAnchor('v-partial')
-    _.replace(el, this.anchor)
-    var id = el.getAttribute('name')
-    if (id != null) {
-      // static partial
-      this.insert(id)
-    } else {
-      id = _.getBindAttr(el, 'name')
-      if (id) {
-        this.setupDynamic(id)
+  params: ['name'],
+
+  // watch changes to name for dynamic partials
+  paramWatchers: {
+    name: function (value) {
+      vIf.remove.call(this)
+      if (value) {
+        this.insert(value)
       }
     }
   },
 
-  setupDynamic: function (exp) {
-    var self = this
-    var onNameChange = function (value) {
-      vIf.remove.call(self)
-      if (value) {
-        self.insert(value)
-      }
-    }
-    this.nameWatcher = new Watcher(this.vm, exp, onNameChange, {
-      scope: this._scope
-    })
-    onNameChange(this.nameWatcher.value)
+  bind: function () {
+    this.anchor = _.createAnchor('v-partial')
+    _.replace(this.el, this.anchor)
+    this.insert(this.params.name)
   },
 
   insert: function (id) {
@@ -2531,14 +2567,11 @@ module.exports = {
     if (this.frag) {
       this.frag.destroy()
     }
-    if (this.nameWatcher) {
-      this.nameWatcher.teardown()
-    }
   }
 }
 
 }).call(this,require('_process'))
-},{"../../fragment/factory":41,"../../util":63,"../../watcher":67,"../public/if":28,"_process":207}],16:[function(require,module,exports){
+},{"../../fragment/factory":41,"../../util":63,"../public/if":28,"_process":208}],16:[function(require,module,exports){
 var _ = require('../../util')
 var templateParser = require('../../parsers/template')
 
@@ -2551,6 +2584,8 @@ module.exports = {
 
   priority: 1750,
 
+  params: ['name'],
+
   bind: function () {
     var host = this.vm
     var raw = host.$options._content
@@ -2560,7 +2595,7 @@ module.exports = {
       return
     }
     var context = host._context
-    var slotName = this.param('name')
+    var slotName = this.params.name
     if (!slotName) {
       // Default content
       var self = this
@@ -2742,6 +2777,12 @@ module.exports = {
 
   priority: 1500,
 
+  params: [
+    'keep-alive',
+    'transition-mode',
+    'inline-template'
+  ],
+
   /**
    * Setup. Two possible usages:
    *
@@ -2754,25 +2795,19 @@ module.exports = {
 
   bind: function () {
     if (!this.el.__vue__) {
-      // check keep-alive options.
-      // If yes, instead of destroying the active vm when
-      // hiding (v-if) or switching (dynamic literal) it,
-      // we simply remove it from the DOM and save it in a
-      // cache object, with its constructor id as the key.
-      this.keepAlive = this.param('keep-alive') != null
-
       // check ref
       this.ref = _.findRef(this.el)
       var refs = (this._scope || this.vm).$refs
       if (this.ref && !refs.hasOwnProperty(this.ref)) {
         _.defineReactive(refs, this.ref, null)
       }
-
+      // keep-alive cache
+      this.keepAlive = this.params.keepAlive
       if (this.keepAlive) {
         this.cache = {}
       }
       // check inline-template
-      if (this.param('inline-template') !== null) {
+      if (this.params.inlineTemplate) {
         // extract inline template as a DocumentFragment
         this.inlineTemplate = _.extractContent(this.el, true)
       }
@@ -2786,7 +2821,6 @@ module.exports = {
         // create a ref anchor
       this.anchor = _.createAnchor('v-component')
       _.replace(this.el, this.anchor)
-      this.transMode = this.param('transition-mode')
       // if static, build right now.
       if (this.literal) {
         this.setComponent(this.expression)
@@ -3033,7 +3067,7 @@ module.exports = {
     var self = this
     var current = this.childVM
     this.childVM = target
-    switch (self.transMode) {
+    switch (self.params.transitionMode) {
       case 'in-out':
         target.$before(self.anchor, function () {
           self.remove(current, cb)
@@ -3069,7 +3103,7 @@ module.exports = {
 }
 
 }).call(this,require('_process'))
-},{"../../parsers/template":54,"../../util":63,"_process":207}],19:[function(require,module,exports){
+},{"../../parsers/template":54,"../../util":63,"_process":208}],19:[function(require,module,exports){
 exports.style = require('./style')
 exports['class'] = require('./class')
 exports.component = require('./component')
@@ -3307,10 +3341,14 @@ module.exports = {
 
   bind: function () {
     var attr = this.arg
+    var tag = this.el.tagName
     // handle interpolation bindings
     if (this.descriptor.interp) {
       // only allow binding on native attributes
-      if (disallowedInterpAttrRE.test(attr)) {
+      if (
+        disallowedInterpAttrRE.test(attr) ||
+        (attr === 'name' && (tag === 'PARTIAL' || tag === 'SLOT'))
+      ) {
         process.env.NODE_ENV !== 'production' && _.warn(
           attr + '="' + this.descriptor.raw + '": ' +
           'attribute interpolation is not allowed in Vue.js ' +
@@ -3380,7 +3418,7 @@ module.exports = {
 }
 
 }).call(this,require('_process'))
-},{"../../util":63,"_process":207}],24:[function(require,module,exports){
+},{"../../util":63,"_process":208}],24:[function(require,module,exports){
 module.exports = {
   bind: function () {
     var el = this.el
@@ -3430,11 +3468,24 @@ module.exports = {
 
   priority: 2000,
 
+  params: [
+    'track-by',
+    'stagger',
+    'enter-stagger',
+    'leave-stagger'
+  ],
+
   bind: function () {
     // support "item in items" syntax
     var inMatch = this.expression.match(/(.*) in (.*)/)
     if (inMatch) {
-      this.alias = inMatch[1]
+      var itMatch = inMatch[1].match(/\((.*),(.*)\)/)
+      if (itMatch) {
+        this.iterator = itMatch[1].trim()
+        this.alias = itMatch[2].trim()
+      } else {
+        this.alias = inMatch[1].trim()
+      }
       this.expression = inMatch[2]
     }
 
@@ -3465,16 +3516,8 @@ module.exports = {
     _.replace(this.el, this.end)
     _.before(this.start, this.end)
 
-    // check for trackby param
-    this.idKey = this.param('track-by')
-
     // check ref
     this.ref = _.findRef(this.el)
-
-    // check for transition stagger
-    var stagger = +this.param('stagger')
-    this.enterStagger = +this.param('enter-stagger') || stagger
-    this.leaveStagger = +this.param('leave-stagger') || stagger
 
     // cache
     this.cache = Object.create(null)
@@ -3511,10 +3554,11 @@ module.exports = {
       item.hasOwnProperty('$key') &&
       item.hasOwnProperty('$value')
 
-    var idKey = this.idKey
+    var trackByKey = this.params.trackBy
     var oldFrags = this.frags
     var frags = this.frags = new Array(data.length)
     var alias = this.alias
+    var iterator = this.iterator
     var start = this.start
     var end = this.end
     var inDoc = _.inDoc(start)
@@ -3538,10 +3582,13 @@ module.exports = {
         // update $key
         if (key) {
           frag.scope.$key = key
+          if (iterator) {
+            frag.scope[iterator] = key
+          }
         }
         // update data for track-by, object repeat &
         // primitive values.
-        if (idKey || convertedFromObject || primitive) {
+        if (trackByKey || convertedFromObject || primitive) {
           frag.scope[alias] = value
         }
       } else { // new isntance
@@ -3568,7 +3615,6 @@ module.exports = {
       frag = oldFrags[i]
       if (!frag.reused) {
         this.deleteCachedFrag(frag)
-        frag.destroy()
         this.remove(frag, removalIndex++, totalRemoved, inDoc)
       }
     }
@@ -3630,6 +3676,9 @@ module.exports = {
     } else if (scope.$key) {
       // avoid accidental fallback
       _.define(scope, '$key', null)
+    }
+    if (this.iterator) {
+      _.defineReactive(scope, this.iterator, key || index)
     }
     var frag = this.factory.create(host, scope, this._frag)
     frag.forId = this.id
@@ -3736,11 +3785,11 @@ module.exports = {
     if (inDoc && staggerAmount) {
       var op = frag.staggerCb = _.cancellable(function () {
         frag.staggerCb = null
-        frag.remove()
+        frag.remove(true)
       })
       setTimeout(op, staggerAmount)
     } else {
-      frag.remove()
+      frag.remove(true)
     }
   },
 
@@ -3766,19 +3815,19 @@ module.exports = {
    */
 
   cacheFrag: function (value, frag, index, key) {
-    var idKey = this.idKey
+    var trackByKey = this.params.trackBy
     var cache = this.cache
     var primitive = !isObject(value)
     var id
-    if (key || idKey || primitive) {
-      id = idKey
-        ? idKey === '$index'
+    if (key || trackByKey || primitive) {
+      id = trackByKey
+        ? trackByKey === '$index'
           ? index
-          : value[idKey]
+          : value[trackByKey]
         : (key || value)
       if (!cache[id]) {
         cache[id] = frag
-      } else if (idKey !== '$index') {
+      } else if (trackByKey !== '$index') {
         process.env.NODE_ENV !== 'production' &&
         this.warnDuplicate(value)
       }
@@ -3808,14 +3857,14 @@ module.exports = {
    */
 
   getCachedFrag: function (value, index, key) {
-    var idKey = this.idKey
+    var trackByKey = this.params.trackBy
     var primitive = !isObject(value)
     var frag
-    if (key || idKey || primitive) {
-      var id = idKey
-        ? idKey === '$index'
+    if (key || trackByKey || primitive) {
+      var id = trackByKey
+        ? trackByKey === '$index'
           ? index
-          : value[idKey]
+          : value[trackByKey]
         : (key || value)
       frag = this.cache[id]
     } else {
@@ -3836,18 +3885,18 @@ module.exports = {
 
   deleteCachedFrag: function (frag) {
     var value = frag.raw
-    var idKey = this.idKey
+    var trackByKey = this.params.trackBy
     var scope = frag.scope
     var index = scope.$index
     // fix #948: avoid accidentally fall through to
     // a parent repeater which happens to have $key.
     var key = scope.hasOwnProperty('$key') && scope.$key
     var primitive = !isObject(value)
-    if (idKey || key || primitive) {
-      var id = idKey
-        ? idKey === '$index'
+    if (trackByKey || key || primitive) {
+      var id = trackByKey
+        ? trackByKey === '$index'
           ? index
-          : value[idKey]
+          : value[trackByKey]
         : (key || value)
       this.cache[id] = null
     } else {
@@ -3872,7 +3921,7 @@ module.exports = {
     var hook = hooks && (hooks[type] || hooks.stagger)
     return hook
       ? hook.call(frag, index, total)
-      : index * this[type]
+      : index * parseInt(this.params[type] || this.params.stagger, 10)
   },
 
   /**
@@ -4010,7 +4059,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 }).call(this,require('_process'))
-},{"../../fragment/factory":41,"../../util":63,"_process":207}],27:[function(require,module,exports){
+},{"../../fragment/factory":41,"../../util":63,"_process":208}],27:[function(require,module,exports){
 var _ = require('../../util')
 var templateParser = require('../../parsers/template')
 
@@ -4096,8 +4145,7 @@ module.exports = {
 
   insert: function () {
     if (this.elseFrag) {
-      this.elseFrag.remove()
-      this.elseFrag.destroy()
+      this.elseFrag.remove(true)
       this.elseFrag = null
     }
     this.frag = this.factory.create(this._host, this._scope, this._frag)
@@ -4106,8 +4154,7 @@ module.exports = {
 
   remove: function () {
     if (this.frag) {
-      this.frag.remove()
-      this.frag.destroy()
+      this.frag.remove(true)
       this.frag = null
     }
     if (this.elseFactory) {
@@ -4124,7 +4171,7 @@ module.exports = {
 }
 
 }).call(this,require('_process'))
-},{"../../fragment/factory":41,"../../util":63,"_process":207}],29:[function(require,module,exports){
+},{"../../fragment/factory":41,"../../util":63,"_process":208}],29:[function(require,module,exports){
 // text & html
 exports.text = require('./text')
 exports.html = require('./html')
@@ -4158,12 +4205,11 @@ module.exports = {
   bind: function () {
     var self = this
     var el = this.el
-    var number = this.param('number') != null
 
     this.getValue = function () {
       return el.hasOwnProperty('_value')
         ? el._value
-        : number
+        : self.params.number
           ? _.toNumber(el.value)
           : el.value
     }
@@ -4231,6 +4277,7 @@ module.exports = {
   priority: 800,
   twoWay: true,
   handlers: handlers,
+  params: ['lazy', 'number', 'debounce'],
 
   /**
    * Possible elements:
@@ -4300,7 +4347,7 @@ module.exports = {
 }
 
 }).call(this,require('_process'))
-},{"../../../util":63,"./checkbox":30,"./radio":32,"./select":33,"./text":34,"_process":207}],32:[function(require,module,exports){
+},{"../../../util":63,"./checkbox":30,"./radio":32,"./select":33,"./text":34,"_process":208}],32:[function(require,module,exports){
 var _ = require('../../../util')
 
 module.exports = {
@@ -4308,7 +4355,6 @@ module.exports = {
   bind: function () {
     var self = this
     var el = this.el
-    var number = this.param('number') != null
 
     this.getValue = function () {
       // value overwrite via v-bind:value
@@ -4316,7 +4362,7 @@ module.exports = {
         return el._value
       }
       var val = el.value
-      if (number) {
+      if (self.params.number) {
         val = _.toNumber(val)
       }
       return val
@@ -4353,13 +4399,13 @@ module.exports = {
       }
     }
 
-    this.number = this.param('number') != null
+    // check if this is a multiple select
     var multiple = this.multiple = el.hasAttribute('multiple')
 
     // attach listener
     this.listener = function () {
       var value = getValue(el, multiple)
-      value = self.number
+      value = self.params.number
         ? _.isArray(value)
           ? value.map(_.toNumber)
           : _.toNumber(value)
@@ -4466,14 +4512,9 @@ module.exports = {
     var self = this
     var el = this.el
     var isRange = el.type === 'range'
-
-    // check params
-    // - lazy: update model on "change" instead of "input"
-    var lazy = this.param('lazy') != null
-    // - number: cast value into number when updating model.
-    var number = this.param('number') != null
-    // - debounce: debounce the input listener
-    var debounce = parseInt(this.param('debounce'), 10)
+    var lazy = this.params.lazy
+    var number = this.params.number
+    var debounce = this.params.debounce
 
     // handle composition events.
     //   http://blog.evanyou.me/2014/01/03/composition-event/
@@ -4528,6 +4569,8 @@ module.exports = {
         }
       })
     }
+
+    // apply debounce
     if (debounce) {
       this.listener = _.debounce(this.listener, debounce)
     }
@@ -4655,6 +4698,12 @@ module.exports = {
   },
 
   update: function (handler) {
+    // stub a noop for v-on with no value,
+    // e.g. @mousedown.prevent
+    if (!this.descriptor.raw) {
+      handler = function () {}
+    }
+
     if (typeof handler !== 'function') {
       process.env.NODE_ENV !== 'production' && _.warn(
         'v-on:' + this.arg + '="' +
@@ -4710,7 +4759,7 @@ module.exports = {
 }
 
 }).call(this,require('_process'))
-},{"../../util":63,"_process":207}],36:[function(require,module,exports){
+},{"../../util":63,"_process":208}],36:[function(require,module,exports){
 (function (process){
 if (process.env.NODE_ENV !== 'production') {
   module.exports = {
@@ -4724,7 +4773,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 }).call(this,require('_process'))
-},{"../../util":63,"_process":207}],37:[function(require,module,exports){
+},{"../../util":63,"_process":208}],37:[function(require,module,exports){
 var _ = require('../../util')
 var transition = require('../../transition')
 
@@ -5143,33 +5192,36 @@ function singleBefore (target, trans) {
 
 /**
  * Remove fragment, single node version
+ *
+ * @param {Boolean} [destroy]
  */
 
-function singleRemove () {
+function singleRemove (destroy) {
   var shouldCallRemove = _.inDoc(this.node)
-  transition.remove(this.node, this.vm)
-  this.inserted = false
-  if (shouldCallRemove) {
-    this.callHook(detach)
-  }
+  var self = this
+  transition.remove(this.node, this.vm, function () {
+    self.inserted = false
+    if (shouldCallRemove) {
+      self.callHook(detach)
+    }
+    if (destroy) {
+      self.destroy()
+    }
+  })
 }
 
 /**
  * Insert fragment before target, multi-nodes version
  *
  * @param {Node} target
- * @param {Boolean} trans
  */
 
-function multiBefore (target, trans) {
+function multiBefore (target) {
   _.before(this.node, target)
   var nodes = this.nodes
   var vm = this.vm
-  var method = trans !== false
-    ? transition.before
-    : _.before
   for (var i = 0, l = nodes.length; i < l; i++) {
-    method(nodes[i], target, vm)
+    _.before(nodes[i], target, vm)
   }
   _.before(this.end, target)
   this.inserted = true
@@ -5180,9 +5232,11 @@ function multiBefore (target, trans) {
 
 /**
  * Remove fragment, multi-nodes version
+ *
+ * @param {Boolean} [destroy]
  */
 
-function multiRemove () {
+function multiRemove (destroy) {
   var shouldCallRemove = _.inDoc(this.node)
   var parent = this.node.parentNode
   var node = this.node.nextSibling
@@ -5192,7 +5246,7 @@ function multiRemove () {
   while (node !== this.end) {
     nodes.push(node)
     next = node.nextSibling
-    transition.remove(node, vm)
+    parent.removeChild(node, vm)
     node = next
   }
   parent.removeChild(this.node)
@@ -5200,6 +5254,9 @@ function multiRemove () {
   this.inserted = false
   if (shouldCallRemove) {
     this.callHook(detach)
+  }
+  if (destroy) {
+    this.destroy()
   }
 }
 
@@ -5396,7 +5453,7 @@ exports._callHook = function (hook) {
 }
 
 }).call(this,require('_process'))
-},{"../util":63,"_process":207}],44:[function(require,module,exports){
+},{"../util":63,"_process":208}],44:[function(require,module,exports){
 var mergeOptions = require('../util').mergeOptions
 
 /**
@@ -5539,7 +5596,8 @@ exports._compile = function (el) {
 
   // root is always compiled per-instance, because
   // container attrs and props can be different every time.
-  var rootLinker = compiler.compileRoot(el, options)
+  var contextOptions = this._context && this._context.$options
+  var rootLinker = compiler.compileRoot(el, options, contextOptions)
 
   // compile and link the rest
   var contentLinkFn
@@ -5818,7 +5876,7 @@ exports._resolveComponent = function (id, cb) {
 }
 
 }).call(this,require('_process'))
-},{"../util":63,"_process":207}],47:[function(require,module,exports){
+},{"../util":63,"_process":208}],47:[function(require,module,exports){
 (function (process){
 var _ = require('../util')
 var compiler = require('../compiler')
@@ -6063,7 +6121,7 @@ exports._initMeta = function () {
 }
 
 }).call(this,require('_process'))
-},{"../compiler":10,"../observer":50,"../observer/dep":49,"../util":63,"../watcher":67,"_process":207}],48:[function(require,module,exports){
+},{"../compiler":10,"../observer":50,"../observer/dep":49,"../util":63,"../watcher":67,"_process":208}],48:[function(require,module,exports){
 var _ = require('../util')
 var arrayProto = Array.prototype
 var arrayMethods = Object.create(arrayProto)
@@ -6865,7 +6923,7 @@ exports.isSimplePath = function (exp) {
 }
 
 }).call(this,require('_process'))
-},{"../cache":7,"../util":63,"./path":53,"_process":207}],53:[function(require,module,exports){
+},{"../cache":7,"../util":63,"./path":53,"_process":208}],53:[function(require,module,exports){
 (function (process){
 var _ = require('../util')
 var Cache = require('../cache')
@@ -7227,7 +7285,7 @@ exports.set = function (obj, path, val) {
 }
 
 }).call(this,require('_process'))
-},{"../cache":7,"../util":63,"_process":207}],54:[function(require,module,exports){
+},{"../cache":7,"../util":63,"_process":208}],54:[function(require,module,exports){
 var _ = require('../util')
 var Cache = require('../cache')
 var templateCache = new Cache(1000)
@@ -8336,7 +8394,7 @@ function formatValue (val) {
 }
 
 }).call(this,require('_process'))
-},{"./index":63,"_process":207}],60:[function(require,module,exports){
+},{"./index":63,"_process":208}],60:[function(require,module,exports){
 (function (process){
 /**
  * Enable debug utilities.
@@ -8387,7 +8445,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 }).call(this,require('_process'))
-},{"../config":12,"_process":207}],61:[function(require,module,exports){
+},{"../config":12,"_process":208}],61:[function(require,module,exports){
 (function (process){
 var _ = require('./index')
 var config = require('../config')
@@ -8702,7 +8760,7 @@ exports.findRef = function (node) {
 }
 
 }).call(this,require('_process'))
-},{"../config":12,"./index":63,"_process":207}],62:[function(require,module,exports){
+},{"../config":12,"./index":63,"_process":208}],62:[function(require,module,exports){
 // can we use __proto__?
 exports.hasProto = '__proto__' in {}
 
@@ -9310,8 +9368,7 @@ strats.detached =
 strats.beforeCompile =
 strats.compiled =
 strats.beforeDestroy =
-strats.destroyed =
-strats.props = function (parentVal, childVal) {
+strats.destroyed = function (parentVal, childVal) {
   return childVal
     ? parentVal
       ? parentVal.concat(childVal)
@@ -9382,11 +9439,13 @@ strats.events = function (parentVal, childVal) {
  * Other object hashes.
  */
 
+strats.props =
 strats.methods =
 strats.computed = function (parentVal, childVal) {
   if (!childVal) return parentVal
   if (!parentVal) return childVal
-  var ret = Object.create(parentVal)
+  var ret = Object.create(null)
+  extend(ret, parentVal)
   extend(ret, childVal)
   return ret
 }
@@ -9441,21 +9500,22 @@ function guardComponents (options) {
 
 function guardProps (options) {
   var props = options.props
-  if (_.isPlainObject(props)) {
-    options.props = Object.keys(props).map(function (key) {
-      var val = props[key]
-      if (!_.isPlainObject(val)) {
-        val = { type: val }
+  var i
+  if (_.isArray(props)) {
+    options.props = {}
+    i = props.length
+    while (i--) {
+      options.props[props[i]] = null
+    }
+  } else if (_.isPlainObject(props)) {
+    var keys = Object.keys(props)
+    i = keys.length
+    while (i--) {
+      var val = props[keys[i]]
+      if (typeof val === 'function') {
+        props[keys[i]] = { type: val }
       }
-      val.name = key
-      return val
-    })
-  } else if (_.isArray(props)) {
-    options.props = props.map(function (prop) {
-      return typeof prop === 'string'
-        ? { name: prop }
-        : prop
-    })
+    }
   }
 }
 
@@ -9535,14 +9595,17 @@ exports.mergeOptions = function merge (parent, child, vm) {
  */
 
 exports.resolveAsset = function resolve (options, type, id) {
-  var camelizedId = _.camelize(id)
-  var pascalizedId = camelizedId.charAt(0).toUpperCase() + camelizedId.slice(1)
   var assets = options[type]
-  return assets[id] || assets[camelizedId] || assets[pascalizedId]
+  var camelizedId
+  return assets[id] ||
+    // camelCase ID
+    assets[camelizedId = _.camelize(id)] ||
+    // Pascal Case ID
+    assets[camelizedId.charAt(0).toUpperCase() + camelizedId.slice(1)]
 }
 
 }).call(this,require('_process'))
-},{"../config":12,"./index":63,"_process":207}],66:[function(require,module,exports){
+},{"../config":12,"./index":63,"_process":208}],66:[function(require,module,exports){
 var _ = require('./util')
 var extend = _.extend
 
@@ -9782,17 +9845,26 @@ Watcher.prototype.set = function (value) {
   }
   // two-way sync for v-for alias
   var forContext = scope.$forContext
-  if (forContext && forContext.alias === this.expression) {
-    if (forContext.filters) {
-      process.env.NODE_ENV !== 'production' && _.warn(
+  if (process.env.NODE_ENV !== 'production') {
+    if (
+      forContext &&
+      forContext.filters &&
+      (new RegExp(forContext.alias + '\\b')).test(this.expression)
+    ) {
+      _.warn(
         'It seems you are using two-way binding on ' +
-        'a v-for alias, and the v-for has filters. ' +
-        'This will not work properly. Either remove the ' +
-        'filters or use an array of objects and bind to ' +
-        'object properties instead.'
+        'a v-for alias (' + this.expression + '), and the ' +
+        'v-for has filters. This will not work properly. ' +
+        'Either remove the filters or use an array of ' +
+        'objects and bind to object properties instead.'
       )
-      return
     }
+  }
+  if (
+    forContext &&
+    forContext.alias === this.expression &&
+    !forContext.filters
+  ) {
     if (scope.$key) { // original is an object
       forContext.rawValue[scope.$key] = value
     } else {
@@ -9972,7 +10044,250 @@ function traverse (obj) {
 module.exports = Watcher
 
 }).call(this,require('_process'))
-},{"./batcher":6,"./config":12,"./observer/dep":49,"./parsers/expression":52,"./util":63,"_process":207}],68:[function(require,module,exports){
+},{"./batcher":6,"./config":12,"./observer/dep":49,"./parsers/expression":52,"./util":63,"_process":208}],68:[function(require,module,exports){
+/*!
+	Autosize 3.0.13
+	license: MIT
+	http://www.jacklmoore.com/autosize
+*/
+(function (global, factory) {
+	if (typeof define === 'function' && define.amd) {
+		define(['exports', 'module'], factory);
+	} else if (typeof exports !== 'undefined' && typeof module !== 'undefined') {
+		factory(exports, module);
+	} else {
+		var mod = {
+			exports: {}
+		};
+		factory(mod.exports, mod);
+		global.autosize = mod.exports;
+	}
+})(this, function (exports, module) {
+	'use strict';
+
+	var set = typeof Set === 'function' ? new Set() : (function () {
+		var list = [];
+
+		return {
+			has: function has(key) {
+				return Boolean(list.indexOf(key) > -1);
+			},
+			add: function add(key) {
+				list.push(key);
+			},
+			'delete': function _delete(key) {
+				list.splice(list.indexOf(key), 1);
+			} };
+	})();
+
+	function assign(ta) {
+		var _ref = arguments[1] === undefined ? {} : arguments[1];
+
+		var _ref$setOverflowX = _ref.setOverflowX;
+		var setOverflowX = _ref$setOverflowX === undefined ? true : _ref$setOverflowX;
+		var _ref$setOverflowY = _ref.setOverflowY;
+		var setOverflowY = _ref$setOverflowY === undefined ? true : _ref$setOverflowY;
+
+		if (!ta || !ta.nodeName || ta.nodeName !== 'TEXTAREA' || set.has(ta)) return;
+
+		var heightOffset = null;
+		var overflowY = null;
+		var clientWidth = ta.clientWidth;
+
+		function init() {
+			var style = window.getComputedStyle(ta, null);
+
+			overflowY = style.overflowY;
+
+			if (style.resize === 'vertical') {
+				ta.style.resize = 'none';
+			} else if (style.resize === 'both') {
+				ta.style.resize = 'horizontal';
+			}
+
+			if (style.boxSizing === 'content-box') {
+				heightOffset = -(parseFloat(style.paddingTop) + parseFloat(style.paddingBottom));
+			} else {
+				heightOffset = parseFloat(style.borderTopWidth) + parseFloat(style.borderBottomWidth);
+			}
+			// Fix when a textarea is not on document body and heightOffset is Not a Number
+			if (isNaN(heightOffset)) {
+				heightOffset = 0;
+			}
+
+			update();
+		}
+
+		function changeOverflow(value) {
+			{
+				// Chrome/Safari-specific fix:
+				// When the textarea y-overflow is hidden, Chrome/Safari do not reflow the text to account for the space
+				// made available by removing the scrollbar. The following forces the necessary text reflow.
+				var width = ta.style.width;
+				ta.style.width = '0px';
+				// Force reflow:
+				/* jshint ignore:start */
+				ta.offsetWidth;
+				/* jshint ignore:end */
+				ta.style.width = width;
+			}
+
+			overflowY = value;
+
+			if (setOverflowY) {
+				ta.style.overflowY = value;
+			}
+
+			resize();
+		}
+
+		function resize() {
+			var htmlTop = window.pageYOffset;
+			var bodyTop = document.body.scrollTop;
+			var originalHeight = ta.style.height;
+
+			ta.style.height = 'auto';
+
+			var endHeight = ta.scrollHeight + heightOffset;
+
+			if (ta.scrollHeight === 0) {
+				// If the scrollHeight is 0, then the element probably has display:none or is detached from the DOM.
+				ta.style.height = originalHeight;
+				return;
+			}
+
+			ta.style.height = endHeight + 'px';
+
+			// used to check if an update is actually necessary on window.resize
+			clientWidth = ta.clientWidth;
+
+			// prevents scroll-position jumping
+			document.documentElement.scrollTop = htmlTop;
+			document.body.scrollTop = bodyTop;
+		}
+
+		function update() {
+			var startHeight = ta.style.height;
+
+			resize();
+
+			var style = window.getComputedStyle(ta, null);
+
+			if (style.height !== ta.style.height) {
+				if (overflowY !== 'visible') {
+					changeOverflow('visible');
+				}
+			} else {
+				if (overflowY !== 'hidden') {
+					changeOverflow('hidden');
+				}
+			}
+
+			if (startHeight !== ta.style.height) {
+				var evt = document.createEvent('Event');
+				evt.initEvent('autosize:resized', true, false);
+				ta.dispatchEvent(evt);
+			}
+		}
+
+		var pageResize = function pageResize() {
+			if (ta.clientWidth !== clientWidth) {
+				update();
+			}
+		};
+
+		var destroy = (function (style) {
+			window.removeEventListener('resize', pageResize);
+			ta.removeEventListener('input', update);
+			ta.removeEventListener('keyup', update);
+			ta.removeEventListener('autosize:destroy', destroy);
+			set['delete'](ta);
+
+			Object.keys(style).forEach(function (key) {
+				ta.style[key] = style[key];
+			});
+		}).bind(ta, {
+			height: ta.style.height,
+			resize: ta.style.resize,
+			overflowY: ta.style.overflowY,
+			overflowX: ta.style.overflowX,
+			wordWrap: ta.style.wordWrap });
+
+		ta.addEventListener('autosize:destroy', destroy);
+
+		// IE9 does not fire onpropertychange or oninput for deletions,
+		// so binding to onkeyup to catch most of those events.
+		// There is no way that I know of to detect something like 'cut' in IE9.
+		if ('onpropertychange' in ta && 'oninput' in ta) {
+			ta.addEventListener('keyup', update);
+		}
+
+		window.addEventListener('resize', pageResize);
+		ta.addEventListener('input', update);
+		ta.addEventListener('autosize:update', update);
+		set.add(ta);
+
+		if (setOverflowX) {
+			ta.style.overflowX = 'hidden';
+			ta.style.wordWrap = 'break-word';
+		}
+
+		init();
+	}
+
+	function destroy(ta) {
+		if (!(ta && ta.nodeName && ta.nodeName === 'TEXTAREA')) return;
+		var evt = document.createEvent('Event');
+		evt.initEvent('autosize:destroy', true, false);
+		ta.dispatchEvent(evt);
+	}
+
+	function update(ta) {
+		if (!(ta && ta.nodeName && ta.nodeName === 'TEXTAREA')) return;
+		var evt = document.createEvent('Event');
+		evt.initEvent('autosize:update', true, false);
+		ta.dispatchEvent(evt);
+	}
+
+	var autosize = null;
+
+	// Do nothing in Node.js environment and IE8 (or lower)
+	if (typeof window === 'undefined' || typeof window.getComputedStyle !== 'function') {
+		autosize = function (el) {
+			return el;
+		};
+		autosize.destroy = function (el) {
+			return el;
+		};
+		autosize.update = function (el) {
+			return el;
+		};
+	} else {
+		autosize = function (el, options) {
+			if (el) {
+				Array.prototype.forEach.call(el.length ? el : [el], function (x) {
+					return assign(x, options);
+				});
+			}
+			return el;
+		};
+		autosize.destroy = function (el) {
+			if (el) {
+				Array.prototype.forEach.call(el.length ? el : [el], destroy);
+			}
+			return el;
+		};
+		autosize.update = function (el) {
+			if (el) {
+				Array.prototype.forEach.call(el.length ? el : [el], update);
+			}
+			return el;
+		};
+	}
+
+	module.exports = autosize;
+});
+},{}],69:[function(require,module,exports){
 /*
 Syntax highlighting with language autodetection.
 https://highlightjs.org/
@@ -10625,7 +10940,7 @@ https://highlightjs.org/
   }
 
   function getLanguage(name) {
-    name = name.toLowerCase();
+    name = (name || '').toLowerCase();
     return languages[name] || languages[aliases[name]];
   }
 
@@ -10668,7 +10983,7 @@ https://highlightjs.org/
     contains: [hljs.BACKSLASH_ESCAPE]
   };
   hljs.PHRASAL_WORDS_MODE = {
-    begin: /\b(a|an|the|are|I|I'm|isn't|don't|doesn't|won't|but|just|should|pretty|simply|enough|gonna|going|wtf|so|such)\b/
+    begin: /\b(a|an|the|are|I|I'm|isn't|don't|doesn't|won't|but|just|should|pretty|simply|enough|gonna|going|wtf|so|such|will|you|your|like)\b/
   };
   hljs.COMMENT = function (begin, end, inherits) {
     var mode = hljs.inherit(
@@ -10745,7 +11060,7 @@ https://highlightjs.org/
   return hljs;
 }));
 
-},{}],69:[function(require,module,exports){
+},{}],70:[function(require,module,exports){
 var hljs = require('./highlight');
 
 hljs.registerLanguage('1c', require('./languages/1c'));
@@ -10771,6 +11086,7 @@ hljs.registerLanguage('clojure-repl', require('./languages/clojure-repl'));
 hljs.registerLanguage('cmake', require('./languages/cmake'));
 hljs.registerLanguage('coffeescript', require('./languages/coffeescript'));
 hljs.registerLanguage('cpp', require('./languages/cpp'));
+hljs.registerLanguage('crmsh', require('./languages/crmsh'));
 hljs.registerLanguage('crystal', require('./languages/crystal'));
 hljs.registerLanguage('cs', require('./languages/cs'));
 hljs.registerLanguage('css', require('./languages/css'));
@@ -10861,6 +11177,7 @@ hljs.registerLanguage('scss', require('./languages/scss'));
 hljs.registerLanguage('smali', require('./languages/smali'));
 hljs.registerLanguage('smalltalk', require('./languages/smalltalk'));
 hljs.registerLanguage('sml', require('./languages/sml'));
+hljs.registerLanguage('sqf', require('./languages/sqf'));
 hljs.registerLanguage('sql', require('./languages/sql'));
 hljs.registerLanguage('stata', require('./languages/stata'));
 hljs.registerLanguage('step21', require('./languages/step21'));
@@ -10885,7 +11202,7 @@ hljs.registerLanguage('xquery', require('./languages/xquery'));
 hljs.registerLanguage('zephir', require('./languages/zephir'));
 
 module.exports = hljs;
-},{"./highlight":68,"./languages/1c":70,"./languages/accesslog":71,"./languages/actionscript":72,"./languages/apache":73,"./languages/applescript":74,"./languages/armasm":75,"./languages/asciidoc":76,"./languages/aspectj":77,"./languages/autohotkey":78,"./languages/autoit":79,"./languages/avrasm":80,"./languages/axapta":81,"./languages/bash":82,"./languages/brainfuck":83,"./languages/cal":84,"./languages/capnproto":85,"./languages/ceylon":86,"./languages/clojure":88,"./languages/clojure-repl":87,"./languages/cmake":89,"./languages/coffeescript":90,"./languages/cpp":91,"./languages/crystal":92,"./languages/cs":93,"./languages/css":94,"./languages/d":95,"./languages/dart":96,"./languages/delphi":97,"./languages/diff":98,"./languages/django":99,"./languages/dns":100,"./languages/dockerfile":101,"./languages/dos":102,"./languages/dust":103,"./languages/elixir":104,"./languages/elm":105,"./languages/erb":106,"./languages/erlang":108,"./languages/erlang-repl":107,"./languages/fix":109,"./languages/fortran":110,"./languages/fsharp":111,"./languages/gams":112,"./languages/gcode":113,"./languages/gherkin":114,"./languages/glsl":115,"./languages/go":116,"./languages/golo":117,"./languages/gradle":118,"./languages/groovy":119,"./languages/haml":120,"./languages/handlebars":121,"./languages/haskell":122,"./languages/haxe":123,"./languages/http":124,"./languages/inform7":125,"./languages/ini":126,"./languages/irpf90":127,"./languages/java":128,"./languages/javascript":129,"./languages/json":130,"./languages/julia":131,"./languages/kotlin":132,"./languages/lasso":133,"./languages/less":134,"./languages/lisp":135,"./languages/livecodeserver":136,"./languages/livescript":137,"./languages/lua":138,"./languages/makefile":139,"./languages/markdown":140,"./languages/mathematica":141,"./languages/matlab":142,"./languages/mel":143,"./languages/mercury":144,"./languages/mizar":145,"./languages/mojolicious":146,"./languages/monkey":147,"./languages/nginx":148,"./languages/nimrod":149,"./languages/nix":150,"./languages/nsis":151,"./languages/objectivec":152,"./languages/ocaml":153,"./languages/openscad":154,"./languages/oxygene":155,"./languages/parser3":156,"./languages/perl":157,"./languages/pf":158,"./languages/php":159,"./languages/powershell":160,"./languages/processing":161,"./languages/profile":162,"./languages/prolog":163,"./languages/protobuf":164,"./languages/puppet":165,"./languages/python":166,"./languages/q":167,"./languages/r":168,"./languages/rib":169,"./languages/roboconf":170,"./languages/rsl":171,"./languages/ruby":172,"./languages/ruleslanguage":173,"./languages/rust":174,"./languages/scala":175,"./languages/scheme":176,"./languages/scilab":177,"./languages/scss":178,"./languages/smali":179,"./languages/smalltalk":180,"./languages/sml":181,"./languages/sql":182,"./languages/stata":183,"./languages/step21":184,"./languages/stylus":185,"./languages/swift":186,"./languages/tcl":187,"./languages/tex":188,"./languages/thrift":189,"./languages/tp":190,"./languages/twig":191,"./languages/typescript":192,"./languages/vala":193,"./languages/vbnet":194,"./languages/vbscript":196,"./languages/vbscript-html":195,"./languages/verilog":197,"./languages/vhdl":198,"./languages/vim":199,"./languages/x86asm":200,"./languages/xl":201,"./languages/xml":202,"./languages/xquery":203,"./languages/zephir":204}],70:[function(require,module,exports){
+},{"./highlight":69,"./languages/1c":71,"./languages/accesslog":72,"./languages/actionscript":73,"./languages/apache":74,"./languages/applescript":75,"./languages/armasm":76,"./languages/asciidoc":77,"./languages/aspectj":78,"./languages/autohotkey":79,"./languages/autoit":80,"./languages/avrasm":81,"./languages/axapta":82,"./languages/bash":83,"./languages/brainfuck":84,"./languages/cal":85,"./languages/capnproto":86,"./languages/ceylon":87,"./languages/clojure":89,"./languages/clojure-repl":88,"./languages/cmake":90,"./languages/coffeescript":91,"./languages/cpp":92,"./languages/crmsh":93,"./languages/crystal":94,"./languages/cs":95,"./languages/css":96,"./languages/d":97,"./languages/dart":98,"./languages/delphi":99,"./languages/diff":100,"./languages/django":101,"./languages/dns":102,"./languages/dockerfile":103,"./languages/dos":104,"./languages/dust":105,"./languages/elixir":106,"./languages/elm":107,"./languages/erb":108,"./languages/erlang":110,"./languages/erlang-repl":109,"./languages/fix":111,"./languages/fortran":112,"./languages/fsharp":113,"./languages/gams":114,"./languages/gcode":115,"./languages/gherkin":116,"./languages/glsl":117,"./languages/go":118,"./languages/golo":119,"./languages/gradle":120,"./languages/groovy":121,"./languages/haml":122,"./languages/handlebars":123,"./languages/haskell":124,"./languages/haxe":125,"./languages/http":126,"./languages/inform7":127,"./languages/ini":128,"./languages/irpf90":129,"./languages/java":130,"./languages/javascript":131,"./languages/json":132,"./languages/julia":133,"./languages/kotlin":134,"./languages/lasso":135,"./languages/less":136,"./languages/lisp":137,"./languages/livecodeserver":138,"./languages/livescript":139,"./languages/lua":140,"./languages/makefile":141,"./languages/markdown":142,"./languages/mathematica":143,"./languages/matlab":144,"./languages/mel":145,"./languages/mercury":146,"./languages/mizar":147,"./languages/mojolicious":148,"./languages/monkey":149,"./languages/nginx":150,"./languages/nimrod":151,"./languages/nix":152,"./languages/nsis":153,"./languages/objectivec":154,"./languages/ocaml":155,"./languages/openscad":156,"./languages/oxygene":157,"./languages/parser3":158,"./languages/perl":159,"./languages/pf":160,"./languages/php":161,"./languages/powershell":162,"./languages/processing":163,"./languages/profile":164,"./languages/prolog":165,"./languages/protobuf":166,"./languages/puppet":167,"./languages/python":168,"./languages/q":169,"./languages/r":170,"./languages/rib":171,"./languages/roboconf":172,"./languages/rsl":173,"./languages/ruby":174,"./languages/ruleslanguage":175,"./languages/rust":176,"./languages/scala":177,"./languages/scheme":178,"./languages/scilab":179,"./languages/scss":180,"./languages/smali":181,"./languages/smalltalk":182,"./languages/sml":183,"./languages/sqf":184,"./languages/sql":185,"./languages/stata":186,"./languages/step21":187,"./languages/stylus":188,"./languages/swift":189,"./languages/tcl":190,"./languages/tex":191,"./languages/thrift":192,"./languages/tp":193,"./languages/twig":194,"./languages/typescript":195,"./languages/vala":196,"./languages/vbnet":197,"./languages/vbscript":199,"./languages/vbscript-html":198,"./languages/verilog":200,"./languages/vhdl":201,"./languages/vim":202,"./languages/x86asm":203,"./languages/xl":204,"./languages/xml":205,"./languages/xquery":206,"./languages/zephir":207}],71:[function(require,module,exports){
 module.exports = function(hljs){
   var IDENT_RE_RU = '[a-zA-Zа-яА-Я][a-zA-Z0-9_а-яА-Я]*';
   var OneS_KEYWORDS = 'возврат дата для если и или иначе иначеесли исключение конецесли ' +
@@ -10971,7 +11288,7 @@ module.exports = function(hljs){
     ]
   };
 };
-},{}],71:[function(require,module,exports){
+},{}],72:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     contains: [
@@ -11009,7 +11326,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],72:[function(require,module,exports){
+},{}],73:[function(require,module,exports){
 module.exports = function(hljs) {
   var IDENT_RE = '[a-zA-Z_$][a-zA-Z0-9_$]*';
   var IDENT_FUNC_RETURN_TYPE_RE = '([*]|[a-zA-Z_$][a-zA-Z0-9_$]*)';
@@ -11084,7 +11401,7 @@ module.exports = function(hljs) {
     illegal: /#/
   };
 };
-},{}],73:[function(require,module,exports){
+},{}],74:[function(require,module,exports){
 module.exports = function(hljs) {
   var NUMBER = {className: 'number', begin: '[\\$%]\\d+'};
   return {
@@ -11130,7 +11447,7 @@ module.exports = function(hljs) {
     illegal: /\S/
   };
 };
-},{}],74:[function(require,module,exports){
+},{}],75:[function(require,module,exports){
 module.exports = function(hljs) {
   var STRING = hljs.inherit(hljs.QUOTE_STRING_MODE, {illegal: ''});
   var PARAMS = {
@@ -11227,7 +11544,7 @@ module.exports = function(hljs) {
     illegal: '//|->|=>|\\[\\['
   };
 };
-},{}],75:[function(require,module,exports){
+},{}],76:[function(require,module,exports){
 module.exports = function(hljs) {
     //local labels: %?[FB]?[AT]?\d{1,2}\w+
   return {
@@ -11319,7 +11636,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],76:[function(require,module,exports){
+},{}],77:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['adoc'],
@@ -11511,7 +11828,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],77:[function(require,module,exports){
+},{}],78:[function(require,module,exports){
 module.exports = function (hljs) {
   var KEYWORDS =
     'false synchronized int abstract float private char boolean static null if const ' +
@@ -11649,7 +11966,7 @@ module.exports = function (hljs) {
     ]
   };
 };
-},{}],78:[function(require,module,exports){
+},{}],79:[function(require,module,exports){
 module.exports = function(hljs) {
   var BACKTICK_ESCAPE = {
     className: 'escape',
@@ -11711,7 +12028,7 @@ module.exports = function(hljs) {
     ])
   }
 };
-},{}],79:[function(require,module,exports){
+},{}],80:[function(require,module,exports){
 module.exports = function(hljs) {
     var KEYWORDS = 'ByRef Case Const ContinueCase ContinueLoop ' +
         'Default Dim Do Else ElseIf EndFunc EndIf EndSelect ' +
@@ -13449,6 +13766,7 @@ module.exports = function(hljs) {
 
     return {
         case_insensitive: true,
+        illegal: /\/\*/,
         keywords: {
             keyword: KEYWORDS,
             built_in: BUILT_IN,
@@ -13465,7 +13783,7 @@ module.exports = function(hljs) {
         ]
     }
 };
-},{}],80:[function(require,module,exports){
+},{}],81:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     case_insensitive: true,
@@ -13527,7 +13845,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],81:[function(require,module,exports){
+},{}],82:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     keywords: 'false int abstract private char boolean static null if for true ' +
@@ -13558,7 +13876,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],82:[function(require,module,exports){
+},{}],83:[function(require,module,exports){
 module.exports = function(hljs) {
   var VAR = {
     className: 'variable',
@@ -13634,7 +13952,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],83:[function(require,module,exports){
+},{}],84:[function(require,module,exports){
 module.exports = function(hljs){
   var LITERAL = {
     className: 'literal',
@@ -13671,7 +13989,7 @@ module.exports = function(hljs){
     ]
   };
 };
-},{}],84:[function(require,module,exports){
+},{}],85:[function(require,module,exports){
 module.exports = function(hljs) {
   var KEYWORDS =
     'div mod in and or not xor asserterror begin case do downto else end exit for if of repeat then to ' +
@@ -13741,6 +14059,7 @@ module.exports = function(hljs) {
   return {
     case_insensitive: true,
     keywords: { keyword: KEYWORDS, literal: LITERALS },
+    illegal: /\/\*/,
     contains: [
       STRING, CHAR_STRING,
       DATE, DBL_QUOTED_VARIABLE,
@@ -13750,7 +14069,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],85:[function(require,module,exports){
+},{}],86:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['capnp'],
@@ -13799,7 +14118,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],86:[function(require,module,exports){
+},{}],87:[function(require,module,exports){
 module.exports = function(hljs) {
   // 2.3. Identifiers and keywords
   var KEYWORDS =
@@ -13867,7 +14186,7 @@ module.exports = function(hljs) {
     ].concat(EXPRESSIONS)
   };
 };
-},{}],87:[function(require,module,exports){
+},{}],88:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     contains: [
@@ -13882,7 +14201,7 @@ module.exports = function(hljs) {
     ]
   }
 };
-},{}],88:[function(require,module,exports){
+},{}],89:[function(require,module,exports){
 module.exports = function(hljs) {
   var keywords = {
     built_in:
@@ -13979,7 +14298,7 @@ module.exports = function(hljs) {
     contains: [LIST, STRING, HINT, HINT_COL, COMMENT, KEY, COLLECTION, NUMBER, LITERAL]
   }
 };
-},{}],89:[function(require,module,exports){
+},{}],90:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['cmake.in'],
@@ -14018,7 +14337,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],90:[function(require,module,exports){
+},{}],91:[function(require,module,exports){
 module.exports = function(hljs) {
   var KEYWORDS = {
     keyword:
@@ -14159,7 +14478,7 @@ module.exports = function(hljs) {
     ])
   };
 };
-},{}],91:[function(require,module,exports){
+},{}],92:[function(require,module,exports){
 module.exports = function(hljs) {
   var CPP_PRIMATIVE_TYPES = {
     className: 'keyword',
@@ -14300,22 +14619,122 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],92:[function(require,module,exports){
+},{}],93:[function(require,module,exports){
+module.exports = function(hljs) {
+  var RESOURCES = 'primitive rsc_template';
+
+  var COMMANDS = 'group clone ms master location colocation order fencing_topology ' +
+      'rsc_ticket acl_target acl_group user role ' +
+      'tag xml';
+
+  var PROPERTY_SETS = 'property rsc_defaults op_defaults';
+
+  var KEYWORDS = 'params meta operations op rule attributes utilization';
+
+  var OPERATORS = 'read write deny defined not_defined in_range date spec in ' +
+      'ref reference attribute type xpath version and or lt gt tag ' +
+      'lte gte eq ne \\';
+
+  var TYPES = 'number string';
+
+  var LITERALS = 'Master Started Slave Stopped start promote demote stop monitor true false';
+
+  return {
+    aliases: ['crm', 'pcmk'],
+    case_insensitive: true,
+    keywords: {
+      keyword: KEYWORDS,
+      operator: OPERATORS,
+      type: TYPES,
+      literal: LITERALS
+    },
+    contains: [
+      hljs.HASH_COMMENT_MODE,
+      {
+        beginKeywords: 'node',
+        starts: {
+          className: 'identifier',
+          end: '\\s*([\\w_-]+:)?',
+          starts: {
+            className: 'title',
+            end: '\\s*[\\$\\w_][\\w_-]*'
+          }
+        }
+      },
+      {
+        beginKeywords: RESOURCES,
+        starts: {
+          className: 'title',
+          end: '\\s*[\\$\\w_][\\w_-]*',
+          starts: {
+            className: 'pragma',
+            end: '\\s*@?[\\w_][\\w_\\.:-]*',
+          }
+        }
+      },
+      {
+        begin: '\\b(' + COMMANDS.split(' ').join('|') + ')\\s+',
+        keywords: COMMANDS,
+        starts: {
+          className: 'title',
+          end: '[\\$\\w_][\\w_-]*',
+        }
+      },
+      {
+        beginKeywords: PROPERTY_SETS,
+        starts: {
+          className: 'title',
+          end: '\\s*([\\w_-]+:)?'
+        }
+      },
+      hljs.QUOTE_STRING_MODE,
+      {
+        className: 'pragma',
+        begin: '(ocf|systemd|service|lsb):[\\w_:-]+',
+        relevance: 0
+      },
+      {
+        className: 'number',
+        begin: '\\b\\d+(\\.\\d+)?(ms|s|h|m)?',
+        relevance: 0
+      },
+      {
+        className: 'number',
+        begin: '[-]?(infinity|inf)',
+        relevance: 0
+      },
+      {
+        className: 'variable',
+        begin: /([A-Za-z\$_\#][\w_-]+)=/,
+        relevance: 0
+      },
+      {
+        className: 'tag',
+        begin: '</?',
+        end: '/?>',
+        relevance: 0
+      }
+    ]
+  };
+};
+},{}],94:[function(require,module,exports){
 module.exports = function(hljs) {
   var NUM_SUFFIX = '(_[uif](8|16|32|64))?';
   var CRYSTAL_IDENT_RE = '[a-zA-Z_]\\w*[!?=]?';
+  var RE_STARTER = '!=|!==|%|%=|&|&&|&=|\\*|\\*=|\\+|\\+=|,|-|-=|/=|/|:|;|<<|<<=|<=|<|===|==|=|>>>=|>>=|>=|>>>|' +
+    '>>|>|\\[|\\{|\\(|\\^|\\^=|\\||\\|=|\\|\\||~';
   var CRYSTAL_METHOD_RE = '[a-zA-Z_]\\w*[!?=]?|[-+~]\\@|<<|>>|=~|===?|<=>|[<>]=?|\\*\\*|[-/+%^&*~`|]|\\[\\][=?]?';
   var CRYSTAL_KEYWORDS = {
     keyword:
-      'abstract alias asm begin break case class def do else elsif end ensure enum extend for fun if ifdef ' +
+      'abstract alias as asm begin break case class def do else elsif end ensure enum extend for fun if ifdef ' +
       'include instance_sizeof is_a? lib macro module next of out pointerof private protected rescue responds_to? ' +
-      'return require self sizeof struct super then type undef union unless until when while with yield ' +
+      'return require self sizeof struct super then type typeof union unless until when while with yield ' +
       '__DIR__ __FILE__ __LINE__',
     literal: 'false nil true'
   };
   var SUBST = {
     className: 'subst',
-    begin: '#\\{', end: '}',
+    begin: '#{', end: '}',
     keywords: CRYSTAL_KEYWORDS
   };
   var EXPANSION = {
@@ -14327,18 +14746,24 @@ module.exports = function(hljs) {
     keywords: CRYSTAL_KEYWORDS,
     relevance: 10
   };
-  var
-  STRING = {
+
+  function recursiveParen(begin, end) {
+    var
+    contains = [{begin: begin, end: end}];
+    contains[0].contains = contains;
+    return contains;
+  }
+  var STRING = {
     className: 'string',
     contains: [hljs.BACKSLASH_ESCAPE, SUBST],
     variants: [
       {begin: /'/, end: /'/},
       {begin: /"/, end: /"/},
       {begin: /`/, end: /`/},
-      {begin: '%w?\\(', end: '\\)'},
-      {begin: '%w?\\[', end: '\\]'},
-      {begin: '%w?{', end: '}'},
-      {begin: '%w?<', end: '>'},
+      {begin: '%w?\\(', end: '\\)', contains: recursiveParen('\\(', '\\)')},
+      {begin: '%w?\\[', end: '\\]', contains: recursiveParen('\\[', '\\]')},
+      {begin: '%w?{', end: '}', contains: recursiveParen('{', '}')},
+      {begin: '%w?<', end: '>', contains: recursiveParen('<', '>')},
       {begin: '%w?/', end: '/'},
       {begin: '%w?%', end: '%'},
       {begin: '%w?-', end: '-'},
@@ -14346,9 +14771,53 @@ module.exports = function(hljs) {
     ],
     relevance: 0,
   };
+  var REGEXP = {
+    begin: '(' + RE_STARTER + ')\\s*',
+    contains: [
+      {
+        className: 'regexp',
+        contains: [hljs.BACKSLASH_ESCAPE, SUBST],
+        variants: [
+          {begin: '/', end: '/[a-z]*'},
+          {begin: '%r\\(', end: '\\)', contains: recursiveParen('\\(', '\\)')},
+          {begin: '%r\\[', end: '\\]', contains: recursiveParen('\\[', '\\]')},
+          {begin: '%r{', end: '}', contains: recursiveParen('{', '}')},
+          {begin: '%r<', end: '>', contains: recursiveParen('<', '>')},
+          {begin: '%r/', end: '/'},
+          {begin: '%r%', end: '%'},
+          {begin: '%r-', end: '-'},
+          {begin: '%r\\|', end: '\\|'},
+        ]
+      }
+    ],
+    relevance: 0
+  };
+  var REGEXP2 = {
+    className: 'regexp',
+    contains: [hljs.BACKSLASH_ESCAPE, SUBST],
+    variants: [
+      {begin: '%r\\(', end: '\\)', contains: recursiveParen('\\(', '\\)')},
+      {begin: '%r\\[', end: '\\]', contains: recursiveParen('\\[', '\\]')},
+      {begin: '%r{', end: '}', contains: recursiveParen('{', '}')},
+      {begin: '%r<', end: '>', contains: recursiveParen('<', '>')},
+      {begin: '%r/', end: '/'},
+      {begin: '%r%', end: '%'},
+      {begin: '%r-', end: '-'},
+      {begin: '%r\\|', end: '\\|'},
+    ],
+    relevance: 0
+  };
+  var ATTRIBUTE = {
+    className: 'annotation',
+    begin: '@\\[', end: '\\]',
+    relevance: 5
+  };
   var CRYSTAL_DEFAULT_CONTAINS = [
     EXPANSION,
     STRING,
+    REGEXP,
+    REGEXP2,
+    ATTRIBUTE,
     hljs.HASH_COMMENT_MODE,
     {
       className: 'class',
@@ -14417,33 +14886,20 @@ module.exports = function(hljs) {
     {
       className: 'number',
       variants: [
-        { begin: '\\b0b([01_]+)' + NUM_SUFFIX },
-        { begin: '\\b0o([0-7_]+)' + NUM_SUFFIX },
-        { begin: '\\b0x([A-Fa-f0-9_]+)' + NUM_SUFFIX },
-        { begin: '\\b(\\d[\\d_]*(\\.[0-9_]+)?([eE][+-]?[0-9_]+)?)' + NUM_SUFFIX}
+        { begin: '\\b0b([01_]*[01])' + NUM_SUFFIX },
+        { begin: '\\b0o([0-7_]*[0-7])' + NUM_SUFFIX },
+        { begin: '\\b0x([A-Fa-f0-9_]*[A-Fa-f0-9])' + NUM_SUFFIX },
+        { begin: '\\b(([0-9][0-9_]*[0-9]|[0-9])(\\.[0-9_]*[0-9])?([eE][+-]?[0-9_]*[0-9])?)' + NUM_SUFFIX}
       ],
       relevance: 0
     },
     {
       className: 'variable',
       begin: '(\\$\\W)|((\\$|\\@\\@?|%)(\\w+))'
-    },
-    { // regexp container
-      begin: '(' + hljs.RE_STARTERS_RE + ')\\s*',
-      contains: [
-        hljs.HASH_COMMENT_MODE,
-        {
-          className: 'regexp',
-          contains: [hljs.BACKSLASH_ESCAPE, SUBST],
-          variants: [
-            {begin: '/', end: '/[a-z]*'},
-          ]
-        }
-      ],
-      relevance: 0
     }
   ];
   SUBST.contains = CRYSTAL_DEFAULT_CONTAINS;
+  ATTRIBUTE.contains = CRYSTAL_DEFAULT_CONTAINS;
   EXPANSION.contains = CRYSTAL_DEFAULT_CONTAINS.slice(1); // without EXPANSION
 
   return {
@@ -14453,7 +14909,7 @@ module.exports = function(hljs) {
     contains: CRYSTAL_DEFAULT_CONTAINS
   };
 };
-},{}],93:[function(require,module,exports){
+},{}],95:[function(require,module,exports){
 module.exports = function(hljs) {
   var KEYWORDS =
     // Normal keywords.
@@ -14572,7 +15028,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],94:[function(require,module,exports){
+},{}],96:[function(require,module,exports){
 module.exports = function(hljs) {
   var IDENT_RE = '[a-zA-Z-][a-zA-Z0-9_-]*';
   var FUNCTION = {
@@ -14615,7 +15071,6 @@ module.exports = function(hljs) {
     illegal: /[=\/|'\$]/,
     contains: [
       hljs.C_BLOCK_COMMENT_MODE,
-      RULE,
       {
         className: 'id', begin: /\#[A-Za-z0-9_-]+/
       },
@@ -14675,7 +15130,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],95:[function(require,module,exports){
+},{}],97:[function(require,module,exports){
 module.exports = /**
  * Known issues:
  *
@@ -14933,7 +15388,7 @@ function(hljs) {
     ]
   };
 };
-},{}],96:[function(require,module,exports){
+},{}],98:[function(require,module,exports){
 module.exports = function (hljs) {
   var SUBST = {
     className: 'subst',
@@ -15034,7 +15489,7 @@ module.exports = function (hljs) {
     ]
   }
 };
-},{}],97:[function(require,module,exports){
+},{}],99:[function(require,module,exports){
 module.exports = function(hljs) {
   var KEYWORDS =
     'exports register file shl array record property for mod while set ally label uses raise not ' +
@@ -15101,7 +15556,7 @@ module.exports = function(hljs) {
     ].concat(COMMENT_MODES)
   };
 };
-},{}],98:[function(require,module,exports){
+},{}],100:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['patch'],
@@ -15141,7 +15596,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],99:[function(require,module,exports){
+},{}],101:[function(require,module,exports){
 module.exports = function(hljs) {
   var FILTER = {
     className: 'filter',
@@ -15191,7 +15646,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],100:[function(require,module,exports){
+},{}],102:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['bind', 'zone'],
@@ -15219,21 +15674,21 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],101:[function(require,module,exports){
+},{}],103:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['docker'],
     case_insensitive: true,
     keywords: {
-      built_ins: 'from maintainer cmd expose add copy entrypoint volume user workdir onbuild run env'
+      built_ins: 'from maintainer cmd expose add copy entrypoint volume user workdir onbuild run env label'
     },
     contains: [
       hljs.HASH_COMMENT_MODE,
       {
         keywords : {
-          built_in: 'run cmd entrypoint volume add copy workdir onbuild'
+          built_in: 'run cmd entrypoint volume add copy workdir onbuild label'
         },
-        begin: /^ *(onbuild +)?(run|cmd|entrypoint|volume|add|copy|workdir) +/,
+        begin: /^ *(onbuild +)?(run|cmd|entrypoint|volume|add|copy|workdir|label) +/,
         starts: {
           end: /[^\\]\n/,
           subLanguage: 'bash'
@@ -15254,7 +15709,7 @@ module.exports = function(hljs) {
     ]
   }
 };
-},{}],102:[function(require,module,exports){
+},{}],104:[function(require,module,exports){
 module.exports = function(hljs) {
   var COMMENT = hljs.COMMENT(
     /@?rem\b/, /$/,
@@ -15270,6 +15725,7 @@ module.exports = function(hljs) {
   return {
     aliases: ['bat', 'cmd'],
     case_insensitive: true,
+    illegal: /\/\*/,
     keywords: {
       flow: 'if else goto for in do call exit not exist errorlevel defined',
       operator: 'equ neq lss leq gtr geq',
@@ -15302,7 +15758,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],103:[function(require,module,exports){
+},{}],105:[function(require,module,exports){
 module.exports = function(hljs) {
   var EXPRESSION_KEYWORDS = 'if eq ne lt lte gt gte select default math sep';
   return {
@@ -15337,7 +15793,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],104:[function(require,module,exports){
+},{}],106:[function(require,module,exports){
 module.exports = function(hljs) {
   var ELIXIR_IDENT_RE = '[a-zA-Z_][a-zA-Z0-9_]*(\\!|\\?)?';
   var ELIXIR_METHOD_RE = '[a-zA-Z_]\\w*[!?=]?|[-+~]\\@|<<|>>|=~|===?|<=>|[<>]=?|\\*\\*|[-/+%^&*~`|]|\\[\\]=?';
@@ -15439,7 +15895,7 @@ module.exports = function(hljs) {
     contains: ELIXIR_DEFAULT_CONTAINS
   };
 };
-},{}],105:[function(require,module,exports){
+},{}],107:[function(require,module,exports){
 module.exports = function(hljs) {
   var COMMENT_MODES = [
     hljs.COMMENT('--', '$'),
@@ -15525,7 +15981,7 @@ module.exports = function(hljs) {
     ].concat(COMMENT_MODES)
   };
 };
-},{}],106:[function(require,module,exports){
+},{}],108:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     subLanguage: 'xml',
@@ -15540,7 +15996,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],107:[function(require,module,exports){
+},{}],109:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     keywords: {
@@ -15588,7 +16044,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],108:[function(require,module,exports){
+},{}],110:[function(require,module,exports){
 module.exports = function(hljs) {
   var BASIC_ATOM_RE = '[a-z\'][a-zA-Z0-9_\']*';
   var FUNCTION_NAME_RE = '(' + BASIC_ATOM_RE + ':' + BASIC_ATOM_RE + '|' + BASIC_ATOM_RE + ')';
@@ -15740,7 +16196,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],109:[function(require,module,exports){
+},{}],111:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     contains: [
@@ -15769,7 +16225,7 @@ module.exports = function(hljs) {
     case_insensitive: true
   };
 };
-},{}],110:[function(require,module,exports){
+},{}],112:[function(require,module,exports){
 module.exports = function(hljs) {
   var PARAMS = {
     className: 'params',
@@ -15821,6 +16277,7 @@ module.exports = function(hljs) {
     case_insensitive: true,
     aliases: ['f90', 'f95'],
     keywords: F_KEYWORDS,
+    illegal: /\/\*/,
     contains: [
       hljs.inherit(hljs.APOS_STRING_MODE, {className: 'string', relevance: 0}),
       hljs.inherit(hljs.QUOTE_STRING_MODE, {className: 'string', relevance: 0}),
@@ -15839,7 +16296,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],111:[function(require,module,exports){
+},{}],113:[function(require,module,exports){
 module.exports = function(hljs) {
   var TYPEPARAM = {
     begin: '<', end: '>',
@@ -15857,6 +16314,7 @@ module.exports = function(hljs) {
       'match member module mutable namespace new null of open or ' +
       'override private public rec return sig static struct then to ' +
       'true try type upcast use val void when while with yield',
+    illegal: /\/\*/,
     contains: [
       {
         // monad builder keywords (matches before non-bang kws)
@@ -15897,7 +16355,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],112:[function(require,module,exports){
+},{}],114:[function(require,module,exports){
 module.exports = function (hljs) {
   var KEYWORDS =
     'abort acronym acronyms alias all and assign binary card diag display else1 eps eq equation equations file files ' +
@@ -15934,7 +16392,7 @@ module.exports = function (hljs) {
     ]
   };
 };
-},{}],113:[function(require,module,exports){
+},{}],115:[function(require,module,exports){
 module.exports = function(hljs) {
     var GCODE_IDENT_RE = '[A-Z_][A-Z0-9_.]*';
     var GCODE_CLOSE_RE = '\\%';
@@ -16007,7 +16465,7 @@ module.exports = function(hljs) {
         ].concat(GCODE_CODE)
     };
 };
-},{}],114:[function(require,module,exports){
+},{}],116:[function(require,module,exports){
 module.exports = function (hljs) {
   return {
     aliases: ['feature'],
@@ -16040,7 +16498,7 @@ module.exports = function (hljs) {
     ]
   };
 };
-},{}],115:[function(require,module,exports){
+},{}],117:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     keywords: {
@@ -16134,7 +16592,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],116:[function(require,module,exports){
+},{}],118:[function(require,module,exports){
 module.exports = function(hljs) {
   var GO_KEYWORDS = {
     keyword:
@@ -16173,7 +16631,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],117:[function(require,module,exports){
+},{}],119:[function(require,module,exports){
 module.exports = function(hljs) {
     return {
       keywords: {
@@ -16197,7 +16655,7 @@ module.exports = function(hljs) {
       ]
     }
 };
-},{}],118:[function(require,module,exports){
+},{}],120:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     case_insensitive: true,
@@ -16232,7 +16690,7 @@ module.exports = function(hljs) {
     ]
   }
 };
-},{}],119:[function(require,module,exports){
+},{}],121:[function(require,module,exports){
 module.exports = function(hljs) {
     return {
         keywords: {
@@ -16320,7 +16778,7 @@ module.exports = function(hljs) {
         illegal: /#/
     }
 };
-},{}],120:[function(require,module,exports){
+},{}],122:[function(require,module,exports){
 module.exports = // TODO support filter tags like :javascript, support inline HTML
 function(hljs) {
   return {
@@ -16428,7 +16886,7 @@ function(hljs) {
     ]
   };
 };
-},{}],121:[function(require,module,exports){
+},{}],123:[function(require,module,exports){
 module.exports = function(hljs) {
   var EXPRESSION_KEYWORDS = 'each in with if else unless bindattr action collection debugger log outlet template unbound view yield';
   return {
@@ -16461,7 +16919,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],122:[function(require,module,exports){
+},{}],124:[function(require,module,exports){
 module.exports = function(hljs) {
   var COMMENT_MODES = [
     hljs.COMMENT('--', '$'),
@@ -16585,7 +17043,7 @@ module.exports = function(hljs) {
     ].concat(COMMENT_MODES)
   };
 };
-},{}],123:[function(require,module,exports){
+},{}],125:[function(require,module,exports){
 module.exports = function(hljs) {
   var IDENT_RE = '[a-zA-Z_$][a-zA-Z0-9_$]*';
   var IDENT_FUNC_RETURN_TYPE_RE = '([*]|[a-zA-Z_$][a-zA-Z0-9_$]*)';
@@ -16646,7 +17104,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],124:[function(require,module,exports){
+},{}],126:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['https'],
@@ -16681,7 +17139,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],125:[function(require,module,exports){
+},{}],127:[function(require,module,exports){
 module.exports = function(hljs) {
   var START_BRACKET = '\\[';
   var END_BRACKET = '\\]';
@@ -16739,7 +17197,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],126:[function(require,module,exports){
+},{}],128:[function(require,module,exports){
 module.exports = function(hljs) {
   var STRING = {
     className: "string",
@@ -16799,7 +17257,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],127:[function(require,module,exports){
+},{}],129:[function(require,module,exports){
 module.exports = function(hljs) {
   var PARAMS = {
     className: 'params',
@@ -16854,7 +17312,8 @@ module.exports = function(hljs) {
   };
   return {
     case_insensitive: true,
-    keywords: F_KEYWORDS, 
+    keywords: F_KEYWORDS,
+    illegal: /\/\*/,
     contains: [
       hljs.inherit(hljs.APOS_STRING_MODE, {className: 'string', relevance: 0}),
       hljs.inherit(hljs.QUOTE_STRING_MODE, {className: 'string', relevance: 0}),
@@ -16874,7 +17333,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],128:[function(require,module,exports){
+},{}],130:[function(require,module,exports){
 module.exports = function(hljs) {
   var GENERIC_IDENT_RE = hljs.UNDERSCORE_IDENT_RE + '(<' + hljs.UNDERSCORE_IDENT_RE + '>)?';
   var KEYWORDS =
@@ -16974,7 +17433,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],129:[function(require,module,exports){
+},{}],131:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['js'],
@@ -17086,7 +17545,7 @@ module.exports = function(hljs) {
     illegal: /#/
   };
 };
-},{}],130:[function(require,module,exports){
+},{}],132:[function(require,module,exports){
 module.exports = function(hljs) {
   var LITERALS = {literal: 'true false null'};
   var TYPES = [
@@ -17124,7 +17583,7 @@ module.exports = function(hljs) {
     illegal: '\\S'
   };
 };
-},{}],131:[function(require,module,exports){
+},{}],133:[function(require,module,exports){
 module.exports = function(hljs) {
   // Since there are numerous special names in Julia, it is too much trouble
   // to maintain them by hand. Hence these names (i.e. keywords, literals and
@@ -17285,7 +17744,7 @@ module.exports = function(hljs) {
 
   return DEFAULT;
 };
-},{}],132:[function(require,module,exports){
+},{}],134:[function(require,module,exports){
 module.exports = function (hljs) {
   var KEYWORDS = 'val var get set class trait object public open private protected ' +
     'final enum if else do while for when break continue throw try catch finally ' +
@@ -17386,7 +17845,7 @@ module.exports = function (hljs) {
     ]
   };
 };
-},{}],133:[function(require,module,exports){
+},{}],135:[function(require,module,exports){
 module.exports = function(hljs) {
   var LASSO_IDENT_RE = '[a-zA-Z_][a-zA-Z0-9_.]*';
   var LASSO_ANGLE_RE = '<\\?(lasso(script)?|=)';
@@ -17572,7 +18031,7 @@ module.exports = function(hljs) {
     ].concat(LASSO_CODE)
   };
 };
-},{}],134:[function(require,module,exports){
+},{}],136:[function(require,module,exports){
 module.exports = function(hljs) {
   var IDENT_RE        = '[\\w-]+'; // yes, Less identifiers may begin with a digit
   var INTERP_IDENT_RE = '(' + IDENT_RE + '|@{' + IDENT_RE + '})';
@@ -17709,7 +18168,7 @@ module.exports = function(hljs) {
     contains: RULES
   };
 };
-},{}],135:[function(require,module,exports){
+},{}],137:[function(require,module,exports){
 module.exports = function(hljs) {
   var LISP_IDENT_RE = '[a-zA-Z_\\-\\+\\*\\/\\<\\=\\>\\&\\#][a-zA-Z0-9_\\-\\+\\*\\/\\<\\=\\>\\&\\#!]*';
   var MEC_RE = '\\|[^]*?\\|';
@@ -17816,7 +18275,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],136:[function(require,module,exports){
+},{}],138:[function(require,module,exports){
 module.exports = function(hljs) {
   var VARIABLE = {
     className: 'variable', begin: '\\b[gtps][A-Z]+[A-Za-z0-9_\\-]*\\b|\\$_[A-Z]+',
@@ -17974,7 +18433,7 @@ module.exports = function(hljs) {
     illegal: ';$|^\\[|^='
   };
 };
-},{}],137:[function(require,module,exports){
+},{}],139:[function(require,module,exports){
 module.exports = function(hljs) {
   var KEYWORDS = {
     keyword:
@@ -18125,7 +18584,7 @@ module.exports = function(hljs) {
     ])
   };
 };
-},{}],138:[function(require,module,exports){
+},{}],140:[function(require,module,exports){
 module.exports = function(hljs) {
   var OPENING_LONG_BRACKET = '\\[=*\\[';
   var CLOSING_LONG_BRACKET = '\\]=*\\]';
@@ -18181,7 +18640,7 @@ module.exports = function(hljs) {
     ])
   };
 };
-},{}],139:[function(require,module,exports){
+},{}],141:[function(require,module,exports){
 module.exports = function(hljs) {
   var VARIABLE = {
     className: 'variable',
@@ -18227,7 +18686,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],140:[function(require,module,exports){
+},{}],142:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['md', 'mkdown', 'mkd'],
@@ -18329,7 +18788,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],141:[function(require,module,exports){
+},{}],143:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['mma'],
@@ -18388,7 +18847,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],142:[function(require,module,exports){
+},{}],144:[function(require,module,exports){
 module.exports = function(hljs) {
   var COMMON_CONTAINS = [
     hljs.C_NUMBER_MODE,
@@ -18479,7 +18938,7 @@ module.exports = function(hljs) {
     ].concat(COMMON_CONTAINS)
   };
 };
-},{}],143:[function(require,module,exports){
+},{}],145:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     keywords:
@@ -18709,7 +19168,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],144:[function(require,module,exports){
+},{}],146:[function(require,module,exports){
 module.exports = function(hljs) {
   var KEYWORDS = {
     keyword:
@@ -18798,7 +19257,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],145:[function(require,module,exports){
+},{}],147:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     keywords:
@@ -18817,7 +19276,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],146:[function(require,module,exports){
+},{}],148:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     subLanguage: 'xml',
@@ -18842,7 +19301,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],147:[function(require,module,exports){
+},{}],149:[function(require,module,exports){
 module.exports = function(hljs) {
   var NUMBER = {
     className: 'number', relevance: 0,
@@ -18866,6 +19325,7 @@ module.exports = function(hljs) {
 
       literal: 'true false null and or shl shr mod'
     },
+    illegal: /\/\*/,
     contains: [
       hljs.COMMENT('#rem', '#end'),
       hljs.COMMENT(
@@ -18920,7 +19380,7 @@ module.exports = function(hljs) {
     ]
   }
 };
-},{}],148:[function(require,module,exports){
+},{}],150:[function(require,module,exports){
 module.exports = function(hljs) {
   var VAR = {
     className: 'variable',
@@ -19002,7 +19462,7 @@ module.exports = function(hljs) {
     illegal: '[^\\s\\}]'
   };
 };
-},{}],149:[function(require,module,exports){
+},{}],151:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['nim'],
@@ -19054,7 +19514,7 @@ module.exports = function(hljs) {
     ]
   }
 };
-},{}],150:[function(require,module,exports){
+},{}],152:[function(require,module,exports){
 module.exports = function(hljs) {
   var NIX_KEYWORDS = {
     keyword: 'rec with let in inherit assert if else then',
@@ -19105,7 +19565,7 @@ module.exports = function(hljs) {
     contains: EXPRESSIONS
   };
 };
-},{}],151:[function(require,module,exports){
+},{}],153:[function(require,module,exports){
 module.exports = function(hljs) {
   var CONSTANTS = {
     className: 'symbol',
@@ -19193,7 +19653,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],152:[function(require,module,exports){
+},{}],154:[function(require,module,exports){
 module.exports = function(hljs) {
   var API_CLASS = {
     className: 'built_in',
@@ -19272,7 +19732,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],153:[function(require,module,exports){
+},{}],155:[function(require,module,exports){
 module.exports = function(hljs) {
   /* missing support for heredoc-like string (OCaml 4.0.2+) */
   return {
@@ -19343,7 +19803,7 @@ module.exports = function(hljs) {
     ]
   }
 };
-},{}],154:[function(require,module,exports){
+},{}],156:[function(require,module,exports){
 module.exports = function(hljs) {
 	var SPECIAL_VARS = {
 		className: 'keyword',
@@ -19401,7 +19861,7 @@ module.exports = function(hljs) {
 		]
 	}
 };
-},{}],155:[function(require,module,exports){
+},{}],157:[function(require,module,exports){
 module.exports = function(hljs) {
   var OXYGENE_KEYWORDS = 'abstract add and array as asc aspect assembly async begin break block by case class concat const copy constructor continue '+
     'create default delegate desc distinct div do downto dynamic each else empty end ensure enum equals event except exit extension external false '+
@@ -19470,7 +19930,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],156:[function(require,module,exports){
+},{}],158:[function(require,module,exports){
 module.exports = function(hljs) {
   var CURLY_SUBCOMMENT = hljs.COMMENT(
     '{',
@@ -19518,7 +19978,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],157:[function(require,module,exports){
+},{}],159:[function(require,module,exports){
 module.exports = function(hljs) {
   var PERL_KEYWORDS = 'getpwent getservent quotemeta msgrcv scalar kill dbmclose undef lc ' +
     'ma syswrite tr send umask sysopen shmwrite vec qx utime local oct semctl localtime ' +
@@ -19675,7 +20135,7 @@ module.exports = function(hljs) {
     contains: PERL_DEFAULT_CONTAINS
   };
 };
-},{}],158:[function(require,module,exports){
+},{}],160:[function(require,module,exports){
 module.exports = function(hljs) {
   var MACRO = {
     className: 'variable',
@@ -19727,7 +20187,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],159:[function(require,module,exports){
+},{}],161:[function(require,module,exports){
 module.exports = function(hljs) {
   var VARIABLE = {
     className: 'variable', begin: '\\$+[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*'
@@ -19852,7 +20312,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],160:[function(require,module,exports){
+},{}],162:[function(require,module,exports){
 module.exports = function(hljs) {
   var backtickEscape = {
     begin: '`[\\s\\S]',
@@ -19900,7 +20360,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],161:[function(require,module,exports){
+},{}],163:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     keywords: {
@@ -19948,7 +20408,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],162:[function(require,module,exports){
+},{}],164:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     contains: [
@@ -19990,7 +20450,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],163:[function(require,module,exports){
+},{}],165:[function(require,module,exports){
 module.exports = function(hljs) {
 
   var ATOM = {
@@ -20079,7 +20539,7 @@ module.exports = function(hljs) {
     ])
   };
 };
-},{}],164:[function(require,module,exports){
+},{}],166:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     keywords: {
@@ -20116,7 +20576,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],165:[function(require,module,exports){
+},{}],167:[function(require,module,exports){
 module.exports = function(hljs) {
 
   var PUPPET_KEYWORDS = {
@@ -20224,7 +20684,7 @@ module.exports = function(hljs) {
     ]
   }
 };
-},{}],166:[function(require,module,exports){
+},{}],168:[function(require,module,exports){
 module.exports = function(hljs) {
   var PROMPT = {
     className: 'prompt',  begin: /^(>>>|\.\.\.) /
@@ -20309,7 +20769,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],167:[function(require,module,exports){
+},{}],169:[function(require,module,exports){
 module.exports = function(hljs) {
   var Q_KEYWORDS = {
   keyword:
@@ -20332,7 +20792,7 @@ module.exports = function(hljs) {
      ]
   };
 };
-},{}],168:[function(require,module,exports){
+},{}],170:[function(require,module,exports){
 module.exports = function(hljs) {
   var IDENT_RE = '([a-zA-Z]|\\.[a-zA-Z.])[a-zA-Z0-9._]*';
 
@@ -20402,7 +20862,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],169:[function(require,module,exports){
+},{}],171:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     keywords:
@@ -20429,7 +20889,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],170:[function(require,module,exports){
+},{}],172:[function(require,module,exports){
 module.exports = function(hljs) {
   var IDENTIFIER = '[a-zA-Z-_][^\n{\r\n]+\\{';
 
@@ -20489,7 +20949,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],171:[function(require,module,exports){
+},{}],173:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     keywords: {
@@ -20526,7 +20986,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],172:[function(require,module,exports){
+},{}],174:[function(require,module,exports){
 module.exports = function(hljs) {
   var RUBY_METHOD_RE = '[a-zA-Z_]\\w*[!?=]?|[-+~]\\@|<<|>>|=~|===?|<=>|[<>]=?|\\*\\*|[-/+%^&*~`|]|\\[\\]=?';
   var RUBY_KEYWORDS =
@@ -20692,10 +21152,11 @@ module.exports = function(hljs) {
   return {
     aliases: ['rb', 'gemspec', 'podspec', 'thor', 'irb'],
     keywords: RUBY_KEYWORDS,
+    illegal: /\/\*/,
     contains: COMMENT_MODES.concat(IRB_DEFAULT).concat(RUBY_DEFAULT_CONTAINS)
   };
 };
-},{}],173:[function(require,module,exports){
+},{}],175:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     keywords: {
@@ -20756,7 +21217,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],174:[function(require,module,exports){
+},{}],176:[function(require,module,exports){
 module.exports = function(hljs) {
   var NUM_SUFFIX = '([uif](8|16|32|64|size))\?';
   var BLOCK_COMMENT = hljs.inherit(hljs.C_BLOCK_COMMENT_MODE);
@@ -20842,7 +21303,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],175:[function(require,module,exports){
+},{}],177:[function(require,module,exports){
 module.exports = function(hljs) {
 
   var ANNOTATION = {
@@ -20881,7 +21342,7 @@ module.exports = function(hljs) {
 
   var METHOD = {
     className: 'function',
-    beginKeywords: 'def val',
+    beginKeywords: 'def',
     end: /[:={\[(\n;]/,
     contains: [NAME]
   };
@@ -20905,7 +21366,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],176:[function(require,module,exports){
+},{}],178:[function(require,module,exports){
 module.exports = function(hljs) {
   var SCHEME_IDENT_RE = '[^\\(\\)\\[\\]\\{\\}",\'`;#|\\\\\\s]+';
   var SCHEME_SIMPLE_NUMBER_RE = '(\\-|\\+)?\\d+([./]\\d+)?';
@@ -21027,7 +21488,7 @@ module.exports = function(hljs) {
     contains: [SHEBANG, NUMBER, STRING, QUOTED_IDENT, LIST].concat(COMMENT_MODES)
   };
 };
-},{}],177:[function(require,module,exports){
+},{}],179:[function(require,module,exports){
 module.exports = function(hljs) {
 
   var COMMON_CONTAINS = [
@@ -21082,7 +21543,7 @@ module.exports = function(hljs) {
     ].concat(COMMON_CONTAINS)
   };
 };
-},{}],178:[function(require,module,exports){
+},{}],180:[function(require,module,exports){
 module.exports = function(hljs) {
   var IDENT_RE = '[a-zA-Z-][a-zA-Z0-9_-]*';
   var VARIABLE = {
@@ -21199,7 +21660,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],179:[function(require,module,exports){
+},{}],181:[function(require,module,exports){
 module.exports = function(hljs) {
   var smali_instr_low_prio = ['add', 'and', 'cmp', 'cmpg', 'cmpl', 'const', 'div', 'double', 'float', 'goto', 'if', 'int', 'long', 'move', 'mul', 'neg', 'new', 'nop', 'not', 'or', 'rem', 'return', 'shl', 'shr', 'sput', 'sub', 'throw', 'ushr', 'xor'];
   var smali_instr_high_prio = ['aget', 'aput', 'array', 'check', 'execute', 'fill', 'filled', 'goto/16', 'goto/32', 'iget', 'instance', 'invoke', 'iput', 'monitor', 'packed', 'sget', 'sparse'];
@@ -21282,7 +21743,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],180:[function(require,module,exports){
+},{}],182:[function(require,module,exports){
 module.exports = function(hljs) {
   var VAR_IDENT_RE = '[a-z][a-zA-Z0-9_]*';
   var CHAR = {
@@ -21335,7 +21796,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],181:[function(require,module,exports){
+},{}],183:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['ml'],
@@ -21400,7 +21861,103 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],182:[function(require,module,exports){
+},{}],184:[function(require,module,exports){
+module.exports = function(hljs) {
+  var allCommands = ['!', '-', '+', '!=', '%', '&&', '*', '/', '=', '==', '>', '>=', '<', '<=', 'or', 'plus', '^', ':', '>>', 'abs', 'accTime', 'acos', 'action', 'actionKeys', 'actionKeysImages', 'actionKeysNames', 'actionKeysNamesArray', 'actionName', 'activateAddons', 'activatedAddons', 'activateKey', 'addAction', 'addBackpack', 'addBackpackCargo', 'addBackpackCargoGlobal', 'addBackpackGlobal', 'addCamShake', 'addCuratorAddons', 'addCuratorCameraArea', 'addCuratorEditableObjects', 'addCuratorEditingArea', 'addCuratorPoints', 'addEditorObject', 'addEventHandler', 'addGoggles', 'addGroupIcon', 'addHandgunItem', 'addHeadgear', 'addItem', 'addItemCargo', 'addItemCargoGlobal', 'addItemPool', 'addItemToBackpack', 'addItemToUniform', 'addItemToVest', 'addLiveStats', 'addMagazine', 'addMagazine array', 'addMagazineAmmoCargo', 'addMagazineCargo', 'addMagazineCargoGlobal', 'addMagazineGlobal', 'addMagazinePool', 'addMagazines', 'addMagazineTurret', 'addMenu', 'addMenuItem', 'addMissionEventHandler', 'addMPEventHandler', 'addMusicEventHandler', 'addPrimaryWeaponItem', 'addPublicVariableEventHandler', 'addRating', 'addResources', 'addScore', 'addScoreSide', 'addSecondaryWeaponItem', 'addSwitchableUnit', 'addTeamMember', 'addToRemainsCollector', 'addUniform', 'addVehicle', 'addVest', 'addWaypoint', 'addWeapon', 'addWeaponCargo', 'addWeaponCargoGlobal', 'addWeaponGlobal', 'addWeaponPool', 'addWeaponTurret', 'agent', 'agents', 'AGLToASL', 'aimedAtTarget', 'aimPos', 'airDensityRTD', 'airportSide', 'AISFinishHeal', 'alive', 'allControls', 'allCurators', 'allDead', 'allDeadMen', 'allDisplays', 'allGroups', 'allMapMarkers', 'allMines', 'allMissionObjects', 'allow3DMode', 'allowCrewInImmobile', 'allowCuratorLogicIgnoreAreas', 'allowDamage', 'allowDammage', 'allowFileOperations', 'allowFleeing', 'allowGetIn', 'allPlayers', 'allSites', 'allTurrets', 'allUnits', 'allUnitsUAV', 'allVariables', 'ammo', 'and', 'animate', 'animateDoor', 'animationPhase', 'animationState', 'append', 'armoryPoints', 'arrayIntersect', 'asin', 'ASLToAGL', 'ASLToATL', 'assert', 'assignAsCargo', 'assignAsCargoIndex', 'assignAsCommander', 'assignAsDriver', 'assignAsGunner', 'assignAsTurret', 'assignCurator', 'assignedCargo', 'assignedCommander', 'assignedDriver', 'assignedGunner', 'assignedItems', 'assignedTarget', 'assignedTeam', 'assignedVehicle', 'assignedVehicleRole', 'assignItem', 'assignTeam', 'assignToAirport', 'atan', 'atan2', 'atg', 'ATLToASL', 'attachedObject', 'attachedObjects', 'attachedTo', 'attachObject', 'attachTo', 'attackEnabled', 'backpack', 'backpackCargo', 'backpackContainer', 'backpackItems', 'backpackMagazines', 'backpackSpaceFor', 'behaviour', 'benchmark', 'binocular', 'blufor', 'boundingBox', 'boundingBoxReal', 'boundingCenter', 'breakOut', 'breakTo', 'briefingName', 'buildingExit', 'buildingPos', 'buttonAction', 'buttonSetAction', 'cadetMode', 'call', 'callExtension', 'camCommand', 'camCommit', 'camCommitPrepared', 'camCommitted', 'camConstuctionSetParams', 'camCreate', 'camDestroy', 'cameraEffect', 'cameraEffectEnableHUD', 'cameraInterest', 'cameraOn', 'cameraView', 'campaignConfigFile', 'camPreload', 'camPreloaded', 'camPrepareBank', 'camPrepareDir', 'camPrepareDive', 'camPrepareFocus', 'camPrepareFov', 'camPrepareFovRange', 'camPreparePos', 'camPrepareRelPos', 'camPrepareTarget', 'camSetBank', 'camSetDir', 'camSetDive', 'camSetFocus', 'camSetFov', 'camSetFovRange', 'camSetPos', 'camSetRelPos', 'camSetTarget', 'camTarget', 'camUseNVG', 'canAdd', 'canAddItemToBackpack', 'canAddItemToUniform', 'canAddItemToVest', 'cancelSimpleTaskDestination', 'canFire', 'canMove', 'canSlingLoad', 'canStand', 'canUnloadInCombat', 'captive', 'captiveNum', 'case', 'catch', 'cbChecked', 'cbSetChecked', 'ceil', 'cheatsEnabled', 'checkAIFeature', 'civilian', 'className', 'clearAllItemsFromBackpack', 'clearBackpackCargo', 'clearBackpackCargoGlobal', 'clearGroupIcons', 'clearItemCargo', 'clearItemCargoGlobal', 'clearItemPool', 'clearMagazineCargo', 'clearMagazineCargoGlobal', 'clearMagazinePool', 'clearOverlay', 'clearRadio', 'clearWeaponCargo', 'clearWeaponCargoGlobal', 'clearWeaponPool', 'closeDialog', 'closeDisplay', 'closeOverlay', 'collapseObjectTree', 'combatMode', 'commandArtilleryFire', 'commandChat', 'commander', 'commandFire', 'commandFollow', 'commandFSM', 'commandGetOut', 'commandingMenu', 'commandMove', 'commandRadio', 'commandStop', 'commandTarget', 'commandWatch', 'comment', 'commitOverlay', 'compile', 'compileFinal', 'completedFSM', 'composeText', 'configClasses', 'configFile', 'configHierarchy', 'configName', 'configProperties', 'configSourceMod', 'configSourceModList', 'connectTerminalToUAV', 'controlNull', 'controlsGroupCtrl', 'copyFromClipboard', 'copyToClipboard', 'copyWaypoints', 'cos', 'count', 'countEnemy', 'countFriendly', 'countSide', 'countType', 'countUnknown', 'createAgent', 'createCenter', 'createDialog', 'createDiaryLink', 'createDiaryRecord', 'createDiarySubject', 'createDisplay', 'createGearDialog', 'createGroup', 'createGuardedPoint', 'createLocation', 'createMarker', 'createMarkerLocal', 'createMenu', 'createMine', 'createMissionDisplay', 'createSimpleTask', 'createSite', 'createSoundSource', 'createTask', 'createTeam', 'createTrigger', 'createUnit', 'createUnit array', 'createVehicle', 'createVehicle array', 'createVehicleCrew', 'createVehicleLocal', 'crew', 'ctrlActivate', 'ctrlAddEventHandler', 'ctrlAutoScrollDelay', 'ctrlAutoScrollRewind', 'ctrlAutoScrollSpeed', 'ctrlChecked', 'ctrlClassName', 'ctrlCommit', 'ctrlCommitted', 'ctrlCreate', 'ctrlDelete', 'ctrlEnable', 'ctrlEnabled', 'ctrlFade', 'ctrlHTMLLoaded', 'ctrlIDC', 'ctrlIDD', 'ctrlMapAnimAdd', 'ctrlMapAnimClear', 'ctrlMapAnimCommit', 'ctrlMapAnimDone', 'ctrlMapCursor', 'ctrlMapMouseOver', 'ctrlMapScale', 'ctrlMapScreenToWorld', 'ctrlMapWorldToScreen', 'ctrlModel', 'ctrlModelDirAndUp', 'ctrlModelScale', 'ctrlParent', 'ctrlPosition', 'ctrlRemoveAllEventHandlers', 'ctrlRemoveEventHandler', 'ctrlScale', 'ctrlSetActiveColor', 'ctrlSetAutoScrollDelay', 'ctrlSetAutoScrollRewind', 'ctrlSetAutoScrollSpeed', 'ctrlSetBackgroundColor', 'ctrlSetChecked', 'ctrlSetEventHandler', 'ctrlSetFade', 'ctrlSetFocus', 'ctrlSetFont', 'ctrlSetFontH1', 'ctrlSetFontH1B', 'ctrlSetFontH2', 'ctrlSetFontH2B', 'ctrlSetFontH3', 'ctrlSetFontH3B', 'ctrlSetFontH4', 'ctrlSetFontH4B', 'ctrlSetFontH5', 'ctrlSetFontH5B', 'ctrlSetFontH6', 'ctrlSetFontH6B', 'ctrlSetFontHeight', 'ctrlSetFontHeightH1', 'ctrlSetFontHeightH2', 'ctrlSetFontHeightH3', 'ctrlSetFontHeightH4', 'ctrlSetFontHeightH5', 'ctrlSetFontHeightH6', 'ctrlSetFontP', 'ctrlSetFontPB', 'ctrlSetForegroundColor', 'ctrlSetModel', 'ctrlSetModelDirAndUp', 'ctrlSetModelScale', 'ctrlSetPosition', 'ctrlSetScale', 'ctrlSetStructuredText', 'ctrlSetText', 'ctrlSetTextColor', 'ctrlSetTooltip', 'ctrlSetTooltipColorBox', 'ctrlSetTooltipColorShade', 'ctrlSetTooltipColorText', 'ctrlShow', 'ctrlShown', 'ctrlText', 'ctrlTextHeight', 'ctrlType', 'ctrlVisible', 'curatorAddons', 'curatorCamera', 'curatorCameraArea', 'curatorCameraAreaCeiling', 'curatorCoef', 'curatorEditableObjects', 'curatorEditingArea', 'curatorEditingAreaType', 'curatorMouseOver', 'curatorPoints', 'curatorRegisteredObjects', 'curatorSelected', 'curatorWaypointCost', 'currentChannel', 'currentCommand', 'currentMagazine', 'currentMagazineDetail', 'currentMagazineDetailTurret', 'currentMagazineTurret', 'currentMuzzle', 'currentNamespace', 'currentTask', 'currentTasks', 'currentThrowable', 'currentVisionMode', 'currentWaypoint', 'currentWeapon', 'currentWeaponMode', 'currentWeaponTurret', 'currentZeroing', 'cursorTarget', 'customChat', 'customRadio', 'cutFadeOut', 'cutObj', 'cutRsc', 'cutText', 'damage', 'date', 'dateToNumber', 'daytime', 'deActivateKey', 'debriefingText', 'debugFSM', 'debugLog', 'default', 'deg', 'deleteAt', 'deleteCenter', 'deleteCollection', 'deleteEditorObject', 'deleteGroup', 'deleteIdentity', 'deleteLocation', 'deleteMarker', 'deleteMarkerLocal', 'deleteRange', 'deleteResources', 'deleteSite', 'deleteStatus', 'deleteTeam', 'deleteVehicle', 'deleteVehicleCrew', 'deleteWaypoint', 'detach', 'detectedMines', 'diag activeMissionFSMs', 'diag activeSQFScripts', 'diag activeSQSScripts', 'diag captureFrame', 'diag captureSlowFrame', 'diag fps', 'diag fpsMin', 'diag frameNo', 'diag log', 'diag logSlowFrame', 'diag tickTime', 'dialog', 'diarySubjectExists', 'didJIP', 'didJIPOwner', 'difficulty', 'difficultyEnabled', 'difficultyEnabledRTD', 'direction', 'directSay', 'disableAI', 'disableCollisionWith', 'disableConversation', 'disableDebriefingStats', 'disableSerialization', 'disableTIEquipment', 'disableUAVConnectability', 'disableUserInput', 'displayAddEventHandler', 'displayCtrl', 'displayNull', 'displayRemoveAllEventHandlers', 'displayRemoveEventHandler', 'displaySetEventHandler', 'dissolveTeam', 'distance', 'distance2D', 'distanceSqr', 'distributionRegion', 'do', 'doArtilleryFire', 'doFire', 'doFollow', 'doFSM', 'doGetOut', 'doMove', 'doorPhase', 'doStop', 'doTarget', 'doWatch', 'drawArrow', 'drawEllipse', 'drawIcon', 'drawIcon3D', 'drawLine', 'drawLine3D', 'drawLink', 'drawLocation', 'drawRectangle', 'driver', 'drop', 'east', 'echo', 'editObject', 'editorSetEventHandler', 'effectiveCommander', 'else', 'emptyPositions', 'enableAI', 'enableAIFeature', 'enableAttack', 'enableCamShake', 'enableCaustics', 'enableCollisionWith', 'enableCopilot', 'enableDebriefingStats', 'enableDiagLegend', 'enableEndDialog', 'enableEngineArtillery', 'enableEnvironment', 'enableFatigue', 'enableGunLights', 'enableIRLasers', 'enableMimics', 'enablePersonTurret', 'enableRadio', 'enableReload', 'enableRopeAttach', 'enableSatNormalOnDetail', 'enableSaving', 'enableSentences', 'enableSimulation', 'enableSimulationGlobal', 'enableTeamSwitch', 'enableUAVConnectability', 'enableUAVWaypoints', 'endLoadingScreen', 'endMission', 'engineOn', 'enginesIsOnRTD', 'enginesRpmRTD', 'enginesTorqueRTD', 'entities', 'estimatedEndServerTime', 'estimatedTimeLeft', 'evalObjectArgument', 'everyBackpack', 'everyContainer', 'exec', 'execEditorScript', 'execFSM', 'execVM', 'exit', 'exitWith', 'exp', 'expectedDestination', 'eyeDirection', 'eyePos', 'face', 'faction', 'fadeMusic', 'fadeRadio', 'fadeSound', 'fadeSpeech', 'failMission', 'false', 'fillWeaponsFromPool', 'find', 'findCover', 'findDisplay', 'findEditorObject', 'findEmptyPosition', 'findEmptyPositionReady', 'findNearestEnemy', 'finishMissionInit', 'finite', 'fire', 'fireAtTarget', 'firstBackpack', 'flag', 'flagOwner', 'fleeing', 'floor', 'flyInHeight', 'fog', 'fogForecast', 'fogParams', 'for', 'forceAddUniform', 'forceEnd', 'forceMap', 'forceRespawn', 'forceSpeed', 'forceWalk', 'forceWeaponFire', 'forceWeatherChange', 'forEach', 'forEachMember', 'forEachMemberAgent', 'forEachMemberTeam', 'format', 'formation', 'formationDirection', 'formationLeader', 'formationMembers', 'formationPosition', 'formationTask', 'formatText', 'formLeader', 'freeLook', 'from', 'fromEditor', 'fuel', 'fullCrew', 'gearSlotAmmoCount', 'gearSlotData', 'getAllHitPointsDamage', 'getAmmoCargo', 'getArray', 'getArtilleryAmmo', 'getArtilleryComputerSettings', 'getArtilleryETA', 'getAssignedCuratorLogic', 'getAssignedCuratorUnit', 'getBackpackCargo', 'getBleedingRemaining', 'getBurningValue', 'getCargoIndex', 'getCenterOfMass', 'getClientState', 'getConnectedUAV', 'getDammage', 'getDescription', 'getDir', 'getDirVisual', 'getDLCs', 'getEditorCamera', 'getEditorMode', 'getEditorObjectScope', 'getElevationOffset', 'getFatigue', 'getFriend', 'getFSMVariable', 'getFuelCargo', 'getGroupIcon', 'getGroupIconParams', 'getGroupIcons', 'getHideFrom', 'getHit', 'getHitIndex', 'getHitPointDamage', 'getItemCargo', 'getMagazineCargo', 'getMarkerColor', 'getMarkerPos', 'getMarkerSize', 'getMarkerType', 'getMass', 'getModelInfo', 'getNumber', 'getObjectArgument', 'getObjectChildren', 'getObjectDLC', 'getObjectMaterials', 'getObjectProxy', 'getObjectTextures', 'getObjectType', 'getObjectViewDistance', 'getOxygenRemaining', 'getPersonUsedDLCs', 'getPlayerChannel', 'getPlayerUID', 'getPos', 'getPosASL', 'getPosASLVisual', 'getPosASLW', 'getPosATL', 'getPosATLVisual', 'getPosVisual', 'getPosWorld', 'getRepairCargo', 'getResolution', 'getShadowDistance', 'getSlingLoad', 'getSpeed', 'getSuppression', 'getTerrainHeightASL', 'getText', 'getVariable', 'getWeaponCargo', 'getWPPos', 'glanceAt', 'globalChat', 'globalRadio', 'goggles', 'goto', 'group', 'groupChat', 'groupFromNetId', 'groupIconSelectable', 'groupIconsVisible', 'groupId', 'groupOwner', 'groupRadio', 'groupSelectedUnits', 'groupSelectUnit', 'grpNull', 'gunner', 'gusts', 'halt', 'handgunItems', 'handgunMagazine', 'handgunWeapon', 'handsHit', 'hasInterface', 'hasWeapon', 'hcAllGroups', 'hcGroupParams', 'hcLeader', 'hcRemoveAllGroups', 'hcRemoveGroup', 'hcSelected', 'hcSelectGroup', 'hcSetGroup', 'hcShowBar', 'hcShownBar', 'headgear', 'hideBody', 'hideObject', 'hideObjectGlobal', 'hint', 'hintC', 'hintCadet', 'hintSilent', 'hmd', 'hostMission', 'htmlLoad', 'HUDMovementLevels', 'humidity', 'if', 'image', 'importAllGroups', 'importance', 'in', 'incapacitatedState', 'independent', 'inflame', 'inflamed', 'inGameUISetEventHandler', 'inheritsFrom', 'initAmbientLife', 'inputAction', 'inRangeOfArtillery', 'insertEditorObject', 'intersect', 'isAbleToBreathe', 'isAgent', 'isArray', 'isAutoHoverOn', 'isAutonomous', 'isAutotest', 'isBleeding', 'isBurning', 'isClass', 'isCollisionLightOn', 'isCopilotEnabled', 'isDedicated', 'isDLCAvailable', 'isEngineOn', 'isEqualTo', 'isFlashlightOn', 'isFlatEmpty', 'isForcedWalk', 'isFormationLeader', 'isHidden', 'isInRemainsCollector', 'isInstructorFigureEnabled', 'isIRLaserOn', 'isKeyActive', 'isKindOf', 'isLightOn', 'isLocalized', 'isManualFire', 'isMarkedForCollection', 'isMultiplayer', 'isNil', 'isNull', 'isNumber', 'isObjectHidden', 'isObjectRTD', 'isOnRoad', 'isPipEnabled', 'isPlayer', 'isRealTime', 'isServer', 'isShowing3DIcons', 'isSteamMission', 'isStreamFriendlyUIEnabled', 'isText', 'isTouchingGround', 'isTurnedOut', 'isTutHintsEnabled', 'isUAVConnectable', 'isUAVConnected', 'isUniformAllowed', 'isWalking', 'isWeaponDeployed', 'isWeaponRested', 'itemCargo', 'items', 'itemsWithMagazines', 'join', 'joinAs', 'joinAsSilent', 'joinSilent', 'joinString', 'kbAddDatabase', 'kbAddDatabaseTargets', 'kbAddTopic', 'kbHasTopic', 'kbReact', 'kbRemoveTopic', 'kbTell', 'kbWasSaid', 'keyImage', 'keyName', 'knowsAbout', 'land', 'landAt', 'landResult', 'language', 'laserTarget', 'lbAdd', 'lbClear', 'lbColor', 'lbCurSel', 'lbData', 'lbDelete', 'lbIsSelected', 'lbPicture', 'lbSelection', 'lbSetColor', 'lbSetCurSel', 'lbSetData', 'lbSetPicture', 'lbSetPictureColor', 'lbSetPictureColorDisabled', 'lbSetPictureColorSelected', 'lbSetSelectColor', 'lbSetSelectColorRight', 'lbSetSelected', 'lbSetTooltip', 'lbSetValue', 'lbSize', 'lbSort', 'lbSortByValue', 'lbText', 'lbValue', 'leader', 'leaderboardDeInit', 'leaderboardGetRows', 'leaderboardInit', 'leaveVehicle', 'libraryCredits', 'libraryDisclaimers', 'lifeState', 'lightAttachObject', 'lightDetachObject', 'lightIsOn', 'lightnings', 'limitSpeed', 'linearConversion', 'lineBreak', 'lineIntersects', 'lineIntersectsObjs', 'lineIntersectsSurfaces', 'lineIntersectsWith', 'linkItem', 'list', 'listObjects', 'ln', 'lnbAddArray', 'lnbAddColumn', 'lnbAddRow', 'lnbClear', 'lnbColor', 'lnbCurSelRow', 'lnbData', 'lnbDeleteColumn', 'lnbDeleteRow', 'lnbGetColumnsPosition', 'lnbPicture', 'lnbSetColor', 'lnbSetColumnsPos', 'lnbSetCurSelRow', 'lnbSetData', 'lnbSetPicture', 'lnbSetText', 'lnbSetValue', 'lnbSize', 'lnbText', 'lnbValue', 'load', 'loadAbs', 'loadBackpack', 'loadFile', 'loadGame', 'loadIdentity', 'loadMagazine', 'loadOverlay', 'loadStatus', 'loadUniform', 'loadVest', 'local', 'localize', 'locationNull', 'locationPosition', 'lock', 'lockCameraTo', 'lockCargo', 'lockDriver', 'locked', 'lockedCargo', 'lockedDriver', 'lockedTurret', 'lockTurret', 'lockWP', 'log', 'logEntities', 'lookAt', 'lookAtPos', 'magazineCargo', 'magazines', 'magazinesAllTurrets', 'magazinesAmmo', 'magazinesAmmoCargo', 'magazinesAmmoFull', 'magazinesDetail', 'magazinesDetailBackpack', 'magazinesDetailUniform', 'magazinesDetailVest', 'magazinesTurret', 'magazineTurretAmmo', 'mapAnimAdd', 'mapAnimClear', 'mapAnimCommit', 'mapAnimDone', 'mapCenterOnCamera', 'mapGridPosition', 'markAsFinishedOnSteam', 'markerAlpha', 'markerBrush', 'markerColor', 'markerDir', 'markerPos', 'markerShape', 'markerSize', 'markerText', 'markerType', 'max', 'members', 'min', 'mineActive', 'mineDetectedBy', 'missionConfigFile', 'missionName', 'missionNamespace', 'missionStart', 'mod', 'modelToWorld', 'modelToWorldVisual', 'moonIntensity', 'morale', 'move', 'moveInAny', 'moveInCargo', 'moveInCommander', 'moveInDriver', 'moveInGunner', 'moveInTurret', 'moveObjectToEnd', 'moveOut', 'moveTime', 'moveTo', 'moveToCompleted', 'moveToFailed', 'musicVolume', 'name', 'name location', 'nameSound', 'nearEntities', 'nearestBuilding', 'nearestLocation', 'nearestLocations', 'nearestLocationWithDubbing', 'nearestObject', 'nearestObjects', 'nearObjects', 'nearObjectsReady', 'nearRoads', 'nearSupplies', 'nearTargets', 'needReload', 'netId', 'netObjNull', 'newOverlay', 'nextMenuItemIndex', 'nextWeatherChange', 'nil', 'nMenuItems', 'not', 'numberToDate', 'objectCurators', 'objectFromNetId', 'objectParent', 'objNull', 'objStatus', 'onBriefingGroup', 'onBriefingNotes', 'onBriefingPlan', 'onBriefingTeamSwitch', 'onCommandModeChanged', 'onDoubleClick', 'onEachFrame', 'onGroupIconClick', 'onGroupIconOverEnter', 'onGroupIconOverLeave', 'onHCGroupSelectionChanged', 'onMapSingleClick', 'onPlayerConnected', 'onPlayerDisconnected', 'onPreloadFinished', 'onPreloadStarted', 'onShowNewObject', 'onTeamSwitch', 'openCuratorInterface', 'openMap', 'openYoutubeVideo', 'opfor', 'or', 'orderGetIn', 'overcast', 'overcastForecast', 'owner', 'param', 'params', 'parseNumber', 'parseText', 'parsingNamespace', 'particlesQuality', 'pi', 'pickWeaponPool', 'pitch', 'playableSlotsNumber', 'playableUnits', 'playAction', 'playActionNow', 'player', 'playerRespawnTime', 'playerSide', 'playersNumber', 'playGesture', 'playMission', 'playMove', 'playMoveNow', 'playMusic', 'playScriptedMission', 'playSound', 'playSound3D', 'position', 'positionCameraToWorld', 'posScreenToWorld', 'posWorldToScreen', 'ppEffectAdjust', 'ppEffectCommit', 'ppEffectCommitted', 'ppEffectCreate', 'ppEffectDestroy', 'ppEffectEnable', 'ppEffectForceInNVG', 'precision', 'preloadCamera', 'preloadObject', 'preloadSound', 'preloadTitleObj', 'preloadTitleRsc', 'preprocessFile', 'preprocessFileLineNumbers', 'primaryWeapon', 'primaryWeaponItems', 'primaryWeaponMagazine', 'priority', 'private', 'processDiaryLink', 'productVersion', 'profileName', 'profileNamespace', 'profileNameSteam', 'progressLoadingScreen', 'progressPosition', 'progressSetPosition', 'publicVariable', 'publicVariableClient', 'publicVariableServer', 'pushBack', 'putWeaponPool', 'queryItemsPool', 'queryMagazinePool', 'queryWeaponPool', 'rad', 'radioChannelAdd', 'radioChannelCreate', 'radioChannelRemove', 'radioChannelSetCallSign', 'radioChannelSetLabel', 'radioVolume', 'rain', 'rainbow', 'random', 'rank', 'rankId', 'rating', 'rectangular', 'registeredTasks', 'registerTask', 'reload', 'reloadEnabled', 'remoteControl', 'remoteExec', 'remoteExecCall', 'removeAction', 'removeAllActions', 'removeAllAssignedItems', 'removeAllContainers', 'removeAllCuratorAddons', 'removeAllCuratorCameraAreas', 'removeAllCuratorEditingAreas', 'removeAllEventHandlers', 'removeAllHandgunItems', 'removeAllItems', 'removeAllItemsWithMagazines', 'removeAllMissionEventHandlers', 'removeAllMPEventHandlers', 'removeAllMusicEventHandlers', 'removeAllPrimaryWeaponItems', 'removeAllWeapons', 'removeBackpack', 'removeBackpackGlobal', 'removeCuratorAddons', 'removeCuratorCameraArea', 'removeCuratorEditableObjects', 'removeCuratorEditingArea', 'removeDrawIcon', 'removeDrawLinks', 'removeEventHandler', 'removeFromRemainsCollector', 'removeGoggles', 'removeGroupIcon', 'removeHandgunItem', 'removeHeadgear', 'removeItem', 'removeItemFromBackpack', 'removeItemFromUniform', 'removeItemFromVest', 'removeItems', 'removeMagazine', 'removeMagazineGlobal', 'removeMagazines', 'removeMagazinesTurret', 'removeMagazineTurret', 'removeMenuItem', 'removeMissionEventHandler', 'removeMPEventHandler', 'removeMusicEventHandler', 'removePrimaryWeaponItem', 'removeSecondaryWeaponItem', 'removeSimpleTask', 'removeSwitchableUnit', 'removeTeamMember', 'removeUniform', 'removeVest', 'removeWeapon', 'removeWeaponGlobal', 'removeWeaponTurret', 'requiredVersion', 'resetCamShake', 'resetSubgroupDirection', 'resistance', 'resize', 'resources', 'respawnVehicle', 'restartEditorCamera', 'reveal', 'revealMine', 'reverse', 'reversedMouseY', 'roadsConnectedTo', 'roleDescription', 'ropeAttachedObjects', 'ropeAttachedTo', 'ropeAttachEnabled', 'ropeAttachTo', 'ropeCreate', 'ropeCut', 'ropeEndPosition', 'ropeLength', 'ropes', 'ropeUnwind', 'ropeUnwound', 'rotorsForcesRTD', 'rotorsRpmRTD', 'round', 'runInitScript', 'safeZoneH', 'safeZoneW', 'safeZoneWAbs', 'safeZoneX', 'safeZoneXAbs', 'safeZoneY', 'saveGame', 'saveIdentity', 'saveJoysticks', 'saveOverlay', 'saveProfileNamespace', 'saveStatus', 'saveVar', 'savingEnabled', 'say', 'say2D', 'say3D', 'scopeName', 'score', 'scoreSide', 'screenToWorld', 'scriptDone', 'scriptName', 'scriptNull', 'scudState', 'secondaryWeapon', 'secondaryWeaponItems', 'secondaryWeaponMagazine', 'select', 'selectBestPlaces', 'selectDiarySubject', 'selectedEditorObjects', 'selectEditorObject', 'selectionPosition', 'selectLeader', 'selectNoPlayer', 'selectPlayer', 'selectWeapon', 'selectWeaponTurret', 'sendAUMessage', 'sendSimpleCommand', 'sendTask', 'sendTaskResult', 'sendUDPMessage', 'serverCommand', 'serverCommandAvailable', 'serverCommandExecutable', 'serverName', 'serverTime', 'set', 'setAccTime', 'setAirportSide', 'setAmmo', 'setAmmoCargo', 'setAperture', 'setApertureNew', 'setArmoryPoints', 'setAttributes', 'setAutonomous', 'setBehaviour', 'setBleedingRemaining', 'setCameraInterest', 'setCamShakeDefParams', 'setCamShakeParams', 'setCamUseTi', 'setCaptive', 'setCenterOfMass', 'setCollisionLight', 'setCombatMode', 'setCompassOscillation', 'setCuratorCameraAreaCeiling', 'setCuratorCoef', 'setCuratorEditingAreaType', 'setCuratorWaypointCost', 'setCurrentChannel', 'setCurrentTask', 'setCurrentWaypoint', 'setDamage', 'setDammage', 'setDate', 'setDebriefingText', 'setDefaultCamera', 'setDestination', 'setDetailMapBlendPars', 'setDir', 'setDirection', 'setDrawIcon', 'setDropInterval', 'setEditorMode', 'setEditorObjectScope', 'setEffectCondition', 'setFace', 'setFaceAnimation', 'setFatigue', 'setFlagOwner', 'setFlagSide', 'setFlagTexture', 'setFog', 'setFog array', 'setFormation', 'setFormationTask', 'setFormDir', 'setFriend', 'setFromEditor', 'setFSMVariable', 'setFuel', 'setFuelCargo', 'setGroupIcon', 'setGroupIconParams', 'setGroupIconsSelectable', 'setGroupIconsVisible', 'setGroupId', 'setGroupIdGlobal', 'setGroupOwner', 'setGusts', 'setHideBehind', 'setHit', 'setHitIndex', 'setHitPointDamage', 'setHorizonParallaxCoef', 'setHUDMovementLevels', 'setIdentity', 'setImportance', 'setLeader', 'setLightAmbient', 'setLightAttenuation', 'setLightBrightness', 'setLightColor', 'setLightDayLight', 'setLightFlareMaxDistance', 'setLightFlareSize', 'setLightIntensity', 'setLightnings', 'setLightUseFlare', 'setLocalWindParams', 'setMagazineTurretAmmo', 'setMarkerAlpha', 'setMarkerAlphaLocal', 'setMarkerBrush', 'setMarkerBrushLocal', 'setMarkerColor', 'setMarkerColorLocal', 'setMarkerDir', 'setMarkerDirLocal', 'setMarkerPos', 'setMarkerPosLocal', 'setMarkerShape', 'setMarkerShapeLocal', 'setMarkerSize', 'setMarkerSizeLocal', 'setMarkerText', 'setMarkerTextLocal', 'setMarkerType', 'setMarkerTypeLocal', 'setMass', 'setMimic', 'setMousePosition', 'setMusicEffect', 'setMusicEventHandler', 'setName', 'setNameSound', 'setObjectArguments', 'setObjectMaterial', 'setObjectProxy', 'setObjectTexture', 'setObjectTextureGlobal', 'setObjectViewDistance', 'setOvercast', 'setOwner', 'setOxygenRemaining', 'setParticleCircle', 'setParticleClass', 'setParticleFire', 'setParticleParams', 'setParticleRandom', 'setPilotLight', 'setPiPEffect', 'setPitch', 'setPlayable', 'setPlayerRespawnTime', 'setPos', 'setPosASL', 'setPosASL2', 'setPosASLW', 'setPosATL', 'setPosition', 'setPosWorld', 'setRadioMsg', 'setRain', 'setRainbow', 'setRandomLip', 'setRank', 'setRectangular', 'setRepairCargo', 'setShadowDistance', 'setSide', 'setSimpleTaskDescription', 'setSimpleTaskDestination', 'setSimpleTaskTarget', 'setSimulWeatherLayers', 'setSize', 'setSkill', 'setSkill array', 'setSlingLoad', 'setSoundEffect', 'setSpeaker', 'setSpeech', 'setSpeedMode', 'setStatValue', 'setSuppression', 'setSystemOfUnits', 'setTargetAge', 'setTaskResult', 'setTaskState', 'setTerrainGrid', 'setText', 'setTimeMultiplier', 'setTitleEffect', 'setTriggerActivation', 'setTriggerArea', 'setTriggerStatements', 'setTriggerText', 'setTriggerTimeout', 'setTriggerType', 'setType', 'setUnconscious', 'setUnitAbility', 'setUnitPos', 'setUnitPosWeak', 'setUnitRank', 'setUnitRecoilCoefficient', 'setUnloadInCombat', 'setUserActionText', 'setVariable', 'setVectorDir', 'setVectorDirAndUp', 'setVectorUp', 'setVehicleAmmo', 'setVehicleAmmoDef', 'setVehicleArmor', 'setVehicleId', 'setVehicleLock', 'setVehiclePosition', 'setVehicleTiPars', 'setVehicleVarName', 'setVelocity', 'setVelocityTransformation', 'setViewDistance', 'setVisibleIfTreeCollapsed', 'setWaves', 'setWaypointBehaviour', 'setWaypointCombatMode', 'setWaypointCompletionRadius', 'setWaypointDescription', 'setWaypointFormation', 'setWaypointHousePosition', 'setWaypointLoiterRadius', 'setWaypointLoiterType', 'setWaypointName', 'setWaypointPosition', 'setWaypointScript', 'setWaypointSpeed', 'setWaypointStatements', 'setWaypointTimeout', 'setWaypointType', 'setWaypointVisible', 'setWeaponReloadingTime', 'setWind', 'setWindDir', 'setWindForce', 'setWindStr', 'setWPPos', 'show3DIcons', 'showChat', 'showCinemaBorder', 'showCommandingMenu', 'showCompass', 'showCuratorCompass', 'showGPS', 'showHUD', 'showLegend', 'showMap', 'shownArtilleryComputer', 'shownChat', 'shownCompass', 'shownCuratorCompass', 'showNewEditorObject', 'shownGPS', 'shownHUD', 'shownMap', 'shownPad', 'shownRadio', 'shownUAVFeed', 'shownWarrant', 'shownWatch', 'showPad', 'showRadio', 'showSubtitles', 'showUAVFeed', 'showWarrant', 'showWatch', 'showWaypoint', 'side', 'sideChat', 'sideEnemy', 'sideFriendly', 'sideLogic', 'sideRadio', 'sideUnknown', 'simpleTasks', 'simulationEnabled', 'simulCloudDensity', 'simulCloudOcclusion', 'simulInClouds', 'simulWeatherSync', 'sin', 'size', 'sizeOf', 'skill', 'skillFinal', 'skipTime', 'sleep', 'sliderPosition', 'sliderRange', 'sliderSetPosition', 'sliderSetRange', 'sliderSetSpeed', 'sliderSpeed', 'slingLoadAssistantShown', 'soldierMagazines', 'someAmmo', 'sort', 'soundVolume', 'spawn', 'speaker', 'speed', 'speedMode', 'splitString', 'sqrt', 'squadParams', 'stance', 'startLoadingScreen', 'step', 'stop', 'stopped', 'str', 'sunOrMoon', 'supportInfo', 'suppressFor', 'surfaceIsWater', 'surfaceNormal', 'surfaceType', 'swimInDepth', 'switch', 'switchableUnits', 'switchAction', 'switchCamera', 'switchGesture', 'switchLight', 'switchMove', 'synchronizedObjects', 'synchronizedTriggers', 'synchronizedWaypoints', 'synchronizeObjectsAdd', 'synchronizeObjectsRemove', 'synchronizeTrigger', 'synchronizeWaypoint', 'synchronizeWaypoint trigger', 'systemChat', 'systemOfUnits', 'tan', 'targetKnowledge', 'targetsAggregate', 'targetsQuery', 'taskChildren', 'taskCompleted', 'taskDescription', 'taskDestination', 'taskHint', 'taskNull', 'taskParent', 'taskResult', 'taskState', 'teamMember', 'teamMemberNull', 'teamName', 'teams', 'teamSwitch', 'teamSwitchEnabled', 'teamType', 'terminate', 'terrainIntersect', 'terrainIntersectASL', 'text', 'text location', 'textLog', 'textLogFormat', 'tg', 'then', 'throw', 'time', 'timeMultiplier', 'titleCut', 'titleFadeOut', 'titleObj', 'titleRsc', 'titleText', 'to', 'toArray', 'toLower', 'toString', 'toUpper', 'triggerActivated', 'triggerActivation', 'triggerArea', 'triggerAttachedVehicle', 'triggerAttachObject', 'triggerAttachVehicle', 'triggerStatements', 'triggerText', 'triggerTimeout', 'triggerTimeoutCurrent', 'triggerType', 'true', 'try', 'turretLocal', 'turretOwner', 'turretUnit', 'tvAdd', 'tvClear', 'tvCollapse', 'tvCount', 'tvCurSel', 'tvData', 'tvDelete', 'tvExpand', 'tvPicture', 'tvSetCurSel', 'tvSetData', 'tvSetPicture', 'tvSetPictureColor', 'tvSetTooltip', 'tvSetValue', 'tvSort', 'tvSortByValue', 'tvText', 'tvValue', 'type', 'typeName', 'typeOf', 'UAVControl', 'uiNamespace', 'uiSleep', 'unassignCurator', 'unassignItem', 'unassignTeam', 'unassignVehicle', 'underwater', 'uniform', 'uniformContainer', 'uniformItems', 'uniformMagazines', 'unitAddons', 'unitBackpack', 'unitPos', 'unitReady', 'unitRecoilCoefficient', 'units', 'unitsBelowHeight', 'unlinkItem', 'unlockAchievement', 'unregisterTask', 'updateDrawIcon', 'updateMenuItem', 'updateObjectTree', 'useAudioTimeForMoves', 'vectorAdd', 'vectorCos', 'vectorCrossProduct', 'vectorDiff', 'vectorDir', 'vectorDirVisual', 'vectorDistance', 'vectorDistanceSqr', 'vectorDotProduct', 'vectorFromTo', 'vectorMagnitude', 'vectorMagnitudeSqr', 'vectorMultiply', 'vectorNormalized', 'vectorUp', 'vectorUpVisual', 'vehicle', 'vehicleChat', 'vehicleRadio', 'vehicles', 'vehicleVarName', 'velocity', 'velocityModelSpace', 'verifySignature', 'vest', 'vestContainer', 'vestItems', 'vestMagazines', 'viewDistance', 'visibleCompass', 'visibleGPS', 'visibleMap', 'visiblePosition', 'visiblePositionASL', 'visibleWatch', 'waitUntil', 'waves', 'waypointAttachedObject', 'waypointAttachedVehicle', 'waypointAttachObject', 'waypointAttachVehicle', 'waypointBehaviour', 'waypointCombatMode', 'waypointCompletionRadius', 'waypointDescription', 'waypointFormation', 'waypointHousePosition', 'waypointLoiterRadius', 'waypointLoiterType', 'waypointName', 'waypointPosition', 'waypoints', 'waypointScript', 'waypointsEnabledUAV', 'waypointShow', 'waypointSpeed', 'waypointStatements', 'waypointTimeout', 'waypointTimeoutCurrent', 'waypointType', 'waypointVisible', 'weaponAccessories', 'weaponCargo', 'weaponDirection', 'weaponLowered', 'weapons', 'weaponsItems', 'weaponsItemsCargo', 'weaponState', 'weaponsTurret', 'weightRTD', 'west', 'WFSideText', 'while', 'wind', 'windDir', 'windStr', 'wingsForcesRTD', 'with', 'worldName', 'worldSize', 'worldToModel', 'worldToModelVisual', 'worldToScreen'];
+  var control = ['case', 'catch', 'default', 'do', 'else', 'exit', 'exitWith|5', 'for', 'forEach', 'from', 'if', 'switch', 'then', 'throw', 'to', 'try', 'while', 'with'];
+  var operators = ['!', '-', '+', '!=', '%', '&&', '*', '/', '=', '==', '>', '>=', '<', '<=', '^', ':', '>>'];
+  var specials = ['_forEachIndex|10', '_this|10', '_x|10'];
+  var literals = ['true', 'false', 'nil'];
+  var builtins = allCommands.filter(function (command) {
+    return control.indexOf(command) == -1 &&
+        literals.indexOf(command) == -1 &&
+        operators.indexOf(command) == -1;
+  });
+  //Note: operators will not be treated as builtins due to the lexeme rules
+  builtins = builtins.concat(specials);
+
+  // In SQF strings, quotes matching the start are escaped by adding a consecutive.
+  // Example of single escaped quotes: " "" " and  ' '' '.
+  var STRINGS = {
+    className: 'string',
+    relevance: 0,
+    variants: [
+      {
+        begin: '"',
+        end: '"',
+        contains: [{begin: '""'}]
+      },
+      {
+        begin: '\'',
+        end: '\'',
+        contains: [{begin: '\'\''}]
+      }
+    ]
+  };
+
+  var NUMBERS = {
+    className: 'number',
+    begin: hljs.NUMBER_RE,
+    relevance: 0
+  };
+
+  // Preprocessor definitions borrowed from C++
+  var PREPROCESSOR_STRINGS = {
+    className: 'string',
+    variants: [
+      hljs.QUOTE_STRING_MODE,
+      {
+        begin: '\'\\\\?.', end: '\'',
+        illegal: '.'
+      }
+    ]
+  };
+
+  var PREPROCESSOR =       {
+    className: 'preprocessor',
+    begin: '#', end: '$',
+    keywords: 'if else elif endif define undef warning error line ' +
+              'pragma ifdef ifndef',
+    contains: [
+      {
+        begin: /\\\n/, relevance: 0
+      },
+      {
+        beginKeywords: 'include', end: '$',
+        contains: [
+          PREPROCESSOR_STRINGS,
+          {
+            className: 'string',
+            begin: '<', end: '>',
+            illegal: '\\n',
+          }
+        ]
+      },
+      PREPROCESSOR_STRINGS,
+      NUMBERS,
+      hljs.C_LINE_COMMENT_MODE,
+      hljs.C_BLOCK_COMMENT_MODE
+    ]
+  };
+
+  return {
+    aliases: ['sqf'],
+    case_insensitive: true,
+    keywords: {
+      keyword: control.join(' '),
+      built_in: builtins.join(' '),
+      literal: literals.join(' ')
+    },
+    contains: [
+      hljs.C_LINE_COMMENT_MODE,
+      hljs.C_BLOCK_COMMENT_MODE,
+      NUMBERS,
+      STRINGS,
+      PREPROCESSOR
+    ]
+  };
+};
+},{}],185:[function(require,module,exports){
 module.exports = function(hljs) {
   var COMMENT_MODE = hljs.COMMENT('--', '$');
   return {
@@ -21560,7 +22117,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],183:[function(require,module,exports){
+},{}],186:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['do', 'ado'],
@@ -21598,7 +22155,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],184:[function(require,module,exports){
+},{}],187:[function(require,module,exports){
 module.exports = function(hljs) {
   var STEP21_IDENT_RE = '[A-Z_][A-Z0-9_.]*';
   var STEP21_CLOSE_RE = 'END-ISO-10303-21;';
@@ -21650,7 +22207,7 @@ module.exports = function(hljs) {
     ].concat(STEP21_CODE)
   };
 };
-},{}],185:[function(require,module,exports){
+},{}],188:[function(require,module,exports){
 module.exports = function(hljs) {
 
   var VARIABLE = {
@@ -22093,30 +22650,33 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],186:[function(require,module,exports){
+},{}],189:[function(require,module,exports){
 module.exports = function(hljs) {
   var SWIFT_KEYWORDS = {
-      keyword: 'class deinit enum extension func init let protocol static ' +
-        'struct subscript typealias var break case continue default do ' +
-        'else fallthrough if in for return switch where while as dynamicType ' +
-        'is new super self Self Type __COLUMN__ __FILE__ __FUNCTION__ ' +
-        '__LINE__ associativity didSet get infix inout left mutating none ' +
-        'nonmutating operator override postfix precedence prefix right set '+
-        'unowned unowned safe unsafe weak willSet',
+      keyword: '__COLUMN__ __FILE__ __FUNCTION__ __LINE__ as as! as? associativity ' +
+        'break case catch class continue convenience default defer deinit didSet do ' +
+        'dynamic dynamicType else enum extension fallthrough false final for func ' +
+        'get guard if import in indirect infix init inout internal is lazy left let ' +
+        'mutating nil none nonmutating operator optional override postfix precedence ' +
+        'prefix private protocol Protocol public repeat required rethrows return ' +
+        'right self Self set static struct subscript super switch throw throws true ' +
+        'try try! try? Type typealias unowned var weak where while willSet',
       literal: 'true false nil',
-      built_in: 'abs advance alignof alignofValue assert bridgeFromObjectiveC ' +
-        'bridgeFromObjectiveCUnconditional bridgeToObjectiveC ' +
-        'bridgeToObjectiveCUnconditional c contains count countElements ' +
-        'countLeadingZeros debugPrint debugPrintln distance dropFirst dropLast dump ' +
-        'encodeBitsAsWords enumerate equal filter find getBridgedObjectiveCType ' +
-        'getVaList indices insertionSort isBridgedToObjectiveC ' +
-        'isBridgedVerbatimToObjectiveC isUniquelyReferenced join ' +
-        'lexicographicalCompare map max maxElement min minElement numericCast ' +
-        'partition posix print println quickSort reduce reflect reinterpretCast ' +
-        'reverse roundUpToAlignment sizeof sizeofValue sort split startsWith strideof ' +
-        'strideofValue swap swift toString transcode underestimateCount ' +
+      built_in: 'abs advance alignof alignofValue anyGenerator assert assertionFailure ' +
+        'bridgeFromObjectiveC bridgeFromObjectiveCUnconditional bridgeToObjectiveC ' +
+        'bridgeToObjectiveCUnconditional c contains count countElements countLeadingZeros ' +
+        'debugPrint debugPrintln distance dropFirst dropLast dump encodeBitsAsWords ' +
+        'enumerate equal fatalError filter find getBridgedObjectiveCType getVaList ' +
+        'indices insertionSort isBridgedToObjectiveC isBridgedVerbatimToObjectiveC ' +
+        'isUniquelyReferenced isUniquelyReferencedNonObjC join lazy lexicographicalCompare ' +
+        'map max maxElement min minElement numericCast overlaps partition posix ' +
+        'precondition preconditionFailure print println quickSort readLine reduce reflect ' +
+        'reinterpretCast reverse roundUpToAlignment sizeof sizeofValue sort split ' +
+        'startsWith stride strideof strideofValue swap toString transcode ' +
+        'underestimateCount unsafeAddressOf unsafeBitCast unsafeDowncast unsafeUnwrap ' +
         'unsafeReflect withExtendedLifetime withObjectAtPlusZero withUnsafePointer ' +
-        'withUnsafePointerToObject withUnsafePointers withVaList'
+        'withUnsafePointerToObject withUnsafeMutablePointer withUnsafeMutablePointers ' +
+        'withUnsafePointer withUnsafePointers withVaList zip'
     };
 
   var TYPE = {
@@ -22196,10 +22756,12 @@ module.exports = function(hljs) {
       },
       {
         className: 'preprocessor', // @attributes
-        begin: '(@assignment|@class_protocol|@exported|@final|@lazy|@noreturn|' +
-                  '@NSCopying|@NSManaged|@objc|@optional|@required|@auto_closure|' +
+        begin: '(@warn_unused_result|@exported|@lazy|@noescape|' +
+                  '@NSCopying|@NSManaged|@objc|@convention|@required|' +
                   '@noreturn|@IBAction|@IBDesignable|@IBInspectable|@IBOutlet|' +
-                  '@infix|@prefix|@postfix)'
+                  '@infix|@prefix|@postfix|@autoclosure|@testable|@available|' +
+                  '@nonobjc|@NSApplicationMain|@UIApplicationMain)'
+
       },
       {
         beginKeywords: 'import', end: /$/,
@@ -22208,7 +22770,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],187:[function(require,module,exports){
+},{}],190:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['tk'],
@@ -22270,7 +22832,7 @@ module.exports = function(hljs) {
     ]
   }
 };
-},{}],188:[function(require,module,exports){
+},{}],191:[function(require,module,exports){
 module.exports = function(hljs) {
   var COMMAND1 = {
     className: 'command',
@@ -22325,7 +22887,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],189:[function(require,module,exports){
+},{}],192:[function(require,module,exports){
 module.exports = function(hljs) {
   var BUILT_IN_TYPES = 'bool byte i16 i32 i64 double string binary';
   return {
@@ -22360,7 +22922,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],190:[function(require,module,exports){
+},{}],193:[function(require,module,exports){
 module.exports = function(hljs) {
   var TPID = {
     className: 'number',
@@ -22444,7 +23006,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],191:[function(require,module,exports){
+},{}],194:[function(require,module,exports){
 module.exports = function(hljs) {
   var PARAMS = {
     className: 'params',
@@ -22501,14 +23063,14 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],192:[function(require,module,exports){
+},{}],195:[function(require,module,exports){
 module.exports = function(hljs) {
   var KEYWORDS = {
     keyword:
       'in if for while finally var new function|0 do return void else break catch ' +
       'instanceof with throw case default try this switch continue typeof delete ' +
-      'let yield const class public private get set super ' +
-      'static implements enum export import declare type protected',
+      'let yield const class public private protected get set super ' +
+      'static implements enum export import declare type namespace abstract',
     literal:
       'true false null undefined NaN Infinity',
     built_in:
@@ -22599,7 +23161,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],193:[function(require,module,exports){
+},{}],196:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     keywords: {
@@ -22654,7 +23216,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],194:[function(require,module,exports){
+},{}],197:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['vb'],
@@ -22710,7 +23272,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],195:[function(require,module,exports){
+},{}],198:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     subLanguage: 'xml',
@@ -22722,7 +23284,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],196:[function(require,module,exports){
+},{}],199:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['vbs'],
@@ -22761,7 +23323,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],197:[function(require,module,exports){
+},{}],200:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['v'],
@@ -22811,7 +23373,7 @@ module.exports = function(hljs) {
     ]
   }; // return
 };
-},{}],198:[function(require,module,exports){
+},{}],201:[function(require,module,exports){
 module.exports = function(hljs) {
   // Regular expression for VHDL numeric literals.
 
@@ -22867,7 +23429,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],199:[function(require,module,exports){
+},{}],202:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     lexemes: /[!#@\w]+/,
@@ -22930,7 +23492,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],200:[function(require,module,exports){
+},{}],203:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     case_insensitive: true,
@@ -23066,7 +23628,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],201:[function(require,module,exports){
+},{}],204:[function(require,module,exports){
 module.exports = function(hljs) {
   var BUILTIN_MODULES =
     'ObjectLoader Animate MovieCredits Slides Filters Shading Materials LensFlare Mapping VLCAudioVideo ' +
@@ -23153,7 +23715,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],202:[function(require,module,exports){
+},{}],205:[function(require,module,exports){
 module.exports = function(hljs) {
   var XML_IDENT_RE = '[A-Za-z0-9\\._:-]+';
   var PHP = {
@@ -23256,7 +23818,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],203:[function(require,module,exports){
+},{}],206:[function(require,module,exports){
 module.exports = function(hljs) {
   var KEYWORDS = 'for let if while then else return where group by xquery encoding version' +
     'module namespace boundary-space preserve strip default collation base-uri ordering' +
@@ -23329,7 +23891,7 @@ module.exports = function(hljs) {
     contains: CONTAINS
   };
 };
-},{}],204:[function(require,module,exports){
+},{}],207:[function(require,module,exports){
 module.exports = function(hljs) {
   var STRING = {
     className: 'string',
@@ -23436,7 +23998,100 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],205:[function(require,module,exports){
+},{}],208:[function(require,module,exports){
+// shim for using process in browser
+
+var process = module.exports = {};
+var queue = [];
+var draining = false;
+var currentQueue;
+var queueIndex = -1;
+
+function cleanUpNextTick() {
+    draining = false;
+    if (currentQueue.length) {
+        queue = currentQueue.concat(queue);
+    } else {
+        queueIndex = -1;
+    }
+    if (queue.length) {
+        drainQueue();
+    }
+}
+
+function drainQueue() {
+    if (draining) {
+        return;
+    }
+    var timeout = setTimeout(cleanUpNextTick);
+    draining = true;
+
+    var len = queue.length;
+    while(len) {
+        currentQueue = queue;
+        queue = [];
+        while (++queueIndex < len) {
+            if (currentQueue) {
+                currentQueue[queueIndex].run();
+            }
+        }
+        queueIndex = -1;
+        len = queue.length;
+    }
+    currentQueue = null;
+    draining = false;
+    clearTimeout(timeout);
+}
+
+process.nextTick = function (fun) {
+    var args = new Array(arguments.length - 1);
+    if (arguments.length > 1) {
+        for (var i = 1; i < arguments.length; i++) {
+            args[i - 1] = arguments[i];
+        }
+    }
+    queue.push(new Item(fun, args));
+    if (queue.length === 1 && !draining) {
+        setTimeout(drainQueue, 0);
+    }
+};
+
+// v8 likes predictible objects
+function Item(fun, array) {
+    this.fun = fun;
+    this.array = array;
+}
+Item.prototype.run = function () {
+    this.fun.apply(null, this.array);
+};
+process.title = 'browser';
+process.browser = true;
+process.env = {};
+process.argv = [];
+process.version = ''; // empty string to avoid regexp issues
+process.versions = {};
+
+function noop() {}
+
+process.on = noop;
+process.addListener = noop;
+process.once = noop;
+process.off = noop;
+process.removeListener = noop;
+process.removeAllListeners = noop;
+process.emit = noop;
+
+process.binding = function (name) {
+    throw new Error('process.binding is not supported');
+};
+
+process.cwd = function () { return '/' };
+process.chdir = function (dir) {
+    throw new Error('process.chdir is not supported');
+};
+process.umask = function() { return 0; };
+
+},{}],209:[function(require,module,exports){
 //! moment.js locale configuration
 //! locale : french (fr)
 //! author : John Fischer : https://github.com/jfroffice
@@ -23498,7 +24153,7 @@ module.exports = function(hljs) {
     return fr;
 
 }));
-},{"../moment":206}],206:[function(require,module,exports){
+},{"../moment":210}],210:[function(require,module,exports){
 //! moment.js
 //! version : 2.10.6
 //! authors : Tim Wood, Iskren Chernev, Moment.js contributors
@@ -26694,102 +27349,1263 @@ module.exports = function(hljs) {
     return _moment;
 
 }));
-},{}],207:[function(require,module,exports){
-// shim for using process in browser
+},{}],211:[function(require,module,exports){
+'use strict';
 
-var process = module.exports = {};
-var queue = [];
-var draining = false;
-var currentQueue;
-var queueIndex = -1;
+Object.defineProperty(exports, '__esModule', {
+  value: true
+});
+var defaultParams = {
+  title: '',
+  text: '',
+  type: null,
+  allowOutsideClick: false,
+  showConfirmButton: true,
+  showCancelButton: false,
+  closeOnConfirm: true,
+  closeOnCancel: true,
+  confirmButtonText: 'OK',
+  confirmButtonColor: '#8CD4F5',
+  cancelButtonText: 'Cancel',
+  imageUrl: null,
+  imageSize: null,
+  timer: null,
+  customClass: '',
+  html: false,
+  animation: true,
+  allowEscapeKey: true,
+  inputType: 'text',
+  inputPlaceholder: '',
+  inputValue: '',
+  showLoaderOnConfirm: false
+};
 
-function cleanUpNextTick() {
-    draining = false;
-    if (currentQueue.length) {
-        queue = currentQueue.concat(queue);
+exports['default'] = defaultParams;
+module.exports = exports['default'];
+},{}],212:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+  value: true
+});
+
+var _colorLuminance = require('./utils');
+
+var _getModal = require('./handle-swal-dom');
+
+var _hasClass$isDescendant = require('./handle-dom');
+
+/*
+ * User clicked on "Confirm"/"OK" or "Cancel"
+ */
+var handleButton = function handleButton(event, params, modal) {
+  var e = event || window.event;
+  var target = e.target || e.srcElement;
+
+  var targetedConfirm = target.className.indexOf('confirm') !== -1;
+  var targetedOverlay = target.className.indexOf('sweet-overlay') !== -1;
+  var modalIsVisible = _hasClass$isDescendant.hasClass(modal, 'visible');
+  var doneFunctionExists = params.doneFunction && modal.getAttribute('data-has-done-function') === 'true';
+
+  // Since the user can change the background-color of the confirm button programmatically,
+  // we must calculate what the color should be on hover/active
+  var normalColor, hoverColor, activeColor;
+  if (targetedConfirm && params.confirmButtonColor) {
+    normalColor = params.confirmButtonColor;
+    hoverColor = _colorLuminance.colorLuminance(normalColor, -0.04);
+    activeColor = _colorLuminance.colorLuminance(normalColor, -0.14);
+  }
+
+  function shouldSetConfirmButtonColor(color) {
+    if (targetedConfirm && params.confirmButtonColor) {
+      target.style.backgroundColor = color;
+    }
+  }
+
+  switch (e.type) {
+    case 'mouseover':
+      shouldSetConfirmButtonColor(hoverColor);
+      break;
+
+    case 'mouseout':
+      shouldSetConfirmButtonColor(normalColor);
+      break;
+
+    case 'mousedown':
+      shouldSetConfirmButtonColor(activeColor);
+      break;
+
+    case 'mouseup':
+      shouldSetConfirmButtonColor(hoverColor);
+      break;
+
+    case 'focus':
+      var $confirmButton = modal.querySelector('button.confirm');
+      var $cancelButton = modal.querySelector('button.cancel');
+
+      if (targetedConfirm) {
+        $cancelButton.style.boxShadow = 'none';
+      } else {
+        $confirmButton.style.boxShadow = 'none';
+      }
+      break;
+
+    case 'click':
+      var clickedOnModal = modal === target;
+      var clickedOnModalChild = _hasClass$isDescendant.isDescendant(modal, target);
+
+      // Ignore click outside if allowOutsideClick is false
+      if (!clickedOnModal && !clickedOnModalChild && modalIsVisible && !params.allowOutsideClick) {
+        break;
+      }
+
+      if (targetedConfirm && doneFunctionExists && modalIsVisible) {
+        handleConfirm(modal, params);
+      } else if (doneFunctionExists && modalIsVisible || targetedOverlay) {
+        handleCancel(modal, params);
+      } else if (_hasClass$isDescendant.isDescendant(modal, target) && target.tagName === 'BUTTON') {
+        sweetAlert.close();
+      }
+      break;
+  }
+};
+
+/*
+ *  User clicked on "Confirm"/"OK"
+ */
+var handleConfirm = function handleConfirm(modal, params) {
+  var callbackValue = true;
+
+  if (_hasClass$isDescendant.hasClass(modal, 'show-input')) {
+    callbackValue = modal.querySelector('input').value;
+
+    if (!callbackValue) {
+      callbackValue = '';
+    }
+  }
+
+  params.doneFunction(callbackValue);
+
+  if (params.closeOnConfirm) {
+    sweetAlert.close();
+  }
+  // Disable cancel and confirm button if the parameter is true
+  if (params.showLoaderOnConfirm) {
+    sweetAlert.disableButtons();
+  }
+};
+
+/*
+ *  User clicked on "Cancel"
+ */
+var handleCancel = function handleCancel(modal, params) {
+  // Check if callback function expects a parameter (to track cancel actions)
+  var functionAsStr = String(params.doneFunction).replace(/\s/g, '');
+  var functionHandlesCancel = functionAsStr.substring(0, 9) === 'function(' && functionAsStr.substring(9, 10) !== ')';
+
+  if (functionHandlesCancel) {
+    params.doneFunction(false);
+  }
+
+  if (params.closeOnCancel) {
+    sweetAlert.close();
+  }
+};
+
+exports['default'] = {
+  handleButton: handleButton,
+  handleConfirm: handleConfirm,
+  handleCancel: handleCancel
+};
+module.exports = exports['default'];
+},{"./handle-dom":213,"./handle-swal-dom":215,"./utils":218}],213:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+  value: true
+});
+var hasClass = function hasClass(elem, className) {
+  return new RegExp(' ' + className + ' ').test(' ' + elem.className + ' ');
+};
+
+var addClass = function addClass(elem, className) {
+  if (!hasClass(elem, className)) {
+    elem.className += ' ' + className;
+  }
+};
+
+var removeClass = function removeClass(elem, className) {
+  var newClass = ' ' + elem.className.replace(/[\t\r\n]/g, ' ') + ' ';
+  if (hasClass(elem, className)) {
+    while (newClass.indexOf(' ' + className + ' ') >= 0) {
+      newClass = newClass.replace(' ' + className + ' ', ' ');
+    }
+    elem.className = newClass.replace(/^\s+|\s+$/g, '');
+  }
+};
+
+var escapeHtml = function escapeHtml(str) {
+  var div = document.createElement('div');
+  div.appendChild(document.createTextNode(str));
+  return div.innerHTML;
+};
+
+var _show = function _show(elem) {
+  elem.style.opacity = '';
+  elem.style.display = 'block';
+};
+
+var show = function show(elems) {
+  if (elems && !elems.length) {
+    return _show(elems);
+  }
+  for (var i = 0; i < elems.length; ++i) {
+    _show(elems[i]);
+  }
+};
+
+var _hide = function _hide(elem) {
+  elem.style.opacity = '';
+  elem.style.display = 'none';
+};
+
+var hide = function hide(elems) {
+  if (elems && !elems.length) {
+    return _hide(elems);
+  }
+  for (var i = 0; i < elems.length; ++i) {
+    _hide(elems[i]);
+  }
+};
+
+var isDescendant = function isDescendant(parent, child) {
+  var node = child.parentNode;
+  while (node !== null) {
+    if (node === parent) {
+      return true;
+    }
+    node = node.parentNode;
+  }
+  return false;
+};
+
+var getTopMargin = function getTopMargin(elem) {
+  elem.style.left = '-9999px';
+  elem.style.display = 'block';
+
+  var height = elem.clientHeight,
+      padding;
+  if (typeof getComputedStyle !== 'undefined') {
+    // IE 8
+    padding = parseInt(getComputedStyle(elem).getPropertyValue('padding-top'), 10);
+  } else {
+    padding = parseInt(elem.currentStyle.padding);
+  }
+
+  elem.style.left = '';
+  elem.style.display = 'none';
+  return '-' + parseInt((height + padding) / 2) + 'px';
+};
+
+var fadeIn = function fadeIn(elem, interval) {
+  if (+elem.style.opacity < 1) {
+    interval = interval || 16;
+    elem.style.opacity = 0;
+    elem.style.display = 'block';
+    var last = +new Date();
+    var tick = (function (_tick) {
+      function tick() {
+        return _tick.apply(this, arguments);
+      }
+
+      tick.toString = function () {
+        return _tick.toString();
+      };
+
+      return tick;
+    })(function () {
+      elem.style.opacity = +elem.style.opacity + (new Date() - last) / 100;
+      last = +new Date();
+
+      if (+elem.style.opacity < 1) {
+        setTimeout(tick, interval);
+      }
+    });
+    tick();
+  }
+  elem.style.display = 'block'; //fallback IE8
+};
+
+var fadeOut = function fadeOut(elem, interval) {
+  interval = interval || 16;
+  elem.style.opacity = 1;
+  var last = +new Date();
+  var tick = (function (_tick2) {
+    function tick() {
+      return _tick2.apply(this, arguments);
+    }
+
+    tick.toString = function () {
+      return _tick2.toString();
+    };
+
+    return tick;
+  })(function () {
+    elem.style.opacity = +elem.style.opacity - (new Date() - last) / 100;
+    last = +new Date();
+
+    if (+elem.style.opacity > 0) {
+      setTimeout(tick, interval);
     } else {
-        queueIndex = -1;
+      elem.style.display = 'none';
     }
-    if (queue.length) {
-        drainQueue();
-    }
-}
+  });
+  tick();
+};
 
-function drainQueue() {
-    if (draining) {
-        return;
-    }
-    var timeout = setTimeout(cleanUpNextTick);
-    draining = true;
+var fireClick = function fireClick(node) {
+  // Taken from http://www.nonobtrusive.com/2011/11/29/programatically-fire-crossbrowser-click-event-with-javascript/
+  // Then fixed for today's Chrome browser.
+  if (typeof MouseEvent === 'function') {
+    // Up-to-date approach
+    var mevt = new MouseEvent('click', {
+      view: window,
+      bubbles: false,
+      cancelable: true
+    });
+    node.dispatchEvent(mevt);
+  } else if (document.createEvent) {
+    // Fallback
+    var evt = document.createEvent('MouseEvents');
+    evt.initEvent('click', false, false);
+    node.dispatchEvent(evt);
+  } else if (document.createEventObject) {
+    node.fireEvent('onclick');
+  } else if (typeof node.onclick === 'function') {
+    node.onclick();
+  }
+};
 
-    var len = queue.length;
-    while(len) {
-        currentQueue = queue;
-        queue = [];
-        while (++queueIndex < len) {
-            if (currentQueue) {
-                currentQueue[queueIndex].run();
-            }
+var stopEventPropagation = function stopEventPropagation(e) {
+  // In particular, make sure the space bar doesn't scroll the main window.
+  if (typeof e.stopPropagation === 'function') {
+    e.stopPropagation();
+    e.preventDefault();
+  } else if (window.event && window.event.hasOwnProperty('cancelBubble')) {
+    window.event.cancelBubble = true;
+  }
+};
+
+exports.hasClass = hasClass;
+exports.addClass = addClass;
+exports.removeClass = removeClass;
+exports.escapeHtml = escapeHtml;
+exports._show = _show;
+exports.show = show;
+exports._hide = _hide;
+exports.hide = hide;
+exports.isDescendant = isDescendant;
+exports.getTopMargin = getTopMargin;
+exports.fadeIn = fadeIn;
+exports.fadeOut = fadeOut;
+exports.fireClick = fireClick;
+exports.stopEventPropagation = stopEventPropagation;
+},{}],214:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+  value: true
+});
+
+var _stopEventPropagation$fireClick = require('./handle-dom');
+
+var _setFocusStyle = require('./handle-swal-dom');
+
+var handleKeyDown = function handleKeyDown(event, params, modal) {
+  var e = event || window.event;
+  var keyCode = e.keyCode || e.which;
+
+  var $okButton = modal.querySelector('button.confirm');
+  var $cancelButton = modal.querySelector('button.cancel');
+  var $modalButtons = modal.querySelectorAll('button[tabindex]');
+
+  if ([9, 13, 32, 27].indexOf(keyCode) === -1) {
+    // Don't do work on keys we don't care about.
+    return;
+  }
+
+  var $targetElement = e.target || e.srcElement;
+
+  var btnIndex = -1; // Find the button - note, this is a nodelist, not an array.
+  for (var i = 0; i < $modalButtons.length; i++) {
+    if ($targetElement === $modalButtons[i]) {
+      btnIndex = i;
+      break;
+    }
+  }
+
+  if (keyCode === 9) {
+    // TAB
+    if (btnIndex === -1) {
+      // No button focused. Jump to the confirm button.
+      $targetElement = $okButton;
+    } else {
+      // Cycle to the next button
+      if (btnIndex === $modalButtons.length - 1) {
+        $targetElement = $modalButtons[0];
+      } else {
+        $targetElement = $modalButtons[btnIndex + 1];
+      }
+    }
+
+    _stopEventPropagation$fireClick.stopEventPropagation(e);
+    $targetElement.focus();
+
+    if (params.confirmButtonColor) {
+      _setFocusStyle.setFocusStyle($targetElement, params.confirmButtonColor);
+    }
+  } else {
+    if (keyCode === 13) {
+      if ($targetElement.tagName === 'INPUT') {
+        $targetElement = $okButton;
+        $okButton.focus();
+      }
+
+      if (btnIndex === -1) {
+        // ENTER/SPACE clicked outside of a button.
+        $targetElement = $okButton;
+      } else {
+        // Do nothing - let the browser handle it.
+        $targetElement = undefined;
+      }
+    } else if (keyCode === 27 && params.allowEscapeKey === true) {
+      $targetElement = $cancelButton;
+      _stopEventPropagation$fireClick.fireClick($targetElement, e);
+    } else {
+      // Fallback - let the browser handle it.
+      $targetElement = undefined;
+    }
+  }
+};
+
+exports['default'] = handleKeyDown;
+module.exports = exports['default'];
+},{"./handle-dom":213,"./handle-swal-dom":215}],215:[function(require,module,exports){
+'use strict';
+
+var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
+
+Object.defineProperty(exports, '__esModule', {
+  value: true
+});
+
+var _hexToRgb = require('./utils');
+
+var _removeClass$getTopMargin$fadeIn$show$addClass = require('./handle-dom');
+
+var _defaultParams = require('./default-params');
+
+var _defaultParams2 = _interopRequireWildcard(_defaultParams);
+
+/*
+ * Add modal + overlay to DOM
+ */
+
+var _injectedHTML = require('./injected-html');
+
+var _injectedHTML2 = _interopRequireWildcard(_injectedHTML);
+
+var modalClass = '.sweet-alert';
+var overlayClass = '.sweet-overlay';
+
+var sweetAlertInitialize = function sweetAlertInitialize() {
+  var sweetWrap = document.createElement('div');
+  sweetWrap.innerHTML = _injectedHTML2['default'];
+
+  // Append elements to body
+  while (sweetWrap.firstChild) {
+    document.body.appendChild(sweetWrap.firstChild);
+  }
+};
+
+/*
+ * Get DOM element of modal
+ */
+var getModal = (function (_getModal) {
+  function getModal() {
+    return _getModal.apply(this, arguments);
+  }
+
+  getModal.toString = function () {
+    return _getModal.toString();
+  };
+
+  return getModal;
+})(function () {
+  var $modal = document.querySelector(modalClass);
+
+  if (!$modal) {
+    sweetAlertInitialize();
+    $modal = getModal();
+  }
+
+  return $modal;
+});
+
+/*
+ * Get DOM element of input (in modal)
+ */
+var getInput = function getInput() {
+  var $modal = getModal();
+  if ($modal) {
+    return $modal.querySelector('input');
+  }
+};
+
+/*
+ * Get DOM element of overlay
+ */
+var getOverlay = function getOverlay() {
+  return document.querySelector(overlayClass);
+};
+
+/*
+ * Add box-shadow style to button (depending on its chosen bg-color)
+ */
+var setFocusStyle = function setFocusStyle($button, bgColor) {
+  var rgbColor = _hexToRgb.hexToRgb(bgColor);
+  $button.style.boxShadow = '0 0 2px rgba(' + rgbColor + ', 0.8), inset 0 0 0 1px rgba(0, 0, 0, 0.05)';
+};
+
+/*
+ * Animation when opening modal
+ */
+var openModal = function openModal(callback) {
+  var $modal = getModal();
+  _removeClass$getTopMargin$fadeIn$show$addClass.fadeIn(getOverlay(), 10);
+  _removeClass$getTopMargin$fadeIn$show$addClass.show($modal);
+  _removeClass$getTopMargin$fadeIn$show$addClass.addClass($modal, 'showSweetAlert');
+  _removeClass$getTopMargin$fadeIn$show$addClass.removeClass($modal, 'hideSweetAlert');
+
+  window.previousActiveElement = document.activeElement;
+  var $okButton = $modal.querySelector('button.confirm');
+  $okButton.focus();
+
+  setTimeout(function () {
+    _removeClass$getTopMargin$fadeIn$show$addClass.addClass($modal, 'visible');
+  }, 500);
+
+  var timer = $modal.getAttribute('data-timer');
+
+  if (timer !== 'null' && timer !== '') {
+    var timerCallback = callback;
+    $modal.timeout = setTimeout(function () {
+      var doneFunctionExists = (timerCallback || null) && $modal.getAttribute('data-has-done-function') === 'true';
+      if (doneFunctionExists) {
+        timerCallback(null);
+      } else {
+        sweetAlert.close();
+      }
+    }, timer);
+  }
+};
+
+/*
+ * Reset the styling of the input
+ * (for example if errors have been shown)
+ */
+var resetInput = function resetInput() {
+  var $modal = getModal();
+  var $input = getInput();
+
+  _removeClass$getTopMargin$fadeIn$show$addClass.removeClass($modal, 'show-input');
+  $input.value = _defaultParams2['default'].inputValue;
+  $input.setAttribute('type', _defaultParams2['default'].inputType);
+  $input.setAttribute('placeholder', _defaultParams2['default'].inputPlaceholder);
+
+  resetInputError();
+};
+
+var resetInputError = function resetInputError(event) {
+  // If press enter => ignore
+  if (event && event.keyCode === 13) {
+    return false;
+  }
+
+  var $modal = getModal();
+
+  var $errorIcon = $modal.querySelector('.sa-input-error');
+  _removeClass$getTopMargin$fadeIn$show$addClass.removeClass($errorIcon, 'show');
+
+  var $errorContainer = $modal.querySelector('.sa-error-container');
+  _removeClass$getTopMargin$fadeIn$show$addClass.removeClass($errorContainer, 'show');
+};
+
+/*
+ * Set "margin-top"-property on modal based on its computed height
+ */
+var fixVerticalPosition = function fixVerticalPosition() {
+  var $modal = getModal();
+  $modal.style.marginTop = _removeClass$getTopMargin$fadeIn$show$addClass.getTopMargin(getModal());
+};
+
+exports.sweetAlertInitialize = sweetAlertInitialize;
+exports.getModal = getModal;
+exports.getOverlay = getOverlay;
+exports.getInput = getInput;
+exports.setFocusStyle = setFocusStyle;
+exports.openModal = openModal;
+exports.resetInput = resetInput;
+exports.resetInputError = resetInputError;
+exports.fixVerticalPosition = fixVerticalPosition;
+},{"./default-params":211,"./handle-dom":213,"./injected-html":216,"./utils":218}],216:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var injectedHTML =
+
+// Dark overlay
+"<div class=\"sweet-overlay\" tabIndex=\"-1\"></div>" +
+
+// Modal
+"<div class=\"sweet-alert\">" +
+
+// Error icon
+"<div class=\"sa-icon sa-error\">\n      <span class=\"sa-x-mark\">\n        <span class=\"sa-line sa-left\"></span>\n        <span class=\"sa-line sa-right\"></span>\n      </span>\n    </div>" +
+
+// Warning icon
+"<div class=\"sa-icon sa-warning\">\n      <span class=\"sa-body\"></span>\n      <span class=\"sa-dot\"></span>\n    </div>" +
+
+// Info icon
+"<div class=\"sa-icon sa-info\"></div>" +
+
+// Success icon
+"<div class=\"sa-icon sa-success\">\n      <span class=\"sa-line sa-tip\"></span>\n      <span class=\"sa-line sa-long\"></span>\n\n      <div class=\"sa-placeholder\"></div>\n      <div class=\"sa-fix\"></div>\n    </div>" + "<div class=\"sa-icon sa-custom\"></div>" +
+
+// Title, text and input
+"<h2>Title</h2>\n    <p>Text</p>\n    <fieldset>\n      <input type=\"text\" tabIndex=\"3\" />\n      <div class=\"sa-input-error\"></div>\n    </fieldset>" +
+
+// Input errors
+"<div class=\"sa-error-container\">\n      <div class=\"icon\">!</div>\n      <p>Not valid!</p>\n    </div>" +
+
+// Cancel and confirm buttons
+"<div class=\"sa-button-container\">\n      <button class=\"cancel\" tabIndex=\"2\">Cancel</button>\n      <div class=\"sa-confirm-button-container\">\n        <button class=\"confirm\" tabIndex=\"1\">OK</button>" +
+
+// Loading animation
+"<div class=\"la-ball-fall\">\n          <div></div>\n          <div></div>\n          <div></div>\n        </div>\n      </div>\n    </div>" +
+
+// End of modal
+"</div>";
+
+exports["default"] = injectedHTML;
+module.exports = exports["default"];
+},{}],217:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+  value: true
+});
+
+var _isIE8 = require('./utils');
+
+var _getModal$getInput$setFocusStyle = require('./handle-swal-dom');
+
+var _hasClass$addClass$removeClass$escapeHtml$_show$show$_hide$hide = require('./handle-dom');
+
+var alertTypes = ['error', 'warning', 'info', 'success', 'input', 'prompt'];
+
+/*
+ * Set type, text and actions on modal
+ */
+var setParameters = function setParameters(params) {
+  var modal = _getModal$getInput$setFocusStyle.getModal();
+
+  var $title = modal.querySelector('h2');
+  var $text = modal.querySelector('p');
+  var $cancelBtn = modal.querySelector('button.cancel');
+  var $confirmBtn = modal.querySelector('button.confirm');
+
+  /*
+   * Title
+   */
+  $title.innerHTML = params.html ? params.title : _hasClass$addClass$removeClass$escapeHtml$_show$show$_hide$hide.escapeHtml(params.title).split('\n').join('<br>');
+
+  /*
+   * Text
+   */
+  $text.innerHTML = params.html ? params.text : _hasClass$addClass$removeClass$escapeHtml$_show$show$_hide$hide.escapeHtml(params.text || '').split('\n').join('<br>');
+  if (params.text) _hasClass$addClass$removeClass$escapeHtml$_show$show$_hide$hide.show($text);
+
+  /*
+   * Custom class
+   */
+  if (params.customClass) {
+    _hasClass$addClass$removeClass$escapeHtml$_show$show$_hide$hide.addClass(modal, params.customClass);
+    modal.setAttribute('data-custom-class', params.customClass);
+  } else {
+    // Find previously set classes and remove them
+    var customClass = modal.getAttribute('data-custom-class');
+    _hasClass$addClass$removeClass$escapeHtml$_show$show$_hide$hide.removeClass(modal, customClass);
+    modal.setAttribute('data-custom-class', '');
+  }
+
+  /*
+   * Icon
+   */
+  _hasClass$addClass$removeClass$escapeHtml$_show$show$_hide$hide.hide(modal.querySelectorAll('.sa-icon'));
+
+  if (params.type && !_isIE8.isIE8()) {
+    var _ret = (function () {
+
+      var validType = false;
+
+      for (var i = 0; i < alertTypes.length; i++) {
+        if (params.type === alertTypes[i]) {
+          validType = true;
+          break;
         }
-        queueIndex = -1;
-        len = queue.length;
+      }
+
+      if (!validType) {
+        logStr('Unknown alert type: ' + params.type);
+        return {
+          v: false
+        };
+      }
+
+      var typesWithIcons = ['success', 'error', 'warning', 'info'];
+      var $icon = undefined;
+
+      if (typesWithIcons.indexOf(params.type) !== -1) {
+        $icon = modal.querySelector('.sa-icon.' + 'sa-' + params.type);
+        _hasClass$addClass$removeClass$escapeHtml$_show$show$_hide$hide.show($icon);
+      }
+
+      var $input = _getModal$getInput$setFocusStyle.getInput();
+
+      // Animate icon
+      switch (params.type) {
+
+        case 'success':
+          _hasClass$addClass$removeClass$escapeHtml$_show$show$_hide$hide.addClass($icon, 'animate');
+          _hasClass$addClass$removeClass$escapeHtml$_show$show$_hide$hide.addClass($icon.querySelector('.sa-tip'), 'animateSuccessTip');
+          _hasClass$addClass$removeClass$escapeHtml$_show$show$_hide$hide.addClass($icon.querySelector('.sa-long'), 'animateSuccessLong');
+          break;
+
+        case 'error':
+          _hasClass$addClass$removeClass$escapeHtml$_show$show$_hide$hide.addClass($icon, 'animateErrorIcon');
+          _hasClass$addClass$removeClass$escapeHtml$_show$show$_hide$hide.addClass($icon.querySelector('.sa-x-mark'), 'animateXMark');
+          break;
+
+        case 'warning':
+          _hasClass$addClass$removeClass$escapeHtml$_show$show$_hide$hide.addClass($icon, 'pulseWarning');
+          _hasClass$addClass$removeClass$escapeHtml$_show$show$_hide$hide.addClass($icon.querySelector('.sa-body'), 'pulseWarningIns');
+          _hasClass$addClass$removeClass$escapeHtml$_show$show$_hide$hide.addClass($icon.querySelector('.sa-dot'), 'pulseWarningIns');
+          break;
+
+        case 'input':
+        case 'prompt':
+          $input.setAttribute('type', params.inputType);
+          $input.value = params.inputValue;
+          $input.setAttribute('placeholder', params.inputPlaceholder);
+          _hasClass$addClass$removeClass$escapeHtml$_show$show$_hide$hide.addClass(modal, 'show-input');
+          setTimeout(function () {
+            $input.focus();
+            $input.addEventListener('keyup', swal.resetInputError);
+          }, 400);
+          break;
+      }
+    })();
+
+    if (typeof _ret === 'object') {
+      return _ret.v;
     }
-    currentQueue = null;
-    draining = false;
-    clearTimeout(timeout);
+  }
+
+  /*
+   * Custom image
+   */
+  if (params.imageUrl) {
+    var $customIcon = modal.querySelector('.sa-icon.sa-custom');
+
+    $customIcon.style.backgroundImage = 'url(' + params.imageUrl + ')';
+    _hasClass$addClass$removeClass$escapeHtml$_show$show$_hide$hide.show($customIcon);
+
+    var _imgWidth = 80;
+    var _imgHeight = 80;
+
+    if (params.imageSize) {
+      var dimensions = params.imageSize.toString().split('x');
+      var imgWidth = dimensions[0];
+      var imgHeight = dimensions[1];
+
+      if (!imgWidth || !imgHeight) {
+        logStr('Parameter imageSize expects value with format WIDTHxHEIGHT, got ' + params.imageSize);
+      } else {
+        _imgWidth = imgWidth;
+        _imgHeight = imgHeight;
+      }
+    }
+
+    $customIcon.setAttribute('style', $customIcon.getAttribute('style') + 'width:' + _imgWidth + 'px; height:' + _imgHeight + 'px');
+  }
+
+  /*
+   * Show cancel button?
+   */
+  modal.setAttribute('data-has-cancel-button', params.showCancelButton);
+  if (params.showCancelButton) {
+    $cancelBtn.style.display = 'inline-block';
+  } else {
+    _hasClass$addClass$removeClass$escapeHtml$_show$show$_hide$hide.hide($cancelBtn);
+  }
+
+  /*
+   * Show confirm button?
+   */
+  modal.setAttribute('data-has-confirm-button', params.showConfirmButton);
+  if (params.showConfirmButton) {
+    $confirmBtn.style.display = 'inline-block';
+  } else {
+    _hasClass$addClass$removeClass$escapeHtml$_show$show$_hide$hide.hide($confirmBtn);
+  }
+
+  /*
+   * Custom text on cancel/confirm buttons
+   */
+  if (params.cancelButtonText) {
+    $cancelBtn.innerHTML = _hasClass$addClass$removeClass$escapeHtml$_show$show$_hide$hide.escapeHtml(params.cancelButtonText);
+  }
+  if (params.confirmButtonText) {
+    $confirmBtn.innerHTML = _hasClass$addClass$removeClass$escapeHtml$_show$show$_hide$hide.escapeHtml(params.confirmButtonText);
+  }
+
+  /*
+   * Custom color on confirm button
+   */
+  if (params.confirmButtonColor) {
+    // Set confirm button to selected background color
+    $confirmBtn.style.backgroundColor = params.confirmButtonColor;
+
+    // Set the confirm button color to the loading ring
+    $confirmBtn.style.borderLeftColor = params.confirmLoadingButtonColor;
+    $confirmBtn.style.borderRightColor = params.confirmLoadingButtonColor;
+
+    // Set box-shadow to default focused button
+    _getModal$getInput$setFocusStyle.setFocusStyle($confirmBtn, params.confirmButtonColor);
+  }
+
+  /*
+   * Allow outside click
+   */
+  modal.setAttribute('data-allow-outside-click', params.allowOutsideClick);
+
+  /*
+   * Callback function
+   */
+  var hasDoneFunction = params.doneFunction ? true : false;
+  modal.setAttribute('data-has-done-function', hasDoneFunction);
+
+  /*
+   * Animation
+   */
+  if (!params.animation) {
+    modal.setAttribute('data-animation', 'none');
+  } else if (typeof params.animation === 'string') {
+    modal.setAttribute('data-animation', params.animation); // Custom animation
+  } else {
+    modal.setAttribute('data-animation', 'pop');
+  }
+
+  /*
+   * Timer
+   */
+  modal.setAttribute('data-timer', params.timer);
+};
+
+exports['default'] = setParameters;
+module.exports = exports['default'];
+},{"./handle-dom":213,"./handle-swal-dom":215,"./utils":218}],218:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+  value: true
+});
+/*
+ * Allow user to pass their own params
+ */
+var extend = function extend(a, b) {
+  for (var key in b) {
+    if (b.hasOwnProperty(key)) {
+      a[key] = b[key];
+    }
+  }
+  return a;
+};
+
+/*
+ * Convert HEX codes to RGB values (#000000 -> rgb(0,0,0))
+ */
+var hexToRgb = function hexToRgb(hex) {
+  var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  return result ? parseInt(result[1], 16) + ', ' + parseInt(result[2], 16) + ', ' + parseInt(result[3], 16) : null;
+};
+
+/*
+ * Check if the user is using Internet Explorer 8 (for fallbacks)
+ */
+var isIE8 = function isIE8() {
+  return window.attachEvent && !window.addEventListener;
+};
+
+/*
+ * IE compatible logging for developers
+ */
+var logStr = function logStr(string) {
+  if (window.console) {
+    // IE...
+    window.console.log('SweetAlert: ' + string);
+  }
+};
+
+/*
+ * Set hover, active and focus-states for buttons 
+ * (source: http://www.sitepoint.com/javascript-generate-lighter-darker-color)
+ */
+var colorLuminance = function colorLuminance(hex, lum) {
+  // Validate hex string
+  hex = String(hex).replace(/[^0-9a-f]/gi, '');
+  if (hex.length < 6) {
+    hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
+  }
+  lum = lum || 0;
+
+  // Convert to decimal and change luminosity
+  var rgb = '#';
+  var c;
+  var i;
+
+  for (i = 0; i < 3; i++) {
+    c = parseInt(hex.substr(i * 2, 2), 16);
+    c = Math.round(Math.min(Math.max(0, c + c * lum), 255)).toString(16);
+    rgb += ('00' + c).substr(c.length);
+  }
+
+  return rgb;
+};
+
+exports.extend = extend;
+exports.hexToRgb = hexToRgb;
+exports.isIE8 = isIE8;
+exports.logStr = logStr;
+exports.colorLuminance = colorLuminance;
+},{}],219:[function(require,module,exports){
+'use strict';
+
+var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
+
+Object.defineProperty(exports, '__esModule', {
+  value: true
+});
+// SweetAlert
+// 2014-2015 (c) - Tristan Edwards
+// github.com/t4t5/sweetalert
+
+/*
+ * jQuery-like functions for manipulating the DOM
+ */
+
+var _hasClass$addClass$removeClass$escapeHtml$_show$show$_hide$hide$isDescendant$getTopMargin$fadeIn$fadeOut$fireClick$stopEventPropagation = require('./modules/handle-dom');
+
+/*
+ * Handy utilities
+ */
+
+var _extend$hexToRgb$isIE8$logStr$colorLuminance = require('./modules/utils');
+
+/*
+ *  Handle sweetAlert's DOM elements
+ */
+
+var _sweetAlertInitialize$getModal$getOverlay$getInput$setFocusStyle$openModal$resetInput$fixVerticalPosition = require('./modules/handle-swal-dom');
+
+// Handle button events and keyboard events
+
+var _handleButton$handleConfirm$handleCancel = require('./modules/handle-click');
+
+var _handleKeyDown = require('./modules/handle-key');
+
+var _handleKeyDown2 = _interopRequireWildcard(_handleKeyDown);
+
+// Default values
+
+var _defaultParams = require('./modules/default-params');
+
+var _defaultParams2 = _interopRequireWildcard(_defaultParams);
+
+var _setParameters = require('./modules/set-params');
+
+var _setParameters2 = _interopRequireWildcard(_setParameters);
+
+/*
+ * Remember state in cases where opening and handling a modal will fiddle with it.
+ * (We also use window.previousActiveElement as a global variable)
+ */
+var previousWindowKeyDown;
+var lastFocusedButton;
+
+/*
+ * Global sweetAlert function
+ * (this is what the user calls)
+ */
+var sweetAlert, swal;
+
+exports['default'] = sweetAlert = swal = function () {
+  var customizations = arguments[0];
+
+  _hasClass$addClass$removeClass$escapeHtml$_show$show$_hide$hide$isDescendant$getTopMargin$fadeIn$fadeOut$fireClick$stopEventPropagation.addClass(document.body, 'stop-scrolling');
+  _sweetAlertInitialize$getModal$getOverlay$getInput$setFocusStyle$openModal$resetInput$fixVerticalPosition.resetInput();
+
+  /*
+   * Use argument if defined or default value from params object otherwise.
+   * Supports the case where a default value is boolean true and should be
+   * overridden by a corresponding explicit argument which is boolean false.
+   */
+  function argumentOrDefault(key) {
+    var args = customizations;
+    return args[key] === undefined ? _defaultParams2['default'][key] : args[key];
+  }
+
+  if (customizations === undefined) {
+    _extend$hexToRgb$isIE8$logStr$colorLuminance.logStr('SweetAlert expects at least 1 attribute!');
+    return false;
+  }
+
+  var params = _extend$hexToRgb$isIE8$logStr$colorLuminance.extend({}, _defaultParams2['default']);
+
+  switch (typeof customizations) {
+
+    // Ex: swal("Hello", "Just testing", "info");
+    case 'string':
+      params.title = customizations;
+      params.text = arguments[1] || '';
+      params.type = arguments[2] || '';
+      break;
+
+    // Ex: swal({ title:"Hello", text: "Just testing", type: "info" });
+    case 'object':
+      if (customizations.title === undefined) {
+        _extend$hexToRgb$isIE8$logStr$colorLuminance.logStr('Missing "title" argument!');
+        return false;
+      }
+
+      params.title = customizations.title;
+
+      for (var customName in _defaultParams2['default']) {
+        params[customName] = argumentOrDefault(customName);
+      }
+
+      // Show "Confirm" instead of "OK" if cancel button is visible
+      params.confirmButtonText = params.showCancelButton ? 'Confirm' : _defaultParams2['default'].confirmButtonText;
+      params.confirmButtonText = argumentOrDefault('confirmButtonText');
+
+      // Callback function when clicking on "OK"/"Cancel"
+      params.doneFunction = arguments[1] || null;
+
+      break;
+
+    default:
+      _extend$hexToRgb$isIE8$logStr$colorLuminance.logStr('Unexpected type of argument! Expected "string" or "object", got ' + typeof customizations);
+      return false;
+
+  }
+
+  _setParameters2['default'](params);
+  _sweetAlertInitialize$getModal$getOverlay$getInput$setFocusStyle$openModal$resetInput$fixVerticalPosition.fixVerticalPosition();
+  _sweetAlertInitialize$getModal$getOverlay$getInput$setFocusStyle$openModal$resetInput$fixVerticalPosition.openModal(arguments[1]);
+
+  // Modal interactions
+  var modal = _sweetAlertInitialize$getModal$getOverlay$getInput$setFocusStyle$openModal$resetInput$fixVerticalPosition.getModal();
+
+  /*
+   * Make sure all modal buttons respond to all events
+   */
+  var $buttons = modal.querySelectorAll('button');
+  var buttonEvents = ['onclick', 'onmouseover', 'onmouseout', 'onmousedown', 'onmouseup', 'onfocus'];
+  var onButtonEvent = function onButtonEvent(e) {
+    return _handleButton$handleConfirm$handleCancel.handleButton(e, params, modal);
+  };
+
+  for (var btnIndex = 0; btnIndex < $buttons.length; btnIndex++) {
+    for (var evtIndex = 0; evtIndex < buttonEvents.length; evtIndex++) {
+      var btnEvt = buttonEvents[evtIndex];
+      $buttons[btnIndex][btnEvt] = onButtonEvent;
+    }
+  }
+
+  // Clicking outside the modal dismisses it (if allowed by user)
+  _sweetAlertInitialize$getModal$getOverlay$getInput$setFocusStyle$openModal$resetInput$fixVerticalPosition.getOverlay().onclick = onButtonEvent;
+
+  previousWindowKeyDown = window.onkeydown;
+
+  var onKeyEvent = function onKeyEvent(e) {
+    return _handleKeyDown2['default'](e, params, modal);
+  };
+  window.onkeydown = onKeyEvent;
+
+  window.onfocus = function () {
+    // When the user has focused away and focused back from the whole window.
+    setTimeout(function () {
+      // Put in a timeout to jump out of the event sequence.
+      // Calling focus() in the event sequence confuses things.
+      if (lastFocusedButton !== undefined) {
+        lastFocusedButton.focus();
+        lastFocusedButton = undefined;
+      }
+    }, 0);
+  };
+
+  // Show alert with enabled buttons always
+  swal.enableButtons();
+};
+
+/*
+ * Set default params for each popup
+ * @param {Object} userParams
+ */
+sweetAlert.setDefaults = swal.setDefaults = function (userParams) {
+  if (!userParams) {
+    throw new Error('userParams is required');
+  }
+  if (typeof userParams !== 'object') {
+    throw new Error('userParams has to be a object');
+  }
+
+  _extend$hexToRgb$isIE8$logStr$colorLuminance.extend(_defaultParams2['default'], userParams);
+};
+
+/*
+ * Animation when closing modal
+ */
+sweetAlert.close = swal.close = function () {
+  var modal = _sweetAlertInitialize$getModal$getOverlay$getInput$setFocusStyle$openModal$resetInput$fixVerticalPosition.getModal();
+
+  _hasClass$addClass$removeClass$escapeHtml$_show$show$_hide$hide$isDescendant$getTopMargin$fadeIn$fadeOut$fireClick$stopEventPropagation.fadeOut(_sweetAlertInitialize$getModal$getOverlay$getInput$setFocusStyle$openModal$resetInput$fixVerticalPosition.getOverlay(), 5);
+  _hasClass$addClass$removeClass$escapeHtml$_show$show$_hide$hide$isDescendant$getTopMargin$fadeIn$fadeOut$fireClick$stopEventPropagation.fadeOut(modal, 5);
+  _hasClass$addClass$removeClass$escapeHtml$_show$show$_hide$hide$isDescendant$getTopMargin$fadeIn$fadeOut$fireClick$stopEventPropagation.removeClass(modal, 'showSweetAlert');
+  _hasClass$addClass$removeClass$escapeHtml$_show$show$_hide$hide$isDescendant$getTopMargin$fadeIn$fadeOut$fireClick$stopEventPropagation.addClass(modal, 'hideSweetAlert');
+  _hasClass$addClass$removeClass$escapeHtml$_show$show$_hide$hide$isDescendant$getTopMargin$fadeIn$fadeOut$fireClick$stopEventPropagation.removeClass(modal, 'visible');
+
+  /*
+   * Reset icon animations
+   */
+  var $successIcon = modal.querySelector('.sa-icon.sa-success');
+  _hasClass$addClass$removeClass$escapeHtml$_show$show$_hide$hide$isDescendant$getTopMargin$fadeIn$fadeOut$fireClick$stopEventPropagation.removeClass($successIcon, 'animate');
+  _hasClass$addClass$removeClass$escapeHtml$_show$show$_hide$hide$isDescendant$getTopMargin$fadeIn$fadeOut$fireClick$stopEventPropagation.removeClass($successIcon.querySelector('.sa-tip'), 'animateSuccessTip');
+  _hasClass$addClass$removeClass$escapeHtml$_show$show$_hide$hide$isDescendant$getTopMargin$fadeIn$fadeOut$fireClick$stopEventPropagation.removeClass($successIcon.querySelector('.sa-long'), 'animateSuccessLong');
+
+  var $errorIcon = modal.querySelector('.sa-icon.sa-error');
+  _hasClass$addClass$removeClass$escapeHtml$_show$show$_hide$hide$isDescendant$getTopMargin$fadeIn$fadeOut$fireClick$stopEventPropagation.removeClass($errorIcon, 'animateErrorIcon');
+  _hasClass$addClass$removeClass$escapeHtml$_show$show$_hide$hide$isDescendant$getTopMargin$fadeIn$fadeOut$fireClick$stopEventPropagation.removeClass($errorIcon.querySelector('.sa-x-mark'), 'animateXMark');
+
+  var $warningIcon = modal.querySelector('.sa-icon.sa-warning');
+  _hasClass$addClass$removeClass$escapeHtml$_show$show$_hide$hide$isDescendant$getTopMargin$fadeIn$fadeOut$fireClick$stopEventPropagation.removeClass($warningIcon, 'pulseWarning');
+  _hasClass$addClass$removeClass$escapeHtml$_show$show$_hide$hide$isDescendant$getTopMargin$fadeIn$fadeOut$fireClick$stopEventPropagation.removeClass($warningIcon.querySelector('.sa-body'), 'pulseWarningIns');
+  _hasClass$addClass$removeClass$escapeHtml$_show$show$_hide$hide$isDescendant$getTopMargin$fadeIn$fadeOut$fireClick$stopEventPropagation.removeClass($warningIcon.querySelector('.sa-dot'), 'pulseWarningIns');
+
+  // Reset custom class (delay so that UI changes aren't visible)
+  setTimeout(function () {
+    var customClass = modal.getAttribute('data-custom-class');
+    _hasClass$addClass$removeClass$escapeHtml$_show$show$_hide$hide$isDescendant$getTopMargin$fadeIn$fadeOut$fireClick$stopEventPropagation.removeClass(modal, customClass);
+  }, 300);
+
+  // Make page scrollable again
+  _hasClass$addClass$removeClass$escapeHtml$_show$show$_hide$hide$isDescendant$getTopMargin$fadeIn$fadeOut$fireClick$stopEventPropagation.removeClass(document.body, 'stop-scrolling');
+
+  // Reset the page to its previous state
+  window.onkeydown = previousWindowKeyDown;
+  if (window.previousActiveElement) {
+    window.previousActiveElement.focus();
+  }
+  lastFocusedButton = undefined;
+  clearTimeout(modal.timeout);
+
+  return true;
+};
+
+/*
+ * Validation of the input field is done by user
+ * If something is wrong => call showInputError with errorMessage
+ */
+sweetAlert.showInputError = swal.showInputError = function (errorMessage) {
+  var modal = _sweetAlertInitialize$getModal$getOverlay$getInput$setFocusStyle$openModal$resetInput$fixVerticalPosition.getModal();
+
+  var $errorIcon = modal.querySelector('.sa-input-error');
+  _hasClass$addClass$removeClass$escapeHtml$_show$show$_hide$hide$isDescendant$getTopMargin$fadeIn$fadeOut$fireClick$stopEventPropagation.addClass($errorIcon, 'show');
+
+  var $errorContainer = modal.querySelector('.sa-error-container');
+  _hasClass$addClass$removeClass$escapeHtml$_show$show$_hide$hide$isDescendant$getTopMargin$fadeIn$fadeOut$fireClick$stopEventPropagation.addClass($errorContainer, 'show');
+
+  $errorContainer.querySelector('p').innerHTML = errorMessage;
+
+  setTimeout(function () {
+    sweetAlert.enableButtons();
+  }, 1);
+
+  modal.querySelector('input').focus();
+};
+
+/*
+ * Reset input error DOM elements
+ */
+sweetAlert.resetInputError = swal.resetInputError = function (event) {
+  // If press enter => ignore
+  if (event && event.keyCode === 13) {
+    return false;
+  }
+
+  var $modal = _sweetAlertInitialize$getModal$getOverlay$getInput$setFocusStyle$openModal$resetInput$fixVerticalPosition.getModal();
+
+  var $errorIcon = $modal.querySelector('.sa-input-error');
+  _hasClass$addClass$removeClass$escapeHtml$_show$show$_hide$hide$isDescendant$getTopMargin$fadeIn$fadeOut$fireClick$stopEventPropagation.removeClass($errorIcon, 'show');
+
+  var $errorContainer = $modal.querySelector('.sa-error-container');
+  _hasClass$addClass$removeClass$escapeHtml$_show$show$_hide$hide$isDescendant$getTopMargin$fadeIn$fadeOut$fireClick$stopEventPropagation.removeClass($errorContainer, 'show');
+};
+
+/*
+ * Disable confirm and cancel buttons
+ */
+sweetAlert.disableButtons = swal.disableButtons = function (event) {
+  var modal = _sweetAlertInitialize$getModal$getOverlay$getInput$setFocusStyle$openModal$resetInput$fixVerticalPosition.getModal();
+  var $confirmButton = modal.querySelector('button.confirm');
+  var $cancelButton = modal.querySelector('button.cancel');
+  $confirmButton.disabled = true;
+  $cancelButton.disabled = true;
+};
+
+/*
+ * Enable confirm and cancel buttons
+ */
+sweetAlert.enableButtons = swal.enableButtons = function (event) {
+  var modal = _sweetAlertInitialize$getModal$getOverlay$getInput$setFocusStyle$openModal$resetInput$fixVerticalPosition.getModal();
+  var $confirmButton = modal.querySelector('button.confirm');
+  var $cancelButton = modal.querySelector('button.cancel');
+  $confirmButton.disabled = false;
+  $cancelButton.disabled = false;
+};
+
+if (typeof window !== 'undefined') {
+  // The 'handle-click' module requires
+  // that 'sweetAlert' was set as global.
+  window.sweetAlert = window.swal = sweetAlert;
+} else {
+  _extend$hexToRgb$isIE8$logStr$colorLuminance.logStr('SweetAlert is a frontend module!');
 }
-
-process.nextTick = function (fun) {
-    var args = new Array(arguments.length - 1);
-    if (arguments.length > 1) {
-        for (var i = 1; i < arguments.length; i++) {
-            args[i - 1] = arguments[i];
-        }
-    }
-    queue.push(new Item(fun, args));
-    if (queue.length === 1 && !draining) {
-        setTimeout(drainQueue, 0);
-    }
-};
-
-// v8 likes predictible objects
-function Item(fun, array) {
-    this.fun = fun;
-    this.array = array;
-}
-Item.prototype.run = function () {
-    this.fun.apply(null, this.array);
-};
-process.title = 'browser';
-process.browser = true;
-process.env = {};
-process.argv = [];
-process.version = ''; // empty string to avoid regexp issues
-process.versions = {};
-
-function noop() {}
-
-process.on = noop;
-process.addListener = noop;
-process.once = noop;
-process.off = noop;
-process.removeListener = noop;
-process.removeAllListeners = noop;
-process.emit = noop;
-
-process.binding = function (name) {
-    throw new Error('process.binding is not supported');
-};
-
-process.cwd = function () { return '/' };
-process.chdir = function (dir) {
-    throw new Error('process.chdir is not supported');
-};
-process.umask = function() { return 0; };
-
-},{}],208:[function(require,module,exports){
-!function(e,t,n){"use strict";!function o(e,t,n){function a(s,l){if(!t[s]){if(!e[s]){var i="function"==typeof require&&require;if(!l&&i)return i(s,!0);if(r)return r(s,!0);var u=new Error("Cannot find module '"+s+"'");throw u.code="MODULE_NOT_FOUND",u}var c=t[s]={exports:{}};e[s][0].call(c.exports,function(t){var n=e[s][1][t];return a(n?n:t)},c,c.exports,o,e,t,n)}return t[s].exports}for(var r="function"==typeof require&&require,s=0;s<n.length;s++)a(n[s]);return a}({1:[function(o){var a,r,s,l,i=function(e){return e&&e.__esModule?e:{"default":e}},u=o("./modules/handle-dom"),c=o("./modules/utils"),d=o("./modules/handle-swal-dom"),f=o("./modules/handle-click"),p=o("./modules/handle-key"),m=i(p),v=o("./modules/default-params"),y=i(v),h=o("./modules/set-params"),g=i(h);s=l=function(){function o(e){var t=s;return t[e]===n?y["default"][e]:t[e]}var s=arguments[0];if(u.addClass(t.body,"stop-scrolling"),d.resetInput(),s===n)return c.logStr("SweetAlert expects at least 1 attribute!"),!1;var i=c.extend({},y["default"]);switch(typeof s){case"string":i.title=s,i.text=arguments[1]||"",i.type=arguments[2]||"";break;case"object":if(s.title===n)return c.logStr('Missing "title" argument!'),!1;i.title=s.title;for(var p in y["default"])i[p]=o(p);i.confirmButtonText=i.showCancelButton?"Confirm":y["default"].confirmButtonText,i.confirmButtonText=o("confirmButtonText"),i.doneFunction=arguments[1]||null;break;default:return c.logStr('Unexpected type of argument! Expected "string" or "object", got '+typeof s),!1}g["default"](i),d.fixVerticalPosition(),d.openModal(arguments[1]);for(var v=d.getModal(),h=v.querySelectorAll("button"),b=["onclick","onmouseover","onmouseout","onmousedown","onmouseup","onfocus"],w=function(e){return f.handleButton(e,i,v)},C=0;C<h.length;C++)for(var S=0;S<b.length;S++){var x=b[S];h[C][x]=w}d.getOverlay().onclick=w,a=e.onkeydown;var k=function(e){return m["default"](e,i,v)};e.onkeydown=k,e.onfocus=function(){setTimeout(function(){r!==n&&(r.focus(),r=n)},0)},l.enableButtons()},s.setDefaults=l.setDefaults=function(e){if(!e)throw new Error("userParams is required");if("object"!=typeof e)throw new Error("userParams has to be a object");c.extend(y["default"],e)},s.close=l.close=function(){var o=d.getModal();u.fadeOut(d.getOverlay(),5),u.fadeOut(o,5),u.removeClass(o,"showSweetAlert"),u.addClass(o,"hideSweetAlert"),u.removeClass(o,"visible");var s=o.querySelector(".sa-icon.sa-success");u.removeClass(s,"animate"),u.removeClass(s.querySelector(".sa-tip"),"animateSuccessTip"),u.removeClass(s.querySelector(".sa-long"),"animateSuccessLong");var l=o.querySelector(".sa-icon.sa-error");u.removeClass(l,"animateErrorIcon"),u.removeClass(l.querySelector(".sa-x-mark"),"animateXMark");var i=o.querySelector(".sa-icon.sa-warning");return u.removeClass(i,"pulseWarning"),u.removeClass(i.querySelector(".sa-body"),"pulseWarningIns"),u.removeClass(i.querySelector(".sa-dot"),"pulseWarningIns"),setTimeout(function(){var e=o.getAttribute("data-custom-class");u.removeClass(o,e)},300),u.removeClass(t.body,"stop-scrolling"),e.onkeydown=a,e.previousActiveElement&&e.previousActiveElement.focus(),r=n,clearTimeout(o.timeout),!0},s.showInputError=l.showInputError=function(e){var t=d.getModal(),n=t.querySelector(".sa-input-error");u.addClass(n,"show");var o=t.querySelector(".sa-error-container");u.addClass(o,"show"),o.querySelector("p").innerHTML=e,setTimeout(function(){s.enableButtons()},1),t.querySelector("input").focus()},s.resetInputError=l.resetInputError=function(e){if(e&&13===e.keyCode)return!1;var t=d.getModal(),n=t.querySelector(".sa-input-error");u.removeClass(n,"show");var o=t.querySelector(".sa-error-container");u.removeClass(o,"show")},s.disableButtons=l.disableButtons=function(){var e=d.getModal(),t=e.querySelector("button.confirm"),n=e.querySelector("button.cancel");t.disabled=!0,n.disabled=!0},s.enableButtons=l.enableButtons=function(){var e=d.getModal(),t=e.querySelector("button.confirm"),n=e.querySelector("button.cancel");t.disabled=!1,n.disabled=!1},"undefined"!=typeof e?e.sweetAlert=e.swal=s:c.logStr("SweetAlert is a frontend module!")},{"./modules/default-params":2,"./modules/handle-click":3,"./modules/handle-dom":4,"./modules/handle-key":5,"./modules/handle-swal-dom":6,"./modules/set-params":8,"./modules/utils":9}],2:[function(e,t,n){Object.defineProperty(n,"__esModule",{value:!0});var o={title:"",text:"",type:null,allowOutsideClick:!1,showConfirmButton:!0,showCancelButton:!1,closeOnConfirm:!0,closeOnCancel:!0,confirmButtonText:"OK",confirmButtonColor:"#8CD4F5",cancelButtonText:"Cancel",imageUrl:null,imageSize:null,timer:null,customClass:"",html:!1,animation:!0,allowEscapeKey:!0,inputType:"text",inputPlaceholder:"",inputValue:"",showLoaderOnConfirm:!1};n["default"]=o,t.exports=n["default"]},{}],3:[function(t,n,o){Object.defineProperty(o,"__esModule",{value:!0});var a=t("./utils"),r=(t("./handle-swal-dom"),t("./handle-dom")),s=function(t,n,o){function s(e){m&&n.confirmButtonColor&&(p.style.backgroundColor=e)}var u,c,d,f=t||e.event,p=f.target||f.srcElement,m=-1!==p.className.indexOf("confirm"),v=-1!==p.className.indexOf("sweet-overlay"),y=r.hasClass(o,"visible"),h=n.doneFunction&&"true"===o.getAttribute("data-has-done-function");switch(m&&n.confirmButtonColor&&(u=n.confirmButtonColor,c=a.colorLuminance(u,-.04),d=a.colorLuminance(u,-.14)),f.type){case"mouseover":s(c);break;case"mouseout":s(u);break;case"mousedown":s(d);break;case"mouseup":s(c);break;case"focus":var g=o.querySelector("button.confirm"),b=o.querySelector("button.cancel");m?b.style.boxShadow="none":g.style.boxShadow="none";break;case"click":var w=o===p,C=r.isDescendant(o,p);if(!w&&!C&&y&&!n.allowOutsideClick)break;m&&h&&y?l(o,n):h&&y||v?i(o,n):r.isDescendant(o,p)&&"BUTTON"===p.tagName&&sweetAlert.close()}},l=function(e,t){var n=!0;r.hasClass(e,"show-input")&&(n=e.querySelector("input").value,n||(n="")),t.doneFunction(n),t.closeOnConfirm&&sweetAlert.close(),t.showLoaderOnConfirm&&sweetAlert.disableButtons()},i=function(e,t){var n=String(t.doneFunction).replace(/\s/g,""),o="function("===n.substring(0,9)&&")"!==n.substring(9,10);o&&t.doneFunction(!1),t.closeOnCancel&&sweetAlert.close()};o["default"]={handleButton:s,handleConfirm:l,handleCancel:i},n.exports=o["default"]},{"./handle-dom":4,"./handle-swal-dom":6,"./utils":9}],4:[function(n,o,a){Object.defineProperty(a,"__esModule",{value:!0});var r=function(e,t){return new RegExp(" "+t+" ").test(" "+e.className+" ")},s=function(e,t){r(e,t)||(e.className+=" "+t)},l=function(e,t){var n=" "+e.className.replace(/[\t\r\n]/g," ")+" ";if(r(e,t)){for(;n.indexOf(" "+t+" ")>=0;)n=n.replace(" "+t+" "," ");e.className=n.replace(/^\s+|\s+$/g,"")}},i=function(e){var n=t.createElement("div");return n.appendChild(t.createTextNode(e)),n.innerHTML},u=function(e){e.style.opacity="",e.style.display="block"},c=function(e){if(e&&!e.length)return u(e);for(var t=0;t<e.length;++t)u(e[t])},d=function(e){e.style.opacity="",e.style.display="none"},f=function(e){if(e&&!e.length)return d(e);for(var t=0;t<e.length;++t)d(e[t])},p=function(e,t){for(var n=t.parentNode;null!==n;){if(n===e)return!0;n=n.parentNode}return!1},m=function(e){e.style.left="-9999px",e.style.display="block";var t,n=e.clientHeight;return t="undefined"!=typeof getComputedStyle?parseInt(getComputedStyle(e).getPropertyValue("padding-top"),10):parseInt(e.currentStyle.padding),e.style.left="",e.style.display="none","-"+parseInt((n+t)/2)+"px"},v=function(e,t){if(+e.style.opacity<1){t=t||16,e.style.opacity=0,e.style.display="block";var n=+new Date,o=function(e){function t(){return e.apply(this,arguments)}return t.toString=function(){return e.toString()},t}(function(){e.style.opacity=+e.style.opacity+(new Date-n)/100,n=+new Date,+e.style.opacity<1&&setTimeout(o,t)});o()}e.style.display="block"},y=function(e,t){t=t||16,e.style.opacity=1;var n=+new Date,o=function(e){function t(){return e.apply(this,arguments)}return t.toString=function(){return e.toString()},t}(function(){e.style.opacity=+e.style.opacity-(new Date-n)/100,n=+new Date,+e.style.opacity>0?setTimeout(o,t):e.style.display="none"});o()},h=function(n){if("function"==typeof MouseEvent){var o=new MouseEvent("click",{view:e,bubbles:!1,cancelable:!0});n.dispatchEvent(o)}else if(t.createEvent){var a=t.createEvent("MouseEvents");a.initEvent("click",!1,!1),n.dispatchEvent(a)}else t.createEventObject?n.fireEvent("onclick"):"function"==typeof n.onclick&&n.onclick()},g=function(t){"function"==typeof t.stopPropagation?(t.stopPropagation(),t.preventDefault()):e.event&&e.event.hasOwnProperty("cancelBubble")&&(e.event.cancelBubble=!0)};a.hasClass=r,a.addClass=s,a.removeClass=l,a.escapeHtml=i,a._show=u,a.show=c,a._hide=d,a.hide=f,a.isDescendant=p,a.getTopMargin=m,a.fadeIn=v,a.fadeOut=y,a.fireClick=h,a.stopEventPropagation=g},{}],5:[function(t,o,a){Object.defineProperty(a,"__esModule",{value:!0});var r=t("./handle-dom"),s=t("./handle-swal-dom"),l=function(t,o,a){var l=t||e.event,i=l.keyCode||l.which,u=a.querySelector("button.confirm"),c=a.querySelector("button.cancel"),d=a.querySelectorAll("button[tabindex]");if(-1!==[9,13,32,27].indexOf(i)){for(var f=l.target||l.srcElement,p=-1,m=0;m<d.length;m++)if(f===d[m]){p=m;break}9===i?(f=-1===p?u:p===d.length-1?d[0]:d[p+1],r.stopEventPropagation(l),f.focus(),o.confirmButtonColor&&s.setFocusStyle(f,o.confirmButtonColor)):13===i?("INPUT"===f.tagName&&(f=u,u.focus()),f=-1===p?u:n):27===i&&o.allowEscapeKey===!0?(f=c,r.fireClick(f,l)):f=n}};a["default"]=l,o.exports=a["default"]},{"./handle-dom":4,"./handle-swal-dom":6}],6:[function(n,o,a){var r=function(e){return e&&e.__esModule?e:{"default":e}};Object.defineProperty(a,"__esModule",{value:!0});var s=n("./utils"),l=n("./handle-dom"),i=n("./default-params"),u=r(i),c=n("./injected-html"),d=r(c),f=".sweet-alert",p=".sweet-overlay",m=function(){var e=t.createElement("div");for(e.innerHTML=d["default"];e.firstChild;)t.body.appendChild(e.firstChild)},v=function(e){function t(){return e.apply(this,arguments)}return t.toString=function(){return e.toString()},t}(function(){var e=t.querySelector(f);return e||(m(),e=v()),e}),y=function(){var e=v();return e?e.querySelector("input"):void 0},h=function(){return t.querySelector(p)},g=function(e,t){var n=s.hexToRgb(t);e.style.boxShadow="0 0 2px rgba("+n+", 0.8), inset 0 0 0 1px rgba(0, 0, 0, 0.05)"},b=function(n){var o=v();l.fadeIn(h(),10),l.show(o),l.addClass(o,"showSweetAlert"),l.removeClass(o,"hideSweetAlert"),e.previousActiveElement=t.activeElement;var a=o.querySelector("button.confirm");a.focus(),setTimeout(function(){l.addClass(o,"visible")},500);var r=o.getAttribute("data-timer");if("null"!==r&&""!==r){var s=n;o.timeout=setTimeout(function(){var e=(s||null)&&"true"===o.getAttribute("data-has-done-function");e?s(null):sweetAlert.close()},r)}},w=function(){var e=v(),t=y();l.removeClass(e,"show-input"),t.value=u["default"].inputValue,t.setAttribute("type",u["default"].inputType),t.setAttribute("placeholder",u["default"].inputPlaceholder),C()},C=function(e){if(e&&13===e.keyCode)return!1;var t=v(),n=t.querySelector(".sa-input-error");l.removeClass(n,"show");var o=t.querySelector(".sa-error-container");l.removeClass(o,"show")},S=function(){var e=v();e.style.marginTop=l.getTopMargin(v())};a.sweetAlertInitialize=m,a.getModal=v,a.getOverlay=h,a.getInput=y,a.setFocusStyle=g,a.openModal=b,a.resetInput=w,a.resetInputError=C,a.fixVerticalPosition=S},{"./default-params":2,"./handle-dom":4,"./injected-html":7,"./utils":9}],7:[function(e,t,n){Object.defineProperty(n,"__esModule",{value:!0});var o='<div class="sweet-overlay" tabIndex="-1"></div><div class="sweet-alert"><div class="sa-icon sa-error">\n      <span class="sa-x-mark">\n        <span class="sa-line sa-left"></span>\n        <span class="sa-line sa-right"></span>\n      </span>\n    </div><div class="sa-icon sa-warning">\n      <span class="sa-body"></span>\n      <span class="sa-dot"></span>\n    </div><div class="sa-icon sa-info"></div><div class="sa-icon sa-success">\n      <span class="sa-line sa-tip"></span>\n      <span class="sa-line sa-long"></span>\n\n      <div class="sa-placeholder"></div>\n      <div class="sa-fix"></div>\n    </div><div class="sa-icon sa-custom"></div><h2>Title</h2>\n    <p>Text</p>\n    <fieldset>\n      <input type="text" tabIndex="3" />\n      <div class="sa-input-error"></div>\n    </fieldset><div class="sa-error-container">\n      <div class="icon">!</div>\n      <p>Not valid!</p>\n    </div><div class="sa-button-container">\n      <button class="cancel" tabIndex="2">Cancel</button>\n      <div class="sa-confirm-button-container">\n        <button class="confirm" tabIndex="1">OK</button><div class="la-ball-fall">\n          <div></div>\n          <div></div>\n          <div></div>\n        </div>\n      </div>\n    </div></div>';n["default"]=o,t.exports=n["default"]},{}],8:[function(e,t,o){Object.defineProperty(o,"__esModule",{value:!0});var a=e("./utils"),r=e("./handle-swal-dom"),s=e("./handle-dom"),l=["error","warning","info","success","input","prompt"],i=function(e){var t=r.getModal(),o=t.querySelector("h2"),i=t.querySelector("p"),u=t.querySelector("button.cancel"),c=t.querySelector("button.confirm");if(o.innerHTML=e.html?e.title:s.escapeHtml(e.title).split("\n").join("<br>"),i.innerHTML=e.html?e.text:s.escapeHtml(e.text||"").split("\n").join("<br>"),e.text&&s.show(i),e.customClass)s.addClass(t,e.customClass),t.setAttribute("data-custom-class",e.customClass);else{var d=t.getAttribute("data-custom-class");s.removeClass(t,d),t.setAttribute("data-custom-class","")}if(s.hide(t.querySelectorAll(".sa-icon")),e.type&&!a.isIE8()){var f=function(){for(var o=!1,a=0;a<l.length;a++)if(e.type===l[a]){o=!0;break}if(!o)return logStr("Unknown alert type: "+e.type),{v:!1};var i=["success","error","warning","info"],u=n;-1!==i.indexOf(e.type)&&(u=t.querySelector(".sa-icon.sa-"+e.type),s.show(u));var c=r.getInput();switch(e.type){case"success":s.addClass(u,"animate"),s.addClass(u.querySelector(".sa-tip"),"animateSuccessTip"),s.addClass(u.querySelector(".sa-long"),"animateSuccessLong");break;case"error":s.addClass(u,"animateErrorIcon"),s.addClass(u.querySelector(".sa-x-mark"),"animateXMark");break;case"warning":s.addClass(u,"pulseWarning"),s.addClass(u.querySelector(".sa-body"),"pulseWarningIns"),s.addClass(u.querySelector(".sa-dot"),"pulseWarningIns");break;case"input":case"prompt":c.setAttribute("type",e.inputType),c.value=e.inputValue,c.setAttribute("placeholder",e.inputPlaceholder),s.addClass(t,"show-input"),setTimeout(function(){c.focus(),c.addEventListener("keyup",swal.resetInputError)},400)}}();if("object"==typeof f)return f.v}if(e.imageUrl){var p=t.querySelector(".sa-icon.sa-custom");p.style.backgroundImage="url("+e.imageUrl+")",s.show(p);var m=80,v=80;if(e.imageSize){var y=e.imageSize.toString().split("x"),h=y[0],g=y[1];h&&g?(m=h,v=g):logStr("Parameter imageSize expects value with format WIDTHxHEIGHT, got "+e.imageSize)}p.setAttribute("style",p.getAttribute("style")+"width:"+m+"px; height:"+v+"px")}t.setAttribute("data-has-cancel-button",e.showCancelButton),e.showCancelButton?u.style.display="inline-block":s.hide(u),t.setAttribute("data-has-confirm-button",e.showConfirmButton),e.showConfirmButton?c.style.display="inline-block":s.hide(c),e.cancelButtonText&&(u.innerHTML=s.escapeHtml(e.cancelButtonText)),e.confirmButtonText&&(c.innerHTML=s.escapeHtml(e.confirmButtonText)),e.confirmButtonColor&&(c.style.backgroundColor=e.confirmButtonColor,c.style.borderLeftColor=e.confirmLoadingButtonColor,c.style.borderRightColor=e.confirmLoadingButtonColor,r.setFocusStyle(c,e.confirmButtonColor)),t.setAttribute("data-allow-outside-click",e.allowOutsideClick);var b=e.doneFunction?!0:!1;t.setAttribute("data-has-done-function",b),e.animation?"string"==typeof e.animation?t.setAttribute("data-animation",e.animation):t.setAttribute("data-animation","pop"):t.setAttribute("data-animation","none"),t.setAttribute("data-timer",e.timer)};o["default"]=i,t.exports=o["default"]},{"./handle-dom":4,"./handle-swal-dom":6,"./utils":9}],9:[function(t,n,o){Object.defineProperty(o,"__esModule",{value:!0});var a=function(e,t){for(var n in t)t.hasOwnProperty(n)&&(e[n]=t[n]);return e},r=function(e){var t=/^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(e);return t?parseInt(t[1],16)+", "+parseInt(t[2],16)+", "+parseInt(t[3],16):null},s=function(){return e.attachEvent&&!e.addEventListener},l=function(t){e.console&&e.console.log("SweetAlert: "+t)},i=function(e,t){e=String(e).replace(/[^0-9a-f]/gi,""),e.length<6&&(e=e[0]+e[0]+e[1]+e[1]+e[2]+e[2]),t=t||0;var n,o,a="#";for(o=0;3>o;o++)n=parseInt(e.substr(2*o,2),16),n=Math.round(Math.min(Math.max(0,n+n*t),255)).toString(16),a+=("00"+n).substr(n.length);return a};o.extend=a,o.hexToRgb=r,o.isIE8=s,o.logStr=l,o.colorLuminance=i},{}]},{},[1]),"function"==typeof define&&define.amd?define(function(){return sweetAlert}):"undefined"!=typeof module&&module.exports&&(module.exports=sweetAlert)}(window,document);
-},{}],209:[function(require,module,exports){
+module.exports = exports['default'];
+},{"./modules/default-params":211,"./modules/handle-click":212,"./modules/handle-dom":213,"./modules/handle-key":214,"./modules/handle-swal-dom":215,"./modules/set-params":217,"./modules/utils":218}],220:[function(require,module,exports){
 /**
  * Service for sending network requests.
  */
@@ -26951,7 +28767,7 @@ module.exports = function (_) {
     return _.http = Http;
 };
 
-},{"./lib/jsonp":211,"./lib/promise":212,"./lib/xhr":214}],210:[function(require,module,exports){
+},{"./lib/jsonp":222,"./lib/promise":223,"./lib/xhr":225}],221:[function(require,module,exports){
 /**
  * Install plugin.
  */
@@ -26992,7 +28808,7 @@ if (window.Vue) {
 }
 
 module.exports = install;
-},{"./http":209,"./lib/util":213,"./resource":215,"./url":216}],211:[function(require,module,exports){
+},{"./http":220,"./lib/util":224,"./resource":226,"./url":227}],222:[function(require,module,exports){
 /**
  * JSONP request.
  */
@@ -27044,7 +28860,7 @@ module.exports = function (_, options) {
 
 };
 
-},{"./promise":212}],212:[function(require,module,exports){
+},{"./promise":223}],223:[function(require,module,exports){
 /**
  * Promises/A+ polyfill v1.1.0 (https://github.com/bramstein/promis)
  */
@@ -27256,7 +29072,7 @@ if (window.MutationObserver) {
 
 module.exports = window.Promise || Promise;
 
-},{}],213:[function(require,module,exports){
+},{}],224:[function(require,module,exports){
 /**
  * Utility functions.
  */
@@ -27338,7 +29154,7 @@ module.exports = function (Vue) {
     return _;
 };
 
-},{}],214:[function(require,module,exports){
+},{}],225:[function(require,module,exports){
 /**
  * XMLHttp request.
  */
@@ -27391,7 +29207,7 @@ module.exports = function (_, options) {
     return promise;
 };
 
-},{"./promise":212}],215:[function(require,module,exports){
+},{"./promise":223}],226:[function(require,module,exports){
 /**
  * Service for interacting with RESTful services.
  */
@@ -27504,7 +29320,7 @@ module.exports = function (_) {
     return _.resource = Resource;
 };
 
-},{}],216:[function(require,module,exports){
+},{}],227:[function(require,module,exports){
 /**
  * Service for URL templating.
  */
@@ -27663,7 +29479,7 @@ module.exports = function (_) {
     return _.url = Url;
 };
 
-},{}],217:[function(require,module,exports){
+},{}],228:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -27700,6 +29516,10 @@ var _componentsAnswerTopicVue = require('./components/answer-topic.vue');
 
 var _componentsAnswerTopicVue2 = _interopRequireDefault(_componentsAnswerTopicVue);
 
+var _componentsRemoveMessageVue = require('./components/remove-message.vue');
+
+var _componentsRemoveMessageVue2 = _interopRequireDefault(_componentsRemoveMessageVue);
+
 exports['default'] = {
     data: {
         showLoginBox: false
@@ -27711,12 +29531,13 @@ exports['default'] = {
         NewTopic: _componentsNewTopicVue2['default'],
         LoginBox: _componentsLoginBoxVue2['default'],
         AnswerTopic: _componentsAnswerTopicVue2['default'],
-        EditMessage: _componentsEditMessageVue2['default']
+        EditMessage: _componentsEditMessageVue2['default'],
+        RemoveMessage: _componentsRemoveMessageVue2['default']
     }
 };
 module.exports = exports['default'];
 
-},{"./components/alert.vue":218,"./components/answer-topic.vue":219,"./components/edit-message.vue":220,"./components/highlighted-code.vue":221,"./components/login-box.vue":222,"./components/new-topic.vue":224,"./components/relative-date.vue":225}],218:[function(require,module,exports){
+},{"./components/alert.vue":229,"./components/answer-topic.vue":230,"./components/edit-message.vue":231,"./components/highlighted-code.vue":232,"./components/login-box.vue":233,"./components/new-topic.vue":235,"./components/relative-date.vue":236,"./components/remove-message.vue":237}],229:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -27745,8 +29566,8 @@ exports['default'] = {
 };
 module.exports = exports['default'];
 
-},{"sweetalert":208}],219:[function(require,module,exports){
-var __vue_template__ = "<div>\n        <h3>Répondre au sujet</h3>\n\n        <form class=\"Form Form--AnswerTopic\" @submit=\"submitForm(answer, $event)\">\n\n            <ul class=\"Form__ErrorList\" v-if=\"errors.length > 0\">\n                <li class=\"Form__ErrorList__Item\" v-for=\"error in errors\">{{ error }}</li>\n            </ul>\n\n\n            <div class=\"Form__Row\">\n                <label for=\"answer-topic-markdown\" class=\"Form__Row__Label\">Message</label>\n                <textarea type=\"text\" id=\"answer-topic-markdown\" name=\"answer-topic[markdown]\" class=\"Form__Row__Control\" v-model=\"answer.markdown\"></textarea>\n            </div>\n\n            <div class=\"Form__Row Form__Row--Buttons\" style=\"float: right\">\n                <button type=\"reset\" class=\"Button Button--Cancel\" @click=\"reset\">\n                    Annuler\n                </button>\n\n                <button type=\"submit\" class=\"Button Button--Submit\" @click=\"submitForm(answer, $event)\">Répondre</button>\n            </div>\n\n            <p style=\"float: left\">\n                <small>Le message doit être rédigé au format <a href=\"https://help.github.com/articles/markdown-basics/\">Markdown</a></small>\n            </p>\n        </form>\n    </div>";
+},{"sweetalert":219}],230:[function(require,module,exports){
+var __vue_template__ = "<div>\n        <h3>Répondre au sujet</h3>\n\n        <form class=\"Form Form--AnswerTopic\" @submit=\"submitForm(answer, $event)\">\n\n            <ul class=\"Form__ErrorList\" v-if=\"errors.length > 0\">\n                <li class=\"Form__ErrorList__Item\" v-for=\"error in errors\">{{ error }}</li>\n            </ul>\n\n\n            <div class=\"Form__Row\">\n                <label for=\"answer-topic-markdown\" class=\"Form__Row__Label\">Message</label>\n                <textarea type=\"text\" id=\"answer-topic-markdown\" name=\"answer-topic[markdown]\" class=\"Form__Row__Control\" v-model=\"answer.markdown\"></textarea>\n            </div>\n\n            <div class=\"Form__Row Form__Row--Buttons\" style=\"float: right\">\n                <button type=\"reset\" class=\"Button Button--Cancel\" @click=\"reset\">\n                    Annuler\n                </button>\n\n                <button type=\"submit\" class=\"Button Button--Submit\" @click=\"submitForm(answer, $event)\" :disabled=\"isDisabled\">Répondre</button>\n            </div>\n\n            <p style=\"float: left\">\n                <small>Le message doit être rédigé au format <a href=\"https://help.github.com/articles/markdown-basics/\">Markdown</a></small>\n            </p>\n        </form>\n    </div>";
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -27765,11 +29586,14 @@ exports['default'] = {
             var _this = this;
 
             event.preventDefault();
+            this.isDisabled = true;
 
             var that = this;
             this.$http.post(_laroute2['default'].route('api.forums.reply', { topicId: this.topic }), answer).success(function (message, status, request) {
                 document.location.href = _laroute2['default'].route('forums.show-message', { messageId: message.id });
             }).error(function (data, status, request) {
+                _this.isDisabled = false;
+
                 that.errors = [];
                 if (status == 422) {
                     for (var element in data) {
@@ -27794,6 +29618,7 @@ exports['default'] = {
     },
     data: function data() {
         return {
+            isDisabled: false,
             errors: [],
             answer: {
                 markdown: ''
@@ -27804,8 +29629,8 @@ exports['default'] = {
 module.exports = exports['default'];
 ;(typeof module.exports === "function"? module.exports.options: module.exports).template = __vue_template__;
 
-},{"../laroute":226}],220:[function(require,module,exports){
-var __vue_template__ = "<button class=\"Button Button--Small Button--EditMessage\" id=\"show-modal\" @click=\"fillModal\"><slot></slot></button>\n\n    <modal :show.sync=\"showModal\" class=\"Modal---EditMessage\" with-fullscreen=\"true\">\n        <h3 slot=\"header\">Modifier un message</h3>\n\n        <div slot=\"body\">\n            <form class=\"Form Form--EditMessage\" @submit=\"submitForm(editedMessage, $event)\">\n\n                <ul class=\"Form__ErrorList\" v-if=\"errors.length > 0\">\n                    <li class=\"Form__ErrorList__Item\" v-for=\"error in errors\">{{ error }}</li>\n                </ul>\n\n\n                <div class=\"Form__Row\">\n                    <label for=\"edit-message-markdown\" class=\"Form__Row__Label\">Message <small>(Le message doit être rédigé au format <a href=\"https://help.github.com/articles/markdown-basics/\">Markdown</a>)</small></label>\n                    <textarea type=\"text\" id=\"edit-message-markdown\" name=\"edit-message[markdown]\" class=\"Form__Row__Control\" v-model=\"editMessage.markdown\"></textarea>\n                </div>\n\n            </form>\n        </div>\n\n\n        <div slot=\"footer\">\n            <button type=\"reset\" class=\"Button Button--Cancel\" @click=\"closeModal\">\n                Annuler\n            </button>\n\n            <button type=\"submit\" class=\"Button Button--Submit\" @click=\"submitForm(editMessage, $event)\">Modifier le message</button>\n        </div>\n\n\n    </modal>";
+},{"../laroute":238}],231:[function(require,module,exports){
+var __vue_template__ = "<button class=\"Button Button--Small Button--EditMessage\" id=\"show-modal\" @click=\"fillModal\"><slot></slot></button>\n\n    <modal :show.sync=\"showModal\" class=\"Modal---EditMessage\" :full-screen.sync=\"isFullScreen\" with-fullscreen=\"true\">\n        <h3 slot=\"header\">Modifier un message</h3>\n\n        <div slot=\"body\">\n\n            <form class=\"Form Form--EditMessage\" @submit=\"submitForm(editedMessage, $event)\">\n\n                <ul class=\"Form__ErrorList\" v-if=\"errors.length > 0\">\n                    <li class=\"Form__ErrorList__Item\" v-for=\"error in errors\">{{ error }}</li>\n                </ul>\n\n\n                <div class=\"Form__Row\">\n                    <label for=\"edit-message-markdown\" class=\"Form__Row__Label\">Message <small>(Le message doit être rédigé au format <a href=\"https://help.github.com/articles/markdown-basics/\">Markdown</a>)</small></label>\n                    <textarea type=\"text\" id=\"edit-message-markdown\" name=\"edit-message[markdown]\" class=\"Form__Row__Control\" v-model=\"editMessage.markdown\"></textarea>\n                </div>\n\n            </form>\n        </div>\n\n\n        <div slot=\"footer\">\n            <button type=\"reset\" class=\"Button Button--Cancel\" @click=\"closeModal\">\n                Annuler\n            </button>\n\n            <button type=\"submit\" class=\"Button Button--Submit\" @click=\"submitForm(editMessage, $event)\" :disabled=\"isDisabled\">Modifier le message</button>\n        </div>\n    </modal>";
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -27817,6 +29642,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'd
 var _modalVue = require('./modal.vue');
 
 var _modalVue2 = _interopRequireDefault(_modalVue);
+
+var _autosize = require('autosize');
+
+var _autosize2 = _interopRequireDefault(_autosize);
 
 var _laroute = require('../laroute');
 
@@ -27839,10 +29668,12 @@ exports['default'] = {
 
             event.preventDefault();
 
+            this.isDisabled = true;
             var that = this;
             this.$http.put(_laroute2['default'].route('api.forums.message.update', { topicId: this.topicId, messageId: this.messageId }), editMessage).success(function (topic, status, request) {
                 document.location.href = _laroute2['default'].route('forums.show-message', { messageId: that.messageId });
             }).error(function (data, status, request) {
+                _this.isDisabled = false;
 
                 that.errors = [];
                 if (status == 422) {
@@ -27877,18 +29708,29 @@ exports['default'] = {
     },
     data: function data() {
         return {
+            isDisabled: false,
+            isFullScreen: false,
             showModal: false,
             errors: [],
             editMessage: {
                 markdown: ''
             }
         };
+    },
+    ready: function ready() {
+        this.$watch('isFullScreen', function (newValue, oldValue) {
+            if (newValue == true) {
+                (0, _autosize2['default'])(document.querySelector('#edit-message-markdown'));
+            } else {
+                _autosize2['default'].destroy(document.querySelector('#edit-message-markdown'));
+            }
+        });
     }
 };
 module.exports = exports['default'];
 ;(typeof module.exports === "function"? module.exports.options: module.exports).template = __vue_template__;
 
-},{"../laroute":226,"./modal.vue":223}],221:[function(require,module,exports){
+},{"../laroute":238,"./modal.vue":234,"autosize":68}],232:[function(require,module,exports){
 var __vue_template__ = "<pre class=\"{{ language ? 'language-' + language : '' }}\"><code><slot></slot></code></pre>";
 'use strict';
 
@@ -27906,7 +29748,7 @@ exports['default'] = {
 module.exports = exports['default'];
 ;(typeof module.exports === "function"? module.exports.options: module.exports).template = __vue_template__;
 
-},{"highlight.js":69}],222:[function(require,module,exports){
+},{"highlight.js":70}],233:[function(require,module,exports){
 var __vue_template__ = "<modal :show.sync=\"showModal\" class=\"Modal--LoginBox\">\n        <h3 slot=\"header\">Connexion</h3>\n\n        <div slot=\"body\">\n            <ul class=\"\">\n                <li class=\"\"><a href=\"/socialite/google\">Google</a></li>\n                <li class=\"\"><a href=\"/socialite/github\">Github</a></li>\n                <li class=\"\"><a href=\"/socialite/twitter\">Twitter</a></li>\n            </ul>\n        </div>\n\n\n        <div slot=\"footer\"></div>\n\n\n    </modal>";
 'use strict';
 
@@ -27935,7 +29777,7 @@ exports['default'] = {
 module.exports = exports['default'];
 ;(typeof module.exports === "function"? module.exports.options: module.exports).template = __vue_template__;
 
-},{"./modal.vue":223}],223:[function(require,module,exports){
+},{"./modal.vue":234}],234:[function(require,module,exports){
 var __vue_template__ = "<div class=\"Modal {{* class }}\" v-show=\"show\" transition=\"Modal\" @click=\"clickOnMask\" :class=\"{ 'Modal--Fullscreen': fullScreen }\">\n        <div class=\"Modal__Wrapper\" @click=\"clickOnMask\">\n            <div class=\"Modal__Wrapper__Container\">\n                <div class=\"Modal__Wrapper__Container__Header\">\n                    <div class=\"Modal__Wrapper__Container__Header__Buttons\" v-if=\"withFullscreen != false\">\n                        <button class=\"Button Button--Small Button--Cancel\" @click=\"this.fullScreen = !this.fullScreen\">Plein écran</button>\n                    </div>\n                    <slot name=\"header\">\n                        Laravel France\n                    </slot>\n                </div>\n\n                <div class=\"Modal__Wrapper__Container__Body\">\n                    <slot name=\"body\"></slot>\n                </div>\n\n                <div class=\"Modal__Wrapper__Container__Footer\">\n                    <slot name=\"footer\">\n                        <button @click=\"show = false\">\n                            OK\n                        </button>\n                    </slot>\n                </div>\n            </div>\n        </div>\n    </div>";
 "use strict";
 
@@ -27948,18 +29790,20 @@ exports["default"] = {
             e.stopPropagation();
             if (e.target != e.currentTarget) return;
 
+            if (this.fullScreen) return;
+
             this.show = false;
         },
         toggleFullScreen: function toggleFullScreen() {
             this.fullScreen = !this.fullScreen;
         }
     },
-    data: function data() {
-        return {
-            fullScreen: false
-        };
-    },
     props: {
+        fullScreen: {
+            type: Boolean,
+            "default": false,
+            twoWay: true
+        },
         "class": {
             type: String
         },
@@ -27976,8 +29820,8 @@ exports["default"] = {
 module.exports = exports["default"];
 ;(typeof module.exports === "function"? module.exports.options: module.exports).template = __vue_template__;
 
-},{}],224:[function(require,module,exports){
-var __vue_template__ = "<button class=\"Button Button--NewTopic\" id=\"show-modal\" @click=\"showModal = true\"><slot></slot></button>\n\n    <modal :show.sync=\"showModal\" class=\"Modal--NewTopic\" with-fullscreen=\"true\">\n        <h3 slot=\"header\">Créer un sujet</h3>\n\n        <div slot=\"body\">\n            <form class=\"Form Form--NewTopic\" @submit=\"submitForm(newTopic, $event)\">\n\n                <ul class=\"Form__ErrorList\" v-if=\"errors.length > 0\">\n                    <li class=\"Form__ErrorList__Item\" v-for=\"error in errors\">{{ error }}</li>\n                </ul>\n\n\n                <div class=\"Form__Row\">\n                    <label class=\"Form__Row__Label\" for=\"new-topic-title\">Titre</label>\n                    <input type=\"text\" class=\"Form__Row__Control\" id=\"new-topic-title\" name=\"new-topic[title]\" v-model=\"newTopic.title\">\n                </div>\n\n                <div class=\"Form__Row Form__Row--Category\">\n                    <label class=\"Form__Row__Label\">Catégorie</label>\n\n                    <template v-for=\"category in categoriesJson\" track-by=\"id\">\n                        <input id=\"category-id-{{ category.id }}\" type=\"radio\" name=\"new-topic[category]\" v-model=\"newTopic.category\" value=\"{{ category.id }}\"> \n                        <label for=\"category-id-{{ category.id }}\">{{ category.name }}</label>\n                    </template>\n                </div>\n\n                <div class=\"Form__Row\">\n                    <label for=\"new-topic-markdown\" class=\"Form__Row__Label\">Message <small>(Le message doit être rédigé au format <a href=\"https://help.github.com/articles/markdown-basics/\">Markdown</a>)</small></label>\n                    <textarea type=\"text\" id=\"new-topic-markdown\" name=\"new-topic[markdown]\" class=\"Form__Row__Control\" v-model=\"newTopic.markdown\"></textarea>\n                </div>\n\n            </form>\n        </div>\n\n\n        <div slot=\"footer\">\n            <button type=\"reset\" class=\"Button Button--Cancel\" @click=\"closeModal\">\n                Annuler\n            </button>\n\n            <button type=\"submit\" class=\"Button Button--Submit\" @click=\"submitForm(newTopic, $event)\">Créer un sujet</button>\n\n        </div>\n\n\n    </modal>";
+},{}],235:[function(require,module,exports){
+var __vue_template__ = "<button class=\"Button Button--NewTopic\" id=\"show-modal\" @click=\"showModal = true\"><slot></slot></button>\n\n    <modal :show.sync=\"showModal\" class=\"Modal--NewTopic\" :full-screen.sync=\"isFullScreen\" with-fullscreen=\"true\">\n        <h3 slot=\"header\">Créer un sujet</h3>\n\n        <div slot=\"body\">\n            <form class=\"Form Form--NewTopic\" @submit=\"submitForm(newTopic, $event)\">\n\n                <ul class=\"Form__ErrorList\" v-if=\"errors.length > 0\">\n                    <li class=\"Form__ErrorList__Item\" v-for=\"error in errors\">{{ error }}</li>\n                </ul>\n\n\n                <div class=\"Form__Row\">\n                    <label class=\"Form__Row__Label\" for=\"new-topic-title\">Titre</label>\n                    <input type=\"text\" class=\"Form__Row__Control\" id=\"new-topic-title\" name=\"new-topic[title]\" v-model=\"newTopic.title\">\n                </div>\n\n                <div class=\"Form__Row Form__Row--Category\">\n                    <label class=\"Form__Row__Label\">Catégorie</label>\n\n                    <template v-for=\"category in categoriesJson\" track-by=\"id\">\n                        <input id=\"category-id-{{ category.id }}\" type=\"radio\" name=\"new-topic[category]\" v-model=\"newTopic.category\" value=\"{{ category.id }}\"> \n                        <label for=\"category-id-{{ category.id }}\">{{ category.name }}</label>\n                    </template>\n                </div>\n\n                <div class=\"Form__Row\">\n                    <label for=\"new-topic-markdown\" class=\"Form__Row__Label\">Message <small>(Le message doit être rédigé au format <a href=\"https://help.github.com/articles/markdown-basics/\">Markdown</a>)</small></label>\n                    <textarea type=\"text\" id=\"new-topic-markdown\" name=\"new-topic[markdown]\" class=\"Form__Row__Control\" v-model=\"newTopic.markdown\"></textarea>\n                </div>\n\n            </form>\n        </div>\n\n\n        <div slot=\"footer\">\n            <button type=\"reset\" class=\"Button Button--Cancel\" @click=\"closeModal\">\n                Annuler\n            </button>\n\n            <button type=\"submit\" class=\"Button Button--Submit\" @click=\"submitForm(newTopic, $event)\" :disabled=\"isDisabled\">Créer un sujet</button>\n\n        </div>\n\n\n    </modal>";
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -27994,6 +29838,10 @@ var _laroute = require('../laroute');
 
 var _laroute2 = _interopRequireDefault(_laroute);
 
+var _autosize = require('autosize');
+
+var _autosize2 = _interopRequireDefault(_autosize);
+
 exports['default'] = {
     components: {
         Modal: _modalVue2['default']
@@ -28004,10 +29852,13 @@ exports['default'] = {
 
             event.preventDefault();
 
+            this.isDisabled = true;
+
             var that = this;
             this.$http.post(_laroute2['default'].route('api.forums.post'), newTopic).success(function (topic, status, request) {
                 document.location.href = _laroute2['default'].route('forums.show-topic', { categorySlug: topic.forums_category.slug, topicSlug: topic.slug });
             }).error(function (data, status, request) {
+                _this.isDisabled = false;
                 that.errors = [];
                 if (status == 422) {
                     for (var element in data) {
@@ -28041,6 +29892,8 @@ exports['default'] = {
     },
     data: function data() {
         return {
+            isDisabled: false,
+            isFullScreen: false,
             showModal: false,
             categoriesJson: [],
             errors: [],
@@ -28052,17 +29905,24 @@ exports['default'] = {
         };
     },
     ready: function ready() {
-        console.log(this.current_category);
         if (!!this.current_category) {
             this.newTopic.category = this.current_category;
         }
         this.categoriesJson = JSON.parse(this.categories);
+
+        this.$watch('isFullScreen', function (newValue, oldValue) {
+            if (newValue == true) {
+                (0, _autosize2['default'])(document.querySelector('#new-topic-markdown'));
+            } else {
+                _autosize2['default'].destroy(document.querySelector('#new-topic-markdown'));
+            }
+        });
     }
 };
 module.exports = exports['default'];
 ;(typeof module.exports === "function"? module.exports.options: module.exports).template = __vue_template__;
 
-},{"../laroute":226,"./modal.vue":223}],225:[function(require,module,exports){
+},{"../laroute":238,"./modal.vue":234,"autosize":68}],236:[function(require,module,exports){
 var __vue_template__ = "<span :title=\"frenchDate\">{{ relativeTime }}</span>";
 'use strict';
 
@@ -28107,7 +29967,68 @@ exports['default'] = {
 module.exports = exports['default'];
 ;(typeof module.exports === "function"? module.exports.options: module.exports).template = __vue_template__;
 
-},{"moment":206,"moment/locale/fr":205}],226:[function(require,module,exports){
+},{"moment":210,"moment/locale/fr":209}],237:[function(require,module,exports){
+var __vue_template__ = "<button class=\"Button Button--Small Button--RemoveMessage\" @click=\"showModal = true\" id=\"show-modal\"><slot></slot></button>\n\n    <modal :show.sync=\"showModal\" class=\"Modal---RemoveMessage\">\n        <h3 slot=\"header\">Supprimer un message</h3>\n\n        <div slot=\"body\">\n            <strong>Êtes vous sûr de vouloir supprimer ce message ?</strong>\n        </div>\n\n        <div slot=\"footer\">\n            <button type=\"reset\" class=\"Button Button--Cancel\" @click=\"closeModal\">\n                Non, annuler\n            </button>\n\n            <button type=\"submit\" class=\"Button Button--Submit\" @click=\"deleteMessage(topicId, messageId, $event)\">Oui, supprimer le message</button>\n        </div>\n\n\n    </modal>";
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+    value: true
+});
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _modalVue = require('./modal.vue');
+
+var _modalVue2 = _interopRequireDefault(_modalVue);
+
+var _laroute = require('../laroute');
+
+var _laroute2 = _interopRequireDefault(_laroute);
+
+exports['default'] = {
+    components: {
+        Modal: _modalVue2['default']
+    },
+    methods: {
+        deleteMessage: function deleteMessage(topicId, messageId, event) {
+            event.preventDefault();
+
+            this.$http['delete'](_laroute2['default'].route('api.forums.message.delete', { topicId: topicId, messageId: this.messageId })).success(function (topic, status, request) {
+                if (topic) {
+                    document.location.href = _laroute2['default'].route('forums.show-topic', { categorySlug: topic.forums_category.slug, topicSlug: topic.slug });
+                } else {
+                    document.location.href = '/';
+                }
+            });
+        },
+        closeModal: function closeModal() {
+            this.showModal = false;
+        }
+    },
+    props: {
+        messageId: {
+            type: String,
+            validator: function validator(value) {
+                return parseInt(value, 10) > 0;
+            }
+        },
+        topicId: {
+            type: String,
+            validator: function validator(value) {
+                return parseInt(value, 10) > 0;
+            }
+        }
+    },
+    data: function data() {
+        return {
+            showModal: false
+        };
+    }
+};
+module.exports = exports['default'];
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = __vue_template__;
+
+},{"../laroute":238,"./modal.vue":234}],238:[function(require,module,exports){
 "use strict";
 
 (function () {
@@ -28118,7 +30039,7 @@ module.exports = exports['default'];
 
             absolute: false,
             rootUrl: 'http://localhost',
-            routes: [{ "host": null, "methods": ["GET", "HEAD"], "uri": "_debugbar\/open", "name": "debugbar.openhandler", "action": "Barryvdh\Debugbar\Controllers\OpenHandlerController@handle" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "_debugbar\/clockwork\/{id}", "name": "debugbar.clockwork", "action": "Barryvdh\Debugbar\Controllers\OpenHandlerController@clockwork" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "_debugbar\/assets\/stylesheets", "name": "debugbar.assets.css", "action": "Barryvdh\Debugbar\Controllers\AssetController@css" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "_debugbar\/assets\/javascript", "name": "debugbar.assets.js", "action": "Barryvdh\Debugbar\Controllers\AssetController@js" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "\/", "name": "forums.index", "action": "ForumsController@topics" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "c\/{slug}", "name": "forums.by-category", "action": "ForumsController@topics" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "search", "name": "forums.search", "action": "ForumsController@search" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "t\/{categorySlug}\/{topicSlug}", "name": "forums.show-topic", "action": "ForumsController@topic" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "m\/{messageId}", "name": "forums.show-message", "action": "ForumsController@message" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "socialite\/{driver}", "name": "socialite.login", "action": "SocialiteController@redirectToProvider" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "socialite\/{driver}\/callback", "name": "socialite.callback", "action": "SocialiteController@handleProviderCallback" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "logout", "name": "logout", "action": "SocialiteController@logout" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "slack", "name": "slack", "action": "StaticController@slack" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "contact", "name": "contact", "action": "ContactController@index" }, { "host": null, "methods": ["POST"], "uri": "api\/forums\/post", "name": "api.forums.post", "action": "Api\ForumsController@post" }, { "host": null, "methods": ["POST"], "uri": "api\/forums\/{topicId}\/reply", "name": "api.forums.reply", "action": "Api\ForumsController@reply" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "api\/forums\/{topicId}\/messages\/{messageId}", "name": "api.forums.message", "action": "Api\ForumsController@message" }, { "host": null, "methods": ["PUT"], "uri": "api\/forums\/{topicId}\/messages\/{messageId}", "name": "api.forums.message.update", "action": "Api\ForumsController@updateMessage" }],
+            routes: [{ "host": null, "methods": ["GET", "HEAD"], "uri": "_debugbar\/open", "name": "debugbar.openhandler", "action": "Barryvdh\Debugbar\Controllers\OpenHandlerController@handle" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "_debugbar\/clockwork\/{id}", "name": "debugbar.clockwork", "action": "Barryvdh\Debugbar\Controllers\OpenHandlerController@clockwork" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "_debugbar\/assets\/stylesheets", "name": "debugbar.assets.css", "action": "Barryvdh\Debugbar\Controllers\AssetController@css" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "_debugbar\/assets\/javascript", "name": "debugbar.assets.js", "action": "Barryvdh\Debugbar\Controllers\AssetController@js" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "\/", "name": "forums.index", "action": "ForumsController@topics" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "c\/{slug}", "name": "forums.by-category", "action": "ForumsController@topics" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "search", "name": "forums.search", "action": "ForumsController@search" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "t\/{categorySlug}\/{topicSlug}", "name": "forums.show-topic", "action": "ForumsController@topic" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "m\/{messageId}", "name": "forums.show-message", "action": "ForumsController@message" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "socialite\/{driver}", "name": "socialite.login", "action": "SocialiteController@redirectToProvider" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "socialite\/{driver}\/callback", "name": "socialite.callback", "action": "SocialiteController@handleProviderCallback" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "logout", "name": "logout", "action": "SocialiteController@logout" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "slack", "name": "slack", "action": "StaticController@slack" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "contact", "name": "contact", "action": "ContactController@index" }, { "host": null, "methods": ["POST"], "uri": "api\/forums\/post", "name": "api.forums.post", "action": "Api\ForumsController@post" }, { "host": null, "methods": ["POST"], "uri": "api\/forums\/{topicId}\/reply", "name": "api.forums.reply", "action": "Api\ForumsController@reply" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "api\/forums\/{topicId}\/messages\/{messageId}", "name": "api.forums.message", "action": "Api\ForumsController@message" }, { "host": null, "methods": ["PUT"], "uri": "api\/forums\/{topicId}\/messages\/{messageId}", "name": "api.forums.message.update", "action": "Api\ForumsController@updateMessage" }, { "host": null, "methods": ["DELETE"], "uri": "api\/forums\/{topicId}\/messages\/{messageId}", "name": "api.forums.message.delete", "action": "Api\ForumsController@deleteMessage" }],
 
             route: function route(name, parameters, _route) {
                 _route = _route || this.getByName(name);
@@ -28282,7 +30203,7 @@ module.exports = exports['default'];
     module.exports = laroute;
 }).call(undefined);
 
-},{}],227:[function(require,module,exports){
+},{}],239:[function(require,module,exports){
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -28295,6 +30216,8 @@ var _vueResource = require('vue-resource');
 
 var _vueResource2 = _interopRequireDefault(_vueResource);
 
+//Vue.http.otpions.common['X-CSRF-TOKEN'] = window.document.querySelector('meta#token').getAttribute('value');
+
 var _app = require('./app');
 
 var _app2 = _interopRequireDefault(_app);
@@ -28303,7 +30226,6 @@ _Vue2['default'].config.debug = true;
 
 _Vue2['default'].use(_vueResource2['default']);
 _Vue2['default'].http.headers.common['X-CSRF-TOKEN'] = window.document.querySelector('meta#token').getAttribute('value');
-
 new _Vue2['default'](_app2['default']).$mount('#app');
 
-},{"./app":217,"Vue":66,"vue-resource":210}]},{},[227]);
+},{"./app":228,"Vue":66,"vue-resource":221}]},{},[239]);

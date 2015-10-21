@@ -32,6 +32,18 @@ use Laravel\Socialite\Contracts\User as SocialiteUser;
  * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\User whereUpdatedAt($value)
  * @property string $groups
  * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\User whereGroups($value)
+ * @property string $password
+ * @property string $firstname
+ * @property string $lastname
+ * @property string $birthdate
+ * @property string $city
+ * @property string $deleted_at
+ * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\User wherePassword($value)
+ * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\User whereFirstname($value)
+ * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\User whereLastname($value)
+ * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\User whereBirthdate($value)
+ * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\User whereCity($value)
+ * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\User whereDeletedAt($value)
  */
 class User extends Model implements AuthenticatableContract,
     AuthorizableContract,
@@ -103,6 +115,12 @@ class User extends Model implements AuthenticatableContract,
     public function incrementNbMessages()
     {
         $this->nb_messages++;
+        return $this;
+    }
+
+    public function decrementNbMessages()
+    {
+        $this->nb_messages--;
         return $this;
     }
 }

@@ -4,6 +4,7 @@ Vue.config.debug = true;
 
 Vue.use(VueResource);
 Vue.http.headers.common['X-CSRF-TOKEN'] = window.document.querySelector('meta#token').getAttribute('value');
+//Vue.http.otpions.common['X-CSRF-TOKEN'] = window.document.querySelector('meta#token').getAttribute('value');
 
 
 import app from './app'

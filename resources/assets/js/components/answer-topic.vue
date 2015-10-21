@@ -19,7 +19,7 @@
                     Annuler
                 </button>
 
-                <button type="submit" class="Button Button--Submit" @click="submitForm(answer, $event)">Répondre</button>
+                <button type="submit" class="Button Button--Submit" @click="submitForm(answer, $event)" :disabled="isDisabled">Répondre</button>
             </div>
 
             <p style="float: left">
@@ -36,6 +36,7 @@
         methods: {
             submitForm(answer, event) {
                 event.preventDefault();
+                this.isDisabled = true;
 
                 var that = this;
                 this.$http.post(Laroute.route('api.forums.reply', {topicId: this.topic}), answer)
@@ -43,6 +44,8 @@
                             document.location.href = Laroute.route('forums.show-message', {messageId: message.id});
                         })
                         .error((data, status, request) => {
+                            this.isDisabled = false;
+
                             that.errors = [];
                             if (status == 422) {
                                 for(var element in data) {
@@ -67,6 +70,7 @@
         },
         data() {
             return {
+                isDisabled: false,
                 errors: [],
                 answer: {
                     markdown: '',

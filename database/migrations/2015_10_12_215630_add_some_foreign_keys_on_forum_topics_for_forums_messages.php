@@ -15,11 +15,11 @@ class AddSomeForeignKeysOnForumTopicsForForumsMessages extends Migration
         Schema::table('forums_topics', function (Blueprint $table) {
             $table->foreign('solved_by')
                 ->references('id')->on('forums_messages')
-                ->onDelete('cascade');
+                ->onDelete('SET NULL');
 
             $table->foreign('last_message_id')
                 ->references('id')->on('forums_messages')
-                ->onDelete('cascade');
+                ->onDelete('SET NULL');
         });
     }
 

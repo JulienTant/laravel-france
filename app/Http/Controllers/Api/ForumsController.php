@@ -8,6 +8,7 @@ use LaravelFrance\ForumsTopic;
 use LaravelFrance\Http\Requests;
 use LaravelFrance\Http\Controllers\Controller;
 use LaravelFrance\Http\Requests\AnswerToTopicRequest;
+use LaravelFrance\Http\Requests\DeleteMessageRequest;
 use LaravelFrance\Http\Requests\EditMessageRequest;
 use LaravelFrance\Http\Requests\StoreTopicRequest;
 
@@ -75,18 +76,28 @@ class ForumsController extends Controller
     {
         /** @var ForumsTopic $topic */
         $topic = ForumsTopic::findOrFail($topicId);
-        return $topic->editMessage($messageId, $request->markdown);
+        $topic->editMessage($messageId, $request->markdown);
+
+        return $topic->load('forumsCategory');
     }
-    
+
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified message from the topic.
      *
-     * @param  int  $id
+     * @param DeleteMessageRequest $request
+     * @param $topicId
+     * @param $messageId
+     *
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function deleteMessage(DeleteMessageRequest $request, $topicId, $messageId)
     {
-        //
+        /** @var ForumsTopic $topic */
+        $topic = ForumsTopic::findOrFail($topicId);
+        $topic->deleteMessage($messageId);
+
+        return $topic->exists ? $topic->load('forumsCategory') : null;
+
     }
 }

@@ -1,7 +1,7 @@
 <template>
     <button class="Button Button--NewTopic" id="show-modal" @click="showModal = true"><slot /></button>
 
-    <modal :show.sync="showModal" class="Modal--NewTopic" with-fullscreen="true">
+    <modal :show.sync="showModal" class="Modal--NewTopic" :full-screen.sync="isFullScreen" with-fullscreen="true">
         <h3 slot="header">Créer un sujet</h3>
 
         <div slot="body">
@@ -40,7 +40,7 @@
                 Annuler
             </button>
 
-            <button type="submit" class="Button Button--Submit" @click="submitForm(newTopic, $event)">Créer un sujet</button>
+            <button type="submit" class="Button Button--Submit" @click="submitForm(newTopic, $event)" :disabled="isDisabled">Créer un sujet</button>
 
         </div>
 
@@ -51,6 +51,7 @@
 <script lang="es6" type="text/ecmascript-6">
     import Modal from './modal.vue'
     import Laroute from '../laroute'
+    import Autosize from 'autosize'
 
     export default {
         components: {
@@ -60,6 +61,8 @@
             submitForm(newTopic, event) {
                 event.preventDefault();
 
+                this.isDisabled = true;
+
                 var that = this;
                 this.$http.post(Laroute.route('api.forums.post'), newTopic)
                         .success((topic, status, request) => {
@@ -67,6 +70,7 @@
 
                         })
                         .error((data, status, request) => {
+                            this.isDisabled = false;
                             that.errors = [];
                             if (status == 422) {
                                 for(var element in data) {
@@ -100,6 +104,8 @@
         },
         data() {
             return {
+                isDisabled: false,
+                isFullScreen: false,
                 showModal: false,
                 categoriesJson: [],
                 errors: [],
@@ -111,11 +117,19 @@
             }
         },
         ready() {
-            console.log(this.current_category);
             if (!!this.current_category) {
                 this.newTopic.category = this.current_category;
             }
             this.categoriesJson = JSON.parse(this.categories);
-        }
+
+            this.$watch('isFullScreen', function (newValue, oldValue) {
+                if  (newValue == true) {
+                    Autosize(document.querySelector('#new-topic-markdown'));
+                } else {
+                    Autosize.destroy(document.querySelector('#new-topic-markdown'));
+                }
+            });
+
+    }
     }
 </script>
