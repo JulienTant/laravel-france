@@ -16,7 +16,10 @@
         <nav class="SiteHeader__Inner__Nav">
             <ul class="SiteHeader__Inner__Nav__Links">
                 <li class="SiteHeader__Inner__Nav__Links__Link"><a href="{{ route('forums.index') }}">Forums</a></li>
-                <li class="SiteHeader__Inner__Nav__Links__Link"><a href="{{ route('slack') }}">Discussion</a></li>
+                <li class="SiteHeader__Inner__Nav__Links__Link">
+                    <i class="fa fa-slack"></i>
+                    <a href="{{ route('slack') }}">Slack</a>
+                </li>
                 <li class="SiteHeader__Inner__Nav__Links__Link"><a href="{{ route('contact') }}">Contact</a></li>
                 <li class="SiteHeader__Inner__Nav__Links__Link">
                     @if(Auth::user())

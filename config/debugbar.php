@@ -93,7 +93,7 @@ return array(
         'route'           => true,  // Current route information
         'laravel'         => true, // Laravel version and environment
         'events'          => true, // All events fired
-        'default_request' => false, // Regular or special Symfony request logger
+        'default_request' => true, // Regular or special Symfony request logger
         'symfony_request' => true,  // Only one can be enabled..
         'mail'            => true,  // Catch mail messages
         'logs'            => false, // Add the latest log messages
@@ -127,7 +127,7 @@ return array(
             'hints'             => false,    // Show hints for common mistakes
         ),
         'mail' => array(
-            'full_log' => false
+            'full_log' => true
         ),
         'views' => array(
             'data' => false,    //Note: Can slow down the application, because the data can be quite large..

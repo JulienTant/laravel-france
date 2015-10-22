@@ -79,6 +79,7 @@ class MigrateFromV2toV3 extends Command
 
         $this->migrateUsers($oldConnection, $newConnection);
         $this->migrateoAuth($oldConnection, $newConnection);
+        $this->giveEveryoneNoGroup($oldConnection, $newConnection);
         $this->defineSuperAdmin();
 
 
@@ -218,6 +219,7 @@ class MigrateFromV2toV3 extends Command
 
             unset($oldForumCategories);
         });
+        $this->line('');
 
         $this->info('> Assigning colors');
 
@@ -447,5 +449,13 @@ class MigrateFromV2toV3 extends Command
         $user->save();
         $this->line(' ');
         $this->line(' ');
+    }
+
+    private function giveEveryoneNoGroup($oldConnection, $newConnection)
+    {
+        User::all()->each(function($user) {
+            $user->groups = [];
+            $user->save();
+        });
     }
 }

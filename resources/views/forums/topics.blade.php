@@ -12,7 +12,7 @@
     </div>
 
     <ul class="Forums__TopicList">
-        @each('forums._topic_in_list', $topics, 'topic');
+        @each('forums._topic_in_list', $topics, 'topic')
     </ul>
 
 

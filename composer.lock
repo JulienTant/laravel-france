@@ -4,7 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "19ce1295c335ca1bfbfb9659d8cc6477",
+    "hash": "3aefc33f6702c0fd1a992903ffe6d3f0",
+    "content-hash": "00428b7d04c8994f6e4249bd55cbafb6",
     "packages": [
         {
             "name": "classpreloader/classpreloader",
@@ -791,12 +792,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/erusev/parsedown.git",
-                "reference": "3ebbd730b5c2cf5ce78bc1bf64071407fc6674b7"
+                "reference": "ddb3bd2107253ac8454d8737d6a91a851a0bb626"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/erusev/parsedown/zipball/3ebbd730b5c2cf5ce78bc1bf64071407fc6674b7",
-                "reference": "3ebbd730b5c2cf5ce78bc1bf64071407fc6674b7",
+                "url": "https://api.github.com/repos/erusev/parsedown/zipball/ddb3bd2107253ac8454d8737d6a91a851a0bb626",
+                "reference": "ddb3bd2107253ac8454d8737d6a91a851a0bb626",
                 "shasum": ""
             },
             "type": "library",
@@ -822,7 +823,7 @@
                 "markdown",
                 "parser"
             ],
-            "time": "2015-10-04 16:44:32"
+            "time": "2015-10-20 22:43:13"
         },
         {
             "name": "fadion/bouncy",
@@ -1282,16 +1283,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v5.1.20",
+            "version": "5.1.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "435af155ed15a6b1d03a0d0a46ae4c347d96b0d7"
+                "reference": "e32e718ae42060332eaa3801eaf2420e9c5211ca"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/435af155ed15a6b1d03a0d0a46ae4c347d96b0d7",
-                "reference": "435af155ed15a6b1d03a0d0a46ae4c347d96b0d7",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/e32e718ae42060332eaa3801eaf2420e9c5211ca",
+                "reference": "e32e718ae42060332eaa3801eaf2420e9c5211ca",
                 "shasum": ""
             },
             "require": {
@@ -1305,7 +1306,7 @@
                 "monolog/monolog": "~1.11",
                 "mtdowling/cron-expression": "~1.0",
                 "nesbot/carbon": "~1.19",
-                "paragonie/random_compat": "^1.0.4",
+                "paragonie/random_compat": "^1.0.6",
                 "php": ">=5.5.9",
                 "psy/psysh": "~0.5.1",
                 "swiftmailer/swiftmailer": "~5.1",
@@ -1407,7 +1408,7 @@
                 "framework",
                 "laravel"
             ],
-            "time": "2015-10-14 15:49:40"
+            "time": "2015-10-20 21:46:53"
         },
         {
             "name": "laravel/socialite",
@@ -1415,12 +1416,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/socialite.git",
-                "reference": "b15f4be0ac739405120d74b837af423aa71502d9"
+                "reference": "559fb5e51abd5e393a2a708d6ccfb9b916ce653a"
             },
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/laravel/socialite/zipball/559fb5e51abd5e393a2a708d6ccfb9b916ce653a",
-                "reference": "b15f4be0ac739405120d74b837af423aa71502d9",
+                "reference": "559fb5e51abd5e393a2a708d6ccfb9b916ce653a",
                 "shasum": ""
             },
             "require": {
@@ -1461,7 +1462,7 @@
                 "laravel",
                 "oauth"
             ],
-            "time": "2015-10-16 15:39:46"
+            "time": "2015-10-20 21:02:39"
         },
         {
             "name": "league/flysystem",
@@ -1940,16 +1941,16 @@
         },
         {
             "name": "paragonie/random_compat",
-            "version": "1.0.7",
+            "version": "1.0.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/paragonie/random_compat.git",
-                "reference": "df1207683dfbd1399f0fa931a368082a28fed50b"
+                "reference": "7647ac58c35ece044b939e01c85dbaa73ed26351"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/paragonie/random_compat/zipball/df1207683dfbd1399f0fa931a368082a28fed50b",
-                "reference": "df1207683dfbd1399f0fa931a368082a28fed50b",
+                "url": "https://api.github.com/repos/paragonie/random_compat/zipball/7647ac58c35ece044b939e01c85dbaa73ed26351",
+                "reference": "7647ac58c35ece044b939e01c85dbaa73ed26351",
                 "shasum": ""
             },
             "require": {
@@ -1981,7 +1982,57 @@
                 "pseudorandom",
                 "random"
             ],
-            "time": "2015-10-16 14:10:15"
+            "time": "2015-10-20 15:22:41"
+        },
+        {
+            "name": "pda/pheanstalk",
+            "version": "v3.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/pda/pheanstalk.git",
+                "reference": "430e77c551479aad0c6ada0450ee844cf656a18b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/pda/pheanstalk/zipball/430e77c551479aad0c6ada0450ee844cf656a18b",
+                "reference": "430e77c551479aad0c6ada0450ee844cf656a18b",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Pheanstalk\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Paul Annesley",
+                    "email": "paul@annesley.cc",
+                    "homepage": "http://paul.annesley.cc/",
+                    "role": "Developer"
+                }
+            ],
+            "description": "PHP client for beanstalkd queue",
+            "homepage": "https://github.com/pda/pheanstalk",
+            "keywords": [
+                "beanstalkd"
+            ],
+            "time": "2015-08-07 21:42:41"
         },
         {
             "name": "pimple/pimple",
@@ -4575,6 +4626,7 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
+        "laravel/framework": 20,
         "fadion/bouncy": 20,
         "league/html-to-markdown": 20,
         "laravel/socialite": 20,

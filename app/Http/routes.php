@@ -26,7 +26,11 @@ get('logout', ['as' => 'logout', 'uses' => 'SocialiteController@logout']);
 
 
 get('slack', ['as' => 'slack', 'uses' => 'StaticController@slack']);
+
+
 get('contact', ['as' => 'contact', 'uses' => 'ContactController@index']);
+post('contact', ['as' => 'contact.send', 'uses' => 'ContactController@send']);
+get('contact/sent', ['as' => 'contact.sent', 'uses' => 'ContactController@sent']);
 
 /** @var \Illuminate\Routing\Router $router */
 $router->group(['laroute' => true, 'namespace' => 'Api', 'prefix' => 'api'], function () {

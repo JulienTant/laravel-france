@@ -516,6 +516,7 @@ body {
   display: inline-block;
   padding: 2rem 1rem;
   position: relative;
+  color: #fff;
 }
 .SiteHeader__Inner__Nav__Links__Link > a {
   padding: 2rem 0px;
@@ -1274,6 +1275,17 @@ LoginBox__Providers__Provider {
 }
 .PageForums .SiteFooter__Inner:nth-child(4n + 1){
     clear: left;
+}
+.ContactPage .Contact {
+  min-height: 500px;
+}
+.ContactPage .Contact__Warning {
+  background: #ffffe0;
+  border: 1px solid #ffa07a;
+  padding: 1rem;
+}
+.ContactPage .Contact__Warning .fa {
+  margin-right: 0.2rem;
 }
 /*
 
