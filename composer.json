@@ -19,7 +19,8 @@
     "cviebrock/eloquent-sluggable": "dev-master",
     "predis/predis": "~1.0",
     "erusev/parsedown": "dev-master",
-    "pda/pheanstalk": "~3.0"
+    "pda/pheanstalk": "~3.0",
+    "laravelcollective/html": "5.1.*"
   },
   "require-dev": {
     "fzaninotto/faker": "~1.4",

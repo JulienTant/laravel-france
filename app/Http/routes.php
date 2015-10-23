@@ -2,13 +2,8 @@
 
 /*
 |--------------------------------------------------------------------------
-| Application Routes
+| Forums Routes
 |--------------------------------------------------------------------------
-|
-| Here is where you can register all of the routes for an application.
-| It's a breeze. Simply tell Laravel the URIs it should respond to
-| and give it the controller to call when that URI is requested.
-|
 */
 
 get('/', ['as' => 'forums.index', 'uses' => 'ForumsController@topics']);
@@ -18,6 +13,11 @@ get('search', ['as' => 'forums.search', 'uses' => 'ForumsController@search']);
 get('/t/{categorySlug}/{topicSlug}', ['as' => 'forums.show-topic', 'uses' => 'ForumsController@topic']);
 get('/m/{messageId}', ['as' => 'forums.show-message', 'uses' => 'ForumsController@message']);
 
+/*
+|--------------------------------------------------------------------------
+| Login & Socialite Routes
+|--------------------------------------------------------------------------
+*/
 get('socialite/{driver}', ['as' => 'socialite.login', 'uses' => 'SocialiteController@redirectToProvider'])
     ->where('driver', 'google|github|twitter');
 get('socialite/{driver}/callback', ['as' => 'socialite.callback', 'uses' => 'SocialiteController@handleProviderCallback'])
@@ -25,13 +25,39 @@ get('socialite/{driver}/callback', ['as' => 'socialite.callback', 'uses' => 'Soc
 get('logout', ['as' => 'logout', 'uses' => 'SocialiteController@logout']);
 
 
+/*
+|--------------------------------------------------------------------------
+| Slack Routes
+|--------------------------------------------------------------------------
+*/
 get('slack', ['as' => 'slack', 'uses' => 'StaticController@slack']);
 
-
+/*
+|--------------------------------------------------------------------------
+| Contact Routes
+|--------------------------------------------------------------------------
+*/
 get('contact', ['as' => 'contact', 'uses' => 'ContactController@index']);
 post('contact', ['as' => 'contact.send', 'uses' => 'ContactController@send']);
 get('contact/sent', ['as' => 'contact.sent', 'uses' => 'ContactController@sent']);
 
+
+/*
+|--------------------------------------------------------------------------
+| Profile Routes
+|--------------------------------------------------------------------------
+*/
+/** @var \Illuminate\Routing\Router $router */
+$router->group(['prefix' => 'profile', 'middleware' => 'auth'], function () {
+
+    get('change-username', ['as' => 'profile.change-username', 'uses' => 'ProfileController@changeUsername']);
+
+});
+/*
+|--------------------------------------------------------------------------
+| API Related Routes
+|--------------------------------------------------------------------------
+*/
 /** @var \Illuminate\Routing\Router $router */
 $router->group(['laroute' => true, 'namespace' => 'Api', 'prefix' => 'api'], function () {
     post('renderMarkdown', ['as' => 'api.markdown', 'uses' => 'MarkdownController@render']);

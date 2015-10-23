@@ -106,7 +106,7 @@ class SocialiteController extends Controller
     {
         alert()->success('Vous êtes maintenant connécté !', 'Hoi, '.$user->username.' ! :)')->autoclose(3000);
 
-        $this->auth->login($user);
+        $this->auth->login($user, true);
 
         return redirect()->route('forums.index');
     }
