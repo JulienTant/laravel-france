@@ -51,6 +51,11 @@ get('contact/sent', ['as' => 'contact.sent', 'uses' => 'ContactController@sent']
 $router->group(['prefix' => 'profile', 'middleware' => 'auth'], function () {
 
     get('change-username', ['as' => 'profile.change-username', 'uses' => 'ProfileController@changeUsername']);
+    post('change-username', ['as' => 'profile.change-username.post', 'uses' => 'ProfileController@postChangeUsername']);
+
+
+    get('change-avatar', ['as' => 'profile.change-avatar', 'uses' => 'ProfileController@changeAvatar']);
+    post('change-avatar', ['as' => 'profile.change-avatar.post', 'uses' => 'ProfileController@postChangeAvatar']);
 
 });
 /*

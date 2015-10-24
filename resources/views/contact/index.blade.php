@@ -15,17 +15,19 @@
                 Si vous cherchez de l'aide pour Laravel, nous vous invitons à consulter les forums. <strong>Aucune aide ne sera apportée par e-mail.</strong> <br>Merci de votre compréhension.
             </div>
 
-            @if($errors->has())
-                <ul class="Form__ErrorList">
-                    @foreach($errors->all() as $error)
-                        <li class="Form__ErrorList__Item">{{ $error }}</li>
-                    @endforeach
-                </ul>
-            @endif
 
 
             <form class="Form" method="POST" accept-charset="UTF-8">
                 {!! csrf_field() !!}
+
+                @if($errors->has())
+                    <ul class="Form__ErrorList">
+                        @foreach($errors->all() as $error)
+                            <li class="Form__ErrorList__Item">{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                @endif
+
 
                 <div class="Form__Row">
                     <label class="Form__Row__Label" for="name">Nom* :</label>

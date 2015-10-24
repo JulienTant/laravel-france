@@ -8,6 +8,15 @@
 
     {!! Form::model(Auth::user(), ['class' => 'Form']) !!}
 
+    @if($errors->has())
+        <ul class="Form__ErrorList">
+            @foreach($errors->all() as $error)
+                <li class="Form__ErrorList__Item">{{ $error }}</li>
+            @endforeach
+        </ul>
+    @endif
+
+
     <div class="Form__Row">
         {!! Form::label('username', 'Pseudo', ['class' => 'Form__Row__Label']) !!}
         {!! Form::text('username', null, ['class' => 'Form__Row__Control']) !!}

@@ -2,6 +2,7 @@
 
 namespace LaravelFrance\Providers;
 
+use Illuminate\Auth\Access\Gate;
 use Illuminate\Contracts\Auth\Access\Gate as GateContract;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Str;
@@ -37,6 +38,8 @@ class AuthServiceProvider extends ServiceProvider
         $this->giveAdminsSuperPower($gate);
 
         $this->defineForumsRules($gate);
+
+        $this->defineProfileRules($gate);
     }
 
     /**
@@ -103,6 +106,17 @@ class AuthServiceProvider extends ServiceProvider
                 return false;
             }
 
+            return true;
+        });
+    }
+
+    private function defineProfileRules(Gate $gate)
+    {
+        $gate->define('profile.can_change_username', function () {
+            return true;
+        });
+
+        $gate->define('profile.can_change_email', function () {
             return true;
         });
     }

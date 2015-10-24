@@ -10,6 +10,8 @@ use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Laravel\Socialite\Contracts\User as SocialiteUser;
+use LaravelFrance\Events\UserHasChangedHisAvatar;
+use LaravelFrance\Events\UserHasChangedHisUsername;
 
 
 /**
@@ -125,5 +127,21 @@ class User extends Model implements AuthenticatableContract,
     {
         $this->nb_messages--;
         return $this;
+    }
+
+    public function changeUsername($username)
+    {
+        $oldUsername = $this->username;
+        $this->username = $username;
+        event(new UserHasChangedHisUsername($this, $oldUsername, $username));
+        $this->save();
+    }
+
+    public function changeEmail($email)
+    {
+        $this->email = $email;
+        event(new UserHasChangedHisAvatar($this));
+        $this->save();
+
     }
 }
