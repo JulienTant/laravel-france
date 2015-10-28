@@ -75,3 +75,28 @@ $router->group(['laroute' => true, 'namespace' => 'Api', 'prefix' => 'api'], fun
     delete('forums/{topicId}/messages/{messageId}', ['as' => 'api.forums.message.delete', 'uses' => 'ForumsController@deleteMessage']);
     post('forums/{topicId}/messages/{messageId}/solve_topic', ['as' => 'api.forums.message.solved_topic', 'uses' => 'ForumsController@solveTopic']);
 });
+/*
+|--------------------------------------------------------------------------
+| Retro forums routes
+|--------------------------------------------------------------------------
+*/
+/** @var \Illuminate\Routing\Router $router */
+$router->group(['domain' => 'forums.laravel.fr'], function () {
+
+    Route::pattern('old_slug', '[A-Za-z0-9\-]+');
+    Route::pattern('old_categoryId', '\d+');
+    Route::pattern('old_topicId', '\d+');
+
+
+    get('{old_slug}-c{old_categoryId}', function($old_slug, $old_categoryId) {
+        return redirect()->route('forums.by-category', ['slug' => \LaravelFrance\ForumsCategory::find($old_categoryId)->slug], 301);
+    });
+
+    get('{old_slug}-t{old_topicId}', function($old_slug, $old_topicId) {
+        $forumTopic = \LaravelFrance\ForumsTopic::with('forumsCategory')->find($old_topicId);
+        return redirect()->route('forums.show-topic', [
+            'categorySlug' => $forumTopic->forumsCategory->slug,
+            'topicSlug' => $forumTopic->slug,
+        ], 301);
+    });
+});
