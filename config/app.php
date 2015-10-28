@@ -26,7 +26,9 @@ return [
     |
     */
 
-    'url' => 'http://localhost',
+    'url' => env('APP_URL', 'http://laravel.fr'),
+
+    'app_domain' => env('APP_DOMAIN', 'laravel.fr'),
 
     /*
     |--------------------------------------------------------------------------
