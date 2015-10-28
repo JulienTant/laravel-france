@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Laravel</title>
+    <title>@yield('title', 'Laravel France')</title>
     <meta id="token" name="token" value="{{ csrf_token() }}" />
     <link rel="stylesheet" href="/css/app.css">
 </head>
