@@ -42,16 +42,10 @@ class MigrateFromV2toV3 extends Command
      */
     public function handle()
     {
-        /*
-                $host = $this->forceAsk('old DB host');
-                $database = $this->forceAsk('old DB database');
-                $username = $this->forceAsk('old DB username');
-                $password = $this->forceAsk('old DB password', true);   */
-
-        $host = 'localhost';
-        $database = 'homestead2';
-        $username = 'homestead';
-        $password = 'secret';
+        $host = $this->forceAsk('old DB host');
+        $database = $this->forceAsk('old DB database');
+        $username = $this->forceAsk('old DB username');
+        $password = $this->forceAsk('old DB password', true);
 
         \Config::set('database.connections.old_mysql', [
             'driver' => 'mysql',
