@@ -1,5 +1,7 @@
 @extends('layouts.master')
 
+@section('title', 'Contact - Laravel France')
+
 @section('page_class', 'ContactPage')
 
 @section('content')

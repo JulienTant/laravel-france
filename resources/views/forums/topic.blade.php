@@ -1,5 +1,8 @@
 @extends('layouts.forums_fullpage')
 
+@section('title', $topic->title . ' - Laravel France')
+
+
 @section('top_forums')
     <div class="Forums_TopicHeader" style="background-color: {{ $chosenCategory->background_color }}; color: {{ $chosenCategory->font_color }};">
         <div class="Utility__Container">

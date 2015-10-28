@@ -1,5 +1,7 @@
 @extends('layouts.forums_sidebar')
 
+@section('title', 'Recherche - Laravel France')
+
 @section('forums_content')
 
     <div class="Forums__Searchbar">
