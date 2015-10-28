@@ -2,7 +2,7 @@
     <button class="Button Button--Small Button--MarkTopicSolved" @click="markAsSolved(topicId, messageId, $event)" :disabled="isDisabled"><slot /></button>
 </template>
 
-<script lang="es6" type="text/ecmascript-6">
+<script  type="text/ecmascript-6">
     import Laroute from '../laroute'
 
     export default {

@@ -1,4 +1,4 @@
-<script lang="es6" type="text/ecmascript-6">
+<script type="text/ecmascript-6">
     import SimpleMDE from 'simplemde'
     import Laroute from '../laroute'
 

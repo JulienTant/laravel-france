@@ -27,7 +27,7 @@
     </div>
 </template>
 
-<script lang="es6" type="text/ecmascript-6">
+<script  type="text/ecmascript-6">
     export default {
         methods: {
             clickOnMask(e) {
