@@ -437,6 +437,9 @@ html {
 body {
   font-size: 16px;
 }
+a {
+  color: #f55247;
+}
 .Utility__Container {
   *zoom: 1;
   max-width: 980px;
@@ -976,7 +979,8 @@ body {
   background-color: #f55247;
   color: #fdfdfd;
   text-decoration: none;
-  border-color: 1px solid #f3281a;
+  border: 1px solid #f3281a;
+  padding: 0.3rem 0.8rem;
 }
 .Button--Submit:focus {
   outline: 1px solid #f3281a;
@@ -1257,6 +1261,44 @@ LoginBox__Providers__Provider {
 }
 .LoginBox__Providers__Provider--Twitter a:before {
   content: "\f081";
+}
+.Profile__Content {
+  margin-top: 2rem;
+  margin-left: calc(99.99% * (-1/20 * -1) - (30px - 30px * (-1/20 * -1)) + 30px) !important;
+  width: calc(99.99% * 14/20 - (30px - 30px * 14/20));
+}
+.Profile__Content:nth-child(n){
+    float: left;
+    margin-right: 30px;
+    clear: none;
+}
+.Profile__Content:last-child{
+    margin-right: 0;
+}
+.Profile__Content:nth-child(20n){
+    margin-right: 0;
+}
+.Profile__Content:nth-child(20n + 1){
+    clear: left;
+}
+.Profile__Sidebar {
+  margin-top: 2rem;
+  width: calc(99.99% * 5/20 - (30px - 30px * 5/20));
+  padding: gutter(1);
+}
+.Profile__Sidebar:nth-child(n){
+    float: left;
+    margin-right: 30px;
+    clear: none;
+}
+.Profile__Sidebar:last-child{
+    margin-right: 0;
+}
+.Profile__Sidebar:nth-child(20n){
+    margin-right: 0;
+}
+.Profile__Sidebar:nth-child(20n + 1){
+    clear: left;
 }
 .PageForums .CodeMirror,
 .PageForums .CodeMirror-scroll {

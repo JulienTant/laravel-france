@@ -12,6 +12,11 @@ use LaravelFrance\User;
 
 class ProfileController extends Controller
 {
+    public function index()
+    {
+        return redirect()->route('profile.change-username');
+    }
+
     public function changeUsername()
     {
         return view('profile.change-username');

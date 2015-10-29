@@ -27,7 +27,7 @@ class ChangeUsernameRequest extends Request
     {
         $user = $this->user();
         return [
-            'username' => ['required', 'unique:users,username,'.$user->id.',id']
+            'username' => ['required', 'alpha_dash', 'unique:users,username,'.$user->id.',id']
         ];
     }
 
@@ -35,7 +35,8 @@ class ChangeUsernameRequest extends Request
     {
         return [
             'username.required' => 'Veuillez indiquer un pseudo',
-            'username.unique' => 'Ce pseudo est déjà utilisé !'
+            'username.unique' => 'Ce pseudo est déjà utilisé !',
+            'username.alpha_dash' => 'Le pseudo doit seulement contenir des lettres, des chiffres et des tirets'
         ];
     }
 }
