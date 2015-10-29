@@ -6,7 +6,7 @@
     <h2>Modifier mon avatar</h2>
 
     <p>
-        <strong><a href="http://laravel.fr">Laravel.fr</a></strong> utilise le service <a target="_blank" href="http://fr.gravatar.com/">Gravatar</a> pour charger les avatars sur le forum.
+        <a href="http://laravel.fr">Laravel.fr</a> utilise le service <a target="_blank" href="http://fr.gravatar.com/">Gravatar</a> pour charger les avatars sur le forum.
     </p>
 
     <p>
@@ -14,7 +14,6 @@
         et ensuite renseignez ci dessous votre adresse email :
     </p>
 
-    {!! Form::model(Auth::user(), ['class' => 'Form']) !!}
 
     @if($errors->has())
         <ul class="Form__ErrorList">
@@ -24,19 +23,25 @@
         </ul>
     @endif
 
-    Avatar actuel :
-    <img src="http://www.gravatar.com/avatar/{{ md5(Auth::user()->email) }}" />
 
 
+    <div style="display: flex">
+        <figure>
+            <img src="http://www.gravatar.com/avatar/{{ md5(Auth::user()->email) }}" />
+            <figcaption>Avatar actuel</figcaption>
+        </figure>
 
-    <div class="Form__Row">
-        {!! Form::label('email', 'Email', ['class' => 'Form__Row__Label']) !!}
-        {!! Form::email('email', null, ['class' => 'Form__Row__Control']) !!}
+        {!! Form::model(Auth::user(), ['class' => 'Form', 'style' => 'flex: 1']) !!}
+            <div class="Form__Row">
+                {!! Form::label('email', 'Email', ['class' => 'Form__Row__Label']) !!}
+                {!! Form::email('email', null, ['class' => 'Form__Row__Control']) !!}
+            </div>
+
+            <div class="Form__Row Form__Row--Buttons">
+                <button type="submit" class="Button--Submit">Enregistrer</button>
+            </div>
+        {!! Form::close() !!}
+
     </div>
 
-    <div class="Form__Row Form__Row--Buttons">
-        <button type="submit" class="Button--Submit">Enregistrer</button>
-    </div>
-
-    {!! Form::close() !!}
 @endsection

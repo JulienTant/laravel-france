@@ -39,7 +39,7 @@ class RouteServiceProvider extends ServiceProvider
             require app_path('Http/routes.php');
 
             if ($this->app->environment() == 'local' && file_exists(app_path('Http/routes_dev.php'))) {
-                $router->group(['laroute' => false, 'middleware' => 'local'], function () {
+                $router->group(['laroute' => false, 'middleware' => 'local'], function (Router $router) {
                     require app_path('Http/routes_dev.php');
                 });
             }

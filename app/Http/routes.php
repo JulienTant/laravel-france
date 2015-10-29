@@ -51,6 +51,8 @@ $router->group(['domain' => Config::get('app.app_domain')], function ($router) {
     /** @var \Illuminate\Routing\Router $router */
     $router->group(['prefix' => 'profile', 'middleware' => 'auth'], function () {
 
+        get('/', ['as' => 'profile', 'uses' => 'ProfileController@index']);
+
         get('change-username', ['as' => 'profile.change-username', 'uses' => 'ProfileController@changeUsername']);
         post('change-username',
             ['as' => 'profile.change-username.post', 'uses' => 'ProfileController@postChangeUsername']);

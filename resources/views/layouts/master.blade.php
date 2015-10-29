@@ -25,6 +25,7 @@
                     @if(Auth::user())
                         <a href="#">Mon compte</a>
                         <ul class="SiteHeader__Inner__Nav__Links__Link__Sub">
+                            <li class="SiteHeader__Inner__Nav__Links__Link__Sub__Link"><a href="{{ route('profile') }}">Mon compte</a></li>
                             <li class="SiteHeader__Inner__Nav__Links__Link__Sub__Link"><a href="{{ route('logout') }}">Déconnexion</a></li>
                         </ul>
                     @else
