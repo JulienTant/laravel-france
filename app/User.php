@@ -94,7 +94,7 @@ class User extends Model implements AuthenticatableContract,
     {
         $user = new self;
 
-        $user->username = preg_replace('/\s+/', '', $socialiteUser->getNickname());
+        $user->username = preg_replace('/\s+/', '', $socialiteUser->getNickname() ?: $socialiteUser->getName());
 
         $user->email = $socialiteUser->getEmail();
         if ($driver == "twitter") {
