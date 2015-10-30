@@ -27371,7 +27371,7 @@ module.exports = function(hljs) {
 },{}],212:[function(require,module,exports){
 (function (global){
 
-; Typo = global.Typo = require("/Users/a/Sites/laravelfr/node_modules/simplemde/node_modules/codemirror-spell-checker/src/js/typo.js");
+; Typo = global.Typo = require("/home/vagrant/laravelfr/node_modules/simplemde/node_modules/codemirror-spell-checker/src/js/typo.js");
 CodeMirror = global.CodeMirror = require("codemirror");
 ; var __browserify_shim_require__=require;(function browserifyShim(module, define, require) {
 // Initialize data globally to reduce memory consumption
@@ -27469,7 +27469,7 @@ if(!String.prototype.includes) {
 }).call(global, module, undefined, undefined);
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"/Users/a/Sites/laravelfr/node_modules/simplemde/node_modules/codemirror-spell-checker/src/js/typo.js":213,"codemirror":217}],213:[function(require,module,exports){
+},{"/home/vagrant/laravelfr/node_modules/simplemde/node_modules/codemirror-spell-checker/src/js/typo.js":213,"codemirror":217}],213:[function(require,module,exports){
 (function (global){
 ; var __browserify_shim_require__=require;(function browserifyShim(module, exports, require, define, browserify_shim__define__module__export__) {
 'use strict';
@@ -44035,7 +44035,7 @@ if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
-  var id = "/Users/a/Sites/laravelfr/resources/assets/js/components/alert.vue"
+  var id = "/home/vagrant/laravelfr/resources/assets/js/components/alert.vue"
   if (!module.hot.data) {
     hotAPI.createRecord(id, module.exports)
   } else {
@@ -44139,7 +44139,7 @@ if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
-  var id = "/Users/a/Sites/laravelfr/resources/assets/js/components/answer-topic.vue"
+  var id = "/home/vagrant/laravelfr/resources/assets/js/components/answer-topic.vue"
   if (!module.hot.data) {
     hotAPI.createRecord(id, module.exports)
   } else {
@@ -44244,7 +44244,7 @@ if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
-  var id = "/Users/a/Sites/laravelfr/resources/assets/js/components/edit-message.vue"
+  var id = "/home/vagrant/laravelfr/resources/assets/js/components/edit-message.vue"
   if (!module.hot.data) {
     hotAPI.createRecord(id, module.exports)
   } else {
@@ -44269,7 +44269,7 @@ if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
-  var id = "/Users/a/Sites/laravelfr/resources/assets/js/components/highlighted-code.vue"
+  var id = "/home/vagrant/laravelfr/resources/assets/js/components/highlighted-code.vue"
   if (!module.hot.data) {
     hotAPI.createRecord(id, module.exports)
   } else {
@@ -44305,7 +44305,7 @@ if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
-  var id = "/Users/a/Sites/laravelfr/resources/assets/js/components/login-box.vue"
+  var id = "/home/vagrant/laravelfr/resources/assets/js/components/login-box.vue"
   if (!module.hot.data) {
     hotAPI.createRecord(id, module.exports)
   } else {
@@ -44360,7 +44360,7 @@ if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
-  var id = "/Users/a/Sites/laravelfr/resources/assets/js/components/mark-topic-solved.vue"
+  var id = "/home/vagrant/laravelfr/resources/assets/js/components/mark-topic-solved.vue"
   if (!module.hot.data) {
     hotAPI.createRecord(id, module.exports)
   } else {
@@ -44410,7 +44410,7 @@ if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
-  var id = "/Users/a/Sites/laravelfr/resources/assets/js/components/modal.vue"
+  var id = "/home/vagrant/laravelfr/resources/assets/js/components/modal.vue"
   if (!module.hot.data) {
     hotAPI.createRecord(id, module.exports)
   } else {
@@ -44515,7 +44515,7 @@ if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
-  var id = "/Users/a/Sites/laravelfr/resources/assets/js/components/new-topic.vue"
+  var id = "/home/vagrant/laravelfr/resources/assets/js/components/new-topic.vue"
   if (!module.hot.data) {
     hotAPI.createRecord(id, module.exports)
   } else {
@@ -44567,7 +44567,7 @@ if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
-  var id = "/Users/a/Sites/laravelfr/resources/assets/js/components/relative-date.vue"
+  var id = "/home/vagrant/laravelfr/resources/assets/js/components/relative-date.vue"
   if (!module.hot.data) {
     hotAPI.createRecord(id, module.exports)
   } else {
@@ -44635,7 +44635,7 @@ if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
-  var id = "/Users/a/Sites/laravelfr/resources/assets/js/components/remove-message.vue"
+  var id = "/home/vagrant/laravelfr/resources/assets/js/components/remove-message.vue"
   if (!module.hot.data) {
     hotAPI.createRecord(id, module.exports)
   } else {
@@ -44716,7 +44716,7 @@ if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
-  var id = "/Users/a/Sites/laravelfr/resources/assets/js/directives/simplemde.vue"
+  var id = "/home/vagrant/laravelfr/resources/assets/js/directives/simplemde.vue"
   if (!module.hot.data) {
     hotAPI.createRecord(id, module.exports)
   } else {
