@@ -85,7 +85,7 @@ class AuthServiceProvider extends ServiceProvider
                 return false;
             }
 
-            if ($message->forumTopic->forumsMessages()->count() > 1) {
+            if ($message->forumsTopic->forumsMessages()->count() > 1) {
                 return false;
             }
 
