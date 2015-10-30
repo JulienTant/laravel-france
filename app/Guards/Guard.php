@@ -34,6 +34,6 @@ abstract class Guard
 
         if ($arg) return $arg;
 
-        throw new Exception(sprintf('%s was not found in the `args` array'));
+        throw new Exception(sprintf('%s was not found in the `args` array', $key));
     }
 }
