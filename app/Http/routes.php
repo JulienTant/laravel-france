@@ -105,11 +105,11 @@ $router->group(['domain' => 'forums.' . Config::get('app.app_domain')], function
 
     get('{old_slug}-c{old_categoryId}', function ($old_slug, $old_categoryId) {
         return redirect()->route('forums.by-category',
-            ['slug' => \LaravelFrance\ForumsCategory::find($old_categoryId)->slug], 301);
+            ['slug' => \LaravelFrance\ForumsCategory::findOrFail($old_categoryId)->slug], 301);
     });
 
     get('{old_slug}-t{old_topicId}', function ($old_slug, $old_topicId) {
-        $forumTopic = \LaravelFrance\ForumsTopic::with('forumsCategory')->find($old_topicId);
+        $forumTopic = \LaravelFrance\ForumsTopic::with('forumsCategory')->findOrFail($old_topicId);
 
         return redirect()->route('forums.show-topic', [
             'categorySlug' => $forumTopic->forumsCategory->slug,
