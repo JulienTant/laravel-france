@@ -1125,6 +1125,9 @@ a {
 .Form__Row__Control:not([type=file]) {
   border: 1px solid #696969;
 }
+select[multiple].Form__Row__Control {
+  height: auto;
+}
 textarea.Form__Row__Control {
   min-height: 10rem;
 }

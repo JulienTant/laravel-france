@@ -62,6 +62,21 @@ $router->group(['domain' => Config::get('app.app_domain')], function ($router) {
         post('change-avatar', ['as' => 'profile.change-avatar.post', 'uses' => 'ProfileController@postChangeAvatar']);
 
     });
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Admin Routes
+    |--------------------------------------------------------------------------
+    */
+    /** @var \Illuminate\Routing\Router $router */
+    $router->group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
+        resource('users', 'Admin\\UserControler', ['only' => 'index']);
+        get('users/{user}/groups', ['uses' => 'Admin\\UserControler@groups', 'as' => 'admin.users.groups']);
+        post('users/{user}/groups', ['uses' => 'Admin\\UserControler@saveGroups', 'as' => 'admin.users.save-groups']);
+    });
+
+
     /*
     |--------------------------------------------------------------------------
     | API Related Routes

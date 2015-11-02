@@ -37,6 +37,8 @@ class AuthServiceProvider extends ServiceProvider
         /** @var \Illuminate\Auth\Access\Gate $gate */
         $this->giveAdminsSuperPower($gate);
 
+        $this->defineAdministrationRules($gate);
+
         $this->defineForumsRules($gate);
 
         $this->defineProfileRules($gate);
@@ -119,5 +121,14 @@ class AuthServiceProvider extends ServiceProvider
         $gate->define('profile.can_change_email', function () {
             return true;
         });
+    }
+
+    private function defineAdministrationRules($gate)
+    {
+        $gate->define('admin.can_manage_users', function (User $user) {
+            return in_array(Group::SUPERADMIN, $user->groups);
+        });
+
+
     }
 }
