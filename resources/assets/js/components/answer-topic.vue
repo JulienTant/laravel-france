@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="Forums__Content__AnswerBlock">
         <h3>Répondre au sujet</h3>
 
         <form class="Form Form--AnswerTopic" @submit="submitForm(answer, $event)" >
