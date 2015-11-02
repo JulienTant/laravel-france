@@ -4,6 +4,7 @@
     <title>@yield('title', 'Laravel France')</title>
     <meta id="token" name="token" value="{{ csrf_token() }}" />
     <link rel="stylesheet" href="/css/app.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body class="@yield('page_class')" id="app">
 
@@ -17,8 +18,9 @@
             <ul class="SiteHeader__Inner__Nav__Links">
                 <li class="SiteHeader__Inner__Nav__Links__Link"><a href="{{ route('forums.index') }}">Forums</a></li>
                 <li class="SiteHeader__Inner__Nav__Links__Link">
-                    <i class="fa fa-slack"></i>
-                    <a href="{{ route('slack') }}">Slack</a>
+                    <a href="{{ route('slack') }}">
+                        <i class="fa fa-slack"></i> Slack
+                    </a>
                 </li>
                 <li class="SiteHeader__Inner__Nav__Links__Link"><a href="{{ route('contact') }}">Contact</a></li>
                 <li class="SiteHeader__Inner__Nav__Links__Link">

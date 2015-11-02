@@ -1,11 +1,22 @@
 .PageForums {
-  .CodeMirror, .CodeMirror-scroll {
+
+  .CodeMirror {
     min-height: 150px;
     height: 150px;
   }
 
+  .CodeMirror-scroll {
+    max-height: 140px;
+    padding-bottom: 0px;
+  }
+
+  .CodeMirror-fullscreen .CodeMirror-scroll {
+    max-height none;
+    padding-bottom: 30px;
+  }
+
   .SiteFooter__Inner {
-    lost-column: 3/4;
-    lost-offset: -1/4;
+    lost-column: 3 / 4;
+    lost-offset: -1 / 4;
   }
 }
