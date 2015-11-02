@@ -561,6 +561,58 @@ a {
 .SiteHeader__Inner__Nav__Links__Link__Sub__Link > a:hover {
   text-decoration: underline;
 }
+@media screen and (max-width: 980px) {
+  .SiteHeader__Inner {
+    text-align: center;
+  }
+  .SiteHeader__Inner__SiteTitle {
+    width: calc(99.99% * 1 - (30px - 30px * 1));
+  }
+  .SiteHeader__Inner__SiteTitle:nth-child(n){
+        float: left;
+        margin-right: 30px;
+        clear: none;
+    }
+  .SiteHeader__Inner__SiteTitle:last-child{
+        margin-right: 0;
+    }
+  .SiteHeader__Inner__SiteTitle:nth-child(undefinedn){
+        margin-right: 0;
+    }
+  .SiteHeader__Inner__SiteTitle:nth-child(undefinedn + 1){
+        clear: left;
+    }
+  .SiteHeader__Inner__Nav {
+    width: calc(99.99% * 1 - (30px - 30px * 1));
+  }
+  .SiteHeader__Inner__Nav:nth-child(n){
+        float: left;
+        margin-right: 30px;
+        clear: none;
+    }
+  .SiteHeader__Inner__Nav:last-child{
+        margin-right: 0;
+    }
+  .SiteHeader__Inner__Nav:nth-child(undefinedn){
+        margin-right: 0;
+    }
+  .SiteHeader__Inner__Nav:nth-child(undefinedn + 1){
+        clear: left;
+    }
+  .SiteHeader__Inner__Nav__Links {
+    float: none;
+    padding: 0;
+    margin: 0;
+  }
+  .SiteHeader__Inner__Nav__Links__Link {
+    display: block;
+    padding: 0;
+  }
+  .SiteHeader__Inner__Nav__Links__Link > a {
+    display: block;
+    padding: 0.5rem;
+  }
+}
 .Forums_ChosenCategory {
   padding: 3em;
   lost-position: middle-center;
@@ -952,6 +1004,75 @@ a {
 .Forums--Fullpage .Forums__Content:nth-child(1n + 1){
     clear: left;
 }
+@media screen and (max-width: 980px) {
+  .Forum--Sidebar {
+    padding: 1rem;
+  }
+  .Forums__Sidebar {
+    width: calc(99.99% * 1 - (30px - 30px * 1));
+  }
+  .Forums__Sidebar:nth-child(n){
+        float: left;
+        margin-right: 30px;
+        clear: none;
+    }
+  .Forums__Sidebar:last-child{
+        margin-right: 0;
+    }
+  .Forums__Sidebar:nth-child(undefinedn){
+        margin-right: 0;
+    }
+  .Forums__Sidebar:nth-child(undefinedn + 1){
+        clear: left;
+    }
+  .Forums__Content {
+    margin-top: 2rem;
+    margin-left: 0 !important;
+    margin-right: 30px !important;
+    width: calc(99.99% * 1 - (30px - 30px * 1));
+  }
+  .Forums__Content:nth-child(n){
+        float: left;
+        margin-right: 30px;
+        clear: none;
+    }
+  .Forums__Content:last-child{
+        margin-right: 0;
+    }
+  .Forums__Content:nth-child(undefinedn){
+        margin-right: 0;
+    }
+  .Forums__Content:nth-child(undefinedn + 1){
+        clear: left;
+    }
+  .Forums__TopicList__Item__Avatar,
+  .Forums__TopicList__Item__NbReplies,
+  .Forums__MessageList__Message__Side {
+    display: none;
+  }
+  .Forums__TopicList__Item__Content,
+  .Forums__MessageList__Message__Content {
+    width: calc(99.99% * 1 - (30px - 30px * 1));
+  }
+  .Forums__TopicList__Item__Content:nth-child(n),
+  .Forums__MessageList__Message__Content:nth-child(n){
+        float: left;
+        margin-right: 30px;
+        clear: none;
+    }
+  .Forums__TopicList__Item__Content:last-child,
+  .Forums__MessageList__Message__Content:last-child{
+        margin-right: 0;
+    }
+  .Forums__TopicList__Item__Content:nth-child(undefinedn),
+  .Forums__MessageList__Message__Content:nth-child(undefinedn){
+        margin-right: 0;
+    }
+  .Forums__TopicList__Item__Content:nth-child(undefinedn + 1),
+  .Forums__MessageList__Message__Content:nth-child(undefinedn + 1){
+        clear: left;
+    }
+}
 .Button {
   display: inline-block;
   margin-bottom: 0;
@@ -1308,10 +1429,17 @@ LoginBox__Providers__Provider {
 .Profile__Sidebar:nth-child(20n + 1){
     clear: left;
 }
-.PageForums .CodeMirror,
-.PageForums .CodeMirror-scroll {
+.PageForums .CodeMirror {
   min-height: 150px;
   height: 150px;
+}
+.PageForums .CodeMirror-scroll {
+  max-height: 140px;
+  padding-bottom: 0px;
+}
+.PageForums .CodeMirror-fullscreen .CodeMirror-scroll {
+  max-height: none;
+  padding-bottom: 30px;
 }
 .PageForums .SiteFooter__Inner {
   width: calc(99.99% * 3/4 - (30px - 30px * 3/4));
