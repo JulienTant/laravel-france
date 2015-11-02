@@ -2,30 +2,52 @@
 
   .Modal__Wrapper {
     vertical-align bottom;
+  }
+
+  .Form__Row--Category {
+    lost-utility: clearfix;
+
+    input[type=radio] {
+      width: 0;
+      height: 0;
+      display: none;
     }
 
-    .Form__Row--Category {
-        lost-utility: clearfix;
+    input[type=radio] + label {
+      padding: .5rem 1rem;
+      background: #bbb;
+      color: black;
+      display inline-block;
+      margin .5rem .5rem;
+    }
 
-        input[type=radio] {
-            width: 0;
-            height: 0;
-            display: none;
-        }
+    input[type=radio]:checked + label {
+      color: white;
+      background: orangered;
+    }
+  }
+}
 
-        input[type=radio] + label {
-            padding: .5rem 1rem;
-            background: #bbb;
-            color: black;
-            display inline-block;
-            margin .5rem .5rem;
-        }
+@media screen and (max-width: 980px) {
+  .Modal--NewTopic {
 
-        input[type=radio]:checked + label {
-            color: white;
-            background: orangered;
-        }
+    &.Modal {
+      background-color: #fdfdfd;
+      position: absolute;
+      height 100%
+      top: 0;
+      bottom: 0;
     }
 
 
+      .Modal__Wrapper {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+      }
+
+    .Modal__Wrapper__Container {
+      width: 100vw;
+    }
+  }
 }

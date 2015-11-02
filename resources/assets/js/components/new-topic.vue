@@ -119,12 +119,18 @@
             }
         },
         ready() {
-            var that = this;
-
             if (!!this.current_category) {
                 this.newTopic.category = this.current_category;
             }
             this.categoriesJson = JSON.parse(this.categories);
+
+            this.$watch('showModal', function (newValue, old) {
+                console.log(document.querySelector('body'));
+                if (newValue == true)
+                    document.querySelector('body').style.overflowY = 'hidden';
+                else
+                    document.querySelector('body').style.overflowY = '';
+            });
         }
     }
 </script>
