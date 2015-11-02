@@ -993,6 +993,11 @@ a {
   background-color: #fdfdfd;
   color: #696969;
   text-decoration: none;
+  border: 1px solid #d7d7d7;
+  padding: 0.3rem 0.8rem;
+}
+.Button--Cancel:focus {
+  outline: 1px solid #d7d7d7;
 }
 .Button--NewTopic {
   width: 100%;
