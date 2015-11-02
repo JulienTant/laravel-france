@@ -10,6 +10,7 @@ use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Laravel\Socialite\Contracts\User as SocialiteUser;
+use LaravelFrance\Events\UserGroupsWasChanged;
 use LaravelFrance\Events\UserHasChangedHisAvatar;
 use LaravelFrance\Events\UserHasChangedHisUsername;
 
@@ -141,6 +142,14 @@ class User extends Model implements AuthenticatableContract,
     {
         $this->email = $email;
         event(new UserHasChangedHisAvatar($this));
+        $this->save();
+
+    }
+
+    public function changeGroups($groups)
+    {
+        $this->groups = $groups;
+        event(new UserGroupsWasChanged($this));
         $this->save();
 
     }
