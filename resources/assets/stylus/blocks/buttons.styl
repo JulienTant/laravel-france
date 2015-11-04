@@ -54,3 +54,19 @@
   font-size 1.1rem;
 }
 
+
+.Button--ToggleWatchTopic {
+  float: right;
+  background-color: $orange;
+  color: $white;
+  border  1px solid darken($orange, 15%);
+  &:focus {
+    outline 1px solid darken($orange, 15%);
+  }
+
+  &[disabled] {
+    background lighten($orange, 12);
+    cursor: not-allowed
+  }
+
+}

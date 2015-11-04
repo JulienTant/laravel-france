@@ -88,6 +88,9 @@ $router->group(['domain' => Config::get('app.app_domain')], function ($router) {
     $router->group(['laroute' => true, 'namespace' => 'Api', 'prefix' => 'api'], function () {
         post('renderMarkdown', ['as' => 'api.markdown', 'uses' => 'MarkdownController@render']);
 
+        get('forums/{topicId}/watch', ['as' => 'api.forums.watch', 'uses' => 'ForumsController@watch', 'middleware' => 'auth']);
+        post('forums/{topicId}/toggle-watch', ['as' => 'api.forums.toggle-watch', 'uses' => 'ForumsController@toggleWatch', 'middleware' => 'auth']);
+
         post('forums/post', ['as' => 'api.forums.post', 'uses' => 'ForumsController@post']);
         post('forums/{topicId}/reply', ['as' => 'api.forums.reply', 'uses' => 'ForumsController@reply']);
 

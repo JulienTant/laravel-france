@@ -25,6 +25,8 @@ class EventServiceProvider extends ServiceProvider
             'LaravelFrance\Listeners\ManageLastMessageOnTopic@whenForumsMessagePostedOnForumsTopic',
             'LaravelFrance\Listeners\ManageNbMessagesOnUser@whenForumsMessagePostedOnForumsTopic',
             'LaravelFrance\Listeners\ForumsAutoWatchListener@whenForumsMessagePostedOnForumsTopic',
+            'LaravelFrance\Listeners\SendEmailToWatchersWhenForumsMessagesPostedListener',
+            //'LaravelFrance\Listeners\UpdateWatchersStatus',
         ],
         ForumsMessageWasDeleted::class => [
             'LaravelFrance\Listeners\ManageNbMessagesOnTopic@whenForumsMessageWasDeleted',

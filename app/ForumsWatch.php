@@ -19,6 +19,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property boolean $is_up_to_date
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
+ * @property boolean $still_watching
  * @property-read ForumsTopic $forumsTopic
  * @property-read User $user
  * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\ForumsWatch whereId($value)
@@ -27,6 +28,9 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\ForumsWatch whereIsUpToDate($value)
  * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\ForumsWatch whereCreatedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\ForumsWatch whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\ForumsWatch whereStillWatching($value)
+ * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\ForumsWatch mailable()
+ * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\ForumsWatch active()
  */
 class ForumsWatch extends Model
 {
@@ -43,6 +47,16 @@ class ForumsWatch extends Model
         return $watch;
     }
 
+    public function scopeMailable($query)
+    {
+        return $query->active()->where('is_up_to_date', true);
+    }
+
+    public function scopeActive($query)
+    {
+        return $query->where('still_watching', true);
+    }
+
     public function forumsTopic()
     {
         return $this->belongsTo(ForumsTopic::class);
@@ -51,6 +65,12 @@ class ForumsWatch extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function toggleWatch()
+    {
+        $this->still_watching = !$this->still_watching;
+        $this->save();
     }
 
 }

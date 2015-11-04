@@ -6,6 +6,7 @@ import LoginBox from './components/login-box.vue'
 import AnswerTopic from './components/answer-topic.vue'
 import RemoveMessage from './components/remove-message.vue'
 import MarkTopicSolved from './components/mark-topic-solved.vue'
+import ToggleWatchTopic from './components/toggle-watch-topic.vue'
 
 import HighlightedCode from './element_directives/highlighted-code.vue'
 
@@ -29,6 +30,7 @@ export default {
         AnswerTopic,
         EditMessage,
         RemoveMessage,
-        MarkTopicSolved
+        MarkTopicSolved,
+        ToggleWatchTopic
     }
 }
