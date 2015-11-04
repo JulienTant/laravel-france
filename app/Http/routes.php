@@ -54,12 +54,14 @@ $router->group(['domain' => Config::get('app.app_domain')], function ($router) {
         get('/', ['as' => 'profile', 'uses' => 'ProfileController@index']);
 
         get('change-username', ['as' => 'profile.change-username', 'uses' => 'ProfileController@changeUsername']);
-        post('change-username',
-            ['as' => 'profile.change-username.post', 'uses' => 'ProfileController@postChangeUsername']);
+        post('change-username', ['as' => 'profile.change-username.post', 'uses' => 'ProfileController@postChangeUsername']);
 
 
         get('change-avatar', ['as' => 'profile.change-avatar', 'uses' => 'ProfileController@changeAvatar']);
         post('change-avatar', ['as' => 'profile.change-avatar.post', 'uses' => 'ProfileController@postChangeAvatar']);
+
+        get('forums', ['as' => 'profile.forums', 'uses' => 'ProfileController@forums']);
+        post('forums', ['as' => 'profile.forums.post', 'uses' => 'ProfileController@postForums']);
 
     });
 

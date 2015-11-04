@@ -1,5 +1,5 @@
 <li class="Forums__TopicList__Item">
-    <a href="{{ route('forums.show-topic', [$topic->forumsCategory->slug, $topic->slug]) }}" class="Forums__TopicList__Item__Link">
+    <a href="{{ topic_link_for_listing($topic) }}" class="Forums__TopicList__Item__Link">
         <div class="Forums__TopicList__Item__Avatar">
             <img src="//www.gravatar.com/avatar/{{ md5($topic->user->email) }}?s=68" alt="Avatar de XXXX">
         </div>
