@@ -1,7 +1,5 @@
 <template>
-    <pre class="%LANGUAGE_CLASS%">
-        <code>%INNER_HTML%</code>
-    </pre>
+<pre class="%LANGUAGE_CLASS%"><code>%INNER_HTML%</code></pre>
 </template>
 
 <script type="text/ecmascript-6">
