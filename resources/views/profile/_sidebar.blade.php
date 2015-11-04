@@ -11,6 +11,9 @@
                 <a href="{{ route('profile.change-avatar') }}">Changer mon avatar</a>
             </li>
             <li>
+                <a href="{{ route('profile.change-avatar') }}">Changer mon email</a>
+            </li>
+            <li>
                 <a href="{{ route('profile.forums') }}">Préférences des forums</a>
             </li>
         </ul>
