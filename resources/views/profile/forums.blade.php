@@ -42,6 +42,13 @@
 
         <div class="Form__Row">
             <label class="Form__Row__Label">
+                {!! Form::checkbox('preference[watch_reply_topic]', 1, isset($preferences['watch_reply_topic']) && $preferences['watch_reply_topic'], ['class' => 'Form__Row__Control']) !!}
+                Surveiller automatiquement les sujets auxquels je répond.
+            </label>
+        </div>
+
+        <div class="Form__Row">
+            <label class="Form__Row__Label">
                 {!! Form::checkbox('preference[watch_new_reply_send_email]', 1, isset($preferences['watch_new_reply_send_email']) && $preferences['watch_new_reply_send_email'], ['class' => 'Form__Row__Control']) !!}
                 M'envoyer un email lorsqu'un nouveau message est posté sur un sujet que je surveille
             </label>
