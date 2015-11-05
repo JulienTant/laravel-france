@@ -40,10 +40,12 @@ class ForumsAutoWatchListener
         $topic = $event->getTopic();
         $user = $event->getMessage()->user;
 
-        $forumsWatchExists = ForumsWatch::whereUserId($user->id)->whereForumsTopicId($topic->id)->exists();
+        if ($user->getForumsPreferencesItem('watch_reply_topic')) {
+            $forumsWatchExists = ForumsWatch::whereUserId($user->id)->whereForumsTopicId($topic->id)->exists();
 
-        if (!$forumsWatchExists) {
-            ForumsWatch::createWatcher($user, $topic);
+            if (!$forumsWatchExists) {
+                ForumsWatch::createWatcher($user, $topic);
+            }
         }
     }
 }

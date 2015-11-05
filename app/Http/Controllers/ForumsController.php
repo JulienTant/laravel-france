@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use LaravelFrance\ForumsCategory;
 use LaravelFrance\ForumsMessage;
 use LaravelFrance\ForumsTopic;
+use LaravelFrance\ForumsWatch;
 use LaravelFrance\Http\Requests;
 
 class ForumsController extends Controller
@@ -79,7 +80,7 @@ class ForumsController extends Controller
 
     }
 
-    public function topic($categorySlug, $topicSlug)
+    public function topic(Request $request, $categorySlug, $topicSlug)
     {
         $chosenCategory = \LaravelFrance\ForumsCategory::whereSlug($categorySlug)->firstOrFail();
         $topic = \LaravelFrance\ForumsTopic::whereForumsCategoryId($chosenCategory->id)
@@ -91,6 +92,11 @@ class ForumsController extends Controller
             ->whereForumsTopicId($topic->id)
             ->orderBy('created_at', 'asc')
             ->paginate($this->config->get('laravelfrance.forums.messages_per_page'));
+
+
+        if ($request->user()) {
+            ForumsWatch::markUpToDate($topic, $request->user());
+        }
 
         return view('forums.topic', compact('topic', 'chosenCategory', 'messages'));
     }
