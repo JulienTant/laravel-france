@@ -13,6 +13,15 @@ $router->group(['domain' => Config::get('app.app_domain')], function ($router) {
     get('/t/{categorySlug}/{topicSlug}', ['as' => 'forums.show-topic', 'uses' => 'ForumsController@topic']);
     get('/m/{messageId}', ['as' => 'forums.show-message', 'uses' => 'ForumsController@message']);
 
+
+    $router->group(['middleware' => 'auth'], function () {
+
+        get('sujets-suivis', ['as' => 'my-forums.watched-topics', 'uses' => 'MyForumController@watchedTopics']);
+        get('mes-sujets', ['as' => 'my-forums.my-topics', 'uses' => 'MyForumController@myTopics']);
+        get('mes-messages', ['as' => 'my-forums.my-messages', 'uses' => 'MyForumController@myMessages']);
+
+    });
+
     /*
     |--------------------------------------------------------------------------
     | Login & Socialite Routes
@@ -54,12 +63,14 @@ $router->group(['domain' => Config::get('app.app_domain')], function ($router) {
         get('/', ['as' => 'profile', 'uses' => 'ProfileController@index']);
 
         get('change-username', ['as' => 'profile.change-username', 'uses' => 'ProfileController@changeUsername']);
-        post('change-username',
-            ['as' => 'profile.change-username.post', 'uses' => 'ProfileController@postChangeUsername']);
+        post('change-username', ['as' => 'profile.change-username.post', 'uses' => 'ProfileController@postChangeUsername']);
 
 
         get('change-avatar', ['as' => 'profile.change-avatar', 'uses' => 'ProfileController@changeAvatar']);
         post('change-avatar', ['as' => 'profile.change-avatar.post', 'uses' => 'ProfileController@postChangeAvatar']);
+
+        get('forums', ['as' => 'profile.forums', 'uses' => 'ProfileController@forums']);
+        post('forums', ['as' => 'profile.forums.post', 'uses' => 'ProfileController@postForums']);
 
     });
 
@@ -85,6 +96,9 @@ $router->group(['domain' => Config::get('app.app_domain')], function ($router) {
     /** @var \Illuminate\Routing\Router $router */
     $router->group(['laroute' => true, 'namespace' => 'Api', 'prefix' => 'api'], function () {
         post('renderMarkdown', ['as' => 'api.markdown', 'uses' => 'MarkdownController@render']);
+
+        get('forums/{topicId}/watch', ['as' => 'api.forums.watch', 'uses' => 'ForumsController@watch', 'middleware' => 'auth']);
+        post('forums/{topicId}/toggle-watch', ['as' => 'api.forums.toggle-watch', 'uses' => 'ForumsController@toggleWatch', 'middleware' => 'auth']);
 
         post('forums/post', ['as' => 'api.forums.post', 'uses' => 'ForumsController@post']);
         post('forums/{topicId}/reply', ['as' => 'api.forums.reply', 'uses' => 'ForumsController@reply']);

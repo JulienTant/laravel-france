@@ -1,3 +1,18 @@
+.Form__Fieldset {
+  border: 0;
+  padding: 0;
+  margin: 0;
+}
+
+.Form__Fieldset__Legend {
+  font-weight: bold;
+  font-size: 1.3rem;
+  border-bottom: 1px solid $orange;
+  display: block;
+  width: 100%;
+  padding-top: 1.5rem;
+}
+
 .Form__Row {
   margin-top 2rem;
 }
@@ -9,12 +24,21 @@
 }
 
 .Form__Row__Control {
+  line-height 2rem;
   height 2rem;
   width 100%
   padding: 5px 10px;
 
   &:not([type=file]) {
     border 1px solid $black;
+  }
+
+
+  input[type=checkbox]&, input[type=radio]& {
+    display inline-block;
+    width auto;
+    height auto;
+
   }
 
   select[multiple]& {

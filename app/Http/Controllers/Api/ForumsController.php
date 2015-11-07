@@ -5,6 +5,7 @@ namespace LaravelFrance\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use LaravelFrance\ForumsMessage;
 use LaravelFrance\ForumsTopic;
+use LaravelFrance\ForumsWatch;
 use LaravelFrance\Http\Requests;
 use LaravelFrance\Http\Controllers\Controller;
 use LaravelFrance\Http\Requests\AnswerToTopicRequest;
@@ -109,5 +110,29 @@ class ForumsController extends Controller
         $topic->solve($messageId);
 
         return $topic->load('forumsCategory');
+    }
+
+    public function watch(Request $request, $topicId)
+    {
+        $watched = ForumsWatch::active()->whereUserId($request->user()->id)->whereForumsTopicId($topicId)->exists();
+        return ['watched' => $watched];
+    }
+
+    public function toggleWatch(Request $request, $topicId)
+    {
+        /** @var ForumsTopic $topic */
+        $topic = ForumsTopic::findOrFail($topicId);
+
+        /** @var ForumsWatch $forumWatcher */
+        $forumWatcher = ForumsWatch::whereUserId($request->user()->id)->whereForumsTopicId($topicId)->first();
+        if(!$forumWatcher) {
+            ForumsWatch::createWatcher($request->user(), $topic);
+        } else {
+            $forumWatcher->toggleWatch();
+        }
+
+
+        $watched = ForumsWatch::active()->whereUserId($request->user()->id)->whereForumsTopicId($topicId)->exists();
+        return ['watched' => $watched];
     }
 }

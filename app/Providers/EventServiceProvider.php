@@ -6,6 +6,7 @@ use Illuminate\Contracts\Events\Dispatcher as DispatcherContract;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use LaravelFrance\Events\ForumsMessagePostedOnForumsTopic;
 use LaravelFrance\Events\ForumsMessageWasDeleted;
+use LaravelFrance\Events\ForumsTopicPosted;
 
 /**
  * Class EventServiceProvider
@@ -23,11 +24,17 @@ class EventServiceProvider extends ServiceProvider
             'LaravelFrance\Listeners\ManageNbMessagesOnTopic@whenForumsMessagePostedOnForumsTopic',
             'LaravelFrance\Listeners\ManageLastMessageOnTopic@whenForumsMessagePostedOnForumsTopic',
             'LaravelFrance\Listeners\ManageNbMessagesOnUser@whenForumsMessagePostedOnForumsTopic',
+            'LaravelFrance\Listeners\ForumsAutoWatchListener@whenForumsMessagePostedOnForumsTopic',
+            'LaravelFrance\Listeners\SendEmailToWatchersWhenForumsMessagesPostedListener',
+            'LaravelFrance\Listeners\UpdateWatchersStatus@whenForumsMessagePostedOnForumsTopic',
         ],
         ForumsMessageWasDeleted::class => [
             'LaravelFrance\Listeners\ManageNbMessagesOnTopic@whenForumsMessageWasDeleted',
             'LaravelFrance\Listeners\ManageLastMessageOnTopic@whenForumsMessageWasDeleted',
             'LaravelFrance\Listeners\ManageNbMessagesOnUser@whenForumsMessageWasDeleted',
+        ],
+        ForumsTopicPosted::class => [
+            'LaravelFrance\Listeners\ForumsAutoWatchListener@whenForumsTopicPosted',
         ],
     ];
 

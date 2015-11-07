@@ -37,7 +37,10 @@
     ],
     "psr-4": {
       "LaravelFrance\\": "app/"
-    }
+    },
+    "files": [
+      "app/Http/helpers.php"
+    ]
   },
   "autoload-dev": {
     "classmap": [
@@ -55,7 +58,7 @@
     "post-update-cmd": [
       "php artisan clear-compiled",
       "php artisan ide-helper:generate",
-      "php artisan ide-helper:models -W",
+      "php artisan ide-helper:models -RW",
       "php artisan ide-helper:meta",
       "php artisan optimize"
     ],

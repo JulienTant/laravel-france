@@ -3,7 +3,7 @@
 
 @section('profile_content')
 
-    <h2>Modifier mon avatar</h2>
+    <h2>Modifier mon avatar / Email</h2>
 
     <p>
         <a href="http://laravel.fr">Laravel.fr</a> utilise le service <a target="_blank" href="http://fr.gravatar.com/">Gravatar</a> pour charger les avatars sur le forum.

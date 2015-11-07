@@ -10,6 +10,7 @@ use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Laravel\Socialite\Contracts\User as SocialiteUser;
+use LaravelFrance\Events\UserForumsPreferencesWasChanged;
 use LaravelFrance\Events\UserGroupsWasChanged;
 use LaravelFrance\Events\UserHasChangedHisAvatar;
 use LaravelFrance\Events\UserHasChangedHisUsername;
@@ -21,32 +22,23 @@ use LaravelFrance\Events\UserHasChangedHisUsername;
  * @property integer $id
  * @property string $username
  * @property string $email
+ * @property string $groups
+ * @property string $forums_preferences
  * @property integer $nb_messages
  * @property string $remember_token
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|OAuth[] $oauth
+ * @property-read \Illuminate\Database\Eloquent\Collection|ForumsWatch[] $watchedTopics
  * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\User whereId($value)
  * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\User whereUsername($value)
  * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\User whereEmail($value)
+ * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\User whereGroups($value)
+ * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\User whereForumsPreferences($value)
  * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\User whereNbMessages($value)
  * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\User whereRememberToken($value)
  * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\User whereCreatedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\User whereUpdatedAt($value)
- * @property string $groups
- * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\User whereGroups($value)
- * @property string $password
- * @property string $firstname
- * @property string $lastname
- * @property string $birthdate
- * @property string $city
- * @property string $deleted_at
- * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\User wherePassword($value)
- * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\User whereFirstname($value)
- * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\User whereLastname($value)
- * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\User whereBirthdate($value)
- * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\User whereCity($value)
- * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\User whereDeletedAt($value)
  */
 class User extends Model implements AuthenticatableContract,
     AuthorizableContract,
@@ -82,6 +74,7 @@ class User extends Model implements AuthenticatableContract,
      */
     protected $casts = [
         'groups' => 'array',
+        'forums_preferences' => 'array',
     ];
 
 
@@ -103,6 +96,7 @@ class User extends Model implements AuthenticatableContract,
         }
 
         $user->groups = [];
+        $user->forums_preferences = [];
 
         return $user;
     }
@@ -113,6 +107,11 @@ class User extends Model implements AuthenticatableContract,
     public function oauth()
     {
         return $this->hasMany(OAuth::class);
+    }
+
+    public function watchedTopics()
+    {
+        return $this->hasMany(ForumsWatch::class);
     }
 
     /**
@@ -151,6 +150,23 @@ class User extends Model implements AuthenticatableContract,
         $this->groups = $groups;
         event(new UserGroupsWasChanged($this));
         $this->save();
-
     }
+
+    public function changeForumsPreferences($preferences)
+    {
+        $this->forums_preferences = $preferences;
+        event(new UserForumsPreferencesWasChanged($this));
+        $this->save();
+    }
+
+    public function getForumsPreferencesItem($key)
+    {
+        if (!is_array($this->forums_preferences) || !array_key_exists($key, $this->forums_preferences)) {
+            return null;
+        }
+
+        return $this->forums_preferences[$key];
+    }
+
+
 }

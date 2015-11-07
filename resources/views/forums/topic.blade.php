@@ -15,6 +15,10 @@
             <h2 class="Forums__TopicHeader__Title {{ $topic->solved ? 'Forums__TopicHeader__Title--Solved' : '' }}">
                 {{ $topic->title }}
             </h2>
+
+            @if(Auth::check())
+                <toggle-watch-topic topic-id="{{ (int)$topic->id }}" />
+            @endif
         </div>
     </div>
 @overwrite
