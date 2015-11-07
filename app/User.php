@@ -29,6 +29,7 @@ use LaravelFrance\Events\UserHasChangedHisUsername;
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|OAuth[] $oauth
+ * @property-read \Illuminate\Database\Eloquent\Collection|ForumsWatch[] $watchedTopics
  * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\User whereId($value)
  * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\User whereUsername($value)
  * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\User whereEmail($value)
@@ -106,6 +107,11 @@ class User extends Model implements AuthenticatableContract,
     public function oauth()
     {
         return $this->hasMany(OAuth::class);
+    }
+
+    public function watchedTopics()
+    {
+        return $this->hasMany(ForumsWatch::class);
     }
 
     /**

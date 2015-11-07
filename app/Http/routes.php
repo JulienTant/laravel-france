@@ -13,6 +13,15 @@ $router->group(['domain' => Config::get('app.app_domain')], function ($router) {
     get('/t/{categorySlug}/{topicSlug}', ['as' => 'forums.show-topic', 'uses' => 'ForumsController@topic']);
     get('/m/{messageId}', ['as' => 'forums.show-message', 'uses' => 'ForumsController@message']);
 
+
+    $router->group(['middleware' => 'auth'], function () {
+
+        get('sujets-suivis', ['as' => 'my-forums.watched-topics', 'uses' => 'MyForumController@watchedTopics']);
+        get('mes-sujets', ['as' => 'my-forums.my-topics', 'uses' => 'MyForumController@myTopics']);
+        get('mes-messages', ['as' => 'my-forums.my-messages', 'uses' => 'MyForumController@myMessages']);
+
+    });
+
     /*
     |--------------------------------------------------------------------------
     | Login & Socialite Routes

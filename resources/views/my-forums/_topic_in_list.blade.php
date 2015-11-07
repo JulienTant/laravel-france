@@ -1,5 +1,12 @@
+<?php
+    $topic = $watchedTopic->forumsTopic;
+?>
 <li class="Forums__TopicList__Item">
-    <a href="{{ topic_link_for_listing($topic) }}" class="Forums__TopicList__Item__Link">
+    @if($watchedTopic->first_unread_message_id)
+        <a href="{{ route('forums.show-message', [$watchedTopic->first_unread_message_id]) }}" class="Forums__TopicList__Item__Link">
+    @else
+            <a href="{{ topic_link_for_listing($topic) }}" class="Forums__TopicList__Item__Link">
+    @endif
         <div class="Forums__TopicList__Item__Avatar">
             <img src="//www.gravatar.com/avatar/{{ md5($topic->user->email) }}?s=68" alt="Avatar de {{ $topic->user->username }}">
         </div>

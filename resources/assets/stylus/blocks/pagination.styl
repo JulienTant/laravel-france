@@ -8,7 +8,7 @@
   li {
     display inline;
 
-    a, &.active span {
+    a, span {
       position: relative;
       float: left;
       padding: .3rem 1rem;
@@ -21,6 +21,10 @@
      }
 
     &.disabled {
+      color grey;
+    }
+
+    &.disabled:first-child, &.disabled:last-child {
       display none;
     }
   }

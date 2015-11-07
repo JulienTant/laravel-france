@@ -21,4 +21,25 @@
             </li>
         @endforeach
     </ul>
+
+    @if(Auth::check())
+        <hr />
+        <h3>Mon Espace</h3>
+        <ul class="Forums__Sidebar__MyForum">
+            <li class="">
+                <a href="{{ route('my-forums.watched-topics') }}">
+                    Sujets suivis
+                    @if($nbUnreadWatchers > 0)
+                        <span class="Badge Badge-Orange">{{ $nbUnreadWatchers }}</span>
+                    @endif
+                </a>
+            </li>
+            <li class="">
+                <a href="{{ route('my-forums.my-topics') }}">Mes sujets</a>
+            </li>
+            <li class="">
+                <a href="{{ route('my-forums.my-messages') }}">Mes messages</a>
+            </li>
+        </ul>
+    @endif
 </aside>

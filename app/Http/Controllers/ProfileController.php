@@ -15,7 +15,7 @@ class ProfileController extends Controller
 {
     public function index()
     {
-        return redirect()->route('profile.change-username');
+        return redirect()->route('profile.forums');
     }
 
     public function changeUsername()

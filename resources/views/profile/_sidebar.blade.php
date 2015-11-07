@@ -5,6 +5,9 @@
         <h3>Mon profil</h3>
         <ul>
             <li>
+                <a href="{{ route('profile.forums') }}">Préférences des forums</a>
+            </li>
+            <li>
                 <a href="{{ route('profile.change-username') }}">Changer mon pseudo</a>
             </li>
             <li>
@@ -12,9 +15,6 @@
             </li>
             <li>
                 <a href="{{ route('profile.change-avatar') }}">Changer mon email</a>
-            </li>
-            <li>
-                <a href="{{ route('profile.forums') }}">Préférences des forums</a>
             </li>
         </ul>
     </nav>
