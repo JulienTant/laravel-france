@@ -20,7 +20,9 @@
     "predis/predis": "~1.0",
     "erusev/parsedown": "dev-master",
     "pda/pheanstalk": "~3.0",
-    "laravelcollective/html": "5.1.*"
+    "laravelcollective/html": "5.1.*",
+    "league/flysystem-dropbox": "^1.0@dev",
+    "spatie/laravel-backup": "dev-master"
   },
   "require-dev": {
     "fzaninotto/faker": "~1.4",

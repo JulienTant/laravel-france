@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "e0ca828ab471892edee2a815d7ff404e",
-    "content-hash": "ccfe30ccfb6a98a1bb11a3070148297d",
+    "hash": "f42973c4899ea62c9296d783227dad33",
+    "content-hash": "0a530d3308068de09cbb309c38654abd",
     "packages": [
         {
             "name": "classpreloader/classpreloader",
@@ -612,16 +612,16 @@
         },
         {
             "name": "doctrine/inflector",
-            "version": "v1.0.1",
+            "version": "v1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/inflector.git",
-                "reference": "0bcb2e79d8571787f18b7eb036ed3d004908e604"
+                "reference": "90b2128806bfde671b6952ab8bea493942c1fdae"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/inflector/zipball/0bcb2e79d8571787f18b7eb036ed3d004908e604",
-                "reference": "0bcb2e79d8571787f18b7eb036ed3d004908e604",
+                "url": "https://api.github.com/repos/doctrine/inflector/zipball/90b2128806bfde671b6952ab8bea493942c1fdae",
+                "reference": "90b2128806bfde671b6952ab8bea493942c1fdae",
                 "shasum": ""
             },
             "require": {
@@ -633,7 +633,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.0.x-dev"
+                    "dev-master": "1.1.x-dev"
                 }
             },
             "autoload": {
@@ -675,7 +675,7 @@
                 "singularize",
                 "string"
             ],
-            "time": "2014-12-20 21:24:13"
+            "time": "2015-11-06 14:35:42"
         },
         {
             "name": "doctrine/lexer",
@@ -730,6 +730,45 @@
                 "parser"
             ],
             "time": "2014-09-09 13:34:57"
+        },
+        {
+            "name": "dropbox/dropbox-sdk",
+            "version": "v1.1.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/dropbox/dropbox-sdk-php.git",
+                "reference": "6901f8122458e0ce7e391468c0cf6cca465bd0ee"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/dropbox/dropbox-sdk-php/zipball/6901f8122458e0ce7e391468c0cf6cca465bd0ee",
+                "reference": "6901f8122458e0ce7e391468c0cf6cca465bd0ee",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "php": ">= 5.3"
+            },
+            "require-dev": {
+                "apigen/apigen": "2.8.2",
+                "phpunit/phpunit": "~4.0",
+                "squizlabs/php_codesniffer": "2.0.0RC3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Dropbox": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Dropbox SDK for PHP",
+            "keywords": [
+                "dropbox"
+            ],
+            "time": "2015-06-29 21:47:57"
         },
         {
             "name": "elasticsearch/elasticsearch",
@@ -1287,12 +1326,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "50b5d240ce3d54540f096aa73f833fa412798164"
+                "reference": "d0aae67b969ffa9b388e7b51ca4b6d4c02516090"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/50b5d240ce3d54540f096aa73f833fa412798164",
-                "reference": "50b5d240ce3d54540f096aa73f833fa412798164",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/d0aae67b969ffa9b388e7b51ca4b6d4c02516090",
+                "reference": "d0aae67b969ffa9b388e7b51ca4b6d4c02516090",
                 "shasum": ""
             },
             "require": {
@@ -1408,7 +1447,7 @@
                 "framework",
                 "laravel"
             ],
-            "time": "2015-11-04 16:01:38"
+            "time": "2015-11-07 03:35:06"
         },
         {
             "name": "laravel/socialite",
@@ -1466,16 +1505,16 @@
         },
         {
             "name": "laravelcollective/html",
-            "version": "v5.1.6",
+            "version": "v5.1.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/LaravelCollective/html.git",
-                "reference": "8b7c357e78b8fb6a2e48377cf2441441aac6dd1e"
+                "reference": "5ad8377968ba3b4da91fc60ca98b2eef4df380fc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/LaravelCollective/html/zipball/8b7c357e78b8fb6a2e48377cf2441441aac6dd1e",
-                "reference": "8b7c357e78b8fb6a2e48377cf2441441aac6dd1e",
+                "url": "https://api.github.com/repos/LaravelCollective/html/zipball/5ad8377968ba3b4da91fc60ca98b2eef4df380fc",
+                "reference": "5ad8377968ba3b4da91fc60ca98b2eef4df380fc",
                 "shasum": ""
             },
             "require": {
@@ -1512,7 +1551,7 @@
                     "email": "adam@laravelcollective.com"
                 }
             ],
-            "time": "2015-09-03 17:16:48"
+            "time": "2015-11-06 18:14:38"
         },
         {
             "name": "league/flysystem",
@@ -1597,6 +1636,53 @@
                 "storage"
             ],
             "time": "2015-09-30 22:26:59"
+        },
+        {
+            "name": "league/flysystem-dropbox",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/thephpleague/flysystem-dropbox.git",
+                "reference": "96c37124590bef6277c0e68a12e2dc40e5f82baa"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/thephpleague/flysystem-dropbox/zipball/96c37124590bef6277c0e68a12e2dc40e5f82baa",
+                "reference": "96c37124590bef6277c0e68a12e2dc40e5f82baa",
+                "shasum": ""
+            },
+            "require": {
+                "dropbox/dropbox-sdk": "~1.1",
+                "league/flysystem": "~1.0",
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "0.9.*",
+                "phpunit/phpunit": "~4.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "League\\Flysystem\\Dropbox\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Frank de Jonge",
+                    "email": "info@frenky.net"
+                }
+            ],
+            "description": "Flysystem adapter for Dropbox",
+            "time": "2015-05-30 09:18:29"
         },
         {
             "name": "league/html-to-markdown",
@@ -2338,6 +2424,63 @@
                 "shell"
             ],
             "time": "2015-07-16 15:26:57"
+        },
+        {
+            "name": "spatie/laravel-backup",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spatie/laravel-backup.git",
+                "reference": "03dd0eeab50c3a1da43baaae14df34ef703c8ce6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spatie/laravel-backup/zipball/03dd0eeab50c3a1da43baaae14df34ef703c8ce6",
+                "reference": "03dd0eeab50c3a1da43baaae14df34ef703c8ce6",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/console": "5.*",
+                "illuminate/support": "5.*",
+                "php": ">=5.4.0",
+                "symfony/finder": "~2.6"
+            },
+            "require-dev": {
+                "laravel/framework": "5.*",
+                "mockery/mockery": "0.9.*",
+                "orchestra/testbench": "~3.0",
+                "phpunit/phpunit": "4.*",
+                "scrutinizer/ocular": "~1.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Spatie\\Backup\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Freek Van der Herten",
+                    "email": "freek@spatie.be",
+                    "homepage": "https://murze.be",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Backup command for Laravel 5 applications",
+            "homepage": "https://github.com/spatie/laravel-backup",
+            "keywords": [
+                "backup",
+                "database",
+                "laravel 5",
+                "laravel-backup",
+                "mysql",
+                "spatie"
+            ],
+            "time": "2015-11-05 19:12:56"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -4657,7 +4800,9 @@
         "league/html-to-markdown": 20,
         "laravel/socialite": 20,
         "cviebrock/eloquent-sluggable": 20,
-        "erusev/parsedown": 20
+        "erusev/parsedown": 20,
+        "league/flysystem-dropbox": 20,
+        "spatie/laravel-backup": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
