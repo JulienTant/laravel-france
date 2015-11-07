@@ -148,6 +148,7 @@ return [
         LaravelFrance\Providers\RouteServiceProvider::class,
         LaravelFrance\Providers\MarkdownServiceProvider::class,
         LaravelFrance\Providers\ViewComposerServiceProvider::class,
+        LaravelFrance\Providers\DropboxServiceProvider::class,
 
 
         Fadion\Bouncy\BouncyServiceProvider::class,
@@ -156,6 +157,7 @@ return [
         Lord\Laroute\LarouteServiceProvider::class,
         Cviebrock\EloquentSluggable\SluggableServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
+        Spatie\Backup\BackupServiceProvider::class,
     ],
 
     /*
