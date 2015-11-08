@@ -22,7 +22,8 @@
     "pda/pheanstalk": "~3.0",
     "laravelcollective/html": "5.1.*",
     "league/flysystem-dropbox": "^1.0@dev",
-    "spatie/laravel-backup": "dev-master"
+    "spatie/laravel-backup": "dev-master",
+    "craftyx/slack-api": "dev-master"
   },
   "require-dev": {
     "fzaninotto/faker": "~1.4",

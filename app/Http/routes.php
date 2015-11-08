@@ -40,7 +40,8 @@ $router->group(['domain' => Config::get('app.app_domain')], function ($router) {
     | Slack Routes
     |--------------------------------------------------------------------------
     */
-    get('slack', ['as' => 'slack', 'uses' => 'StaticController@slack']);
+    get('slack', ['as' => 'slack', 'uses' => 'SlackController@index']);
+    post('slack', ['as' => 'slack.invite', 'uses' => 'SlackController@invite']);
 
     /*
     |--------------------------------------------------------------------------

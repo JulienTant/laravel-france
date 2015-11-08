@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "f42973c4899ea62c9296d783227dad33",
-    "content-hash": "0a530d3308068de09cbb309c38654abd",
+    "hash": "e9753806ec31f07b92ced105aba520f7",
+    "content-hash": "fd1ff4fb783a96c8dcae9ac6dda3dbb9",
     "packages": [
         {
             "name": "classpreloader/classpreloader",
@@ -124,17 +124,68 @@
             "time": "2015-03-18 08:21:30"
         },
         {
+            "name": "craftyx/slack-api",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/JulienTant/laravel-slack-api.git",
+                "reference": "23b6154531865ee7092e2cc680e021e1abcce9b6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/JulienTant/laravel-slack-api/zipball/23b6154531865ee7092e2cc680e021e1abcce9b6",
+                "reference": "23b6154531865ee7092e2cc680e021e1abcce9b6",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/guzzle": "~6.0",
+                "illuminate/cache": "5.0.*|5.1.*",
+                "illuminate/support": "5.0.*|5.1.*",
+                "php": ">=5.5.9"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Craftyx\\": "src/Craftyx/"
+                },
+                "files": [
+                    "src/Craftyx/SlackApi/helpers.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "DBAD"
+            ],
+            "authors": [
+                {
+                    "name": "Vagner do Carmo",
+                    "email": "vluzrmos@gmail.com"
+                },
+                {
+                    "name": "Julien Tant",
+                    "email": "julien@craftyx.fr"
+                }
+            ],
+            "description": "Wrapper for Slack.com WEB API. Based on Vagner do Carmo one, but compatible with GuzzleHttp6 ",
+            "keywords": [
+                "laravel",
+                "lumen",
+                "slack"
+            ],
+            "time": "2015-11-07 12:00:48"
+        },
+        {
             "name": "cviebrock/eloquent-sluggable",
             "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cviebrock/eloquent-sluggable.git",
-                "reference": "666928685989e04cf1ab28d049984f457e80cd76"
+                "reference": "ae6bc5271ca148e35a5c3ed799a9df2bf092728b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cviebrock/eloquent-sluggable/zipball/666928685989e04cf1ab28d049984f457e80cd76",
-                "reference": "666928685989e04cf1ab28d049984f457e80cd76",
+                "url": "https://api.github.com/repos/cviebrock/eloquent-sluggable/zipball/ae6bc5271ca148e35a5c3ed799a9df2bf092728b",
+                "reference": "ae6bc5271ca148e35a5c3ed799a9df2bf092728b",
                 "shasum": ""
             },
             "require": {
@@ -171,7 +222,7 @@
                 "laravel",
                 "slug"
             ],
-            "time": "2015-10-26 16:58:25"
+            "time": "2015-11-07 17:14:22"
         },
         {
             "name": "danielstjules/stringy",
@@ -4802,7 +4853,8 @@
         "cviebrock/eloquent-sluggable": 20,
         "erusev/parsedown": 20,
         "league/flysystem-dropbox": 20,
-        "spatie/laravel-backup": 20
+        "spatie/laravel-backup": 20,
+        "craftyx/slack-api": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,

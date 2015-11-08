@@ -29,18 +29,23 @@ return [
         'region' => 'us-east-1',
     ],
 
-    'google' => array(
+    'google' => [
         'client_id'     => env('GOOGLE_CLIENT_ID'),
         'client_secret' => env('GOOGLE_CLIENT_SECRET'),
-    ),
+    ],
 
-    'github' => array(
+    'github' => [
         'client_id'     => env('GITHUB_CLIENT_ID'),
         'client_secret' => env('GITHUB_CLIENT_SECRET'),
-    ),
+    ],
 
-    'twitter' => array(
-        'client_id'    => env('TWITTER_CLIENT_ID'),
+    'twitter' => [
+        'client_id'     => env('TWITTER_CLIENT_ID'),
         'client_secret' => env('TWITTER_CLIENT_SECRET'),
-    ),
+    ],
+
+    'slack' => [
+        'token' => 'xoxp-8243992532-8244038646-8250322931-7c49f3'
+    ]
+
 ];
