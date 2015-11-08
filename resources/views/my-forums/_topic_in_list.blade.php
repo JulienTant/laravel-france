@@ -5,7 +5,7 @@
     @if($watchedTopic->first_unread_message_id)
         <a href="{{ route('forums.show-message', [$watchedTopic->first_unread_message_id]) }}" class="Forums__TopicList__Item__Link">
     @else
-            <a href="{{ topic_link_for_listing($topic) }}" class="Forums__TopicList__Item__Link">
+        <a href="{{ topic_link_for_listing($topic) }}" class="Forums__TopicList__Item__Link">
     @endif
         <div class="Forums__TopicList__Item__Avatar">
             <img src="//www.gravatar.com/avatar/{{ md5($topic->user->email) }}?s=68" alt="Avatar de {{ $topic->user->username }}">
@@ -22,7 +22,12 @@
                             <relative-date date="{{ $topic->lastMessage->created_at->format('Y-m-d H:i:s') }}"></relative-date>
                         </span>
             <p class="Forums__TopicList__Item__Excerpt">
-                {{ str_limit($topic->firstMessage->markdown, 150) }}
+                @if($watchedTopic->firstUnreadMessage)
+                    {{ str_limit($watchedTopic->firstUnreadMessage->markdown, 150) }}
+                    @else
+                    {{ str_limit($watchedTopic->forumsTopic->lastMessage->markdown, 150) }}
+
+                @endif
             </p>
         </div>
 
@@ -31,5 +36,7 @@
                 {{ $topic->nb_messages }}
             </p>
         </div>
+
+
     </a>
 </li>

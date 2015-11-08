@@ -78,6 +78,11 @@ class ForumsWatch extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function firstUnreadMessage()
+    {
+        return $this->belongsTo(ForumsMessage::class);
+    }
+
     public function toggleWatch()
     {
         $this->still_watching = !$this->still_watching;
