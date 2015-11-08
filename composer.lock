@@ -129,12 +129,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/JulienTant/laravel-slack-api.git",
-                "reference": "23b6154531865ee7092e2cc680e021e1abcce9b6"
+                "reference": "fb14a729a7c3567508a5635f78735b267994fd71"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/JulienTant/laravel-slack-api/zipball/23b6154531865ee7092e2cc680e021e1abcce9b6",
-                "reference": "23b6154531865ee7092e2cc680e021e1abcce9b6",
+                "url": "https://api.github.com/repos/JulienTant/laravel-slack-api/zipball/fb14a729a7c3567508a5635f78735b267994fd71",
+                "reference": "fb14a729a7c3567508a5635f78735b267994fd71",
                 "shasum": ""
             },
             "require": {
@@ -172,7 +172,7 @@
                 "lumen",
                 "slack"
             ],
-            "time": "2015-11-07 12:00:48"
+            "time": "2015-11-08 08:32:48"
         },
         {
             "name": "cviebrock/eloquent-sluggable",
