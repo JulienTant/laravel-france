@@ -35,6 +35,7 @@ class EventServiceProvider extends ServiceProvider
         ],
         ForumsTopicPosted::class => [
             'LaravelFrance\Listeners\ForumsAutoWatchListener@whenForumsTopicPosted',
+            'LaravelFrance\Listeners\SlackForumsWatcher@whenForumsTopicPosted',
         ],
     ];
 

@@ -1,13 +1,14 @@
 <?php
 
-namespace LaravelFrance\Jobs;
+namespace LaravelFrance\Jobs\Slack;
 
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Bus\SelfHandling;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use LaravelFrance\Jobs\Job;
 
-class SendSlackInvitation extends Job implements SelfHandling, ShouldQueue
+class SendInvitation extends Job implements SelfHandling, ShouldQueue
 {
     use InteractsWithQueue, SerializesModels;
 
@@ -39,7 +40,7 @@ class SendSlackInvitation extends Job implements SelfHandling, ShouldQueue
      */
     public function handle()
     {
-        \Log::debug((array)slack('UserAdmin')->invite($this->email, $this->parameters));
+        slack('UserAdmin')->invite($this->email, $this->parameters);
 
         $this->delete();
     }

@@ -4,8 +4,7 @@ namespace LaravelFrance\Http\Controllers;
 
 use Illuminate\Http\Request;
 use LaravelFrance\Http\Requests;
-use LaravelFrance\Http\Controllers\Controller;
-use LaravelFrance\Jobs\SendSlackInvitation;
+use LaravelFrance\Jobs\Slack\SendInvitation;
 
 class SlackController extends Controller
 {
@@ -23,12 +22,14 @@ class SlackController extends Controller
         ]);
 
         $this->dispatch(
-            new SendSlackInvitation(
+            new SendInvitation(
                 $request->email,
                 $request->only(['first_name', 'last_name'])
             )
         );
 
-        return view('slack.index');
+        alert('Vous allez recevoir votre invitation par email dans quelques instants. A bientôt sur Slack !', 'Invitation envoyée !')->persistent('Fermer');
+
+        return \Redirect::to('/');
     }
 }
