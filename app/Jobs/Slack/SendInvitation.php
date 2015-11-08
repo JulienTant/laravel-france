@@ -40,7 +40,7 @@ class SendInvitation extends Job implements SelfHandling, ShouldQueue
      */
     public function handle()
     {
-        \Log::debug((array)slack('UserAdmin')->invite($this->email, $this->parameters));
+        slack('UserAdmin')->invite($this->email, $this->parameters);
 
         $this->delete();
     }
