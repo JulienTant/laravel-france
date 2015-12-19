@@ -23,6 +23,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property integer $first_unread_message_id
  * @property-read ForumsTopic $forumsTopic
  * @property-read User $user
+ * @property-read ForumsMessage $firstUnreadMessage
  * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\ForumsWatch whereId($value)
  * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\ForumsWatch whereForumsTopicId($value)
  * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\ForumsWatch whereUserId($value)
