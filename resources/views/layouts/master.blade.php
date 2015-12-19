@@ -48,7 +48,15 @@
 <footer class="SiteFooter">
     <div class="Utility__Container">
         <div class="SiteFooter__Inner">
-            Développement & maintenance : <a href="http://craftyx.fr">Craftyx</a>
+            <p>
+                Développement & maintenance : <a href="http://craftyx.fr">Craftyx</a>
+            </p>
+
+            <p>
+                Rejoignez nous sur :
+                <a href="https://github.com/JulienTant/laravel-france" title="Github"><i class="fa fa-github-alt"></i> Github</a> |
+                <a href="{{ route('slack') }}" title="Slack"><i class="fa fa-slack"></i> Slack</a>
+            </p>
         </div>
     </div>
 </footer>
