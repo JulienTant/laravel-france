@@ -9,8 +9,8 @@
     <h2>Qu'est ce que Slack ?</h2>
 
     <p>
-        Slack est un service de messagerie instantané, qui s’articule autour de messages texte, mais aussi d’images, de vidéos et de son, de code snippet...<br />
-        Nous avons créé un Slack pour Laravel France, et nous souhaitons en faire une place d'échange et de convivialité pour tous les membres de la communauté Francophone qui souhaite nous y rejoindre.
+        Slack est un service de messagerie instantanée, qui s’articule autour de messages texte, mais aussi d’images, de vidéos et de sons, de code snippets...<br />
+        Nous avons créé un Slack pour Laravel France, et nous souhaitons en faire une place d'échange et de convivialité pour tous les membres de la communauté Francophone qui souhaitent nous y rejoindre.
     </p>
     
     <h2>Rejoignez nous !</h2>
