@@ -16,12 +16,22 @@
 
 
     <fieldset class="Form__Fieldset">
-        <legend class="Form__Fieldset__Legend">Listing des topics</legend>
+        <legend class="Form__Fieldset__Legend">Affichage des sujets</legend>
 
         <div class="Form__Row">
-            <label class="Form__Row__Label">
-                {!! Form::checkbox('preference[see_last_message]', 1, isset($preferences['see_last_message']) && $preferences['see_last_message'], ['class' => 'Form__Row__Control']) !!}
-                Voir le dernier message lors du clic sur un sujet depuis la page d'accueil des forums
+
+            <p>
+                <strong>Lors de la navigation vers un sujet du forum, je souhaite que s'affiche :</strong>
+            </p>
+
+            <label class="Form__Row__Label Form__Row__Label--Radio">
+                {!! Form::radio('preference[see_last_message]', 0, !isset($preferences['see_last_message']) || $preferences['see_last_message'] == 0, ['class' => 'Form__Row__Control']) !!}
+                Le tout premier message du sujet
+            </label>
+
+            <label class="Form__Row__Label Form__Row__Label--Radio">
+                {!! Form::radio('preference[see_last_message]', 1, isset($preferences['see_last_message']) && $preferences['see_last_message'], ['class' => 'Form__Row__Control']) !!}
+                Le message posté le plus récemment
             </label>
         </div>
     </fieldset>
@@ -43,7 +53,7 @@
         <div class="Form__Row">
             <label class="Form__Row__Label">
                 {!! Form::checkbox('preference[watch_reply_topic]', 1, isset($preferences['watch_reply_topic']) && $preferences['watch_reply_topic'], ['class' => 'Form__Row__Control']) !!}
-                Surveiller automatiquement les sujets auxquels je répond.
+                Surveiller automatiquement les sujets auxquels je réponds.
             </label>
         </div>
 
