@@ -7,6 +7,7 @@
 
 namespace LaravelFrance\Markdown;
 
+use DOMDocument;
 use Parsedown as OriginalParsedown;
 
 class Parsedown extends OriginalParsedown
@@ -136,5 +137,29 @@ class Parsedown extends OriginalParsedown
 
         return $Block;
     }
+
+    function text($text)
+    {
+        $messageHtml = parent::text($text);
+
+        return $this->closeUnclosedHtmlTags($messageHtml);
+    }
+
+    /**
+     * @param $messageHtml
+     * @return string
+     */
+    private function closeUnclosedHtmlTags($messageHtml)
+    {
+        libxml_use_internal_errors(true);
+        $doc = new DOMDocument(null, 'UTF-8');
+        $messageHtml = mb_convert_encoding($messageHtml, 'HTML-ENTITIES', "UTF-8");
+        $doc->loadHTML($messageHtml, LIBXML_NOWARNING);
+        $messageHtml = $doc->saveHTML();
+        libxml_use_internal_errors(false);
+
+        return $messageHtml;
+    }
+
 
 }
