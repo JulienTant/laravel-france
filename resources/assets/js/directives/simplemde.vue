@@ -1,5 +1,5 @@
 <script type="text/ecmascript-6">
-    import SimpleMDE from 'simplemde'
+    import SimpleMDE from 'simplemde/dist/simplemde.min.js'
     import Laroute from '../laroute'
 
     export default {

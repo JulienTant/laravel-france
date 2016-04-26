@@ -3,7 +3,7 @@
 <head>
     <title>@yield('title', 'Laravel France')</title>
     <meta id="token" name="token" value="{{ csrf_token() }}" />
-    <link rel="stylesheet" href="/css/app.css">
+    <link rel="stylesheet" href="/css/app.css?v=201604261340">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body class="@yield('page_class')" id="app">
@@ -67,7 +67,7 @@
 @endif
 @include('vendor.sweet.alert')
 </body>
-<script src="/js/main.js"></script>
+<script src="/js/main.js?v=201604261340"></script>
 @if (App::environment() == "production")
 <script>
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

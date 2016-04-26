@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "e9753806ec31f07b92ced105aba520f7",
-    "content-hash": "fd1ff4fb783a96c8dcae9ac6dda3dbb9",
+    "hash": "e5de812c5d6012edf1075cac21c6d777",
+    "content-hash": "1e6030df80372debc675e11bd2ff7adc",
     "packages": [
         {
             "name": "classpreloader/classpreloader",
@@ -133,7 +133,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/JulienTant/laravel-slack-api/zipball/fb14a729a7c3567508a5635f78735b267994fd71",
+                "url": "https://api.github.com/repos/JulienTant/laravel-slack-api/zipball/a0d6b5f2760aa949e190811b7c29807aa4f0effb",
                 "reference": "fb14a729a7c3567508a5635f78735b267994fd71",
                 "shasum": ""
             },
@@ -184,7 +184,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cviebrock/eloquent-sluggable/zipball/de9822e2d3cf3aefce9c8301d231cde776fcc340",
+                "url": "https://api.github.com/repos/cviebrock/eloquent-sluggable/zipball/cea02a8b8035ce341d14c8529eb775b9514ed236",
                 "reference": "de9822e2d3cf3aefce9c8301d231cde776fcc340",
                 "shasum": ""
             },
@@ -886,7 +886,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/erusev/parsedown/zipball/0f974bf34fdc420c3a7dc0a6c5c5fc620fa9dd89",
+                "url": "https://api.github.com/repos/erusev/parsedown/zipball/490a8f35a4163f59230f53c34f1fbb22a864c01e",
                 "reference": "0f974bf34fdc420c3a7dc0a6c5c5fc620fa9dd89",
                 "shasum": ""
             },
@@ -1381,7 +1381,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/d7e7c3dd20fa02d6d3f756df5c626db7429642bf",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/532c9f8f4fdffb479a69920b94f290ae1b20ade2",
                 "reference": "d7e7c3dd20fa02d6d3f756df5c626db7429642bf",
                 "shasum": ""
             },
@@ -1498,6 +1498,52 @@
                 "laravel"
             ],
             "time": "2015-12-18 20:07:43"
+        },
+        {
+            "name": "laravel/homestead",
+            "version": "v3.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laravel/homestead.git",
+                "reference": "705449c3dbedbded4bd4f3ed725303c69253cad4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laravel/homestead/zipball/705449c3dbedbded4bd4f3ed725303c69253cad4",
+                "reference": "705449c3dbedbded4bd4f3ed725303c69253cad4",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.5.9",
+                "symfony/console": "~2.3|~3.0",
+                "symfony/process": "~2.3|~3.0"
+            },
+            "bin": [
+                "homestead"
+            ],
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "4.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Laravel\\Homestead\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Taylor Otwell",
+                    "email": "taylorotwell@gmail.com"
+                }
+            ],
+            "description": "A virtual machine for web artisans.",
+            "time": "2016-02-16 22:31:00"
         },
         {
             "name": "laravel/socialite",
@@ -2494,7 +2540,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-backup/zipball/410526b4fe508c5a728f6093ed5e3fc02adfc76f",
+                "url": "https://api.github.com/repos/spatie/laravel-backup/zipball/a083a0be211767c6dbae38f272b05d8ced7513d3",
                 "reference": "410526b4fe508c5a728f6093ed5e3fc02adfc76f",
                 "shasum": ""
             },
@@ -3779,47 +3825,6 @@
             "time": "2015-05-11 14:41:42"
         },
         {
-            "name": "laravel/homestead",
-            "version": "v2.1.8",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/laravel/homestead.git",
-                "reference": "301484041e062bb62b42d2bbbf0d636408d0f6b4"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/laravel/homestead/zipball/301484041e062bb62b42d2bbbf0d636408d0f6b4",
-                "reference": "301484041e062bb62b42d2bbbf0d636408d0f6b4",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.4",
-                "symfony/console": "~2.0",
-                "symfony/process": "~2.0"
-            },
-            "bin": [
-                "homestead"
-            ],
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Laravel\\Homestead\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Taylor Otwell",
-                    "email": "taylorotwell@gmail.com"
-                }
-            ],
-            "description": "A virtual machine for web artisans.",
-            "time": "2015-10-01 17:07:30"
-        },
-        {
             "name": "maximebf/debugbar",
             "version": "v1.10.5",
             "source": {
@@ -4962,7 +4967,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/yaml/zipball/177a015cb0e19ff4a49e0e2e2c5fc1c1bee07002",
+                "url": "https://api.github.com/repos/symfony/yaml/zipball/4113f97104ffdcb734e15c27fbe27a7e1a3ac3b0",
                 "reference": "177a015cb0e19ff4a49e0e2e2c5fc1c1bee07002",
                 "shasum": ""
             },

@@ -29,5 +29,7 @@
     "vueify": "^4.0.0",
     "vueify-insert-css": "^1.0.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "simplemde": "^1.10.1"
+  }
 }

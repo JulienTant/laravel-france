@@ -1,5 +1,5 @@
 <template>
-    <div class="Modal {{* class }}" v-show="show" transition="Modal" @click="clickOnMask" :class="{ 'Modal--Fullscreen': fullScreen }">
+    <div class="Modal" v-show="show" transition="Modal" @click="clickOnMask" :class="[class, fullScreen ? 'Modal--Fullscreen' : '']">
         <div class="Modal__Wrapper" @click="clickOnMask">
             <div class="Modal__Wrapper__Container">
                 <div class="Modal__Wrapper__Container__Header">
