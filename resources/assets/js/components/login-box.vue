@@ -1,5 +1,5 @@
 <template>
-    <modal :show.sync="showModal" class="LoginBox Modal--LoginBox">
+    <modal :show.sync="showModal" class="Modal--LoginBox">
         <h3 slot="header">Connexion</h3>
 
 
