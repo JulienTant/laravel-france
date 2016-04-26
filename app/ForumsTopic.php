@@ -189,7 +189,7 @@ class ForumsTopic extends Model implements SluggableInterface
      */
     public function deleteTopic()
     {
-        foreach($this->forumsMessages->lists('id') as $messageId) {
+        foreach($this->forumsMessages->pluck('id') as $messageId) {
             $this->deleteMessage($messageId, $force = true);
         }
         $this->delete();

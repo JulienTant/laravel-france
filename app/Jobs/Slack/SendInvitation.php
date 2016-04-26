@@ -8,7 +8,7 @@ use Illuminate\Contracts\Bus\SelfHandling;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use LaravelFrance\Jobs\Job;
 
-class SendInvitation extends Job implements SelfHandling, ShouldQueue
+class SendInvitation extends Job implements ShouldQueue
 {
     use InteractsWithQueue, SerializesModels;
 

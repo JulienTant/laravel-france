@@ -66,7 +66,7 @@ class ForumsController extends Controller
             ];
         }
 
-        $ids = ForumsTopic::search($searchArray)->toBase()->lists('id');
+        $ids = ForumsTopic::search($searchArray)->toBase()->pluck('id');
 
         $topics = ForumsTopic::with('user', 'forumsCategory', 'lastMessage', 'lastMessage.user',  'firstMessage')->findMany($ids);
 
@@ -109,7 +109,7 @@ class ForumsController extends Controller
         $messagesId = $message->forumsTopic->forumsMessages()
             ->orderBy('created_at',  'asc')
             ->select(['id'])->get(['id'])
-            ->lists('id');
+            ->pluck('id');
 
         $index = array_search($message->id, $messagesId->toArray());
 
