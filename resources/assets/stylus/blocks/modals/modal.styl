@@ -28,8 +28,13 @@
   padding: 1.7rem 2.2rem;
   background-color: $white;
   transition: all .3s ease;
-  overflow-y: scroll;
+  overflow-y: auto;
   max-height: 100%;
+
+  .Modal--Fullscreen & {
+    overflow-y: auto;
+    max-height: none!important;
+  }
 }
 
 .Modal__Wrapper__Container__Header__Buttons {

@@ -29,6 +29,17 @@
 
 <script  type="text/ecmascript-6">
     export default {
+        ready() {
+
+            var w = window,
+                    d = document,
+                    e = d.documentElement,
+                    g = d.getElementsByTagName('body')[0],
+                    y = w.innerHeight|| e.clientHeight|| g.clientHeight;
+
+            var wrappercontainer = this.$el.querySelector('.Modal__Wrapper__Container');
+            wrappercontainer.style.maxHeight = y-86 + "px";
+        },
         methods: {
             clickOnMask(e) {
                 e.stopPropagation();
@@ -36,7 +47,9 @@
 
                 if (this.fullScreen)  return;
 
-                this.show = false;
+                this.$nextTick(function () {
+                    this.show = false;
+                })
             },
             toggleFullScreen () {
                 this.fullScreen = !this.fullScreen;

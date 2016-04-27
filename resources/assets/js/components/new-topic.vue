@@ -1,7 +1,7 @@
 <template>
-    <button class="Button Button--NewTopic" id="show-modal" @click="showModal = true"><slot /></button>
+    <button class="Button Button--NewTopic" id="show-modal" @click="modal()"><slot /></button>
 
-    <modal :show.sync="showModal" class="Modal--NewTopic">
+    <modal :show.sync="showModal" class="Modal--NewTopic" :with-fullscreen="true">
         <h3 slot="header">Créer un sujet</h3>
 
         <div slot="body">
@@ -61,6 +61,12 @@
             'simplemde': SimpleMDE
         },
         methods: {
+            modal(str) {
+                console.log("into modal")
+                console.log(this.showModal)
+                this.showModal = true
+                console.log(this.showModal)
+            },
             submitForm(newTopic, event) {
                 event.preventDefault();
 
@@ -125,11 +131,12 @@
             this.categoriesJson = JSON.parse(this.categories);
 
             this.$watch('showModal', function (newValue, old) {
-                console.log(document.querySelector('body'));
-                if (newValue == true)
-                    document.querySelector('body').style.overflowY = 'hidden';
-                else
-                    document.querySelector('body').style.overflowY = '';
+                this.$nextTick(function () {
+                    if (newValue == true)
+                        document.querySelector('body').style.overflowY = 'hidden';
+                    else
+                        document.querySelector('body').style.overflowY = '';
+                })
             });
         }
     }
