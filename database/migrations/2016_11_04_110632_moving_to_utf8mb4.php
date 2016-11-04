@@ -11,6 +11,9 @@ class MovingToUtf8mb4 extends Migration
      */
     public function up()
     {
+        if (app()->environment() == "testing") {
+            return;
+        }
         $default = config("database.default");
         $db = config("database.connections." . $default . ".database");
         DB::unprepared('ALTER DATABASE ' . $db . ' CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci');
@@ -70,18 +73,5 @@ CHANGE `updated_at` `updated_at` TIMESTAMP  NULL;
      */
     public function down()
     {
-        $default = config("database.default");
-        $db = config("database.connections." . $default . ".database");
-        DB::unprepared('ALTER DATABASE ' . $db . ' CHARACTER SET utf8 COLLATE utf8_unicode_ci');
-        DB::unprepared('ALTER TABLE `failed_jobs` CHANGE `connection` `connection` TEXT  CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL');
-        DB::unprepared('ALTER TABLE `failed_jobs` CHANGE `queue` `queue` TEXT  CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL');
-        DB::unprepared('ALTER TABLE `failed_jobs` CHANGE `payload` `payload` LONGTEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL');
-
-        DB::unprepared("ALTER TABLE `forums_categories` CHANGE `name` `name` VARCHAR(255)  CHARACTER SET utf8  COLLATE utf8_unicode_ci  NOT NULL  DEFAULT '';");
-        DB::unprepared("ALTER TABLE `forums_categories` CHANGE `slug` `slug` VARCHAR(255)  CHARACTER SET utf8  COLLATE utf8_unicode_ci  NOT NULL  DEFAULT '';");
-        DB::unprepared("ALTER TABLE `forums_categories` CHANGE `background_color` `background_color` VARCHAR(255)  CHARACTER SET utf8  COLLATE utf8_unicode_ci  NOT NULL  DEFAULT '';");
-        DB::unprepared("ALTER TABLE `forums_categories` CHANGE `font_color` `font_color` VARCHAR(255)  CHARACTER SET utf8  COLLATE utf8_unicode_ci  NOT NULL  DEFAULT '';");
-        DB::unprepared("ALTER TABLE `forums_categories` CHANGE `description` `description` TEXT  CHARACTER SET utf8  COLLATE utf8_unicode_ci  NULL;");
-
     }
 }
