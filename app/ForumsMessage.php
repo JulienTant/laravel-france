@@ -20,8 +20,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property boolean $solve_topic
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
- * @property-read ForumsTopic $forumsTopic
- * @property-read User $user
+ * @property-read \LaravelFrance\ForumsTopic $forumsTopic
+ * @property-read \LaravelFrance\User $user
  * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\ForumsMessage whereId($value)
  * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\ForumsMessage whereForumsTopicId($value)
  * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\ForumsMessage whereUserId($value)
@@ -29,6 +29,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\ForumsMessage whereSolveTopic($value)
  * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\ForumsMessage whereCreatedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\ForumsMessage whereUpdatedAt($value)
+ * @mixin \Eloquent
  */
 class ForumsMessage extends Model
 {

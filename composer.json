@@ -24,7 +24,8 @@
     "league/flysystem-dropbox": "^1.0@dev",
     "spatie/laravel-backup": "3.10.2",
     "craftyx/slack-api": "dev-master",
-    "laravel/homestead": "~3.0"
+    "laravel/homestead": "~3.0",
+    "maknz/slack": "^1.7"
   },
   "require-dev": {
     "fzaninotto/faker": "~1.4",

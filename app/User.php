@@ -24,31 +24,22 @@ use LaravelFrance\Events\UserHasChangedHisUsername;
  * @property string $email
  * @property string $groups
  * @property string $forums_preferences
- * @property string $password
- * @property string $firstname
- * @property string $lastname
- * @property string $birthdate
- * @property string $city
+ * @property integer $nb_messages
  * @property string $remember_token
- * @property string $deleted_at
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection|OAuth[] $oauth
- * @property-read \Illuminate\Database\Eloquent\Collection|ForumsWatch[] $watchedTopics
+ * @property-read \Illuminate\Database\Eloquent\Collection|\LaravelFrance\OAuth[] $oauth
+ * @property-read \Illuminate\Database\Eloquent\Collection|\LaravelFrance\ForumsWatch[] $watchedTopics
  * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\User whereId($value)
  * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\User whereUsername($value)
  * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\User whereEmail($value)
  * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\User whereGroups($value)
  * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\User whereForumsPreferences($value)
- * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\User wherePassword($value)
- * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\User whereFirstname($value)
- * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\User whereLastname($value)
- * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\User whereBirthdate($value)
- * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\User whereCity($value)
+ * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\User whereNbMessages($value)
  * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\User whereRememberToken($value)
- * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\User whereDeletedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\User whereCreatedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\User whereUpdatedAt($value)
+ * @mixin \Eloquent
  */
 class User extends Model implements AuthenticatableContract,
     AuthorizableContract,

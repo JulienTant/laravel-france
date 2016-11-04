@@ -20,7 +20,7 @@ use Laravel\Socialite\Contracts\User as SocialiteUser;
  * @property string $uid
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
- * @property-read User $user
+ * @property-read \LaravelFrance\User $user
  * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\OAuth whereId($value)
  * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\OAuth whereUserId($value)
  * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\OAuth whereProvider($value)
@@ -30,6 +30,7 @@ use Laravel\Socialite\Contracts\User as SocialiteUser;
  * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\OAuth twitter()
  * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\OAuth github()
  * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\OAuth google()
+ * @mixin \Eloquent
  */
 class OAuth extends Model
 {

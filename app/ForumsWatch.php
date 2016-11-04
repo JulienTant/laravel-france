@@ -20,9 +20,10 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  * @property boolean $still_watching
- * @property-read ForumsTopic $forumsTopic
- * @property-read User $user
- * @property-read ForumsMessage $firstUnreadMessage
+ * @property integer $first_unread_message_id
+ * @property-read \LaravelFrance\ForumsTopic $forumsTopic
+ * @property-read \LaravelFrance\User $user
+ * @property-read \LaravelFrance\ForumsMessage $firstUnreadMessage
  * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\ForumsWatch whereId($value)
  * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\ForumsWatch whereForumsTopicId($value)
  * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\ForumsWatch whereUserId($value)
@@ -30,8 +31,10 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\ForumsWatch whereCreatedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\ForumsWatch whereUpdatedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\ForumsWatch whereStillWatching($value)
+ * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\ForumsWatch whereFirstUnreadMessageId($value)
  * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\ForumsWatch mailable()
  * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\ForumsWatch active()
+ * @mixin \Eloquent
  */
 class ForumsWatch extends Model
 {

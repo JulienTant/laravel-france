@@ -31,6 +31,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\ForumsCategory whereDescription($value)
  * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\ForumsCategory whereCreatedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\ForumsCategory whereUpdatedAt($value)
+ * @mixin \Eloquent
  */
 class ForumsCategory extends Model
 {

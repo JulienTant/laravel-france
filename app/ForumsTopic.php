@@ -33,12 +33,12 @@ use LaravelFrance\Events\ForumsTopicWasSolved;
  * @property integer $nb_messages
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection|ForumsMessage[] $forumsMessages
- * @property-read ForumsMessage $firstMessage
- * @property-read ForumsCategory $forumsCategory
- * @property-read User $user
- * @property-read ForumsMessage $lastMessage
- * @property-read ForumsMessage $solvedBy
+ * @property-read \Illuminate\Database\Eloquent\Collection|\LaravelFrance\ForumsMessage[] $forumsMessages
+ * @property-read \LaravelFrance\ForumsMessage $firstMessage
+ * @property-read \LaravelFrance\ForumsCategory $forumsCategory
+ * @property-read \LaravelFrance\User $user
+ * @property-read \LaravelFrance\ForumsMessage $lastMessage
+ * @property-read \LaravelFrance\ForumsMessage $solvedBy
  * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\ForumsTopic whereId($value)
  * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\ForumsTopic whereForumsCategoryId($value)
  * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\ForumsTopic whereUserId($value)
@@ -52,6 +52,8 @@ use LaravelFrance\Events\ForumsTopicWasSolved;
  * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\ForumsTopic whereCreatedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\ForumsTopic whereUpdatedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\ForumsTopic forListing()
+ * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\ForumsTopic findSimilarSlugs($model, $attribute, $config, $slug)
+ * @mixin \Eloquent
  */
 class ForumsTopic extends Model
 {
