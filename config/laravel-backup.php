@@ -109,7 +109,7 @@ return [
      */
     'monitorBackups' => [
         [
-            'name' => env('APP_URL'),
+            'name' => "backup/laravel-france",
             'disks' => ['local', 'dropbox'],
             'newestBackupsShouldNotBeOlderThanDays' => 1,
             'storageUsedMayNotBeHigherThanMegabytes' => 5000,
