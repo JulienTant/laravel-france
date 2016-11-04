@@ -2,11 +2,11 @@
 
 namespace LaravelFrance\Providers;
 
-use Storage;
-use League\Flysystem\Filesystem;
 use Dropbox\Client as DropboxClient;
 use Illuminate\Support\ServiceProvider;
 use League\Flysystem\Dropbox\DropboxAdapter;
+use League\Flysystem\Filesystem;
+use Storage;
 
 class DropboxServiceProvider extends ServiceProvider
 {

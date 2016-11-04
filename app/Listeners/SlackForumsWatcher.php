@@ -3,9 +3,9 @@
 namespace LaravelFrance\Listeners;
 
 use Craftyx\SlackApi\Contracts\SlackChat;
-use LaravelFrance\Events\ForumsTopicPosted;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Queue\InteractsWithQueue;
+use LaravelFrance\Events\ForumsTopicPosted;
 
 class SlackForumsWatcher implements ShouldQueue
 {

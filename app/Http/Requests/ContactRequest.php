@@ -2,8 +2,6 @@
 
 namespace LaravelFrance\Http\Requests;
 
-use LaravelFrance\Http\Requests\Request;
-
 class ContactRequest extends Request
 {
     /**

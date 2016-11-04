@@ -8,7 +8,6 @@ use LaravelFrance\ForumsCategory;
 use LaravelFrance\ForumsMessage;
 use LaravelFrance\ForumsTopic;
 use LaravelFrance\ForumsWatch;
-use LaravelFrance\Http\Requests;
 
 class ForumsController extends Controller
 {
@@ -27,10 +26,10 @@ class ForumsController extends Controller
     {
         $chosenCategory = null;
         if ($categorySlug) {
-            $chosenCategory = \LaravelFrance\ForumsCategory::whereSlug($categorySlug)->firstOrFail();
+            $chosenCategory = ForumsCategory::whereSlug($categorySlug)->firstOrFail();
         }
 
-        $topicsQuery = \LaravelFrance\ForumsTopic::forListing();
+        $topicsQuery = ForumsTopic::forListing();
         if (!!$chosenCategory) {
             $topicsQuery = $topicsQuery->whereForumsCategoryId($chosenCategory->id);
         }
@@ -82,8 +81,8 @@ class ForumsController extends Controller
 
     public function topic(Request $request, $categorySlug, $topicSlug)
     {
-        $chosenCategory = \LaravelFrance\ForumsCategory::whereSlug($categorySlug)->firstOrFail();
-        $topic = \LaravelFrance\ForumsTopic::whereForumsCategoryId($chosenCategory->id)
+        $chosenCategory = ForumsCategory::whereSlug($categorySlug)->firstOrFail();
+        $topic = ForumsTopic::whereForumsCategoryId($chosenCategory->id)
             ->whereSlug($topicSlug)
             ->orderBy('updated_at', 'DESC')
             ->firstOrFail();

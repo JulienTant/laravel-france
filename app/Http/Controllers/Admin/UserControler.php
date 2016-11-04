@@ -2,10 +2,8 @@
 
 namespace LaravelFrance\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
-
-use LaravelFrance\Http\Requests;
 use LaravelFrance\Http\Controllers\Controller;
+use LaravelFrance\Http\Requests;
 use LaravelFrance\User;
 
 class UserControler extends Controller

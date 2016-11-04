@@ -10,7 +10,6 @@ use LaravelFrance\Exceptions\UsernameAlreadyTaken;
 use LaravelFrance\Guards\EmailIsUnique;
 use LaravelFrance\Guards\Guards;
 use LaravelFrance\Guards\UsernameIsUnique;
-use LaravelFrance\Http\Requests;
 use LaravelFrance\OAuth;
 use LaravelFrance\User;
 

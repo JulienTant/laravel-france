@@ -156,7 +156,7 @@ return [
         Laravel\Socialite\SocialiteServiceProvider::class,
         UxWeb\SweetAlert\SweetAlertServiceProvider::class,
         Lord\Laroute\LarouteServiceProvider::class,
-        Cviebrock\EloquentSluggable\SluggableServiceProvider::class,
+        Cviebrock\EloquentSluggable\ServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
         Spatie\Backup\BackupServiceProvider::class,
         Craftyx\SlackApi\SlackApiServiceProvider::class,

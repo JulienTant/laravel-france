@@ -8,8 +8,6 @@
 namespace LaravelFrance\Providers;
 
 
-use Carbon\Carbon;
-use Illuminate\Contracts\View\View;
 use Illuminate\Support\ServiceProvider;
 use LaravelFrance\Http\ViewComposers\Forums\Sidebar;
 

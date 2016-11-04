@@ -5,7 +5,6 @@ namespace LaravelFrance\Providers;
 use Illuminate\Auth\Access\Gate;
 use Illuminate\Contracts\Auth\Access\Gate as GateContract;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
-use Illuminate\Support\Str;
 use LaravelFrance\ForumsCategory;
 use LaravelFrance\ForumsMessage;
 use LaravelFrance\ForumsTopic;

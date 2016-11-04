@@ -2,9 +2,7 @@
 
 namespace LaravelFrance\Events;
 
-use LaravelFrance\Events\Event;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
 class UserHasChangedHisAvatar extends Event
 {

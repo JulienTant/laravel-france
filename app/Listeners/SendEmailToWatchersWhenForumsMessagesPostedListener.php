@@ -4,11 +4,8 @@ namespace LaravelFrance\Listeners;
 
 use Illuminate\Mail\Mailer;
 use Illuminate\Mail\Message;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use LaravelFrance\Events\ForumsMessagePostedOnForumsTopic;
 use LaravelFrance\ForumsWatch;
-use LaravelFrance\User;
 
 class SendEmailToWatchersWhenForumsMessagesPostedListener
 {

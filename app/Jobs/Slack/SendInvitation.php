@@ -2,10 +2,9 @@
 
 namespace LaravelFrance\Jobs\Slack;
 
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Bus\SelfHandling;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
 use LaravelFrance\Jobs\Job;
 
 class SendInvitation extends Job implements ShouldQueue

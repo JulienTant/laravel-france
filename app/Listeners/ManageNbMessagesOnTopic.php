@@ -3,8 +3,6 @@
 namespace LaravelFrance\Listeners;
 
 use LaravelFrance\Events\ForumsMessagePostedOnForumsTopic;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use LaravelFrance\Events\ForumsMessageWasDeleted;
 use LaravelFrance\ForumsTopic;
 

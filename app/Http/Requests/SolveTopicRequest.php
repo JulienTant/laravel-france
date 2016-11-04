@@ -4,7 +4,6 @@ namespace LaravelFrance\Http\Requests;
 
 use Illuminate\Contracts\Auth\Access\Gate;
 use LaravelFrance\ForumsTopic;
-use LaravelFrance\Http\Requests\Request;
 
 class SolveTopicRequest extends Request
 {

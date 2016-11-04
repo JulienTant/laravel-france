@@ -5,7 +5,6 @@ namespace LaravelFrance\Providers;
 use Barryvdh\Debugbar\ServiceProvider as DebugbarServiceProvider;
 use Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\View\View;
 
 class AppServiceProvider extends ServiceProvider
 {

@@ -3,12 +3,10 @@
 namespace LaravelFrance\Jobs;
 
 use Illuminate\Contracts\Mail\Mailer;
-use Illuminate\Mail\Message;
-use LaravelFrance\Jobs\Job;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Bus\SelfHandling;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Mail\Message;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
 
 class SendContactEmail extends Job implements ShouldQueue
 {

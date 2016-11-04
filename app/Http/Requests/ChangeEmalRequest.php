@@ -3,7 +3,6 @@
 namespace LaravelFrance\Http\Requests;
 
 use Illuminate\Contracts\Auth\Access\Gate;
-use LaravelFrance\Http\Requests\Request;
 
 class ChangeEmalRequest extends Request
 {

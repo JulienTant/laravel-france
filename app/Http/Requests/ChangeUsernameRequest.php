@@ -3,8 +3,6 @@
 namespace LaravelFrance\Http\Requests;
 
 use Illuminate\Contracts\Auth\Access\Gate;
-use Illuminate\Contracts\Auth\Guard;
-use LaravelFrance\Http\Requests\Request;
 
 class ChangeUsernameRequest extends Request
 {

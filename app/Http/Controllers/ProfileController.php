@@ -3,9 +3,6 @@
 namespace LaravelFrance\Http\Controllers;
 
 use Illuminate\Http\Request;
-
-use LaravelFrance\Http\Requests;
-use LaravelFrance\Http\Controllers\Controller;
 use LaravelFrance\Http\Requests\ChangeEmalRequest;
 use LaravelFrance\Http\Requests\ChangeUserForumsPreferencesRequest;
 use LaravelFrance\Http\Requests\ChangeUsernameRequest;

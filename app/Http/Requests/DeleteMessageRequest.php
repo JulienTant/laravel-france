@@ -2,7 +2,6 @@
 
 namespace LaravelFrance\Http\Requests;
 
-use LaravelFrance\Http\Requests\Request;
 use Illuminate\Contracts\Auth\Access\Gate;
 use LaravelFrance\ForumsMessage;
 

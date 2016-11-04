@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use LaravelFrance\ForumsMessage;
 use LaravelFrance\ForumsTopic;
 use LaravelFrance\ForumsWatch;
-use LaravelFrance\Http\Requests;
 use LaravelFrance\Http\Controllers\Controller;
 use LaravelFrance\Http\Requests\AnswerToTopicRequest;
 use LaravelFrance\Http\Requests\DeleteMessageRequest;

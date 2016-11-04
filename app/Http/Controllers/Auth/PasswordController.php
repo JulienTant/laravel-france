@@ -2,8 +2,8 @@
 
 namespace LaravelFrance\Http\Controllers\Auth;
 
-use LaravelFrance\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ResetsPasswords;
+use LaravelFrance\Http\Controllers\Controller;
 
 class PasswordController extends Controller
 {

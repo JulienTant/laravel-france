@@ -8,8 +8,7 @@
 namespace LaravelFrance;
 
 
-use Cviebrock\EloquentSluggable\SluggableInterface;
-use Cviebrock\EloquentSluggable\SluggableTrait;
+use Cviebrock\EloquentSluggable\Sluggable;
 use Fadion\Bouncy\BouncyTrait;
 use Illuminate\Database\Eloquent\Model;
 use LaravelFrance\Events\ForumsMessagePostedOnForumsTopic;
@@ -54,14 +53,18 @@ use LaravelFrance\Events\ForumsTopicWasSolved;
  * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\ForumsTopic whereUpdatedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\ForumsTopic forListing()
  */
-class ForumsTopic extends Model implements SluggableInterface
+class ForumsTopic extends Model
 {
-    use BouncyTrait, SluggableTrait;
+    use BouncyTrait, Sluggable;
 
-    protected $sluggable = [
-        'build_from' => 'title',
-    ];
-
+    public function sluggable()
+    {
+        return [
+            'slug' => [
+                'source' => 'title'
+            ]
+        ];
+    }
 
     public function forumsMessages()
     {
