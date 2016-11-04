@@ -2,6 +2,7 @@
 
 namespace LaravelFrance\Http\Controllers\Api;
 
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use LaravelFrance\ForumsMessage;
 use LaravelFrance\ForumsTopic;
@@ -27,6 +28,11 @@ class ForumsController extends Controller
      */
     public function post(StoreTopicRequest $request)
     {
+        if (str_slug($request->title) == "") {
+            return new JsonResponse(["title" => ["Le contenu de votre titre est incorrect."]], 422);
+        }
+
+
         $topic = ForumsTopic::post(
             $request->user(),
             $request->title,
@@ -55,13 +61,14 @@ class ForumsController extends Controller
 
     /**
      * Get a Message From its ID
-     * 
+     *
      * @param $messageId
      * @return mixed
      */
     public function message($topicId, $messageId)
     {
         $topic = ForumsTopic::findOrFail($topicId);
+
         return $topic->forumsMessages()->findOrFail($messageId);
     }
 
@@ -114,6 +121,7 @@ class ForumsController extends Controller
     public function watch(Request $request, $topicId)
     {
         $watched = ForumsWatch::active()->whereUserId($request->user()->id)->whereForumsTopicId($topicId)->exists();
+
         return ['watched' => $watched];
     }
 
@@ -124,7 +132,7 @@ class ForumsController extends Controller
 
         /** @var ForumsWatch $forumWatcher */
         $forumWatcher = ForumsWatch::whereUserId($request->user()->id)->whereForumsTopicId($topicId)->first();
-        if(!$forumWatcher) {
+        if (!$forumWatcher) {
             ForumsWatch::createWatcher($request->user(), $topic);
         } else {
             $forumWatcher->toggleWatch();
@@ -132,6 +140,7 @@ class ForumsController extends Controller
 
 
         $watched = ForumsWatch::active()->whereUserId($request->user()->id)->whereForumsTopicId($topicId)->exists();
+
         return ['watched' => $watched];
     }
 }
