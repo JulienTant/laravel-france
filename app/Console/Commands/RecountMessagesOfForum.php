@@ -2,9 +2,10 @@
 
 namespace LaravelFrance\Console\Commands;
 
-use Elasticsearch\Client;
 use Illuminate\Console\Command;
 use LaravelFrance\ForumsTopic;
+use LaravelFrance\User;
+use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 
 class RecountMessagesOfForum extends Command
 {
@@ -38,19 +39,61 @@ class RecountMessagesOfForum extends Command
      */
     public function handle()
     {
+        $this->registerWarningStyle();
+
+        $errors = ["topics" => [], "users" => []];
         $this->output->write("<info>Recounting nb messages foreach topic...</info>");
-        foreach(\LaravelFrance\ForumsTopic::withCount('forumsMessages')->get() as $topic) {
+        foreach (ForumsTopic::withCount('forumsMessages')->get() as $topic) {
+            $old = $topic->nb_messages;
             $topic->nb_messages = $topic->forums_messages_count;
             $topic->save();
+
+            if ($topic->nb_messages != $old) {
+                $errors["topics"][] = " #" . $topic->id . " - " . $topic->title . " : $old => " . $topic->nb_messages;
+            }
         }
-        $this->output->writeln("<info>OK</info>");
+        $warnOrInfo = count($errors["topics"]) > 0 ? "warning" : "info";
+        $this->output->writeln("<$warnOrInfo>OK</$warnOrInfo>");
+
 
         $this->output->write("<info>Recounting nb messages foreach user...</info>");
-        foreach(\LaravelFrance\User::withCount('forumsMessages')->get() as $user) {
+        foreach (User::withCount('forumsMessages')->get() as $user) {
+            $old = $user->nb_messages;
             $user->nb_messages = $user->forums_messages_count;
             $user->save();
-        }
-        $this->output->writeln("<info>OK</info>");
 
+            if ($user->nb_messages != $old) {
+                $errors["users"][] = "#" . $user->id . " - " . $user->username . " : $old => " . $user->nb_messages;
+            }
+
+        }
+        $warnOrInfo = count($errors["users"]) > 0 ? "warning" : "info";
+        $this->output->writeln("<$warnOrInfo>OK</$warnOrInfo>");
+
+        foreach ($errors as $errorsByType) {
+            if (count($errorsByType) > 0) {
+                $this->line('');
+                break;
+            }
+        }
+
+        foreach ($errors as $type => $errorsOftype) {
+            if (count($errorsOftype) > 0) {
+                $this->warn(ucfirst($type));
+                foreach ($errorsOftype as $error) {
+                    $this->warn("└─" . $error);
+                }
+            }
+        }
+
+    }
+
+    private function registerWarningStyle()
+    {
+        if (!$this->output->getFormatter()->hasStyle('warning')) {
+            $style = new OutputFormatterStyle('yellow');
+
+            $this->output->getFormatter()->setStyle('warning', $style);
+        }
     }
 }
