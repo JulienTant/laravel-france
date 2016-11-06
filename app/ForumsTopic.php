@@ -164,7 +164,7 @@ class ForumsTopic extends Model
 
     public function incrementNbMessages($step = 1)
     {
-        $this->nb_messages += 1;
+        $this->nb_messages += $step;
     }
 
     public function decrementNbMessages()
