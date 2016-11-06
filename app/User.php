@@ -169,5 +169,10 @@ class User extends Model implements AuthenticatableContract,
         return $this->forums_preferences[$key];
     }
 
+    public function forumsMessages()
+    {
+        return $this->hasMany(ForumsMessage::class);
+    }
+
 
 }
