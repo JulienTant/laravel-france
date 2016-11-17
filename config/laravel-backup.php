@@ -29,7 +29,7 @@ return [
                 'exclude' => [
                     base_path('vendor'),
                     base_path('node_modules'),
-                    storage_path('app/backup/laravel-france'),
+                    storage_path('app/backup-laravel-france'),
                 ],
 
                 /*
