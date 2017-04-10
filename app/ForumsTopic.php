@@ -9,7 +9,6 @@ namespace LaravelFrance;
 
 
 use Cviebrock\EloquentSluggable\Sluggable;
-use Fadion\Bouncy\BouncyTrait;
 use Illuminate\Database\Eloquent\Model;
 use LaravelFrance\Events\ForumsMessagePostedOnForumsTopic;
 use LaravelFrance\Events\ForumsMessageWasDeleted;

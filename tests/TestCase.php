@@ -12,7 +12,6 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase
     public function setUp()
     {
         parent::setUp();
-        app('config')->set('bouncy.auto_index', false);
     }
 
 
