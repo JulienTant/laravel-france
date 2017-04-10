@@ -4,13 +4,6 @@
 
 @section('forums_content')
 
-    <div class="Forums__Searchbar">
-        <form action="{{ route('forums.search') }}">
-            <input type="hidden" name="c" value="{{ Request::get('c') }}" />
-            <input type="text" class="Forums__Searchbar__Field" name="q" value="{{ Request::get('q') }}" placeholder="Rechercher" />
-        </form>
-    </div>
-
     <ul class="Forums__TopicList">
         @forelse($topics as $topic)
             @include('forums._topic_in_list', ['topic' => $topic])
