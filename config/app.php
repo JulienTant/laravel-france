@@ -152,7 +152,6 @@ return [
         LaravelFrance\Providers\DropboxServiceProvider::class,
 
 
-        Fadion\Bouncy\BouncyServiceProvider::class,
         Laravel\Socialite\SocialiteServiceProvider::class,
         UxWeb\SweetAlert\SweetAlertServiceProvider::class,
         Lord\Laroute\LarouteServiceProvider::class,

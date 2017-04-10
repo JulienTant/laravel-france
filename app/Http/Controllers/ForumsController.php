@@ -38,47 +38,6 @@ class ForumsController extends Controller
         return view('forums.topics', compact('topics', 'chosenCategory'));
     }
 
-    public function search(Request $request)
-    {
-        $searchArray = [
-            "size" => 100,
-            "query" => [
-                "filtered" => [
-                    'query' => [
-                        'multi_match' => [
-                            'query' => $request->get('q'),
-                            'fields' => ["title^2", "content"]
-                        ],
-                    ],
-                ],
-            ],
-            'sort' => [
-                '_score' => [
-                    'order' => 'desc'
-                ]
-            ]
-        ];
-
-        if ($request->get('c') && $category = ForumsCategory::whereSlug($request->get('c'))->first()) {
-            $searchArray['query']['filtered']['filter'] = [
-                'term' => ['forums_category_id' => $category->id]
-            ];
-        }
-
-        $ids = ForumsTopic::search($searchArray)->toBase()->pluck('id');
-
-        $topics = ForumsTopic::with('user', 'forumsCategory', 'lastMessage', 'lastMessage.user',  'firstMessage')->findMany($ids);
-
-        $sortedTopics = collect();
-        foreach($ids as $id) {
-            $sortedTopics->push($topics->find($id));
-        }
-
-
-        return view('forums.search', ['topics' => $sortedTopics]);
-
-    }
-
     public function topic(Request $request, $categorySlug, $topicSlug)
     {
         $chosenCategory = ForumsCategory::whereSlug($categorySlug)->firstOrFail();

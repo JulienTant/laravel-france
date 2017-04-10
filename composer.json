@@ -10,7 +10,6 @@
   "require": {
     "php": ">=5.5.9",
     "laravel/framework": "5.2.*",
-    "fadion/bouncy": "dev-l5",
     "doctrine/dbal": "~2.3",
     "league/html-to-markdown": "^4.1@dev",
     "laravel/socialite": "^3.0@dev",
