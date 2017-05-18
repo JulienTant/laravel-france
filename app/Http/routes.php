@@ -9,7 +9,6 @@ $router->group(['domain' => Config::get('app.app_domain')], function ($router) {
     $router->get('/', ['as' => 'forums.index', 'uses' => 'ForumsController@topics']);
 
     $router->get('c/{slug}', ['as' => 'forums.by-category', 'uses' => 'ForumsController@topics']);
-    $router->get('search', ['as' => 'forums.search', 'uses' => 'ForumsController@search']);
     $router->get('/t/{categorySlug}/{topicSlug}', ['as' => 'forums.show-topic', 'uses' => 'ForumsController@topic']);
     $router->get('/m/{messageId}', ['as' => 'forums.show-message', 'uses' => 'ForumsController@message']);
 

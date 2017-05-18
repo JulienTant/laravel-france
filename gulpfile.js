@@ -29,6 +29,8 @@ elixir(function(mix) {
 
     mix.browserify('main.js');
 
+    mix.j
+
     mix.browserSync({
         proxy: 'homestead.app',
         open: false
