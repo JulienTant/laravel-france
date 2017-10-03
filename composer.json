@@ -20,11 +20,11 @@
     "erusev/parsedown": "dev-master",
     "pda/pheanstalk": "~3.0",
     "laravelcollective/html": "5.2.*",
-    "league/flysystem-dropbox": "^1.0@dev",
     "spatie/laravel-backup": "3.10.2",
     "craftyx/slack-api": "dev-master",
     "laravel/homestead": "~3.0",
-    "maknz/slack": "^1.7"
+    "maknz/slack": "^1.7",
+    "spatie/flysystem-dropbox": "^1.0"
   },
   "require-dev": {
     "fzaninotto/faker": "~1.4",
