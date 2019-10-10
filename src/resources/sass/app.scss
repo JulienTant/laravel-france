@@ -1,0 +1,39 @@
+// Fonts
+@import url('https://fonts.googleapis.com/css?family=Nunito');
+
+// Variables
+@import 'variables';
+
+// font awesome
+@import "~font-awesome/scss/font-awesome.scss";
+
+// Bootstrap
+@import '~bootstrap/scss/bootstrap';
+
+
+.post {
+    background-color: #ffffff;
+    border-radius: 2px;
+    box-shadow: 0 1px 2px #c9cccd;
+    margin-bottom: 20px;
+    padding-top: 20px;
+
+    & .avatar {
+        overflow: hidden;
+        overflow-wrap: anywhere;
+        text-align: center
+    }
+}
+
+.category-color {
+    height: 1rem;
+    border-radius: 5px;
+    width: 1rem;
+    margin-right: .5rem;
+    display: inline-block;
+}
+
+
+.category-list {
+    list-style: none;
+}
