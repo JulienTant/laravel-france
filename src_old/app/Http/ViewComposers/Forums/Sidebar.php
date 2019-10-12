@@ -5,14 +5,14 @@
  * @author Julien Tant - Craftyx <julien@craftyx.fr>
  */
 
-namespace LaravelFrance\Http\ViewComposers\Forums;
+namespace LaravelFranceOld\Http\ViewComposers\Forums;
 
 use Carbon\Carbon;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Contracts\Cache\Repository;
 use Illuminate\Contracts\View\View;
-use LaravelFrance\ForumsCategory;
-use LaravelFrance\ForumsWatch;
+use LaravelFranceOld\ForumsCategory;
+use LaravelFranceOld\ForumsWatch;
 
 class Sidebar
 {

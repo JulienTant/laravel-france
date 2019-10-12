@@ -1,9 +1,9 @@
 <?php
 
-namespace LaravelFrance\Http\Requests;
+namespace LaravelFranceOld\Http\Requests;
 
 use Illuminate\Contracts\Auth\Access\Gate;
-use LaravelFrance\ForumsCategory;
+use LaravelFranceOld\ForumsCategory;
 
 class StoreTopicRequest extends Request
 {

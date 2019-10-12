@@ -1,6 +1,6 @@
 <?php
 
-namespace LaravelFrance\Http\Middleware;
+namespace LaravelFranceOld\Http\Middleware;
 
 use Closure;
 use Illuminate\Contracts\Foundation\Application;
@@ -30,7 +30,7 @@ class LocalEnvironment
         if ($this->application->environment() != "local") {
             return;
         }
-        
+
         return $next($request);
     }
 }

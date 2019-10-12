@@ -5,11 +5,11 @@
  * @author Julien Tant - Craftyx <julien@craftyx.fr>
  */
 
-namespace LaravelFrance\Providers;
+namespace LaravelFranceOld\Providers;
 
 
 use Illuminate\Support\ServiceProvider;
-use LaravelFrance\Http\ViewComposers\Forums\Sidebar;
+use LaravelFranceOld\Http\ViewComposers\Forums\Sidebar;
 
 class ViewComposerServiceProvider extends ServiceProvider
 {

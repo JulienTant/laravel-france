@@ -5,11 +5,11 @@
  * @author Julien Tant - Craftyx <julien@craftyx.fr>
  */
 
-namespace LaravelFrance\Guards;
+namespace LaravelFranceOld\Guards;
 
 
-use LaravelFrance\Exceptions\UsernameAlreadyTaken;
-use LaravelFrance\User;
+use LaravelFranceOld\Exceptions\UsernameAlreadyTaken;
+use LaravelFranceOld\User;
 
 class UsernameIsUnique extends Guard
 {

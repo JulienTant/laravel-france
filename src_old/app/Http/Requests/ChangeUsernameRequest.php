@@ -1,6 +1,6 @@
 <?php
 
-namespace LaravelFrance\Http\Requests;
+namespace LaravelFranceOld\Http\Requests;
 
 use Illuminate\Contracts\Auth\Access\Gate;
 

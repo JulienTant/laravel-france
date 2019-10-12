@@ -4,10 +4,10 @@
  *
  * @author Julien Tant - Craftyx <julien@craftyx.fr>
  */
-namespace LaravelFrance\Guards;
+namespace LaravelFranceOld\Guards;
 
-use LaravelFrance\Exceptions\EmailAlreadyTaken;
-use LaravelFrance\User;
+use LaravelFranceOld\Exceptions\EmailAlreadyTaken;
+use LaravelFranceOld\User;
 
 class EmailIsUnique extends Guard
 {

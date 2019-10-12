@@ -1,9 +1,9 @@
 <?php
 
-namespace LaravelFrance\Http\Controllers;
+namespace LaravelFranceOld\Http\Controllers;
 
-use LaravelFrance\Http\Requests\ContactRequest;
-use LaravelFrance\Jobs\SendContactEmail;
+use LaravelFranceOld\Http\Requests\ContactRequest;
+use LaravelFranceOld\Jobs\SendContactEmail;
 
 class ContactController extends Controller
 {

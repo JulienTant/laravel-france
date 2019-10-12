@@ -1,6 +1,6 @@
 <?php
 
-namespace LaravelFrance\Console\Commands;
+namespace LaravelFranceOld\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Foundation\Inspiring;

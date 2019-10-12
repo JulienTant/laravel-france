@@ -1,11 +1,11 @@
 <?php
 
-namespace LaravelFrance\Http\Controllers\Auth;
+namespace LaravelFranceOld\Http\Controllers\Auth;
 
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
-use LaravelFrance\Http\Controllers\Controller;
-use LaravelFrance\User;
+use LaravelFranceOld\Http\Controllers\Controller;
+use LaravelFranceOld\User;
 use Validator;
 
 class AuthController extends Controller

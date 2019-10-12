@@ -1,10 +1,10 @@
 <?php
 
-namespace LaravelFrance\Events;
+namespace LaravelFranceOld\Events;
 
 use Illuminate\Queue\SerializesModels;
-use LaravelFrance\ForumsMessage;
-use LaravelFrance\ForumsTopic;
+use LaravelFranceOld\ForumsMessage;
+use LaravelFranceOld\ForumsTopic;
 
 class ForumsTopicWasSolved extends Event
 {

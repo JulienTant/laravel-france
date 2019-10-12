@@ -5,7 +5,7 @@
  * @author Julien Tant - Craftyx <julien@craftyx.fr>
  */
 
-namespace LaravelFrance\Guards;
+namespace LaravelFranceOld\Guards;
 
 
 use Exception;

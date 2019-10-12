@@ -1,9 +1,9 @@
 <?php
 
-namespace LaravelFrance\Events;
+namespace LaravelFranceOld\Events;
 
 use Illuminate\Queue\SerializesModels;
-use LaravelFrance\ForumsMessage;
+use LaravelFranceOld\ForumsMessage;
 
 class ForumsMessageWasDeleted extends Event
 {

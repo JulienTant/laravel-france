@@ -1,6 +1,6 @@
 <?php
 
-namespace LaravelFrance;
+namespace LaravelFranceOld;
 
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Auth\Passwords\CanResetPassword;
@@ -10,14 +10,14 @@ use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\Access\Authorizable;
 use Laravel\Socialite\Contracts\User as SocialiteUser;
-use LaravelFrance\Events\UserForumsPreferencesWasChanged;
-use LaravelFrance\Events\UserGroupsWasChanged;
-use LaravelFrance\Events\UserHasChangedHisAvatar;
-use LaravelFrance\Events\UserHasChangedHisUsername;
+use LaravelFranceOld\Events\UserForumsPreferencesWasChanged;
+use LaravelFranceOld\Events\UserGroupsWasChanged;
+use LaravelFranceOld\Events\UserHasChangedHisAvatar;
+use LaravelFranceOld\Events\UserHasChangedHisUsername;
 
 
 /**
- * LaravelFrance\User
+ * LaravelFranceOld\User
  *
  * @property integer $id
  * @property string $username
@@ -28,17 +28,17 @@ use LaravelFrance\Events\UserHasChangedHisUsername;
  * @property string $remember_token
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection|\LaravelFrance\OAuth[] $oauth
- * @property-read \Illuminate\Database\Eloquent\Collection|\LaravelFrance\ForumsWatch[] $watchedTopics
- * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\User whereId($value)
- * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\User whereUsername($value)
- * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\User whereEmail($value)
- * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\User whereGroups($value)
- * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\User whereForumsPreferences($value)
- * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\User whereNbMessages($value)
- * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\User whereRememberToken($value)
- * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\User whereCreatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\User whereUpdatedAt($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection|\LaravelFranceOld\OAuth[] $oauth
+ * @property-read \Illuminate\Database\Eloquent\Collection|\LaravelFranceOld\ForumsWatch[] $watchedTopics
+ * @method static \Illuminate\Database\Query\Builder|\LaravelFranceOld\User whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\LaravelFranceOld\User whereUsername($value)
+ * @method static \Illuminate\Database\Query\Builder|\LaravelFranceOld\User whereEmail($value)
+ * @method static \Illuminate\Database\Query\Builder|\LaravelFranceOld\User whereGroups($value)
+ * @method static \Illuminate\Database\Query\Builder|\LaravelFranceOld\User whereForumsPreferences($value)
+ * @method static \Illuminate\Database\Query\Builder|\LaravelFranceOld\User whereNbMessages($value)
+ * @method static \Illuminate\Database\Query\Builder|\LaravelFranceOld\User whereRememberToken($value)
+ * @method static \Illuminate\Database\Query\Builder|\LaravelFranceOld\User whereCreatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\LaravelFranceOld\User whereUpdatedAt($value)
  * @mixin \Eloquent
  */
 class User extends Model implements AuthenticatableContract,

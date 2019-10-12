@@ -1,6 +1,6 @@
 <?php
 
-namespace LaravelFrance\Providers;
+namespace LaravelFranceOld\Providers;
 
 use Barryvdh\Debugbar\ServiceProvider as DebugbarServiceProvider;
 use Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider;

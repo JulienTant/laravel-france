@@ -1,10 +1,10 @@
 <?php
 
 if (!function_exists('topic_link_for_listing')) {
-    function topic_link_for_listing(\LaravelFrance\ForumsTopic $topic)
+    function topic_link_for_listing(\LaravelFranceOld\ForumsTopic $topic)
     {
         $auth = app(\Illuminate\Contracts\Auth\Guard::class);
-        /** @var \LaravelFrance\User $user */
+        /** @var \LaravelFranceOld\User $user */
         $user = $auth->user();
 
 

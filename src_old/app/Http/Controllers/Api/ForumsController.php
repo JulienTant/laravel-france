@@ -1,22 +1,22 @@
 <?php
 
-namespace LaravelFrance\Http\Controllers\Api;
+namespace LaravelFranceOld\Http\Controllers\Api;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use LaravelFrance\ForumsMessage;
-use LaravelFrance\ForumsTopic;
-use LaravelFrance\ForumsWatch;
-use LaravelFrance\Http\Controllers\Controller;
-use LaravelFrance\Http\Requests\AnswerToTopicRequest;
-use LaravelFrance\Http\Requests\DeleteMessageRequest;
-use LaravelFrance\Http\Requests\EditMessageRequest;
-use LaravelFrance\Http\Requests\SolveTopicRequest;
-use LaravelFrance\Http\Requests\StoreTopicRequest;
+use LaravelFranceOld\ForumsMessage;
+use LaravelFranceOld\ForumsTopic;
+use LaravelFranceOld\ForumsWatch;
+use LaravelFranceOld\Http\Controllers\Controller;
+use LaravelFranceOld\Http\Requests\AnswerToTopicRequest;
+use LaravelFranceOld\Http\Requests\DeleteMessageRequest;
+use LaravelFranceOld\Http\Requests\EditMessageRequest;
+use LaravelFranceOld\Http\Requests\SolveTopicRequest;
+use LaravelFranceOld\Http\Requests\StoreTopicRequest;
 
 /**
  * Class ForumsController
- * @package LaravelFrance\Http\Controllers\Api
+ * @package LaravelFranceOld\Http\Controllers\Api
  */
 class ForumsController extends Controller
 {

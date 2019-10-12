@@ -5,12 +5,12 @@
  * @author Julien Tant - Craftyx <julien@craftyx.fr>
  */
 
-namespace LaravelFrance\Providers;
+namespace LaravelFranceOld\Providers;
 
 
 use Illuminate\Support\ServiceProvider;
-use LaravelFrance\CommonMark\CommonMarkConverter;
-use LaravelFrance\Markdown\Parsedown;
+use LaravelFranceOld\CommonMark\CommonMarkConverter;
+use LaravelFranceOld\Markdown\Parsedown;
 
 
 class MarkdownServiceProvider extends ServiceProvider

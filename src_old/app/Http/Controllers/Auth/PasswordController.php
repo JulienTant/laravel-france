@@ -1,9 +1,9 @@
 <?php
 
-namespace LaravelFrance\Http\Controllers\Auth;
+namespace LaravelFranceOld\Http\Controllers\Auth;
 
 use Illuminate\Foundation\Auth\ResetsPasswords;
-use LaravelFrance\Http\Controllers\Controller;
+use LaravelFranceOld\Http\Controllers\Controller;
 
 class PasswordController extends Controller
 {

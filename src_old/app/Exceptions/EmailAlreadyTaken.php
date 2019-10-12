@@ -5,7 +5,7 @@
  * @author Julien Tant - Craftyx <julien@craftyx.fr>
  */
 
-namespace LaravelFrance\Exceptions;
+namespace LaravelFranceOld\Exceptions;
 
 use Exception;
 

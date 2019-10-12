@@ -1,10 +1,10 @@
 <?php
 
-namespace LaravelFrance\Listeners;
+namespace LaravelFranceOld\Listeners;
 
-use LaravelFrance\Events\ForumsMessagePostedOnForumsTopic;
-use LaravelFrance\Events\ForumsMessageWasDeleted;
-use LaravelFrance\ForumsTopic;
+use LaravelFranceOld\Events\ForumsMessagePostedOnForumsTopic;
+use LaravelFranceOld\Events\ForumsMessageWasDeleted;
+use LaravelFranceOld\ForumsTopic;
 
 class ManageNbMessagesOnTopic
 {

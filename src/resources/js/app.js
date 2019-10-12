@@ -5,6 +5,8 @@
  */
 
 require('./bootstrap');
+require('./hljs');
+require('./simplemde');
 
 window.Vue = require('vue');
 

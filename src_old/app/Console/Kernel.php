@@ -1,6 +1,6 @@
 <?php
 
-namespace LaravelFrance\Console;
+namespace LaravelFranceOld\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
@@ -13,8 +13,8 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        \LaravelFrance\Console\Commands\Inspire::class,
-        \LaravelFrance\Console\Commands\RecountMessagesOfForum::class,
+        \LaravelFranceOld\Console\Commands\Inspire::class,
+        \LaravelFranceOld\Console\Commands\RecountMessagesOfForum::class,
     ];
 
     /**

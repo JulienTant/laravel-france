@@ -5,13 +5,13 @@
  * @author Julien Tant - Craftyx <julien@craftyx.fr>
  */
 
-namespace LaravelFrance;
+namespace LaravelFranceOld;
 
 
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * LaravelFrance\ForumsCategory
+ * LaravelFranceOld\ForumsCategory
  *
  * @property integer $id
  * @property integer $order
@@ -22,15 +22,15 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $description
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
- * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\ForumsCategory whereId($value)
- * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\ForumsCategory whereOrder($value)
- * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\ForumsCategory whereName($value)
- * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\ForumsCategory whereSlug($value)
- * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\ForumsCategory whereBackgroundColor($value)
- * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\ForumsCategory whereFontColor($value)
- * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\ForumsCategory whereDescription($value)
- * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\ForumsCategory whereCreatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\ForumsCategory whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\LaravelFranceOld\ForumsCategory whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\LaravelFranceOld\ForumsCategory whereOrder($value)
+ * @method static \Illuminate\Database\Query\Builder|\LaravelFranceOld\ForumsCategory whereName($value)
+ * @method static \Illuminate\Database\Query\Builder|\LaravelFranceOld\ForumsCategory whereSlug($value)
+ * @method static \Illuminate\Database\Query\Builder|\LaravelFranceOld\ForumsCategory whereBackgroundColor($value)
+ * @method static \Illuminate\Database\Query\Builder|\LaravelFranceOld\ForumsCategory whereFontColor($value)
+ * @method static \Illuminate\Database\Query\Builder|\LaravelFranceOld\ForumsCategory whereDescription($value)
+ * @method static \Illuminate\Database\Query\Builder|\LaravelFranceOld\ForumsCategory whereCreatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\LaravelFranceOld\ForumsCategory whereUpdatedAt($value)
  * @mixin \Eloquent
  */
 class ForumsCategory extends Model

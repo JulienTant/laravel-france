@@ -5,7 +5,7 @@
  * @author Julien Tant - Craftyx <julien@craftyx.fr>
  */
 
-namespace LaravelFrance\Markdown;
+namespace LaravelFranceOld\Markdown;
 
 use DOMDocument;
 use Parsedown as OriginalParsedown;

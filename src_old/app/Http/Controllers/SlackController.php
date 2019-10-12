@@ -1,9 +1,9 @@
 <?php
 
-namespace LaravelFrance\Http\Controllers;
+namespace LaravelFranceOld\Http\Controllers;
 
 use Illuminate\Http\Request;
-use LaravelFrance\Jobs\Slack\SendInvitation;
+use LaravelFranceOld\Jobs\Slack\SendInvitation;
 
 class SlackController extends Controller
 {

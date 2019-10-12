@@ -1,16 +1,16 @@
 <?php
 
-namespace LaravelFrance\Providers;
+namespace LaravelFranceOld\Providers;
 
 use Illuminate\Contracts\Events\Dispatcher as DispatcherContract;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
-use LaravelFrance\Events\ForumsMessagePostedOnForumsTopic;
-use LaravelFrance\Events\ForumsMessageWasDeleted;
-use LaravelFrance\Events\ForumsTopicPosted;
+use LaravelFranceOld\Events\ForumsMessagePostedOnForumsTopic;
+use LaravelFranceOld\Events\ForumsMessageWasDeleted;
+use LaravelFranceOld\Events\ForumsTopicPosted;
 
 /**
  * Class EventServiceProvider
- * @package LaravelFrance\Providers
+ * @package LaravelFranceOld\Providers
  */
 class EventServiceProvider extends ServiceProvider
 {
@@ -21,21 +21,21 @@ class EventServiceProvider extends ServiceProvider
      */
     protected $listen = [
         ForumsMessagePostedOnForumsTopic::class => [
-            'LaravelFrance\Listeners\ManageNbMessagesOnTopic@whenForumsMessagePostedOnForumsTopic',
-            'LaravelFrance\Listeners\ManageLastMessageOnTopic@whenForumsMessagePostedOnForumsTopic',
-            'LaravelFrance\Listeners\ManageNbMessagesOnUser@whenForumsMessagePostedOnForumsTopic',
-            'LaravelFrance\Listeners\ForumsAutoWatchListener@whenForumsMessagePostedOnForumsTopic',
-            'LaravelFrance\Listeners\SendEmailToWatchersWhenForumsMessagesPostedListener',
-            'LaravelFrance\Listeners\UpdateWatchersStatus@whenForumsMessagePostedOnForumsTopic',
+            'LaravelFranceOld\Listeners\ManageNbMessagesOnTopic@whenForumsMessagePostedOnForumsTopic',
+            'LaravelFranceOld\Listeners\ManageLastMessageOnTopic@whenForumsMessagePostedOnForumsTopic',
+            'LaravelFranceOld\Listeners\ManageNbMessagesOnUser@whenForumsMessagePostedOnForumsTopic',
+            'LaravelFranceOld\Listeners\ForumsAutoWatchListener@whenForumsMessagePostedOnForumsTopic',
+            'LaravelFranceOld\Listeners\SendEmailToWatchersWhenForumsMessagesPostedListener',
+            'LaravelFranceOld\Listeners\UpdateWatchersStatus@whenForumsMessagePostedOnForumsTopic',
         ],
         ForumsMessageWasDeleted::class => [
-            'LaravelFrance\Listeners\ManageNbMessagesOnTopic@whenForumsMessageWasDeleted',
-            'LaravelFrance\Listeners\ManageLastMessageOnTopic@whenForumsMessageWasDeleted',
-            'LaravelFrance\Listeners\ManageNbMessagesOnUser@whenForumsMessageWasDeleted',
+            'LaravelFranceOld\Listeners\ManageNbMessagesOnTopic@whenForumsMessageWasDeleted',
+            'LaravelFranceOld\Listeners\ManageLastMessageOnTopic@whenForumsMessageWasDeleted',
+            'LaravelFranceOld\Listeners\ManageNbMessagesOnUser@whenForumsMessageWasDeleted',
         ],
         ForumsTopicPosted::class => [
-            'LaravelFrance\Listeners\ForumsAutoWatchListener@whenForumsTopicPosted',
-            'LaravelFrance\Listeners\SlackForumsWatcher@whenForumsTopicPosted',
+            'LaravelFranceOld\Listeners\ForumsAutoWatchListener@whenForumsTopicPosted',
+            'LaravelFranceOld\Listeners\SlackForumsWatcher@whenForumsTopicPosted',
         ],
     ];
 

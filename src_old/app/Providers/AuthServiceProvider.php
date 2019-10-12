@@ -1,15 +1,15 @@
 <?php
 
-namespace LaravelFrance\Providers;
+namespace LaravelFranceOld\Providers;
 
 use Illuminate\Auth\Access\Gate;
 use Illuminate\Contracts\Auth\Access\Gate as GateContract;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
-use LaravelFrance\ForumsCategory;
-use LaravelFrance\ForumsMessage;
-use LaravelFrance\ForumsTopic;
-use LaravelFrance\Group;
-use LaravelFrance\User;
+use LaravelFranceOld\ForumsCategory;
+use LaravelFranceOld\ForumsMessage;
+use LaravelFranceOld\ForumsTopic;
+use LaravelFranceOld\Group;
+use LaravelFranceOld\User;
 
 class AuthServiceProvider extends ServiceProvider
 {

@@ -11,17 +11,64 @@
 @import '~bootstrap/scss/bootstrap';
 
 
+.message {
+    background-color: #ffffff;
+    border-radius: 2px;
+    box-shadow: 0 1px 2px #c9cccd;
+    margin-bottom: 20px;
+    @extend .pt-2;
+    @extend .pb-2;
+
+    &.message-solvetopic {
+        @extend .alert;
+        @extend .alert-success;
+    }
+
+    & .avatar {
+        overflow: hidden;
+        overflow-wrap: anywhere;
+        text-align: center
+    }
+
+    & .message-content {
+        @extend .pr-4;
+        @extend .pl-4;
+        @extend .pt-1;
+    }
+
+    & .meta {
+        @extend .pt-2;
+    }
+
+    & .meta-line {
+        border-top: 1px solid $gray-300;
+    }
+}
+
 .post {
     background-color: #ffffff;
     border-radius: 2px;
     box-shadow: 0 1px 2px #c9cccd;
     margin-bottom: 20px;
     padding-top: 20px;
+    min-height: 150px;
 
     & .avatar {
         overflow: hidden;
         overflow-wrap: anywhere;
         text-align: center
+    }
+
+    & .topic-title {
+        font-size: 1.5rem;
+        color: $black;
+        & a {
+            color: black
+        }
+    }
+
+    & .excerpt {
+        color: $gray-600;
     }
 }
 
@@ -31,9 +78,51 @@
     width: 1rem;
     margin-right: .5rem;
     display: inline-block;
+    border: 1px solid $gray-400
 }
 
 
 .category-list {
     list-style: none;
 }
+
+.category-banner {
+    text-align: center;
+    @extend .p-4;
+}
+
+
+.topics-pagination .pagination{
+    @extend .justify-content-center
+}
+
+.topic-title-solved::before {
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    font-family: FontAwesome;
+    margin-right: .1rem;
+    content: "\f00c";
+}
+
+
+code {
+    padding: 0.1em 0.5em;
+
+    background: #3f3f3f;
+    color: #dcdcdc;
+}
+
+pre {
+    background: #3f3f3f;
+    color: #dcdcdc;
+    & code {
+        display: block;
+        padding: 0.5em;
+        overflow-x: auto;
+    }
+}
+
+.editor-please {
+    visibility: hidden;
+}
+

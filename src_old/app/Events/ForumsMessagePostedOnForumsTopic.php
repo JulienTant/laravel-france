@@ -1,15 +1,15 @@
 <?php
 
-namespace LaravelFrance\Events;
+namespace LaravelFranceOld\Events;
 
 use Illuminate\Queue\SerializesModels;
-use LaravelFrance\ForumsMessage;
-use LaravelFrance\ForumsTopic;
-use LaravelFrance\User;
+use LaravelFranceOld\ForumsMessage;
+use LaravelFranceOld\ForumsTopic;
+use LaravelFranceOld\User;
 
 /**
  * Class ForumsMessagePostedOnForumsTopic
- * @package LaravelFrance\Events
+ * @package LaravelFranceOld\Events
  */
 class ForumsMessagePostedOnForumsTopic extends Event
 {

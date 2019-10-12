@@ -1,8 +1,10 @@
 <?php
 
-namespace App\Providers;
+namespace LaravelFrance\Providers;
 
+use Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider as IdeHelperServiceProviderAlias;
 use Illuminate\Support\ServiceProvider;
+use Laravel\Telescope\TelescopeServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -13,7 +15,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        if ($this->app->isLocal()) {
+            $this->app->register(IdeHelperServiceProviderAlias::class);
+            $this->app->register(TelescopeServiceProvider::class);
+        }
     }
 
     /**

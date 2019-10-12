@@ -1,10 +1,10 @@
 <?php
 
-namespace LaravelFrance\Console\Commands;
+namespace LaravelFranceOld\Console\Commands;
 
 use Illuminate\Console\Command;
-use LaravelFrance\ForumsTopic;
-use LaravelFrance\User;
+use LaravelFranceOld\ForumsTopic;
+use LaravelFranceOld\User;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 
 class RecountMessagesOfForum extends Command

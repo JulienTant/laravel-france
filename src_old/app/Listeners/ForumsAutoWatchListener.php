@@ -1,10 +1,10 @@
 <?php
 
-namespace LaravelFrance\Listeners;
+namespace LaravelFranceOld\Listeners;
 
-use LaravelFrance\Events\ForumsMessagePostedOnForumsTopic;
-use LaravelFrance\Events\ForumsTopicPosted;
-use LaravelFrance\ForumsWatch;
+use LaravelFranceOld\Events\ForumsMessagePostedOnForumsTopic;
+use LaravelFranceOld\Events\ForumsTopicPosted;
+use LaravelFranceOld\ForumsWatch;
 
 class ForumsAutoWatchListener
 {

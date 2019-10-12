@@ -1,11 +1,11 @@
 <?php
 
-namespace LaravelFrance\Listeners;
+namespace LaravelFranceOld\Listeners;
 
 use Illuminate\Mail\Mailer;
 use Illuminate\Mail\Message;
-use LaravelFrance\Events\ForumsMessagePostedOnForumsTopic;
-use LaravelFrance\ForumsWatch;
+use LaravelFranceOld\Events\ForumsMessagePostedOnForumsTopic;
+use LaravelFranceOld\ForumsWatch;
 
 class SendEmailToWatchersWhenForumsMessagesPostedListener
 {

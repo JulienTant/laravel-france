@@ -1,10 +1,10 @@
 <?php
 
-namespace LaravelFrance\Http\Controllers\Admin;
+namespace LaravelFranceOld\Http\Controllers\Admin;
 
-use LaravelFrance\Http\Controllers\Controller;
-use LaravelFrance\Http\Requests;
-use LaravelFrance\User;
+use LaravelFranceOld\Http\Controllers\Controller;
+use LaravelFranceOld\Http\Requests;
+use LaravelFranceOld\User;
 
 class UserControler extends Controller
 {

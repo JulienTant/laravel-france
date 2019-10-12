@@ -5,14 +5,14 @@
  * @author Julien Tant - Craftyx <julien@craftyx.fr>
  */
 
-namespace LaravelFrance\Http\Controllers;
+namespace LaravelFranceOld\Http\Controllers;
 
 
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Contracts\Config\Repository;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
-use LaravelFrance\User;
+use LaravelFranceOld\User;
 
 class MyForumController extends Controller
 {
@@ -54,7 +54,7 @@ class MyForumController extends Controller
 
     public function myTopics()
     {
-        $topics = \LaravelFrance\ForumsTopic::forListing()->whereRaw('forums_topics.user_id = ?', [$this->user->id])->paginate($this->config->get('laravelfrance.forums.topics_per_page'));
+        $topics = \LaravelFranceOld\ForumsTopic::forListing()->whereRaw('forums_topics.user_id = ?', [$this->user->id])->paginate($this->config->get('LaravelFranceOld.forums.topics_per_page'));
         $chosenCategory = null;
         return view('forums.topics', compact('topics', 'chosenCategory'));
 
@@ -62,10 +62,10 @@ class MyForumController extends Controller
 
     public function myMessages()
     {
-        $messages = \LaravelFrance\ForumsMessage::whereUserId($this->user->id)
+        $messages = \LaravelFranceOld\ForumsMessage::whereUserId($this->user->id)
             ->with('forumsTopic', 'forumsTopic.forumsCategory')
             ->orderBy('created_at', 'DESC')
-            ->paginate($this->config->get('laravelfrance.forums.messages_per_page'));
+            ->paginate($this->config->get('LaravelFranceOld.forums.messages_per_page'));
 
         return view('my-forums.messages', compact('messages', 'chosenCategory'));
 

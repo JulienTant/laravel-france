@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Middleware;
+namespace LaravelFrance\Http\Middleware;
 
 use Illuminate\Auth\Middleware\Authenticate as Middleware;
 

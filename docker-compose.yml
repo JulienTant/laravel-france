@@ -27,7 +27,8 @@ services:
       - laravelfrance
 
   mysql:
-    image: mysql:5.7.22
+    image: mysql:8
+    command: --default-authentication-plugin=mysql_native_password
     container_name: mysql
     restart: unless-stopped
     tty: true
@@ -40,6 +41,8 @@ services:
       MYSQL_ROOT_PASSWORD: secret
       SERVICE_TAGS: dev
       SERVICE_NAME: mysql
+    volumes:
+      - ./mysqldata:/var/lib/mysql
     networks:
       - laravelfrance
 

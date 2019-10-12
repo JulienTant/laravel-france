@@ -1,4 +1,4 @@
-FROM php:7.2-fpm-alpine
+FROM php:7.3-fpm-alpine
 
 WORKDIR /var/www
 
@@ -9,3 +9,6 @@ RUN php -r "if (hash_file('sha384', 'composer-setup.php') === 'a5c698ffe4b8e849a
 RUN php composer-setup.php --install-dir=/usr/local/bin --filename=composer
 RUN php -r "unlink('composer-setup.php');"
 RUN mkdir /var/www/storage && chown -R www-data:www-data /var/www && chmod -R 755 /var/www/storage
+
+RUN mkdir /.composer && chmod -R 777 /.composer
+ENV COMPOSER_HOME /.composer

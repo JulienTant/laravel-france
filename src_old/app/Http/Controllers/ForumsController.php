@@ -1,13 +1,13 @@
 <?php
 
-namespace LaravelFrance\Http\Controllers;
+namespace LaravelFranceOld\Http\Controllers;
 
 use Illuminate\Config\Repository;
 use Illuminate\Http\Request;
-use LaravelFrance\ForumsCategory;
-use LaravelFrance\ForumsMessage;
-use LaravelFrance\ForumsTopic;
-use LaravelFrance\ForumsWatch;
+use LaravelFranceOld\ForumsCategory;
+use LaravelFranceOld\ForumsMessage;
+use LaravelFranceOld\ForumsTopic;
+use LaravelFranceOld\ForumsWatch;
 
 class ForumsController extends Controller
 {
@@ -33,7 +33,7 @@ class ForumsController extends Controller
         if (!!$chosenCategory) {
             $topicsQuery = $topicsQuery->whereForumsCategoryId($chosenCategory->id);
         }
-       $topics =  $topicsQuery->simplePaginate($this->config->get('laravelfrance.forums.topics_per_page'));
+       $topics =  $topicsQuery->simplePaginate($this->config->get('LaravelFranceOld.forums.topics_per_page'));
 
         return view('forums.topics', compact('topics', 'chosenCategory'));
     }
@@ -46,10 +46,10 @@ class ForumsController extends Controller
             ->orderBy('updated_at', 'DESC')
             ->firstOrFail();
 
-        $messages = \LaravelFrance\ForumsMessage::with('user')
+        $messages = \LaravelFranceOld\ForumsMessage::with('user')
             ->whereForumsTopicId($topic->id)
             ->orderBy('created_at', 'asc')
-            ->paginate($this->config->get('laravelfrance.forums.messages_per_page'));
+            ->paginate($this->config->get('LaravelFranceOld.forums.messages_per_page'));
 
 
         if ($request->user()) {

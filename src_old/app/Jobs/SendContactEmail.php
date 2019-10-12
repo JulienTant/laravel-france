@@ -1,6 +1,6 @@
 <?php
 
-namespace LaravelFrance\Jobs;
+namespace LaravelFranceOld\Jobs;
 
 use Illuminate\Contracts\Mail\Mailer;
 use Illuminate\Contracts\Queue\ShouldQueue;

@@ -1,17 +1,17 @@
 <?php
 
-namespace LaravelFrance\Http\Controllers;
+namespace LaravelFranceOld\Http\Controllers;
 
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Guard;
 use Laravel\Socialite\Contracts\Factory as Socialite;
-use LaravelFrance\Exceptions\EmailAlreadyTaken;
-use LaravelFrance\Exceptions\UsernameAlreadyTaken;
-use LaravelFrance\Guards\EmailIsUnique;
-use LaravelFrance\Guards\Guards;
-use LaravelFrance\Guards\UsernameIsUnique;
-use LaravelFrance\OAuth;
-use LaravelFrance\User;
+use LaravelFranceOld\Exceptions\EmailAlreadyTaken;
+use LaravelFranceOld\Exceptions\UsernameAlreadyTaken;
+use LaravelFranceOld\Guards\EmailIsUnique;
+use LaravelFranceOld\Guards\Guards;
+use LaravelFranceOld\Guards\UsernameIsUnique;
+use LaravelFranceOld\OAuth;
+use LaravelFranceOld\User;
 
 class SocialiteController extends Controller
 {

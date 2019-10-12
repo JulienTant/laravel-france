@@ -5,13 +5,13 @@
  * @author Julien Tant - Craftyx <julien@craftyx.fr>
  */
 
-namespace LaravelFrance;
+namespace LaravelFranceOld;
 
 
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * LaravelFrance\ForumsMessage
+ * LaravelFranceOld\ForumsMessage
  *
  * @property integer $id
  * @property integer $forums_topic_id
@@ -20,15 +20,15 @@ use Illuminate\Database\Eloquent\Model;
  * @property boolean $solve_topic
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
- * @property-read \LaravelFrance\ForumsTopic $forumsTopic
- * @property-read \LaravelFrance\User $user
- * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\ForumsMessage whereId($value)
- * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\ForumsMessage whereForumsTopicId($value)
- * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\ForumsMessage whereUserId($value)
- * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\ForumsMessage whereMarkdown($value)
- * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\ForumsMessage whereSolveTopic($value)
- * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\ForumsMessage whereCreatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\ForumsMessage whereUpdatedAt($value)
+ * @property-read \LaravelFranceOld\ForumsTopic $forumsTopic
+ * @property-read \LaravelFranceOld\User $user
+ * @method static \Illuminate\Database\Query\Builder|\LaravelFranceOld\ForumsMessage whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\LaravelFranceOld\ForumsMessage whereForumsTopicId($value)
+ * @method static \Illuminate\Database\Query\Builder|\LaravelFranceOld\ForumsMessage whereUserId($value)
+ * @method static \Illuminate\Database\Query\Builder|\LaravelFranceOld\ForumsMessage whereMarkdown($value)
+ * @method static \Illuminate\Database\Query\Builder|\LaravelFranceOld\ForumsMessage whereSolveTopic($value)
+ * @method static \Illuminate\Database\Query\Builder|\LaravelFranceOld\ForumsMessage whereCreatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\LaravelFranceOld\ForumsMessage whereUpdatedAt($value)
  * @mixin \Eloquent
  */
 class ForumsMessage extends Model

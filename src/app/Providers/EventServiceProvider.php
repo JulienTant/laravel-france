@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Providers;
+namespace LaravelFrance\Providers;
 
-use Illuminate\Auth\Events\Registered;
-use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
-use Illuminate\Support\Facades\Event;
+use LaravelFrance\Events\ForumsMessagePostedOnForumsTopic;
+use LaravelFrance\Events\ForumsMessageWasDeleted;
+use LaravelFrance\Events\ForumsTopicPosted;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -15,8 +15,22 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        Registered::class => [
-            SendEmailVerificationNotification::class,
+        ForumsMessagePostedOnForumsTopic::class => [
+            'LaravelFrance\Listeners\ManageNbMessagesOnTopic@whenForumsMessagePostedOnForumsTopic',
+            'LaravelFrance\Listeners\ManageLastMessageOnTopic@whenForumsMessagePostedOnForumsTopic',
+            'LaravelFrance\Listeners\ManageNbMessagesOnUser@whenForumsMessagePostedOnForumsTopic',
+            'LaravelFrance\Listeners\ForumsAutoWatchListener@whenForumsMessagePostedOnForumsTopic',
+            'LaravelFrance\Listeners\SendEmailToWatchersWhenForumsMessagesPostedListener',
+            'LaravelFrance\Listeners\UpdateWatchersStatus@whenForumsMessagePostedOnForumsTopic',
+        ],
+        ForumsMessageWasDeleted::class => [
+            'LaravelFrance\Listeners\ManageNbMessagesOnTopic@whenForumsMessageWasDeleted',
+            'LaravelFrance\Listeners\ManageLastMessageOnTopic@whenForumsMessageWasDeleted',
+            'LaravelFrance\Listeners\ManageNbMessagesOnUser@whenForumsMessageWasDeleted',
+        ],
+        ForumsTopicPosted::class => [
+            'LaravelFrance\Listeners\ForumsAutoWatchListener@whenForumsTopicPosted',
+            'LaravelFrance\Listeners\SlackForumsWatcher@whenForumsTopicPosted',
         ],
     ];
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace LaravelFrance\Providers;
+namespace LaravelFranceOld\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use League\Flysystem\Filesystem;

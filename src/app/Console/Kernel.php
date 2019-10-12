@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Console;
+namespace LaravelFrance\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use LaravelFrance\Console\Commands\RecountMessagesOfForum;
 
 class Kernel extends ConsoleKernel
 {
@@ -13,7 +14,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+        RecountMessagesOfForum::class
     ];
 
     /**

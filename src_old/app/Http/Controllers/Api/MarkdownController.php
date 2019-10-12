@@ -5,10 +5,10 @@
  * @author Julien Tant - Craftyx <julien@craftyx.fr>
  */
 
-namespace LaravelFrance\Http\Controllers\Api;
+namespace LaravelFranceOld\Http\Controllers\Api;
 
 
-use LaravelFrance\Http\Controllers\Controller;
+use LaravelFranceOld\Http\Controllers\Controller;
 
 class MarkdownController extends Controller
 {

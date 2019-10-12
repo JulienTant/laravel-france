@@ -5,13 +5,13 @@
  * @author Julien Tant - Craftyx <julien@craftyx.fr>
  */
 
-namespace LaravelFrance;
+namespace LaravelFranceOld;
 
 
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * LaravelFrance\ForumsWatch
+ * LaravelFranceOld\ForumsWatch
  *
  * @property integer $id
  * @property integer $forums_topic_id
@@ -21,19 +21,19 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Carbon\Carbon $updated_at
  * @property boolean $still_watching
  * @property integer $first_unread_message_id
- * @property-read \LaravelFrance\ForumsTopic $forumsTopic
- * @property-read \LaravelFrance\User $user
- * @property-read \LaravelFrance\ForumsMessage $firstUnreadMessage
- * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\ForumsWatch whereId($value)
- * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\ForumsWatch whereForumsTopicId($value)
- * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\ForumsWatch whereUserId($value)
- * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\ForumsWatch whereIsUpToDate($value)
- * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\ForumsWatch whereCreatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\ForumsWatch whereUpdatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\ForumsWatch whereStillWatching($value)
- * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\ForumsWatch whereFirstUnreadMessageId($value)
- * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\ForumsWatch mailable()
- * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\ForumsWatch active()
+ * @property-read \LaravelFranceOld\ForumsTopic $forumsTopic
+ * @property-read \LaravelFranceOld\User $user
+ * @property-read \LaravelFranceOld\ForumsMessage $firstUnreadMessage
+ * @method static \Illuminate\Database\Query\Builder|\LaravelFranceOld\ForumsWatch whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\LaravelFranceOld\ForumsWatch whereForumsTopicId($value)
+ * @method static \Illuminate\Database\Query\Builder|\LaravelFranceOld\ForumsWatch whereUserId($value)
+ * @method static \Illuminate\Database\Query\Builder|\LaravelFranceOld\ForumsWatch whereIsUpToDate($value)
+ * @method static \Illuminate\Database\Query\Builder|\LaravelFranceOld\ForumsWatch whereCreatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\LaravelFranceOld\ForumsWatch whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\LaravelFranceOld\ForumsWatch whereStillWatching($value)
+ * @method static \Illuminate\Database\Query\Builder|\LaravelFranceOld\ForumsWatch whereFirstUnreadMessageId($value)
+ * @method static \Illuminate\Database\Query\Builder|\LaravelFranceOld\ForumsWatch mailable()
+ * @method static \Illuminate\Database\Query\Builder|\LaravelFranceOld\ForumsWatch active()
  * @mixin \Eloquent
  */
 class ForumsWatch extends Model

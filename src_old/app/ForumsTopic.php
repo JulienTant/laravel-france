@@ -5,20 +5,20 @@
  * @author Julien Tant - Craftyx <julien@craftyx.fr>
  */
 
-namespace LaravelFrance;
+namespace LaravelFranceOld;
 
 
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Model;
-use LaravelFrance\Events\ForumsMessagePostedOnForumsTopic;
-use LaravelFrance\Events\ForumsMessageWasDeleted;
-use LaravelFrance\Events\ForumsMessageWasEdited;
-use LaravelFrance\Events\ForumsTopicPosted;
-use LaravelFrance\Events\ForumsTopicWasDeleted;
-use LaravelFrance\Events\ForumsTopicWasSolved;
+use LaravelFranceOld\Events\ForumsMessagePostedOnForumsTopic;
+use LaravelFranceOld\Events\ForumsMessageWasDeleted;
+use LaravelFranceOld\Events\ForumsMessageWasEdited;
+use LaravelFranceOld\Events\ForumsTopicPosted;
+use LaravelFranceOld\Events\ForumsTopicWasDeleted;
+use LaravelFranceOld\Events\ForumsTopicWasSolved;
 
 /**
- * LaravelFrance\ForumsTopic
+ * LaravelFranceOld\ForumsTopic
  *
  * @property integer $id
  * @property integer $forums_category_id
@@ -32,26 +32,26 @@ use LaravelFrance\Events\ForumsTopicWasSolved;
  * @property integer $nb_messages
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection|\LaravelFrance\ForumsMessage[] $forumsMessages
- * @property-read \LaravelFrance\ForumsMessage $firstMessage
- * @property-read \LaravelFrance\ForumsCategory $forumsCategory
- * @property-read \LaravelFrance\User $user
- * @property-read \LaravelFrance\ForumsMessage $lastMessage
- * @property-read \LaravelFrance\ForumsMessage $solvedBy
- * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\ForumsTopic whereId($value)
- * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\ForumsTopic whereForumsCategoryId($value)
- * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\ForumsTopic whereUserId($value)
- * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\ForumsTopic whereSticky($value)
- * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\ForumsTopic whereTitle($value)
- * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\ForumsTopic whereSlug($value)
- * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\ForumsTopic whereSolved($value)
- * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\ForumsTopic whereSolvedBy($value)
- * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\ForumsTopic whereLastMessageId($value)
- * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\ForumsTopic whereNbMessages($value)
- * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\ForumsTopic whereCreatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\ForumsTopic whereUpdatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\ForumsTopic forListing()
- * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\ForumsTopic findSimilarSlugs($model, $attribute, $config, $slug)
+ * @property-read \Illuminate\Database\Eloquent\Collection|\LaravelFranceOld\ForumsMessage[] $forumsMessages
+ * @property-read \LaravelFranceOld\ForumsMessage $firstMessage
+ * @property-read \LaravelFranceOld\ForumsCategory $forumsCategory
+ * @property-read \LaravelFranceOld\User $user
+ * @property-read \LaravelFranceOld\ForumsMessage $lastMessage
+ * @property-read \LaravelFranceOld\ForumsMessage $solvedBy
+ * @method static \Illuminate\Database\Query\Builder|\LaravelFranceOld\ForumsTopic whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\LaravelFranceOld\ForumsTopic whereForumsCategoryId($value)
+ * @method static \Illuminate\Database\Query\Builder|\LaravelFranceOld\ForumsTopic whereUserId($value)
+ * @method static \Illuminate\Database\Query\Builder|\LaravelFranceOld\ForumsTopic whereSticky($value)
+ * @method static \Illuminate\Database\Query\Builder|\LaravelFranceOld\ForumsTopic whereTitle($value)
+ * @method static \Illuminate\Database\Query\Builder|\LaravelFranceOld\ForumsTopic whereSlug($value)
+ * @method static \Illuminate\Database\Query\Builder|\LaravelFranceOld\ForumsTopic whereSolved($value)
+ * @method static \Illuminate\Database\Query\Builder|\LaravelFranceOld\ForumsTopic whereSolvedBy($value)
+ * @method static \Illuminate\Database\Query\Builder|\LaravelFranceOld\ForumsTopic whereLastMessageId($value)
+ * @method static \Illuminate\Database\Query\Builder|\LaravelFranceOld\ForumsTopic whereNbMessages($value)
+ * @method static \Illuminate\Database\Query\Builder|\LaravelFranceOld\ForumsTopic whereCreatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\LaravelFranceOld\ForumsTopic whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\LaravelFranceOld\ForumsTopic forListing()
+ * @method static \Illuminate\Database\Query\Builder|\LaravelFranceOld\ForumsTopic findSimilarSlugs($model, $attribute, $config, $slug)
  * @mixin \Eloquent
  */
 class ForumsTopic extends Model
@@ -115,7 +115,7 @@ class ForumsTopic extends Model
         $topic->title = $title;
         $topic->save();
 
-        \Event::fire(new ForumsTopicPosted($author, $topic));
+        \Event::dispatch(new ForumsTopicPosted($author, $topic));
 
         $topic->addMessage($author, $markdown);
 
@@ -127,7 +127,7 @@ class ForumsTopic extends Model
         $message = ForumsMessage::post($author, $markdown);
         $this->forumsMessages()->save($message);
 
-        \Event::fire(new ForumsMessagePostedOnForumsTopic($author, $this, $message));
+        \Event::dispatch(new ForumsMessagePostedOnForumsTopic($author, $this, $message));
 
         return $message;
     }
@@ -139,7 +139,7 @@ class ForumsTopic extends Model
         $message->editMarkdown($markdown);
         $message->save();
 
-        \Event::fire(new ForumsMessageWasEdited($message));
+        \Event::dispatch(new ForumsMessageWasEdited($message));
 
         return $message;
     }
@@ -156,7 +156,7 @@ class ForumsTopic extends Model
         $this->solvedBy()->associate($message);
         $this->save();
 
-        \Event::fire(new ForumsTopicWasSolved($this, $message));
+        \Event::dispatch(new ForumsTopicWasSolved($this, $message));
 
         return $this;
     }
@@ -182,7 +182,7 @@ class ForumsTopic extends Model
         }
 
         $message->delete();
-        \Event::fire(new ForumsMessageWasDeleted($message, $updateTopic = !$force));
+        \Event::dispatch(new ForumsMessageWasDeleted($message, $updateTopic = !$force));
 
         return $message;
     }
@@ -197,7 +197,7 @@ class ForumsTopic extends Model
             $this->deleteMessage($messageId, $force = true);
         }
         $this->delete();
-        \Event::fire(new ForumsTopicWasDeleted($this));
+        \Event::dispatch(new ForumsTopicWasDeleted($this));
 
         return $this;
     }

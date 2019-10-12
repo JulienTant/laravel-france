@@ -5,14 +5,14 @@
  * @author Julien Tant - Craftyx <julien@craftyx.fr>
  */
 
-namespace LaravelFrance;
+namespace LaravelFranceOld;
 
 
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Socialite\Contracts\User as SocialiteUser;
 
 /**
- * LaravelFrance\OAuth
+ * LaravelFranceOld\OAuth
  *
  * @property integer $id
  * @property integer $user_id
@@ -20,16 +20,16 @@ use Laravel\Socialite\Contracts\User as SocialiteUser;
  * @property string $uid
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
- * @property-read \LaravelFrance\User $user
- * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\OAuth whereId($value)
- * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\OAuth whereUserId($value)
- * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\OAuth whereProvider($value)
- * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\OAuth whereUid($value)
- * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\OAuth whereCreatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\OAuth whereUpdatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\OAuth twitter()
- * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\OAuth github()
- * @method static \Illuminate\Database\Query\Builder|\LaravelFrance\OAuth google()
+ * @property-read \LaravelFranceOld\User $user
+ * @method static \Illuminate\Database\Query\Builder|\LaravelFranceOld\OAuth whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\LaravelFranceOld\OAuth whereUserId($value)
+ * @method static \Illuminate\Database\Query\Builder|\LaravelFranceOld\OAuth whereProvider($value)
+ * @method static \Illuminate\Database\Query\Builder|\LaravelFranceOld\OAuth whereUid($value)
+ * @method static \Illuminate\Database\Query\Builder|\LaravelFranceOld\OAuth whereCreatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\LaravelFranceOld\OAuth whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\LaravelFranceOld\OAuth twitter()
+ * @method static \Illuminate\Database\Query\Builder|\LaravelFranceOld\OAuth github()
+ * @method static \Illuminate\Database\Query\Builder|\LaravelFranceOld\OAuth google()
  * @mixin \Eloquent
  */
 class OAuth extends Model

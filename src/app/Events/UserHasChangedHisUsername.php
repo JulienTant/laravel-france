@@ -1,0 +1,75 @@
+<?php
+
+namespace LaravelFrance\Events;
+
+use Illuminate\Broadcasting\InteractsWithSockets;
+use Illuminate\Foundation\Events\Dispatchable;
+use Illuminate\Queue\SerializesModels;
+use LaravelFrance\User;
+
+class UserHasChangedHisUsername
+{
+    use Dispatchable, InteractsWithSockets, SerializesModels;
+
+    /**
+     * @var User
+     */
+    private $user;
+    /**
+     * @var
+     */
+    private $oldUsername;
+    /**
+     * @var
+     */
+    private $newUsername;
+
+    /**
+     * Create a new event instance.
+     *
+     * @param User $user
+     * @param $oldUsername
+     * @param $newUsername
+     */
+    public function __construct(User $user, $oldUsername, $newUsername)
+    {
+        //
+        $this->user = $user;
+        $this->oldUsername = $oldUsername;
+        $this->newUsername = $newUsername;
+    }
+
+    /**
+     * @return User
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getOldUsername()
+    {
+        return $this->oldUsername;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getNewUsername()
+    {
+        return $this->newUsername;
+    }
+
+    /**
+     * Get the channels the event should be broadcast on.
+     *
+     * @return array
+     */
+    public function broadcastOn()
+    {
+        return [];
+    }
+}

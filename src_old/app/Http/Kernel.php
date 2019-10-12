@@ -1,6 +1,6 @@
 <?php
 
-namespace LaravelFrance\Http;
+namespace LaravelFranceOld\Http;
 
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
@@ -13,11 +13,11 @@ class Kernel extends HttpKernel
      */
     protected $middleware = [
         \Illuminate\Foundation\Http\Middleware\CheckForMaintenanceMode::class,
-        \LaravelFrance\Http\Middleware\EncryptCookies::class,
+        \LaravelFranceOld\Http\Middleware\EncryptCookies::class,
         \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
         \Illuminate\Session\Middleware\StartSession::class,
         \Illuminate\View\Middleware\ShareErrorsFromSession::class,
-        \LaravelFrance\Http\Middleware\VerifyCsrfToken::class,
+        \LaravelFranceOld\Http\Middleware\VerifyCsrfToken::class,
     ];
 
     /**
@@ -26,9 +26,9 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $routeMiddleware = [
-        'local' => \LaravelFrance\Http\Middleware\LocalEnvironment::class,
-        'auth' => \LaravelFrance\Http\Middleware\Authenticate::class,
+        'local' => \LaravelFranceOld\Http\Middleware\LocalEnvironment::class,
+        'auth' => \LaravelFranceOld\Http\Middleware\Authenticate::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
-        'guest' => \LaravelFrance\Http\Middleware\RedirectIfAuthenticated::class,
+        'guest' => \LaravelFranceOld\Http\Middleware\RedirectIfAuthenticated::class,
     ];
 }

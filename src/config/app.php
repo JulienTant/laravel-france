@@ -80,7 +80,7 @@ return [
     |
     */
 
-    'locale' => 'en',
+    'locale' => 'fr',
 
     /*
     |--------------------------------------------------------------------------
@@ -169,11 +169,13 @@ return [
         /*
          * Application Service Providers...
          */
-        App\Providers\AppServiceProvider::class,
-        App\Providers\AuthServiceProvider::class,
+        LaravelFrance\Providers\AppServiceProvider::class,
+        LaravelFrance\Providers\AuthServiceProvider::class,
         // App\Providers\BroadcastServiceProvider::class,
-        App\Providers\EventServiceProvider::class,
-        App\Providers\RouteServiceProvider::class,
+        LaravelFrance\Providers\EventServiceProvider::class,
+        LaravelFrance\Providers\TelescopeServiceProvider::class,
+        LaravelFrance\Providers\RouteServiceProvider::class,
+        LaravelFrance\Providers\ViewServiceProvider::class,
 
     ],
 

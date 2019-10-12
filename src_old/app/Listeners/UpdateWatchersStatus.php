@@ -1,9 +1,9 @@
 <?php
 
-namespace LaravelFrance\Listeners;
+namespace LaravelFranceOld\Listeners;
 
-use LaravelFrance\Events\ForumsMessagePostedOnForumsTopic;
-use LaravelFrance\ForumsWatch;
+use LaravelFranceOld\Events\ForumsMessagePostedOnForumsTopic;
+use LaravelFranceOld\ForumsWatch;
 
 class UpdateWatchersStatus
 {

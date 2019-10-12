@@ -1,12 +1,12 @@
 <?php
 
-namespace LaravelFrance\Http\Controllers;
+namespace LaravelFranceOld\Http\Controllers;
 
 use Illuminate\Http\Request;
-use LaravelFrance\Http\Requests\ChangeEmalRequest;
-use LaravelFrance\Http\Requests\ChangeUserForumsPreferencesRequest;
-use LaravelFrance\Http\Requests\ChangeUsernameRequest;
-use LaravelFrance\User;
+use LaravelFranceOld\Http\Requests\ChangeEmailRequest;
+use LaravelFranceOld\Http\Requests\ChangeUserForumsPreferencesRequest;
+use LaravelFranceOld\Http\Requests\ChangeUsernameRequest;
+use LaravelFranceOld\User;
 
 class ProfileController extends Controller
 {
@@ -37,7 +37,7 @@ class ProfileController extends Controller
         return view('profile.change-avatar');
     }
 
-    public function postChangeAvatar(ChangeEmalRequest $request)
+    public function postChangeAvatar(ChangeEmailRequest $request)
     {
         /** @var User $user */
         $user = $request->user();

@@ -1,9 +1,9 @@
 <?php
 
-namespace LaravelFrance\Events;
+namespace LaravelFranceOld\Events;
 
 use Illuminate\Queue\SerializesModels;
-use LaravelFrance\User;
+use LaravelFranceOld\User;
 
 class UserHasChangedHisUsername extends Event
 {
