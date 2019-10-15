@@ -15,7 +15,7 @@ class StoreTopicRequest extends FormRequest
      */
     public function authorize()
     {
-        return \Gate::check('forums.can_create_topic', ['category' => ForumsCategory::find($this->get('category'))]);
+        return \Gate::check('forums.can_create_topic', [ForumsCategory::find($this->get('category'))]);
     }
 
     /**

@@ -26,3 +26,18 @@ Route::put('/t/{categorySlug}/{topicSlug}/{messageId}', ['as' => 'messages.updat
 Route::get('/t/{categorySlug}/{topicSlug}/{messageId}/remove', ['as' => 'messages.remove', 'uses' => 'MessagesController@remove']);
 Route::delete('/t/{categorySlug}/{topicSlug}/{messageId}', ['as' => 'messages.delete', 'uses' => 'MessagesController@delete']);
 
+// Auth
+Route::get('oauth/{provider}', ['as' => 'oauth.to', 'uses' => 'OAuthController@redirectToProvider']);
+Route::get('oauth/{provider}/callback', ['as' => 'oauth.callback', 'uses' => 'OAuthController@handleProviderCallback']);
+
+
+Route::middleware('auth')->prefix('user')->name('user.')->group(function () {
+    Route::get('/', ['as' => 'index', 'uses' => 'UserController@index']);
+    Route::get('forums', ['as' => 'forums-preferences', 'uses' => 'UserController@forumsPreferences']);
+    Route::post('forums', ['as' => 'forums-preferences.save', 'uses' => 'UserController@postForumsPreferences']);
+    Route::get('change-username', ['as' => 'change-username', 'uses' => 'UserController@changeUsername']);
+    Route::post('change-username', ['as' => 'change-username.save', 'uses' => 'UserController@postChangeUsername']);
+    Route::get('change-email', ['as' => 'change-email', 'uses' => 'UserController@changeEmail']);
+    Route::post('change-email', ['as' => 'change-email.save', 'uses' => 'UserController@postChangeEmail']);
+    Route::get('logout', ['as' => 'logout', 'uses' => 'UserController@logout']);
+});

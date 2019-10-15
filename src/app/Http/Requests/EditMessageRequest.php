@@ -15,7 +15,7 @@ class EditMessageRequest extends FormRequest
      */
     public function authorize()
     {
-        return Gate::check('forums.can_edit_message', ['message' => ForumsMessage::find($this->route('messageId'))]);
+        return Gate::check('forums.can_edit_message', [ForumsMessage::find($this->route('messageId'))]);
     }
 
     /**

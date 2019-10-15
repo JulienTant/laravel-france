@@ -57,7 +57,7 @@ class User extends Authenticatable
 
         $user->email = $socialiteUser->getEmail();
         if ($driver == "twitter") {
-            $user->email = 'twitter_' . str_random('3') . time();
+            $user->email = \Str::slug($user->username) . '@from_twitter';
         }
 
         $user->groups = [];

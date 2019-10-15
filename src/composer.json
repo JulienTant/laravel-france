@@ -17,7 +17,8 @@
         "laravel/tinker": "^1.0",
         "league/commonmark-ext-autolink": "^1.0",
         "league/commonmark-ext-table": "^2.1",
-        "predis/predis": "^1.1"
+        "predis/predis": "^1.1",
+        "uxweb/sweet-alert": "dev-master"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.2",

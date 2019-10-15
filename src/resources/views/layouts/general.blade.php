@@ -24,12 +24,29 @@
             <li class="nav-item">
                 <a class="nav-link" href="/slack"><i class="fa fa-slack"></i> Slack</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/login">Se connecter</a>
+            @if(Auth::guest())
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="login_dd" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Se connecter
+                </a>
+                <div class="dropdown-menu" aria-labelledby="login_dd">
+                    <a class="dropdown-item" href="{{ route('oauth.to', ['google']) }}">Google</a>
+                    <a class="dropdown-item" href="{{ route('oauth.to', ['github']) }}">Github</a>
+                    <a class="dropdown-item" href="{{ route('oauth.to', ['twitter']) }}">Twitter</a>
+                </div>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/account">Mon compte</a>
-            </li>
+            @else
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="account_dd" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Mon compte
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="account_dd">
+                        <a class="dropdown-item" href="{{ route('user.index') }}">Mon compte</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="{{ route('user.logout') }}">Déconnexion</a>
+                    </div>
+                </li>
+            @endif
         </ul>
     </div>
 </nav>
@@ -60,5 +77,6 @@
     ga('create', 'UA-37182814-1', 'auto');
     ga('send', 'pageview');
 </script>
+@include('sweet::alert')
 </body>
 </html>

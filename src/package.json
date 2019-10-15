@@ -24,6 +24,7 @@
         "vue-template-compiler": "^2.6.10"
     },
     "dependencies": {
+        "bootstrap-sweetalert": "^1.0.1",
         "font-awesome": "^4.7.0",
         "highlight.js": "^9.15.10",
         "simplemde": "^1.11.2"

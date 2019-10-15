@@ -56,7 +56,7 @@ class AuthServiceProvider extends ServiceProvider
     private function defineForumsRules()
     {
         Gate::before(function (User $user, $ability) {
-            if (!in_array($ability, self::$noSuperPowersFor) && str_is('forums.*', $ability) && in_array(Group::FORUMS_MODERATOR, $user->groups)) {
+            if (!in_array($ability, self::$noSuperPowersFor) && \Str::is('forums.*', $ability) && in_array(Group::FORUMS_MODERATOR, $user->groups)) {
                 return true;
             }
         });
@@ -80,7 +80,14 @@ class AuthServiceProvider extends ServiceProvider
                 return false;
             }
 
-            if ($message->forumsTopic->forumsMessages()->count() > 1) {
+
+            $topic = \Cache::store('array')->sear('topic-'.$message->forums_topic_id, function () use ($message) {
+                return  $message->forumsTopic;
+            });
+            $cnt = \Cache::store('array')->sear('topic-msg-count-' . $topic->id, function () use ($message, $topic) {
+               return  $topic->forumsMessages()->count();
+            });
+            if ($cnt > 1) {
                 return false;
             }
 
@@ -88,15 +95,23 @@ class AuthServiceProvider extends ServiceProvider
         });
 
         Gate::define('forums.can_mark_as_solve', function (User $user, ForumsMessage $message) {
-            if ($message->forumsTopic->solved) {
+            $topic = \Cache::store('array')->sear('topic-'.$message->forums_topic_id, function () use ($message) {
+                return  $message->forumsTopic;
+            });
+
+            if ($topic->solved) {
                 return false;
             }
 
-            if ($message->forumsTopic->user_id != $user->id) {
+            if ($topic->user_id != $user->id) {
                 return false;
             }
 
-            if ($message->id == $message->forumsTopic->firstMessage->id) {
+            $firstmsg = \Cache::store('array')->sear('first-msg-of-' . $topic->id, function () use ($topic) {
+                return  $topic->firstMessage;
+            });
+
+            if ($message->id == $firstmsg->id) {
                 return false;
             }
 

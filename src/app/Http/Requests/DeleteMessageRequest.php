@@ -15,7 +15,7 @@ class DeleteMessageRequest extends FormRequest
      */
     public function authorize()
     {
-        return Gate::check('forums.can_remove_message', ['message' => ForumsMessage::find($this->route('messageId'))]);
+        return Gate::check('forums.can_remove_message', [ForumsMessage::find($this->route('messageId'))]);
     }
 
     /**

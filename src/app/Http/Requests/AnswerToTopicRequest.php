@@ -34,7 +34,7 @@ class AnswerToTopicRequest extends FormRequest
 
         $this->topic = $topic;
 
-        return Gate::check('forums.can_reply_to_topic', ['topic' => $topic]);
+        return Gate::check('forums.can_reply_to_topic', [$topic]);
     }
 
     /**

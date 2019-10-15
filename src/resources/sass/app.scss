@@ -10,6 +10,15 @@
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
 
+// HLJS Zenburn
+@import '~highlight.js/styles/zenburn.css';
+
+// simpleMDE
+@import '~simplemde/dist/simplemde.min.css';
+
+// Sweetalert
+@import "~bootstrap-sweetalert/dist/sweetalert.css";
+
 
 .message {
     background-color: #ffffff;

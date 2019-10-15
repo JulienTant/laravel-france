@@ -19,3 +19,10 @@ Route::get('/logout', function () {
     Auth::logout();
     return Redirect::to('/');
 });
+
+
+Route::get('/alert', function () {
+    alert()->success('coucou')->autoclose(5000);
+
+    return Redirect::to('/');
+});

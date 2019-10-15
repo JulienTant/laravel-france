@@ -1,5 +1,4 @@
 import SimpleMDE from 'simplemde'
-import 'simplemde/dist/simplemde.min.css';
 
 $(function () {
     document.querySelectorAll('.editor-please').forEach((block) => {

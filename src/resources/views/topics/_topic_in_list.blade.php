@@ -7,7 +7,11 @@
             </div>
         </div>
         <div class="col-12 col-md-7">
-            <h3 class="topic-title {{ $topic->solved ? 'topic-title-solved' : '' }}"><a href="{{ route('topics.show', [$topic->forumsCategory->slug, $topic->slug]) }}">{{ $topic->title }}</a></h3>
+            <h3 class="topic-title {{ $topic->solved ? 'topic-title-solved' : '' }}">
+                <a href="{{ Auth::user() != null && Auth::user()->getForumsPreferencesItem('see_last_message') ? route('messages.show', [$topic->last_message_id]) : route('topics.show', [$topic->forumsCategory->slug, $topic->slug]) }}">
+                    {{ $topic->title }}
+                </a>
+            </h3>
             <p class="excerpt">{{ Str::limit($topic->firstMessage->markdown, 150) }}</p>
         </div>
         <div class="d-none d-md-block col-md-3">
