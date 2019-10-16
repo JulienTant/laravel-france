@@ -6,6 +6,7 @@ use Illuminate\Mail\Mailer;
 use Illuminate\Mail\Message;
 use LaravelFrance\Events\ForumsMessagePostedOnForumsTopic;
 use LaravelFrance\ForumsWatch;
+use LaravelFrance\Mail\TopicUpdated;
 
 class SendEmailToWatchersWhenForumsMessagesPostedListener
 {
@@ -35,25 +36,8 @@ class SendEmailToWatchersWhenForumsMessagesPostedListener
 
         /** @var ForumsWatch $watcher */
         foreach (ForumsWatch::mailable()->with('user')->whereForumsTopicId($topic->id)->where('user_id', '<>', $poster->id)->get() as $watcher) {
-
             if ($watcher->user->getForumsPreferencesItem('watch_new_reply_send_email') && filter_var($watcher->user->email, FILTER_VALIDATE_EMAIL)) {
-                $user = $watcher->user;
-
-                throw new \Exception('USE LARAVEL NOTIFICATION SYSTEM');
-
-                $parameters = [
-                    'topic_subject' => $topic->title,
-                    'author'        => $poster->username,
-                    'message_id'    => $event->getMessage()->id
-                ];
-
-
-                $this->mailer->queue('forums.email.watch', $parameters, function (Message $message) use ($user, $parameters) {
-                    $message->to($user->email, $user->username);
-                    $message->from('noreply@laravel.fr', 'Forums Laravel France');
-                    $message->subject('Nouvelle réponse sur le sujet ' . $parameters['topic_subject']);
-                    return $message;
-                });
+                $this->mailer->queue(new TopicUpdated($topic, $poster, $event, $watcher->user));
             }
         }
     }

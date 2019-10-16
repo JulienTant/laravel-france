@@ -1,5 +1,7 @@
 @extends('layouts.profile')
 
+@section('title', 'Changer mon pseudo')
+
 
 @section('content')
     <h2>Modifier mon pseudo</h2>

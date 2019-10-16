@@ -31,7 +31,9 @@ class OAuthController extends Controller
     /**
      * Obtain the user information from GitHub.
      *
+     * @param $provider
      * @return \Illuminate\Http\Response
+     * @throws \Exception
      */
     public function handleProviderCallback($provider)
     {
@@ -50,7 +52,7 @@ class OAuthController extends Controller
             alert()->error(sprintf("Cette adresse email (%s) est déjà utilisée.\nMerci de vous connecter avec un autre provider,\n ou de contacter l'administrateur.", $exception->getEmail()),
                 'Email déjà utilisée')->persistent('ok');
 
-            return redirect()->route('forums.index');
+            return redirect()->route('topics.index');
         }
 
         $originalUserName = $user->username;

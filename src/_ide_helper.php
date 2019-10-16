@@ -3,7 +3,7 @@
 
 /**
  * A helper file for Laravel 5, to provide autocomplete information to your IDE
- * Generated for Laravel 6.2.0 on 2019-10-15 20:26:24.
+ * Generated for Laravel 6.3.0 on 2019-10-16 21:08:41.
  *
  * This file should not be included in your code, only analyzed by your IDE!
  *
@@ -15492,6 +15492,2625 @@ namespace Barryvdh\Debugbar {
  
 }
 
+namespace Craftyx\SlackApi\Facades { 
+
+    /**
+     * 
+     *
+     */ 
+    class SlackApi {
+        
+        /**
+         * Send a GET Request.
+         *
+         * @param $apiMethod
+         * @param array $parameters
+         * @return \GuzzleHttp\Message\ResponseInterface 
+         * @static 
+         */ 
+        public static function get($apiMethod, $parameters = array())
+        {
+                        /** @var \Craftyx\SlackApi\SlackApi $instance */
+                        return $instance->get($apiMethod, $parameters);
+        }
+        
+        /**
+         * Send a POST Request.
+         *
+         * @param $apiMethod
+         * @param array $parameters
+         * @return \GuzzleHttp\Message\ResponseInterface 
+         * @static 
+         */ 
+        public static function post($apiMethod, $parameters = array())
+        {
+                        /** @var \Craftyx\SlackApi\SlackApi $instance */
+                        return $instance->post($apiMethod, $parameters);
+        }
+        
+        /**
+         * Send a PUT Request.
+         *
+         * @param $apiMethod
+         * @param array $parameters
+         * @return \GuzzleHttp\Message\ResponseInterface 
+         * @static 
+         */ 
+        public static function put($apiMethod, $parameters = array())
+        {
+                        /** @var \Craftyx\SlackApi\SlackApi $instance */
+                        return $instance->put($apiMethod, $parameters);
+        }
+        
+        /**
+         * Send a DELETE Request.
+         *
+         * @param $apiMethod
+         * @param array $parameters
+         * @return \GuzzleHttp\Message\ResponseInterface 
+         * @static 
+         */ 
+        public static function delete($apiMethod, $parameters = array())
+        {
+                        /** @var \Craftyx\SlackApi\SlackApi $instance */
+                        return $instance->delete($apiMethod, $parameters);
+        }
+        
+        /**
+         * Send a PATCH Request.
+         *
+         * @param $apiMethod
+         * @param array $parameters
+         * @return \GuzzleHttp\Message\ResponseInterface 
+         * @static 
+         */ 
+        public static function patch($apiMethod, $parameters = array())
+        {
+                        /** @var \Craftyx\SlackApi\SlackApi $instance */
+                        return $instance->patch($apiMethod, $parameters);
+        }
+        
+        /**
+         * Loads an Slack Method by its contract short name.
+         *
+         * @param $method
+         * @example $slack->load('Channel')->lists()
+         * @return mixed 
+         * @static 
+         */ 
+        public static function load($method)
+        {
+                        /** @var \Craftyx\SlackApi\SlackApi $instance */
+                        return $instance->load($method);
+        }
+        
+        /**
+         * Set the token of your slack team member (be sure is admin token).
+         *
+         * @param $token
+         * @static 
+         */ 
+        public static function setToken($token)
+        {
+                        /** @var \Craftyx\SlackApi\SlackApi $instance */
+                        return $instance->setToken($token);
+        }
+        
+        /**
+         * Configures the Guzzle Client.
+         *
+         * @param \GuzzleHttp\Client|Callback|null $client
+         * @static 
+         */ 
+        public static function setClient($client = null)
+        {
+                        /** @var \Craftyx\SlackApi\SlackApi $instance */
+                        return $instance->setClient($client);
+        }
+        
+        /**
+         * Register a custom macro.
+         *
+         * @param string $name
+         * @param object|callable $macro
+         * @return void 
+         * @static 
+         */ 
+        public static function macro($name, $macro)
+        {
+                        \Craftyx\SlackApi\SlackApi::macro($name, $macro);
+        }
+        
+        /**
+         * Mix another object into the class.
+         *
+         * @param object $mixin
+         * @param bool $replace
+         * @return void 
+         * @throws \ReflectionException
+         * @static 
+         */ 
+        public static function mixin($mixin, $replace = true)
+        {
+                        \Craftyx\SlackApi\SlackApi::mixin($mixin, $replace);
+        }
+        
+        /**
+         * Checks if macro is registered.
+         *
+         * @param string $name
+         * @return bool 
+         * @static 
+         */ 
+        public static function hasMacro($name)
+        {
+                        return \Craftyx\SlackApi\SlackApi::hasMacro($name);
+        }
+         
+    }
+
+    /**
+     * 
+     *
+     */ 
+    class SlackChannel {
+        
+        /**
+         * This method archives a channel.
+         *
+         * @param string $channel Channel to archive
+         * @return array 
+         * @static 
+         */ 
+        public static function archive($channel)
+        {
+                        /** @var \Craftyx\SlackApi\Methods\Channel $instance */
+                        return $instance->archive($channel);
+        }
+        
+        /**
+         * This method crate a channel with a given name.
+         *
+         * @param string $name Name of channel to create
+         * @return array 
+         * @static 
+         */ 
+        public static function create($name)
+        {
+                        /** @var \Craftyx\SlackApi\Methods\Channel $instance */
+                        return $instance->create($name);
+        }
+        
+        /**
+         * This method returns a portion of messages/events from the specified channel.
+         * 
+         * To read the entire history for a channel, call the method with no `latest` or `oldest` arguments,
+         * and then continue paging using the instructions below.
+         *
+         * @see https://api.slack.com/methods/channels.history
+         * @param string $channel Channel to fetch history for.
+         * @param int $count Number of messages to return, between 1 and 1000.
+         * @param string $latest End of time range of messages to include in results.
+         * @param int $oldest Start of time range of messages to include in results.
+         * @param int $inclusive Include messages with latest or oldest timestamp in results.
+         * @return array 
+         * @static 
+         */ 
+        public static function history($channel, $count = 100, $latest = null, $oldest = 0, $inclusive = 1)
+        {
+                        /** @var \Craftyx\SlackApi\Methods\Channel $instance */
+                        return $instance->history($channel, $count, $latest, $oldest, $inclusive);
+        }
+        
+        /**
+         * This method returns information about a team channel.
+         *
+         * @see https://api.slack.com/methods/channels.info
+         * @param string $channel Channel to get info on
+         * @return array 
+         * @static 
+         */ 
+        public static function info($channel)
+        {
+                        /** @var \Craftyx\SlackApi\Methods\Channel $instance */
+                        return $instance->info($channel);
+        }
+        
+        /**
+         * This method is used to invite a user to a channel. The calling user must be a member of the channel.
+         *
+         * @see https://api.slack.com/methods/channels.invite
+         * @param string $channel
+         * @param string $user
+         * @return array 
+         * @static 
+         */ 
+        public static function invite($channel, $user)
+        {
+                        /** @var \Craftyx\SlackApi\Methods\Channel $instance */
+                        return $instance->invite($channel, $user);
+        }
+        
+        /**
+         * This method is used to join a channel. If the channel does not exist, it is created.
+         *
+         * @see https://api.slack.com/methods/channels.join
+         * @param string $name Channel name to join in
+         * @return array 
+         * @static 
+         */ 
+        public static function join($name)
+        {
+                        /** @var \Craftyx\SlackApi\Methods\Channel $instance */
+                        return $instance->join($name);
+        }
+        
+        /**
+         * This method allows a user to remove another member from a team channel.
+         *
+         * @see https://api.slack.com/methods/channels.kick
+         * @param string $channel
+         * @param string $user
+         * @return array 
+         * @static 
+         */ 
+        public static function kick($channel, $user)
+        {
+                        /** @var \Craftyx\SlackApi\Methods\Channel $instance */
+                        return $instance->kick($channel, $user);
+        }
+        
+        /**
+         * This method is used to leave a channel.
+         *
+         * @see https://api.slack.com/methods/channels.leave
+         * @param string $channel
+         * @return array 
+         * @static 
+         */ 
+        public static function leave($channel)
+        {
+                        /** @var \Craftyx\SlackApi\Methods\Channel $instance */
+                        return $instance->leave($channel);
+        }
+        
+        /**
+         * This method returns a list of all channels in the team. This includes channels the caller is in, channels they are not currently in, and archived channels.
+         * 
+         * The number of (non-deactivated) members in each channel is also returned.
+         *
+         * @see https://api.slack.com/methods/channels.list
+         * @param int $exclude_archived Don't return archived channels.
+         * @return array 
+         * @static 
+         */ 
+        public static function all($exclude_archived = 1)
+        {
+                        /** @var \Craftyx\SlackApi\Methods\Channel $instance */
+                        return $instance->all($exclude_archived);
+        }
+        
+        /**
+         * This method returns a list of all channels in the team. This includes channels the caller is in, channels they are not currently in, and archived channels.
+         * 
+         * The number of (non-deactivated) members in each channel is also returned.
+         *
+         * @see https://api.slack.com/methods/channels.list
+         * @param int $exclude_archived Don't return archived channels.
+         * @return array 
+         * @static 
+         */ 
+        public static function lists($exclude_archived = 1)
+        {
+                        /** @var \Craftyx\SlackApi\Methods\Channel $instance */
+                        return $instance->lists($exclude_archived);
+        }
+        
+        /**
+         * This method moves the read cursor in a channel.
+         *
+         * @see https://api.slack.com/methods/channels.mark
+         * @param string $channel Channel to set reading cursor in.
+         * @param string|int $ts Timestamp of the most recently seen message.
+         * @return array 
+         * @static 
+         */ 
+        public static function mark($channel, $ts)
+        {
+                        /** @var \Craftyx\SlackApi\Methods\Channel $instance */
+                        return $instance->mark($channel, $ts);
+        }
+        
+        /**
+         * This method renames a team channel.
+         * 
+         * The only people who can rename a channel are team admins, or the person that originally
+         * created the channel. Others will recieve a "not_authorized" error.
+         *
+         * @see https://api.slack.com/methods/channels.rename
+         * @param string $channel Channel to rename
+         * @param string $name New name for channel
+         * @return array 
+         * @static 
+         */ 
+        public static function rename($channel, $name)
+        {
+                        /** @var \Craftyx\SlackApi\Methods\Channel $instance */
+                        return $instance->rename($channel, $name);
+        }
+        
+        /**
+         * This method is used to change the purpose of a channel. The calling user must be a member of the channel.
+         *
+         * @see https://api.slack.com/methods/channels.setPurpose
+         * @param string $channel Channel to set the purpose of
+         * @param string $purpose The new purpose
+         * @return array 
+         * @static 
+         */ 
+        public static function setPurpose($channel, $purpose)
+        {
+                        /** @var \Craftyx\SlackApi\Methods\Channel $instance */
+                        return $instance->setPurpose($channel, $purpose);
+        }
+        
+        /**
+         * This method is used to change the topic of a channel. The calling user must be a member of the channel.
+         *
+         * @see https://api.slack.com/methods/channels.setTopic
+         * @param string $channel
+         * @param string $topic
+         * @return array 
+         * @static 
+         */ 
+        public static function setTopic($channel, $topic)
+        {
+                        /** @var \Craftyx\SlackApi\Methods\Channel $instance */
+                        return $instance->setTopic($channel, $topic);
+        }
+        
+        /**
+         * This method unarchives a channel. The calling user is added to the channel.
+         *
+         * @see https://api.slack.com/methods/channels.unarchive
+         * @param string $channel Channel to unarchive
+         * @return array 
+         * @static 
+         */ 
+        public static function unarchive($channel)
+        {
+                        /** @var \Craftyx\SlackApi\Methods\Channel $instance */
+                        return $instance->unarchive($channel);
+        }
+        
+        /**
+         * Sends a http request.
+         *
+         * @param string $method short method of the api (only the suffix after ".")
+         * @param array $params params to the given method
+         * @param string $http http verb
+         * @return array 
+         * @static 
+         */ 
+        public static function method($method, $params = array(), $http = 'post')
+        {
+            //Method inherited from \Craftyx\SlackApi\Methods\SlackMethod            
+                        /** @var \Craftyx\SlackApi\Methods\Channel $instance */
+                        return $instance->method($method, $params, $http);
+        }
+        
+        /**
+         * Returns the api.
+         *
+         * @return \Craftyx\SlackApi\Contracts\SlackApi 
+         * @static 
+         */ 
+        public static function getApi()
+        {
+            //Method inherited from \Craftyx\SlackApi\Methods\SlackMethod            
+                        /** @var \Craftyx\SlackApi\Methods\Channel $instance */
+                        return $instance->getApi();
+        }
+        
+        /**
+         * Cache a value.
+         *
+         * @param string $key
+         * @param mixed $value
+         * @param int $minutes Default 1
+         * @return mixed 
+         * @static 
+         */ 
+        public static function cachePut($key, $value, $minutes = 1)
+        {
+            //Method inherited from \Craftyx\SlackApi\Methods\SlackMethod            
+                        /** @var \Craftyx\SlackApi\Methods\Channel $instance */
+                        return $instance->cachePut($key, $value, $minutes);
+        }
+        
+        /**
+         * Remember the result value for a given closure.
+         *
+         * @param $key
+         * @param $minutes
+         * @param $callback
+         * @return mixed 
+         * @static 
+         */ 
+        public static function cacheRemember($key, $minutes, $callback)
+        {
+            //Method inherited from \Craftyx\SlackApi\Methods\SlackMethod            
+                        /** @var \Craftyx\SlackApi\Methods\Channel $instance */
+                        return $instance->cacheRemember($key, $minutes, $callback);
+        }
+        
+        /**
+         * Remember the result value for a closure forever.
+         *
+         * @param $key
+         * @param $callback
+         * @return mixed 
+         * @static 
+         */ 
+        public static function cacheRememberForever($key, $callback)
+        {
+            //Method inherited from \Craftyx\SlackApi\Methods\SlackMethod            
+                        /** @var \Craftyx\SlackApi\Methods\Channel $instance */
+                        return $instance->cacheRememberForever($key, $callback);
+        }
+        
+        /**
+         * Get a cache for a given key.
+         *
+         * @param string $key
+         * @param null $default
+         * @return mixed 
+         * @static 
+         */ 
+        public static function cacheGet($key, $default = null)
+        {
+            //Method inherited from \Craftyx\SlackApi\Methods\SlackMethod            
+                        /** @var \Craftyx\SlackApi\Methods\Channel $instance */
+                        return $instance->cacheGet($key, $default);
+        }
+        
+        /**
+         * Cache a value forever.
+         *
+         * @param $key
+         * @param $value
+         * @static 
+         */ 
+        public static function cacheForever($key, $value)
+        {
+            //Method inherited from \Craftyx\SlackApi\Methods\SlackMethod            
+                        /** @var \Craftyx\SlackApi\Methods\Channel $instance */
+                        return $instance->cacheForever($key, $value);
+        }
+        
+        /**
+         * Forget a value for a given key.
+         *
+         * @param $key
+         * @static 
+         */ 
+        public static function cacheForget($key)
+        {
+            //Method inherited from \Craftyx\SlackApi\Methods\SlackMethod            
+                        /** @var \Craftyx\SlackApi\Methods\Channel $instance */
+                        return $instance->cacheForget($key);
+        }
+         
+    }
+
+    /**
+     * 
+     *
+     */ 
+    class SlackChat {
+        
+        /**
+         * This method deletes a message from a channel.
+         *
+         * @see https://api.slack.com/methods/chat.delete
+         * @param string $channel Channel containing the message to be deleted.
+         * @param int|string $ts Timestamp of the message to be deleted.
+         * @return array 
+         * @static 
+         */ 
+        public static function delete($channel, $ts)
+        {
+                        /** @var \Craftyx\SlackApi\Methods\Chat $instance */
+                        return $instance->delete($channel, $ts);
+        }
+        
+        /**
+         * This method posts a message to a channel.
+         *
+         * @see https://api.slack.com/methods/chat.postMessage
+         * @param string $channel Channel to send message to. Can be a public channel, private group or IM channel. Can be an encoded ID, or a name.
+         * @param string $text Text of the message to send. See below for an explanation of formatting.
+         * @param array $options
+         * @example <pre>
+         * [
+         *    "username" => "My Bot", //Name of bot.
+         *    "as_user"  => true, //Pass true to post the message as the authed user, instead of as a bot
+         *    "parse"    => "full", //Change how messages are treated. See below.
+         *    "link_names" => 1, //Find and link channel names and usernames.
+         *    "attachments" => ["pretext" => "pre-hello", "text" => "text-world"], //Structured message attachments.
+         *   "unfurl_links" => true, //Pass true to enable unfurling of primarily text-based content.
+         *    "unfurl_media" => true, //Pass false to disable unfurling of media content.
+         *    "icon_url" => "http://lorempixel.com/48/48", //URL to an image to use as the icon for this message
+         *    "icon_emoji"=> ":chart_with_upwards_trend:" //emoji to use as the icon for this message. Overrides icon_url.
+         * ]
+         * </pre>
+         * @return array 
+         * @static 
+         */ 
+        public static function message($channel, $text, $options = array())
+        {
+                        /** @var \Craftyx\SlackApi\Methods\Chat $instance */
+                        return $instance->message($channel, $text, $options);
+        }
+        
+        /**
+         * Alias to message().
+         *
+         * @see https://api.slack.com/methods/chat.postMessage
+         * @param string $channel Channel to send message to. Can be a public channel, private group or IM channel. Can be an encoded ID, or a name.
+         * @param string $text Text of the message to send. See below for an explanation of formatting.
+         * @param array $options
+         * @return array 
+         * @static 
+         */ 
+        public static function postMessage($channel, $text, $options = array())
+        {
+                        /** @var \Craftyx\SlackApi\Methods\Chat $instance */
+                        return $instance->postMessage($channel, $text, $options);
+        }
+        
+        /**
+         * This method updates a message in a channel.
+         *
+         * @param string $channel Channel containing the message to be updated.
+         * @param string $text New text for the message, using the default formatting rules.
+         * @param int|string $ts Timestamp of the message to be updated.
+         * @param array $options
+         * @example <pre>
+         * [
+         *    "username" => "My Bot", //Name of bot.
+         *    "as_user"  => true, //Pass true to post the message as the authed user, instead of as a bot
+         *    "parse"    => "full", //Change how messages are treated. See below.
+         *    "link_names" => 1, //Find and link channel names and usernames.
+         *    "attachments" => ["pretext" => "pre-hello", "text" => "text-world"], //Structured message attachments.
+         *   "unfurl_links" => true, //Pass true to enable unfurling of primarily text-based content.
+         *    "unfurl_media" => true, //Pass false to disable unfurling of media content.
+         *    "icon_url" => "http://lorempixel.com/48/48", //URL to an image to use as the icon for this message
+         *    "icon_emoji"=> ":chart_with_upwards_trend:" //emoji to use as the icon for this message. Overrides icon_url.
+         * ]
+         * </pre>
+         * @return array 
+         * @static 
+         */ 
+        public static function update($channel, $text, $ts, $options = array())
+        {
+                        /** @var \Craftyx\SlackApi\Methods\Chat $instance */
+                        return $instance->update($channel, $text, $ts, $options);
+        }
+        
+        /**
+         * Sends a http request.
+         *
+         * @param string $method short method of the api (only the suffix after ".")
+         * @param array $params params to the given method
+         * @param string $http http verb
+         * @return array 
+         * @static 
+         */ 
+        public static function method($method, $params = array(), $http = 'post')
+        {
+            //Method inherited from \Craftyx\SlackApi\Methods\SlackMethod            
+                        /** @var \Craftyx\SlackApi\Methods\Chat $instance */
+                        return $instance->method($method, $params, $http);
+        }
+        
+        /**
+         * Returns the api.
+         *
+         * @return \Craftyx\SlackApi\Contracts\SlackApi 
+         * @static 
+         */ 
+        public static function getApi()
+        {
+            //Method inherited from \Craftyx\SlackApi\Methods\SlackMethod            
+                        /** @var \Craftyx\SlackApi\Methods\Chat $instance */
+                        return $instance->getApi();
+        }
+        
+        /**
+         * Cache a value.
+         *
+         * @param string $key
+         * @param mixed $value
+         * @param int $minutes Default 1
+         * @return mixed 
+         * @static 
+         */ 
+        public static function cachePut($key, $value, $minutes = 1)
+        {
+            //Method inherited from \Craftyx\SlackApi\Methods\SlackMethod            
+                        /** @var \Craftyx\SlackApi\Methods\Chat $instance */
+                        return $instance->cachePut($key, $value, $minutes);
+        }
+        
+        /**
+         * Remember the result value for a given closure.
+         *
+         * @param $key
+         * @param $minutes
+         * @param $callback
+         * @return mixed 
+         * @static 
+         */ 
+        public static function cacheRemember($key, $minutes, $callback)
+        {
+            //Method inherited from \Craftyx\SlackApi\Methods\SlackMethod            
+                        /** @var \Craftyx\SlackApi\Methods\Chat $instance */
+                        return $instance->cacheRemember($key, $minutes, $callback);
+        }
+        
+        /**
+         * Remember the result value for a closure forever.
+         *
+         * @param $key
+         * @param $callback
+         * @return mixed 
+         * @static 
+         */ 
+        public static function cacheRememberForever($key, $callback)
+        {
+            //Method inherited from \Craftyx\SlackApi\Methods\SlackMethod            
+                        /** @var \Craftyx\SlackApi\Methods\Chat $instance */
+                        return $instance->cacheRememberForever($key, $callback);
+        }
+        
+        /**
+         * Get a cache for a given key.
+         *
+         * @param string $key
+         * @param null $default
+         * @return mixed 
+         * @static 
+         */ 
+        public static function cacheGet($key, $default = null)
+        {
+            //Method inherited from \Craftyx\SlackApi\Methods\SlackMethod            
+                        /** @var \Craftyx\SlackApi\Methods\Chat $instance */
+                        return $instance->cacheGet($key, $default);
+        }
+        
+        /**
+         * Cache a value forever.
+         *
+         * @param $key
+         * @param $value
+         * @static 
+         */ 
+        public static function cacheForever($key, $value)
+        {
+            //Method inherited from \Craftyx\SlackApi\Methods\SlackMethod            
+                        /** @var \Craftyx\SlackApi\Methods\Chat $instance */
+                        return $instance->cacheForever($key, $value);
+        }
+        
+        /**
+         * Forget a value for a given key.
+         *
+         * @param $key
+         * @static 
+         */ 
+        public static function cacheForget($key)
+        {
+            //Method inherited from \Craftyx\SlackApi\Methods\SlackMethod            
+                        /** @var \Craftyx\SlackApi\Methods\Chat $instance */
+                        return $instance->cacheForget($key);
+        }
+         
+    }
+
+    /**
+     * 
+     *
+     */ 
+    class SlackGroup {
+        
+        /**
+         * This method opens a private group.
+         *
+         * @param string $channel Group to open.
+         * @return array 
+         * @static 
+         */ 
+        public static function open($channel)
+        {
+                        /** @var \Craftyx\SlackApi\Methods\Group $instance */
+                        return $instance->open($channel);
+        }
+        
+        /**
+         * This method closes a private group.
+         *
+         * @param string $channel Group to close
+         * @return array 
+         * @static 
+         */ 
+        public static function close($channel)
+        {
+                        /** @var \Craftyx\SlackApi\Methods\Group $instance */
+                        return $instance->close($channel);
+        }
+        
+        /**
+         * This method takes an existing private group and performs the following steps:.
+         * 
+         * - Renames the existing group (from "example" to "example-archived").
+         * - Archives the existing group.
+         * - Creates a new group with the name of the existing group.
+         * - Adds all members of the existing group to the new group.
+         * 
+         * This is useful when inviting a new member to an existing group while hiding all previous
+         * chat history from them. In this scenario you can call groups.createChild followed by groups.invite.
+         * 
+         * The new group will have a special parent_group property pointing to the original archived group.
+         * This will only be returned for members of both groups, so will not be visible to any newly invited members.
+         *
+         * @see https://api.slack.com/methods/groups.createChild
+         * @param $channel
+         * @return array 
+         * @static 
+         */ 
+        public static function createChild($channel)
+        {
+                        /** @var \Craftyx\SlackApi\Methods\Group $instance */
+                        return $instance->createChild($channel);
+        }
+        
+        /**
+         * This method archives a channel.
+         *
+         * @param string $channel Channel to archive
+         * @return array 
+         * @static 
+         */ 
+        public static function archive($channel)
+        {
+            //Method inherited from \Craftyx\SlackApi\Methods\Channel            
+                        /** @var \Craftyx\SlackApi\Methods\Group $instance */
+                        return $instance->archive($channel);
+        }
+        
+        /**
+         * This method crate a channel with a given name.
+         *
+         * @param string $name Name of channel to create
+         * @return array 
+         * @static 
+         */ 
+        public static function create($name)
+        {
+            //Method inherited from \Craftyx\SlackApi\Methods\Channel            
+                        /** @var \Craftyx\SlackApi\Methods\Group $instance */
+                        return $instance->create($name);
+        }
+        
+        /**
+         * This method returns a portion of messages/events from the specified channel.
+         * 
+         * To read the entire history for a channel, call the method with no `latest` or `oldest` arguments,
+         * and then continue paging using the instructions below.
+         *
+         * @see https://api.slack.com/methods/channels.history
+         * @param string $channel Channel to fetch history for.
+         * @param int $count Number of messages to return, between 1 and 1000.
+         * @param string $latest End of time range of messages to include in results.
+         * @param int $oldest Start of time range of messages to include in results.
+         * @param int $inclusive Include messages with latest or oldest timestamp in results.
+         * @return array 
+         * @static 
+         */ 
+        public static function history($channel, $count = 100, $latest = null, $oldest = 0, $inclusive = 1)
+        {
+            //Method inherited from \Craftyx\SlackApi\Methods\Channel            
+                        /** @var \Craftyx\SlackApi\Methods\Group $instance */
+                        return $instance->history($channel, $count, $latest, $oldest, $inclusive);
+        }
+        
+        /**
+         * This method returns information about a team channel.
+         *
+         * @see https://api.slack.com/methods/channels.info
+         * @param string $channel Channel to get info on
+         * @return array 
+         * @static 
+         */ 
+        public static function info($channel)
+        {
+            //Method inherited from \Craftyx\SlackApi\Methods\Channel            
+                        /** @var \Craftyx\SlackApi\Methods\Group $instance */
+                        return $instance->info($channel);
+        }
+        
+        /**
+         * This method is used to invite a user to a channel. The calling user must be a member of the channel.
+         *
+         * @see https://api.slack.com/methods/channels.invite
+         * @param string $channel
+         * @param string $user
+         * @return array 
+         * @static 
+         */ 
+        public static function invite($channel, $user)
+        {
+            //Method inherited from \Craftyx\SlackApi\Methods\Channel            
+                        /** @var \Craftyx\SlackApi\Methods\Group $instance */
+                        return $instance->invite($channel, $user);
+        }
+        
+        /**
+         * This method is used to join a channel. If the channel does not exist, it is created.
+         *
+         * @see https://api.slack.com/methods/channels.join
+         * @param string $name Channel name to join in
+         * @return array 
+         * @static 
+         */ 
+        public static function join($name)
+        {
+            //Method inherited from \Craftyx\SlackApi\Methods\Channel            
+                        /** @var \Craftyx\SlackApi\Methods\Group $instance */
+                        return $instance->join($name);
+        }
+        
+        /**
+         * This method allows a user to remove another member from a team channel.
+         *
+         * @see https://api.slack.com/methods/channels.kick
+         * @param string $channel
+         * @param string $user
+         * @return array 
+         * @static 
+         */ 
+        public static function kick($channel, $user)
+        {
+            //Method inherited from \Craftyx\SlackApi\Methods\Channel            
+                        /** @var \Craftyx\SlackApi\Methods\Group $instance */
+                        return $instance->kick($channel, $user);
+        }
+        
+        /**
+         * This method is used to leave a channel.
+         *
+         * @see https://api.slack.com/methods/channels.leave
+         * @param string $channel
+         * @return array 
+         * @static 
+         */ 
+        public static function leave($channel)
+        {
+            //Method inherited from \Craftyx\SlackApi\Methods\Channel            
+                        /** @var \Craftyx\SlackApi\Methods\Group $instance */
+                        return $instance->leave($channel);
+        }
+        
+        /**
+         * This method returns a list of all channels in the team. This includes channels the caller is in, channels they are not currently in, and archived channels.
+         * 
+         * The number of (non-deactivated) members in each channel is also returned.
+         *
+         * @see https://api.slack.com/methods/channels.list
+         * @param int $exclude_archived Don't return archived channels.
+         * @return array 
+         * @static 
+         */ 
+        public static function all($exclude_archived = 1)
+        {
+            //Method inherited from \Craftyx\SlackApi\Methods\Channel            
+                        /** @var \Craftyx\SlackApi\Methods\Group $instance */
+                        return $instance->all($exclude_archived);
+        }
+        
+        /**
+         * This method returns a list of all channels in the team. This includes channels the caller is in, channels they are not currently in, and archived channels.
+         * 
+         * The number of (non-deactivated) members in each channel is also returned.
+         *
+         * @see https://api.slack.com/methods/channels.list
+         * @param int $exclude_archived Don't return archived channels.
+         * @return array 
+         * @static 
+         */ 
+        public static function lists($exclude_archived = 1)
+        {
+            //Method inherited from \Craftyx\SlackApi\Methods\Channel            
+                        /** @var \Craftyx\SlackApi\Methods\Group $instance */
+                        return $instance->lists($exclude_archived);
+        }
+        
+        /**
+         * This method moves the read cursor in a channel.
+         *
+         * @see https://api.slack.com/methods/channels.mark
+         * @param string $channel Channel to set reading cursor in.
+         * @param string|int $ts Timestamp of the most recently seen message.
+         * @return array 
+         * @static 
+         */ 
+        public static function mark($channel, $ts)
+        {
+            //Method inherited from \Craftyx\SlackApi\Methods\Channel            
+                        /** @var \Craftyx\SlackApi\Methods\Group $instance */
+                        return $instance->mark($channel, $ts);
+        }
+        
+        /**
+         * This method renames a team channel.
+         * 
+         * The only people who can rename a channel are team admins, or the person that originally
+         * created the channel. Others will recieve a "not_authorized" error.
+         *
+         * @see https://api.slack.com/methods/channels.rename
+         * @param string $channel Channel to rename
+         * @param string $name New name for channel
+         * @return array 
+         * @static 
+         */ 
+        public static function rename($channel, $name)
+        {
+            //Method inherited from \Craftyx\SlackApi\Methods\Channel            
+                        /** @var \Craftyx\SlackApi\Methods\Group $instance */
+                        return $instance->rename($channel, $name);
+        }
+        
+        /**
+         * This method is used to change the purpose of a channel. The calling user must be a member of the channel.
+         *
+         * @see https://api.slack.com/methods/channels.setPurpose
+         * @param string $channel Channel to set the purpose of
+         * @param string $purpose The new purpose
+         * @return array 
+         * @static 
+         */ 
+        public static function setPurpose($channel, $purpose)
+        {
+            //Method inherited from \Craftyx\SlackApi\Methods\Channel            
+                        /** @var \Craftyx\SlackApi\Methods\Group $instance */
+                        return $instance->setPurpose($channel, $purpose);
+        }
+        
+        /**
+         * This method is used to change the topic of a channel. The calling user must be a member of the channel.
+         *
+         * @see https://api.slack.com/methods/channels.setTopic
+         * @param string $channel
+         * @param string $topic
+         * @return array 
+         * @static 
+         */ 
+        public static function setTopic($channel, $topic)
+        {
+            //Method inherited from \Craftyx\SlackApi\Methods\Channel            
+                        /** @var \Craftyx\SlackApi\Methods\Group $instance */
+                        return $instance->setTopic($channel, $topic);
+        }
+        
+        /**
+         * This method unarchives a channel. The calling user is added to the channel.
+         *
+         * @see https://api.slack.com/methods/channels.unarchive
+         * @param string $channel Channel to unarchive
+         * @return array 
+         * @static 
+         */ 
+        public static function unarchive($channel)
+        {
+            //Method inherited from \Craftyx\SlackApi\Methods\Channel            
+                        /** @var \Craftyx\SlackApi\Methods\Group $instance */
+                        return $instance->unarchive($channel);
+        }
+        
+        /**
+         * Sends a http request.
+         *
+         * @param string $method short method of the api (only the suffix after ".")
+         * @param array $params params to the given method
+         * @param string $http http verb
+         * @return array 
+         * @static 
+         */ 
+        public static function method($method, $params = array(), $http = 'post')
+        {
+            //Method inherited from \Craftyx\SlackApi\Methods\SlackMethod            
+                        /** @var \Craftyx\SlackApi\Methods\Group $instance */
+                        return $instance->method($method, $params, $http);
+        }
+        
+        /**
+         * Returns the api.
+         *
+         * @return \Craftyx\SlackApi\Contracts\SlackApi 
+         * @static 
+         */ 
+        public static function getApi()
+        {
+            //Method inherited from \Craftyx\SlackApi\Methods\SlackMethod            
+                        /** @var \Craftyx\SlackApi\Methods\Group $instance */
+                        return $instance->getApi();
+        }
+        
+        /**
+         * Cache a value.
+         *
+         * @param string $key
+         * @param mixed $value
+         * @param int $minutes Default 1
+         * @return mixed 
+         * @static 
+         */ 
+        public static function cachePut($key, $value, $minutes = 1)
+        {
+            //Method inherited from \Craftyx\SlackApi\Methods\SlackMethod            
+                        /** @var \Craftyx\SlackApi\Methods\Group $instance */
+                        return $instance->cachePut($key, $value, $minutes);
+        }
+        
+        /**
+         * Remember the result value for a given closure.
+         *
+         * @param $key
+         * @param $minutes
+         * @param $callback
+         * @return mixed 
+         * @static 
+         */ 
+        public static function cacheRemember($key, $minutes, $callback)
+        {
+            //Method inherited from \Craftyx\SlackApi\Methods\SlackMethod            
+                        /** @var \Craftyx\SlackApi\Methods\Group $instance */
+                        return $instance->cacheRemember($key, $minutes, $callback);
+        }
+        
+        /**
+         * Remember the result value for a closure forever.
+         *
+         * @param $key
+         * @param $callback
+         * @return mixed 
+         * @static 
+         */ 
+        public static function cacheRememberForever($key, $callback)
+        {
+            //Method inherited from \Craftyx\SlackApi\Methods\SlackMethod            
+                        /** @var \Craftyx\SlackApi\Methods\Group $instance */
+                        return $instance->cacheRememberForever($key, $callback);
+        }
+        
+        /**
+         * Get a cache for a given key.
+         *
+         * @param string $key
+         * @param null $default
+         * @return mixed 
+         * @static 
+         */ 
+        public static function cacheGet($key, $default = null)
+        {
+            //Method inherited from \Craftyx\SlackApi\Methods\SlackMethod            
+                        /** @var \Craftyx\SlackApi\Methods\Group $instance */
+                        return $instance->cacheGet($key, $default);
+        }
+        
+        /**
+         * Cache a value forever.
+         *
+         * @param $key
+         * @param $value
+         * @static 
+         */ 
+        public static function cacheForever($key, $value)
+        {
+            //Method inherited from \Craftyx\SlackApi\Methods\SlackMethod            
+                        /** @var \Craftyx\SlackApi\Methods\Group $instance */
+                        return $instance->cacheForever($key, $value);
+        }
+        
+        /**
+         * Forget a value for a given key.
+         *
+         * @param $key
+         * @static 
+         */ 
+        public static function cacheForget($key)
+        {
+            //Method inherited from \Craftyx\SlackApi\Methods\SlackMethod            
+                        /** @var \Craftyx\SlackApi\Methods\Group $instance */
+                        return $instance->cacheForget($key);
+        }
+         
+    }
+
+    /**
+     * 
+     *
+     */ 
+    class SlackFile {
+        
+        /**
+         * This method deletes a file from your team.
+         *
+         * @param string $file ID of file to delete.
+         * @return array 
+         * @static 
+         */ 
+        public static function delete($file)
+        {
+                        /** @var \Craftyx\SlackApi\Methods\File $instance */
+                        return $instance->delete($file);
+        }
+        
+        /**
+         * This method returns information about a file in your team.
+         *
+         * @param string $file File to fetch info for
+         * @param array $options ['count' = 100, 'page' => 1]
+         * @static 
+         */ 
+        public static function info($file, $options = array())
+        {
+                        /** @var \Craftyx\SlackApi\Methods\File $instance */
+                        return $instance->info($file, $options);
+        }
+        
+        /**
+         * This method returns a list of files within the team. It can be filtered and sliced in various ways.
+         *
+         * @param array $options <pre>
+         *                            [
+         *                            "user" => "U123S567D90", //Filter files created by a single user.
+         *                            "ts_from" => 123456789, //Filter files created after this timestamp (inclusive).
+         *                            "ts_to"   => "now",  //Filter files created before this timestamp (inclusive).
+         *                            "types"   =>  "all", //Filter files by type: all, posts, snippets, images, gdocs, zips, pdfs
+         *                            								   //You can pass multiple values in the types argument, like types=posts,snippets.The default value is all, which does not filter the list.
+         *                            "count" => 100, //Number of items to return per page.
+         *                            "page"  => 1 //Page number of results to return.
+         *                            ]
+         *                            </pre>
+         * @return array 
+         * @static 
+         */ 
+        public static function lists($options = array())
+        {
+                        /** @var \Craftyx\SlackApi\Methods\File $instance */
+                        return $instance->lists($options);
+        }
+        
+        /**
+         * Alias to lists.
+         *
+         * @param array $options
+         * @return array 
+         * @static 
+         */ 
+        public static function all($options = array())
+        {
+                        /** @var \Craftyx\SlackApi\Methods\File $instance */
+                        return $instance->all($options);
+        }
+        
+        /**
+         * This method allows you to create or upload an existing file.
+         *
+         * @param array $options available options: <pre>
+         * "file" => "..." //File contents via multipart/form-data. br
+         * "content" => "..." //File contents via a POST var.
+         * "filetype" => "php" //Slack-internal file type identifier.
+         * "filename" => "filename.txt" //Filename of file.
+         * "title" => "My File", //Title of file
+         * "initial_comment" => "The best!", //Initial comment to add to file.
+         * "channels" => "channel1,channel2", //Comma separated list of channels to share the file into.
+         * </pre>
+         * @return array 
+         * @static 
+         */ 
+        public static function upload($options = array())
+        {
+                        /** @var \Craftyx\SlackApi\Methods\File $instance */
+                        return $instance->upload($options);
+        }
+        
+        /**
+         * Sends a http request.
+         *
+         * @param string $method short method of the api (only the suffix after ".")
+         * @param array $params params to the given method
+         * @param string $http http verb
+         * @return array 
+         * @static 
+         */ 
+        public static function method($method, $params = array(), $http = 'post')
+        {
+            //Method inherited from \Craftyx\SlackApi\Methods\SlackMethod            
+                        /** @var \Craftyx\SlackApi\Methods\File $instance */
+                        return $instance->method($method, $params, $http);
+        }
+        
+        /**
+         * Returns the api.
+         *
+         * @return \Craftyx\SlackApi\Contracts\SlackApi 
+         * @static 
+         */ 
+        public static function getApi()
+        {
+            //Method inherited from \Craftyx\SlackApi\Methods\SlackMethod            
+                        /** @var \Craftyx\SlackApi\Methods\File $instance */
+                        return $instance->getApi();
+        }
+        
+        /**
+         * Cache a value.
+         *
+         * @param string $key
+         * @param mixed $value
+         * @param int $minutes Default 1
+         * @return mixed 
+         * @static 
+         */ 
+        public static function cachePut($key, $value, $minutes = 1)
+        {
+            //Method inherited from \Craftyx\SlackApi\Methods\SlackMethod            
+                        /** @var \Craftyx\SlackApi\Methods\File $instance */
+                        return $instance->cachePut($key, $value, $minutes);
+        }
+        
+        /**
+         * Remember the result value for a given closure.
+         *
+         * @param $key
+         * @param $minutes
+         * @param $callback
+         * @return mixed 
+         * @static 
+         */ 
+        public static function cacheRemember($key, $minutes, $callback)
+        {
+            //Method inherited from \Craftyx\SlackApi\Methods\SlackMethod            
+                        /** @var \Craftyx\SlackApi\Methods\File $instance */
+                        return $instance->cacheRemember($key, $minutes, $callback);
+        }
+        
+        /**
+         * Remember the result value for a closure forever.
+         *
+         * @param $key
+         * @param $callback
+         * @return mixed 
+         * @static 
+         */ 
+        public static function cacheRememberForever($key, $callback)
+        {
+            //Method inherited from \Craftyx\SlackApi\Methods\SlackMethod            
+                        /** @var \Craftyx\SlackApi\Methods\File $instance */
+                        return $instance->cacheRememberForever($key, $callback);
+        }
+        
+        /**
+         * Get a cache for a given key.
+         *
+         * @param string $key
+         * @param null $default
+         * @return mixed 
+         * @static 
+         */ 
+        public static function cacheGet($key, $default = null)
+        {
+            //Method inherited from \Craftyx\SlackApi\Methods\SlackMethod            
+                        /** @var \Craftyx\SlackApi\Methods\File $instance */
+                        return $instance->cacheGet($key, $default);
+        }
+        
+        /**
+         * Cache a value forever.
+         *
+         * @param $key
+         * @param $value
+         * @static 
+         */ 
+        public static function cacheForever($key, $value)
+        {
+            //Method inherited from \Craftyx\SlackApi\Methods\SlackMethod            
+                        /** @var \Craftyx\SlackApi\Methods\File $instance */
+                        return $instance->cacheForever($key, $value);
+        }
+        
+        /**
+         * Forget a value for a given key.
+         *
+         * @param $key
+         * @static 
+         */ 
+        public static function cacheForget($key)
+        {
+            //Method inherited from \Craftyx\SlackApi\Methods\SlackMethod            
+                        /** @var \Craftyx\SlackApi\Methods\File $instance */
+                        return $instance->cacheForget($key);
+        }
+         
+    }
+
+    /**
+     * 
+     *
+     */ 
+    class SlackSearch {
+        
+        /**
+         * This method allows you to search both messages and files in a single call.
+         *
+         * @param string $query
+         * @param string $sort
+         * @param array $options <pre>
+         * [
+         *  "sort_dir" => desc, //Change sort direction to ascending (asc) or descending (desc).
+         *   "highlight" => 1, //Pass a value of 1 to enable query highlight markers (see below).
+         *   "count" => 100, //Number of items to return per page.
+         *   "page" => 1 //Page number of results to return.
+         * ]
+         * </pre>
+         * @return array 
+         * @static 
+         */ 
+        public static function all($query, $sort = 'timestamp', $options = array())
+        {
+                        /** @var \Craftyx\SlackApi\Methods\Search $instance */
+                        return $instance->all($query, $sort, $options);
+        }
+        
+        /**
+         * This method returns files matching a search query.
+         *
+         * @param string $query
+         * @param string $sort
+         * @param array $options <pre>
+         * [
+         *  "sort_dir" => desc, //Change sort direction to ascending (asc) or descending (desc).
+         *   "highlight" => 1, //Pass a value of 1 to enable query highlight markers (see below).
+         *   "count" => 100, //Number of items to return per page.
+         *   "page" => 1 //Page number of results to return.
+         * ]
+         * </pre>
+         * @return array 
+         * @static 
+         */ 
+        public static function files($query, $sort = 'timestamp', $options = array())
+        {
+                        /** @var \Craftyx\SlackApi\Methods\Search $instance */
+                        return $instance->files($query, $sort, $options);
+        }
+        
+        /**
+         * This method returns messages matching a search query.
+         *
+         * @param string $query
+         * @param string $sort
+         * @param array $options <pre>
+         * [
+         *  "sort_dir" => desc, //Change sort direction to ascending (asc) or descending (desc).
+         *   "highlight" => 1, //Pass a value of 1 to enable query highlight markers (see below).
+         *   "count" => 100, //Number of items to return per page.
+         *   "page" => 1 //Page number of results to return.
+         * ]
+         * </pre>
+         * @return array 
+         * @static 
+         */ 
+        public static function messages($query, $sort = 'timestamp', $options = array())
+        {
+                        /** @var \Craftyx\SlackApi\Methods\Search $instance */
+                        return $instance->messages($query, $sort, $options);
+        }
+        
+        /**
+         * Sends a http request.
+         *
+         * @param string $method short method of the api (only the suffix after ".")
+         * @param array $params params to the given method
+         * @param string $http http verb
+         * @return array 
+         * @static 
+         */ 
+        public static function method($method, $params = array(), $http = 'post')
+        {
+            //Method inherited from \Craftyx\SlackApi\Methods\SlackMethod            
+                        /** @var \Craftyx\SlackApi\Methods\Search $instance */
+                        return $instance->method($method, $params, $http);
+        }
+        
+        /**
+         * Returns the api.
+         *
+         * @return \Craftyx\SlackApi\Contracts\SlackApi 
+         * @static 
+         */ 
+        public static function getApi()
+        {
+            //Method inherited from \Craftyx\SlackApi\Methods\SlackMethod            
+                        /** @var \Craftyx\SlackApi\Methods\Search $instance */
+                        return $instance->getApi();
+        }
+        
+        /**
+         * Cache a value.
+         *
+         * @param string $key
+         * @param mixed $value
+         * @param int $minutes Default 1
+         * @return mixed 
+         * @static 
+         */ 
+        public static function cachePut($key, $value, $minutes = 1)
+        {
+            //Method inherited from \Craftyx\SlackApi\Methods\SlackMethod            
+                        /** @var \Craftyx\SlackApi\Methods\Search $instance */
+                        return $instance->cachePut($key, $value, $minutes);
+        }
+        
+        /**
+         * Remember the result value for a given closure.
+         *
+         * @param $key
+         * @param $minutes
+         * @param $callback
+         * @return mixed 
+         * @static 
+         */ 
+        public static function cacheRemember($key, $minutes, $callback)
+        {
+            //Method inherited from \Craftyx\SlackApi\Methods\SlackMethod            
+                        /** @var \Craftyx\SlackApi\Methods\Search $instance */
+                        return $instance->cacheRemember($key, $minutes, $callback);
+        }
+        
+        /**
+         * Remember the result value for a closure forever.
+         *
+         * @param $key
+         * @param $callback
+         * @return mixed 
+         * @static 
+         */ 
+        public static function cacheRememberForever($key, $callback)
+        {
+            //Method inherited from \Craftyx\SlackApi\Methods\SlackMethod            
+                        /** @var \Craftyx\SlackApi\Methods\Search $instance */
+                        return $instance->cacheRememberForever($key, $callback);
+        }
+        
+        /**
+         * Get a cache for a given key.
+         *
+         * @param string $key
+         * @param null $default
+         * @return mixed 
+         * @static 
+         */ 
+        public static function cacheGet($key, $default = null)
+        {
+            //Method inherited from \Craftyx\SlackApi\Methods\SlackMethod            
+                        /** @var \Craftyx\SlackApi\Methods\Search $instance */
+                        return $instance->cacheGet($key, $default);
+        }
+        
+        /**
+         * Cache a value forever.
+         *
+         * @param $key
+         * @param $value
+         * @static 
+         */ 
+        public static function cacheForever($key, $value)
+        {
+            //Method inherited from \Craftyx\SlackApi\Methods\SlackMethod            
+                        /** @var \Craftyx\SlackApi\Methods\Search $instance */
+                        return $instance->cacheForever($key, $value);
+        }
+        
+        /**
+         * Forget a value for a given key.
+         *
+         * @param $key
+         * @static 
+         */ 
+        public static function cacheForget($key)
+        {
+            //Method inherited from \Craftyx\SlackApi\Methods\SlackMethod            
+                        /** @var \Craftyx\SlackApi\Methods\Search $instance */
+                        return $instance->cacheForget($key);
+        }
+         
+    }
+
+    /**
+     * 
+     *
+     */ 
+    class SlackInstantMessage {
+        
+        /**
+         * This method closes a direct message channel.
+         *
+         * @param string $channel Direct message channel to close.
+         * @return array 
+         * @static 
+         */ 
+        public static function close($channel)
+        {
+                        /** @var \Craftyx\SlackApi\Methods\InstantMessage $instance */
+                        return $instance->close($channel);
+        }
+        
+        /**
+         * This method returns a portion of messages/events from the specified channel.
+         * 
+         * To read the entire history for a channel, call the method with no `latest` or `oldest` arguments,
+         * and then continue paging using the instructions below.
+         *
+         * @see https://api.slack.com/methods/channels.history
+         * @param string $channel Channel to fetch history for.
+         * @param int $count Number of messages to return, between 1 and 1000.
+         * @param string $latest End of time range of messages to include in results.
+         * @param int|string $oldest Start of time range of messages to include in results.
+         * @param int $inclusive Include messages with latest or oldest timestamp in results.
+         * @return array 
+         * @static 
+         */ 
+        public static function history($channel, $count = 100, $latest = null, $oldest = 0, $inclusive = 1)
+        {
+                        /** @var \Craftyx\SlackApi\Methods\InstantMessage $instance */
+                        return $instance->history($channel, $count, $latest, $oldest, $inclusive);
+        }
+        
+        /**
+         * This method returns a list of all im channels that the user has.
+         *
+         * @return array 
+         * @static 
+         */ 
+        public static function lists()
+        {
+                        /** @var \Craftyx\SlackApi\Methods\InstantMessage $instance */
+                        return $instance->lists();
+        }
+        
+        /**
+         * This method returns a list of all im channels that the user has.
+         *
+         * @return array 
+         * @static 
+         */ 
+        public static function all()
+        {
+                        /** @var \Craftyx\SlackApi\Methods\InstantMessage $instance */
+                        return $instance->all();
+        }
+        
+        /**
+         * This method moves the read cursor in a direct message channel.
+         *
+         * @param string $channel
+         * @param int|string $ts
+         * @return array 
+         * @static 
+         */ 
+        public static function mark($channel, $ts)
+        {
+                        /** @var \Craftyx\SlackApi\Methods\InstantMessage $instance */
+                        return $instance->mark($channel, $ts);
+        }
+        
+        /**
+         * This method opens a direct message channel with another member of your Slack team.
+         *
+         * @param string $user
+         * @return array 
+         * @static 
+         */ 
+        public static function open($user)
+        {
+                        /** @var \Craftyx\SlackApi\Methods\InstantMessage $instance */
+                        return $instance->open($user);
+        }
+        
+        /**
+         * Sends a http request.
+         *
+         * @param string $method short method of the api (only the suffix after ".")
+         * @param array $params params to the given method
+         * @param string $http http verb
+         * @return array 
+         * @static 
+         */ 
+        public static function method($method, $params = array(), $http = 'post')
+        {
+            //Method inherited from \Craftyx\SlackApi\Methods\SlackMethod            
+                        /** @var \Craftyx\SlackApi\Methods\InstantMessage $instance */
+                        return $instance->method($method, $params, $http);
+        }
+        
+        /**
+         * Returns the api.
+         *
+         * @return \Craftyx\SlackApi\Contracts\SlackApi 
+         * @static 
+         */ 
+        public static function getApi()
+        {
+            //Method inherited from \Craftyx\SlackApi\Methods\SlackMethod            
+                        /** @var \Craftyx\SlackApi\Methods\InstantMessage $instance */
+                        return $instance->getApi();
+        }
+        
+        /**
+         * Cache a value.
+         *
+         * @param string $key
+         * @param mixed $value
+         * @param int $minutes Default 1
+         * @return mixed 
+         * @static 
+         */ 
+        public static function cachePut($key, $value, $minutes = 1)
+        {
+            //Method inherited from \Craftyx\SlackApi\Methods\SlackMethod            
+                        /** @var \Craftyx\SlackApi\Methods\InstantMessage $instance */
+                        return $instance->cachePut($key, $value, $minutes);
+        }
+        
+        /**
+         * Remember the result value for a given closure.
+         *
+         * @param $key
+         * @param $minutes
+         * @param $callback
+         * @return mixed 
+         * @static 
+         */ 
+        public static function cacheRemember($key, $minutes, $callback)
+        {
+            //Method inherited from \Craftyx\SlackApi\Methods\SlackMethod            
+                        /** @var \Craftyx\SlackApi\Methods\InstantMessage $instance */
+                        return $instance->cacheRemember($key, $minutes, $callback);
+        }
+        
+        /**
+         * Remember the result value for a closure forever.
+         *
+         * @param $key
+         * @param $callback
+         * @return mixed 
+         * @static 
+         */ 
+        public static function cacheRememberForever($key, $callback)
+        {
+            //Method inherited from \Craftyx\SlackApi\Methods\SlackMethod            
+                        /** @var \Craftyx\SlackApi\Methods\InstantMessage $instance */
+                        return $instance->cacheRememberForever($key, $callback);
+        }
+        
+        /**
+         * Get a cache for a given key.
+         *
+         * @param string $key
+         * @param null $default
+         * @return mixed 
+         * @static 
+         */ 
+        public static function cacheGet($key, $default = null)
+        {
+            //Method inherited from \Craftyx\SlackApi\Methods\SlackMethod            
+                        /** @var \Craftyx\SlackApi\Methods\InstantMessage $instance */
+                        return $instance->cacheGet($key, $default);
+        }
+        
+        /**
+         * Cache a value forever.
+         *
+         * @param $key
+         * @param $value
+         * @static 
+         */ 
+        public static function cacheForever($key, $value)
+        {
+            //Method inherited from \Craftyx\SlackApi\Methods\SlackMethod            
+                        /** @var \Craftyx\SlackApi\Methods\InstantMessage $instance */
+                        return $instance->cacheForever($key, $value);
+        }
+        
+        /**
+         * Forget a value for a given key.
+         *
+         * @param $key
+         * @static 
+         */ 
+        public static function cacheForget($key)
+        {
+            //Method inherited from \Craftyx\SlackApi\Methods\SlackMethod            
+                        /** @var \Craftyx\SlackApi\Methods\InstantMessage $instance */
+                        return $instance->cacheForget($key);
+        }
+         
+    }
+
+    /**
+     * 
+     *
+     */ 
+    class SlackUser {
+        
+        /**
+         * This method lets you find out information about a user's presence.
+         * 
+         * Consult the presence documentation for more details.
+         *
+         * @param string $user User ID to get presence info on. Defaults to the authed user.
+         * @return array 
+         * @static 
+         */ 
+        public static function getPresence($user)
+        {
+                        /** @var \Craftyx\SlackApi\Methods\User $instance */
+                        return $instance->getPresence($user);
+        }
+        
+        /**
+         * This method returns information about a team member.
+         *
+         * @param string $user User to get info on
+         * @return array 
+         * @static 
+         */ 
+        public static function info($user)
+        {
+                        /** @var \Craftyx\SlackApi\Methods\User $instance */
+                        return $instance->info($user);
+        }
+        
+        /**
+         * This method returns a list of all users in the team. This includes deleted/deactivated users.
+         *
+         * @return array 
+         * @static 
+         */ 
+        public static function lists()
+        {
+                        /** @var \Craftyx\SlackApi\Methods\User $instance */
+                        return $instance->lists();
+        }
+        
+        /**
+         * Alias to lists.
+         *
+         * @return array 
+         * @static 
+         */ 
+        public static function all()
+        {
+                        /** @var \Craftyx\SlackApi\Methods\User $instance */
+                        return $instance->all();
+        }
+        
+        /**
+         * This method lets the slack messaging server know that the authenticated user is currently active.
+         * 
+         * Consult the presence documentation for more details.
+         *
+         * @return array 
+         * @static 
+         */ 
+        public static function setActive()
+        {
+                        /** @var \Craftyx\SlackApi\Methods\User $instance */
+                        return $instance->setActive();
+        }
+        
+        /**
+         * This method return user info search by email
+         *
+         * @param $email
+         * @return array 
+         * @static 
+         */ 
+        public static function lookupByEmail($email)
+        {
+                        /** @var \Craftyx\SlackApi\Methods\User $instance */
+                        return $instance->lookupByEmail($email);
+        }
+        
+        /**
+         * This method lets you set the calling user's manual presence.
+         * 
+         * Consult the presence documentation for more details.
+         *
+         * @param $presence
+         * @return array 
+         * @static 
+         */ 
+        public static function setPresence($presence)
+        {
+                        /** @var \Craftyx\SlackApi\Methods\User $instance */
+                        return $instance->setPresence($presence);
+        }
+        
+        /**
+         * Get an array of users id's by nicks.
+         *
+         * @param string|array $nicks
+         * @param bool $force force to reload the users list
+         * @param int $cacheMinutes Minutes or a Date to cache the results, default 1 minute
+         * @return array 
+         * @static 
+         */ 
+        public static function getUsersIDsByNicks($nicks, $force = false, $cacheMinutes = 1)
+        {
+                        /** @var \Craftyx\SlackApi\Methods\User $instance */
+                        return $instance->getUsersIDsByNicks($nicks, $force, $cacheMinutes);
+        }
+        
+        /**
+         * Sends a http request.
+         *
+         * @param string $method short method of the api (only the suffix after ".")
+         * @param array $params params to the given method
+         * @param string $http http verb
+         * @return array 
+         * @static 
+         */ 
+        public static function method($method, $params = array(), $http = 'post')
+        {
+            //Method inherited from \Craftyx\SlackApi\Methods\SlackMethod            
+                        /** @var \Craftyx\SlackApi\Methods\User $instance */
+                        return $instance->method($method, $params, $http);
+        }
+        
+        /**
+         * Returns the api.
+         *
+         * @return \Craftyx\SlackApi\Contracts\SlackApi 
+         * @static 
+         */ 
+        public static function getApi()
+        {
+            //Method inherited from \Craftyx\SlackApi\Methods\SlackMethod            
+                        /** @var \Craftyx\SlackApi\Methods\User $instance */
+                        return $instance->getApi();
+        }
+        
+        /**
+         * Cache a value.
+         *
+         * @param string $key
+         * @param mixed $value
+         * @param int $minutes Default 1
+         * @return mixed 
+         * @static 
+         */ 
+        public static function cachePut($key, $value, $minutes = 1)
+        {
+            //Method inherited from \Craftyx\SlackApi\Methods\SlackMethod            
+                        /** @var \Craftyx\SlackApi\Methods\User $instance */
+                        return $instance->cachePut($key, $value, $minutes);
+        }
+        
+        /**
+         * Remember the result value for a given closure.
+         *
+         * @param $key
+         * @param $minutes
+         * @param $callback
+         * @return mixed 
+         * @static 
+         */ 
+        public static function cacheRemember($key, $minutes, $callback)
+        {
+            //Method inherited from \Craftyx\SlackApi\Methods\SlackMethod            
+                        /** @var \Craftyx\SlackApi\Methods\User $instance */
+                        return $instance->cacheRemember($key, $minutes, $callback);
+        }
+        
+        /**
+         * Remember the result value for a closure forever.
+         *
+         * @param $key
+         * @param $callback
+         * @return mixed 
+         * @static 
+         */ 
+        public static function cacheRememberForever($key, $callback)
+        {
+            //Method inherited from \Craftyx\SlackApi\Methods\SlackMethod            
+                        /** @var \Craftyx\SlackApi\Methods\User $instance */
+                        return $instance->cacheRememberForever($key, $callback);
+        }
+        
+        /**
+         * Get a cache for a given key.
+         *
+         * @param string $key
+         * @param null $default
+         * @return mixed 
+         * @static 
+         */ 
+        public static function cacheGet($key, $default = null)
+        {
+            //Method inherited from \Craftyx\SlackApi\Methods\SlackMethod            
+                        /** @var \Craftyx\SlackApi\Methods\User $instance */
+                        return $instance->cacheGet($key, $default);
+        }
+        
+        /**
+         * Cache a value forever.
+         *
+         * @param $key
+         * @param $value
+         * @static 
+         */ 
+        public static function cacheForever($key, $value)
+        {
+            //Method inherited from \Craftyx\SlackApi\Methods\SlackMethod            
+                        /** @var \Craftyx\SlackApi\Methods\User $instance */
+                        return $instance->cacheForever($key, $value);
+        }
+        
+        /**
+         * Forget a value for a given key.
+         *
+         * @param $key
+         * @static 
+         */ 
+        public static function cacheForget($key)
+        {
+            //Method inherited from \Craftyx\SlackApi\Methods\SlackMethod            
+                        /** @var \Craftyx\SlackApi\Methods\User $instance */
+                        return $instance->cacheForget($key);
+        }
+         
+    }
+
+    /**
+     * 
+     *
+     */ 
+    class SlackStar {
+        
+        /**
+         * This method lists the items starred by a user.
+         *
+         * @param string $user Show stars by this user. Defaults to the authed user
+         * @param array $options ['count' => 100, 'page' = 1]
+         * @return array 
+         * @static 
+         */ 
+        public static function lists($user = null, $options = array())
+        {
+                        /** @var \Craftyx\SlackApi\Methods\Star $instance */
+                        return $instance->lists($user, $options);
+        }
+        
+        /**
+         * Alias to lists.
+         *
+         * @param null $user Show stars by this user. Defaults to the authed user
+         * @param array $options ['count' => 100, 'page' = 1]
+         * @return array 
+         * @static 
+         */ 
+        public static function all($user = null, $options = array())
+        {
+                        /** @var \Craftyx\SlackApi\Methods\Star $instance */
+                        return $instance->all($user, $options);
+        }
+        
+        /**
+         * Sends a http request.
+         *
+         * @param string $method short method of the api (only the suffix after ".")
+         * @param array $params params to the given method
+         * @param string $http http verb
+         * @return array 
+         * @static 
+         */ 
+        public static function method($method, $params = array(), $http = 'post')
+        {
+            //Method inherited from \Craftyx\SlackApi\Methods\SlackMethod            
+                        /** @var \Craftyx\SlackApi\Methods\Star $instance */
+                        return $instance->method($method, $params, $http);
+        }
+        
+        /**
+         * Returns the api.
+         *
+         * @return \Craftyx\SlackApi\Contracts\SlackApi 
+         * @static 
+         */ 
+        public static function getApi()
+        {
+            //Method inherited from \Craftyx\SlackApi\Methods\SlackMethod            
+                        /** @var \Craftyx\SlackApi\Methods\Star $instance */
+                        return $instance->getApi();
+        }
+        
+        /**
+         * Cache a value.
+         *
+         * @param string $key
+         * @param mixed $value
+         * @param int $minutes Default 1
+         * @return mixed 
+         * @static 
+         */ 
+        public static function cachePut($key, $value, $minutes = 1)
+        {
+            //Method inherited from \Craftyx\SlackApi\Methods\SlackMethod            
+                        /** @var \Craftyx\SlackApi\Methods\Star $instance */
+                        return $instance->cachePut($key, $value, $minutes);
+        }
+        
+        /**
+         * Remember the result value for a given closure.
+         *
+         * @param $key
+         * @param $minutes
+         * @param $callback
+         * @return mixed 
+         * @static 
+         */ 
+        public static function cacheRemember($key, $minutes, $callback)
+        {
+            //Method inherited from \Craftyx\SlackApi\Methods\SlackMethod            
+                        /** @var \Craftyx\SlackApi\Methods\Star $instance */
+                        return $instance->cacheRemember($key, $minutes, $callback);
+        }
+        
+        /**
+         * Remember the result value for a closure forever.
+         *
+         * @param $key
+         * @param $callback
+         * @return mixed 
+         * @static 
+         */ 
+        public static function cacheRememberForever($key, $callback)
+        {
+            //Method inherited from \Craftyx\SlackApi\Methods\SlackMethod            
+                        /** @var \Craftyx\SlackApi\Methods\Star $instance */
+                        return $instance->cacheRememberForever($key, $callback);
+        }
+        
+        /**
+         * Get a cache for a given key.
+         *
+         * @param string $key
+         * @param null $default
+         * @return mixed 
+         * @static 
+         */ 
+        public static function cacheGet($key, $default = null)
+        {
+            //Method inherited from \Craftyx\SlackApi\Methods\SlackMethod            
+                        /** @var \Craftyx\SlackApi\Methods\Star $instance */
+                        return $instance->cacheGet($key, $default);
+        }
+        
+        /**
+         * Cache a value forever.
+         *
+         * @param $key
+         * @param $value
+         * @static 
+         */ 
+        public static function cacheForever($key, $value)
+        {
+            //Method inherited from \Craftyx\SlackApi\Methods\SlackMethod            
+                        /** @var \Craftyx\SlackApi\Methods\Star $instance */
+                        return $instance->cacheForever($key, $value);
+        }
+        
+        /**
+         * Forget a value for a given key.
+         *
+         * @param $key
+         * @static 
+         */ 
+        public static function cacheForget($key)
+        {
+            //Method inherited from \Craftyx\SlackApi\Methods\SlackMethod            
+                        /** @var \Craftyx\SlackApi\Methods\Star $instance */
+                        return $instance->cacheForget($key);
+        }
+         
+    }
+
+    /**
+     * 
+     *
+     */ 
+    class SlackUserAdmin {
+        
+        /**
+         * Invite a new user for a team.
+         *
+         * @param string $email email of the new user
+         * @param array $options ['first_name' => 'John', 'last_name' => 'Doe', 'channels' => 'ch1,ch2,ch3 ...']
+         * @return array 
+         * @static 
+         */ 
+        public static function invite($email, $options = array())
+        {
+                        /** @var \Craftyx\SlackApi\Methods\UserAdmin $instance */
+                        return $instance->invite($email, $options);
+        }
+        
+        /**
+         * Set a user account as inactive.
+         *
+         * @param string $user The user to set as inactive.
+         * @return array 
+         * @static 
+         */ 
+        public static function setInactive($user = null)
+        {
+                        /** @var \Craftyx\SlackApi\Methods\UserAdmin $instance */
+                        return $instance->setInactive($user);
+        }
+        
+        /**
+         * Set a user account as regular.
+         *
+         * @param string $user The user to set as regular.
+         * @return array 
+         * @static 
+         */ 
+        public static function setRegular($user = null)
+        {
+                        /** @var \Craftyx\SlackApi\Methods\UserAdmin $instance */
+                        return $instance->setRegular($user);
+        }
+        
+        /**
+         * Set a user account as admin.
+         *
+         * @param string $user The user to set as admin.
+         * @return array 
+         * @static 
+         */ 
+        public static function setAdmin($user = null)
+        {
+                        /** @var \Craftyx\SlackApi\Methods\UserAdmin $instance */
+                        return $instance->setAdmin($user);
+        }
+        
+        /**
+         * Sends a http request.
+         *
+         * @param string $method short method of the api (only the suffix after ".")
+         * @param array $params params to the given method
+         * @param string $http http verb
+         * @return array 
+         * @static 
+         */ 
+        public static function method($method, $params = array(), $http = 'post')
+        {
+            //Method inherited from \Craftyx\SlackApi\Methods\SlackMethod            
+                        /** @var \Craftyx\SlackApi\Methods\UserAdmin $instance */
+                        return $instance->method($method, $params, $http);
+        }
+        
+        /**
+         * Returns the api.
+         *
+         * @return \Craftyx\SlackApi\Contracts\SlackApi 
+         * @static 
+         */ 
+        public static function getApi()
+        {
+            //Method inherited from \Craftyx\SlackApi\Methods\SlackMethod            
+                        /** @var \Craftyx\SlackApi\Methods\UserAdmin $instance */
+                        return $instance->getApi();
+        }
+        
+        /**
+         * Cache a value.
+         *
+         * @param string $key
+         * @param mixed $value
+         * @param int $minutes Default 1
+         * @return mixed 
+         * @static 
+         */ 
+        public static function cachePut($key, $value, $minutes = 1)
+        {
+            //Method inherited from \Craftyx\SlackApi\Methods\SlackMethod            
+                        /** @var \Craftyx\SlackApi\Methods\UserAdmin $instance */
+                        return $instance->cachePut($key, $value, $minutes);
+        }
+        
+        /**
+         * Remember the result value for a given closure.
+         *
+         * @param $key
+         * @param $minutes
+         * @param $callback
+         * @return mixed 
+         * @static 
+         */ 
+        public static function cacheRemember($key, $minutes, $callback)
+        {
+            //Method inherited from \Craftyx\SlackApi\Methods\SlackMethod            
+                        /** @var \Craftyx\SlackApi\Methods\UserAdmin $instance */
+                        return $instance->cacheRemember($key, $minutes, $callback);
+        }
+        
+        /**
+         * Remember the result value for a closure forever.
+         *
+         * @param $key
+         * @param $callback
+         * @return mixed 
+         * @static 
+         */ 
+        public static function cacheRememberForever($key, $callback)
+        {
+            //Method inherited from \Craftyx\SlackApi\Methods\SlackMethod            
+                        /** @var \Craftyx\SlackApi\Methods\UserAdmin $instance */
+                        return $instance->cacheRememberForever($key, $callback);
+        }
+        
+        /**
+         * Get a cache for a given key.
+         *
+         * @param string $key
+         * @param null $default
+         * @return mixed 
+         * @static 
+         */ 
+        public static function cacheGet($key, $default = null)
+        {
+            //Method inherited from \Craftyx\SlackApi\Methods\SlackMethod            
+                        /** @var \Craftyx\SlackApi\Methods\UserAdmin $instance */
+                        return $instance->cacheGet($key, $default);
+        }
+        
+        /**
+         * Cache a value forever.
+         *
+         * @param $key
+         * @param $value
+         * @static 
+         */ 
+        public static function cacheForever($key, $value)
+        {
+            //Method inherited from \Craftyx\SlackApi\Methods\SlackMethod            
+                        /** @var \Craftyx\SlackApi\Methods\UserAdmin $instance */
+                        return $instance->cacheForever($key, $value);
+        }
+        
+        /**
+         * Forget a value for a given key.
+         *
+         * @param $key
+         * @static 
+         */ 
+        public static function cacheForget($key)
+        {
+            //Method inherited from \Craftyx\SlackApi\Methods\SlackMethod            
+                        /** @var \Craftyx\SlackApi\Methods\UserAdmin $instance */
+                        return $instance->cacheForget($key);
+        }
+         
+    }
+
+    /**
+     * 
+     *
+     */ 
+    class SlackRealTimeMessage {
+        
+        /**
+         * This method starts a Real Time Messaging API session.
+         * 
+         * Refer to the RTM API documentation for full details on how to use the RTM API.
+         *
+         * @return array 
+         * @static 
+         */ 
+        public static function start()
+        {
+                        /** @var \Craftyx\SlackApi\Methods\RealTimeMessage $instance */
+                        return $instance->start();
+        }
+        
+        /**
+         * Sends a http request.
+         *
+         * @param string $method short method of the api (only the suffix after ".")
+         * @param array $params params to the given method
+         * @param string $http http verb
+         * @return array 
+         * @static 
+         */ 
+        public static function method($method, $params = array(), $http = 'post')
+        {
+            //Method inherited from \Craftyx\SlackApi\Methods\SlackMethod            
+                        /** @var \Craftyx\SlackApi\Methods\RealTimeMessage $instance */
+                        return $instance->method($method, $params, $http);
+        }
+        
+        /**
+         * Returns the api.
+         *
+         * @return \Craftyx\SlackApi\Contracts\SlackApi 
+         * @static 
+         */ 
+        public static function getApi()
+        {
+            //Method inherited from \Craftyx\SlackApi\Methods\SlackMethod            
+                        /** @var \Craftyx\SlackApi\Methods\RealTimeMessage $instance */
+                        return $instance->getApi();
+        }
+        
+        /**
+         * Cache a value.
+         *
+         * @param string $key
+         * @param mixed $value
+         * @param int $minutes Default 1
+         * @return mixed 
+         * @static 
+         */ 
+        public static function cachePut($key, $value, $minutes = 1)
+        {
+            //Method inherited from \Craftyx\SlackApi\Methods\SlackMethod            
+                        /** @var \Craftyx\SlackApi\Methods\RealTimeMessage $instance */
+                        return $instance->cachePut($key, $value, $minutes);
+        }
+        
+        /**
+         * Remember the result value for a given closure.
+         *
+         * @param $key
+         * @param $minutes
+         * @param $callback
+         * @return mixed 
+         * @static 
+         */ 
+        public static function cacheRemember($key, $minutes, $callback)
+        {
+            //Method inherited from \Craftyx\SlackApi\Methods\SlackMethod            
+                        /** @var \Craftyx\SlackApi\Methods\RealTimeMessage $instance */
+                        return $instance->cacheRemember($key, $minutes, $callback);
+        }
+        
+        /**
+         * Remember the result value for a closure forever.
+         *
+         * @param $key
+         * @param $callback
+         * @return mixed 
+         * @static 
+         */ 
+        public static function cacheRememberForever($key, $callback)
+        {
+            //Method inherited from \Craftyx\SlackApi\Methods\SlackMethod            
+                        /** @var \Craftyx\SlackApi\Methods\RealTimeMessage $instance */
+                        return $instance->cacheRememberForever($key, $callback);
+        }
+        
+        /**
+         * Get a cache for a given key.
+         *
+         * @param string $key
+         * @param null $default
+         * @return mixed 
+         * @static 
+         */ 
+        public static function cacheGet($key, $default = null)
+        {
+            //Method inherited from \Craftyx\SlackApi\Methods\SlackMethod            
+                        /** @var \Craftyx\SlackApi\Methods\RealTimeMessage $instance */
+                        return $instance->cacheGet($key, $default);
+        }
+        
+        /**
+         * Cache a value forever.
+         *
+         * @param $key
+         * @param $value
+         * @static 
+         */ 
+        public static function cacheForever($key, $value)
+        {
+            //Method inherited from \Craftyx\SlackApi\Methods\SlackMethod            
+                        /** @var \Craftyx\SlackApi\Methods\RealTimeMessage $instance */
+                        return $instance->cacheForever($key, $value);
+        }
+        
+        /**
+         * Forget a value for a given key.
+         *
+         * @param $key
+         * @static 
+         */ 
+        public static function cacheForget($key)
+        {
+            //Method inherited from \Craftyx\SlackApi\Methods\SlackMethod            
+                        /** @var \Craftyx\SlackApi\Methods\RealTimeMessage $instance */
+                        return $instance->cacheForget($key);
+        }
+         
+    }
+
+    /**
+     * 
+     *
+     */ 
+    class SlackTeam {
+        
+        /**
+         * This method provides information about your team.
+         *
+         * @return array 
+         * @static 
+         */ 
+        public static function info()
+        {
+                        /** @var \Craftyx\SlackApi\Methods\Team $instance */
+                        return $instance->info();
+        }
+        
+        /**
+         * This method is used to get the access logs for users on a team.
+         *
+         * @param array $options ['count' => 100, 'page' => 1]
+         * @return array 
+         * @static 
+         */ 
+        public static function accessLogs($options = array())
+        {
+                        /** @var \Craftyx\SlackApi\Methods\Team $instance */
+                        return $instance->accessLogs($options);
+        }
+        
+        /**
+         * Sends a http request.
+         *
+         * @param string $method short method of the api (only the suffix after ".")
+         * @param array $params params to the given method
+         * @param string $http http verb
+         * @return array 
+         * @static 
+         */ 
+        public static function method($method, $params = array(), $http = 'post')
+        {
+            //Method inherited from \Craftyx\SlackApi\Methods\SlackMethod            
+                        /** @var \Craftyx\SlackApi\Methods\Team $instance */
+                        return $instance->method($method, $params, $http);
+        }
+        
+        /**
+         * Returns the api.
+         *
+         * @return \Craftyx\SlackApi\Contracts\SlackApi 
+         * @static 
+         */ 
+        public static function getApi()
+        {
+            //Method inherited from \Craftyx\SlackApi\Methods\SlackMethod            
+                        /** @var \Craftyx\SlackApi\Methods\Team $instance */
+                        return $instance->getApi();
+        }
+        
+        /**
+         * Cache a value.
+         *
+         * @param string $key
+         * @param mixed $value
+         * @param int $minutes Default 1
+         * @return mixed 
+         * @static 
+         */ 
+        public static function cachePut($key, $value, $minutes = 1)
+        {
+            //Method inherited from \Craftyx\SlackApi\Methods\SlackMethod            
+                        /** @var \Craftyx\SlackApi\Methods\Team $instance */
+                        return $instance->cachePut($key, $value, $minutes);
+        }
+        
+        /**
+         * Remember the result value for a given closure.
+         *
+         * @param $key
+         * @param $minutes
+         * @param $callback
+         * @return mixed 
+         * @static 
+         */ 
+        public static function cacheRemember($key, $minutes, $callback)
+        {
+            //Method inherited from \Craftyx\SlackApi\Methods\SlackMethod            
+                        /** @var \Craftyx\SlackApi\Methods\Team $instance */
+                        return $instance->cacheRemember($key, $minutes, $callback);
+        }
+        
+        /**
+         * Remember the result value for a closure forever.
+         *
+         * @param $key
+         * @param $callback
+         * @return mixed 
+         * @static 
+         */ 
+        public static function cacheRememberForever($key, $callback)
+        {
+            //Method inherited from \Craftyx\SlackApi\Methods\SlackMethod            
+                        /** @var \Craftyx\SlackApi\Methods\Team $instance */
+                        return $instance->cacheRememberForever($key, $callback);
+        }
+        
+        /**
+         * Get a cache for a given key.
+         *
+         * @param string $key
+         * @param null $default
+         * @return mixed 
+         * @static 
+         */ 
+        public static function cacheGet($key, $default = null)
+        {
+            //Method inherited from \Craftyx\SlackApi\Methods\SlackMethod            
+                        /** @var \Craftyx\SlackApi\Methods\Team $instance */
+                        return $instance->cacheGet($key, $default);
+        }
+        
+        /**
+         * Cache a value forever.
+         *
+         * @param $key
+         * @param $value
+         * @static 
+         */ 
+        public static function cacheForever($key, $value)
+        {
+            //Method inherited from \Craftyx\SlackApi\Methods\SlackMethod            
+                        /** @var \Craftyx\SlackApi\Methods\Team $instance */
+                        return $instance->cacheForever($key, $value);
+        }
+        
+        /**
+         * Forget a value for a given key.
+         *
+         * @param $key
+         * @static 
+         */ 
+        public static function cacheForget($key)
+        {
+            //Method inherited from \Craftyx\SlackApi\Methods\SlackMethod            
+                        /** @var \Craftyx\SlackApi\Methods\Team $instance */
+                        return $instance->cacheForget($key);
+        }
+         
+    }
+ 
+}
+
 namespace Facade\Ignition\Facades { 
 
     /**
@@ -18901,6 +21520,30 @@ namespace  {
     class View extends \Illuminate\Support\Facades\View {}
 
     class Debugbar extends \Barryvdh\Debugbar\Facade {}
+
+    class SlackApi extends \Craftyx\SlackApi\Facades\SlackApi {}
+
+    class SlackChannel extends \Craftyx\SlackApi\Facades\SlackChannel {}
+
+    class SlackChat extends \Craftyx\SlackApi\Facades\SlackChat {}
+
+    class SlackGroup extends \Craftyx\SlackApi\Facades\SlackGroup {}
+
+    class SlackFile extends \Craftyx\SlackApi\Facades\SlackFile {}
+
+    class SlackSearch extends \Craftyx\SlackApi\Facades\SlackSearch {}
+
+    class SlackInstantMessage extends \Craftyx\SlackApi\Facades\SlackInstantMessage {}
+
+    class SlackUser extends \Craftyx\SlackApi\Facades\SlackUser {}
+
+    class SlackStar extends \Craftyx\SlackApi\Facades\SlackStar {}
+
+    class SlackUserAdmin extends \Craftyx\SlackApi\Facades\SlackUserAdmin {}
+
+    class SlackRealTimeMessage extends \Craftyx\SlackApi\Facades\SlackRealTimeMessage {}
+
+    class SlackTeam extends \Craftyx\SlackApi\Facades\SlackTeam {}
 
     class Flare extends \Facade\Ignition\Facades\Flare {}
 

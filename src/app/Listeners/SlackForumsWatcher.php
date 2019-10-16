@@ -38,7 +38,7 @@ class SlackForumsWatcher implements ShouldQueue
             "[Nouveau sujet] %s a créé un nouveau sujet : %s \n %s",
             $event->getUser()->username,
             $event->getTopic()->title,
-            route('forums.show-topic', [
+            route('topics.show', [
                 $event->getTopic()->forumsCategory->slug,
                 $event->getTopic()->slug,
             ])

@@ -20,15 +20,15 @@ class ForumsMessagePostedOnForumsTopic
     /**
      * @var User
      */
-    private $user;
+    protected $user;
     /**
      * @var ForumsTopic
      */
-    private $topic;
+    protected $topic;
     /**
      * @var ForumsMessage
      */
-    private $message;
+    protected $message;
 
     /**
      * Create a new event instance.

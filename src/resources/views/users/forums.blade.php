@@ -1,6 +1,9 @@
 @extends('layouts.profile')
 
 
+@section('title', 'Préférences des forums')
+
+
 @section('content')
     <h2>Préférences des forums</h2>
 

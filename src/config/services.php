@@ -50,4 +50,11 @@ return [
         'client_secret' => env('TWITTER_CLIENT_SECRET'),
         'redirect' => '/oauth/twitter/callback',
     ],
+
+    /**
+     * Slack
+     */
+    'slack' => [
+        'token' => env('SLACK_INVITE_TOKEN'),
+    ]
 ];

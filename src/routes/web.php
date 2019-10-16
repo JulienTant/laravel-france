@@ -41,3 +41,7 @@ Route::middleware('auth')->prefix('user')->name('user.')->group(function () {
     Route::post('change-email', ['as' => 'change-email.save', 'uses' => 'UserController@postChangeEmail']);
     Route::get('logout', ['as' => 'logout', 'uses' => 'UserController@logout']);
 });
+
+// Slack
+Route::get('slack', ['as' => 'slack', 'uses' => 'SlackController@index']);
+Route::post('slack', ['as' => 'slack', 'uses' => 'SlackController@invite']);

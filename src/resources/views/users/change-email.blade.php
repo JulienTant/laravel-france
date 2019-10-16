@@ -1,6 +1,8 @@
 @extends('layouts.profile')
 
 
+@section('title', 'Changer mon email')
+
 @section('content')
 
     <h2>Modifier mon avatar / Email</h2>
