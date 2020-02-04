@@ -24,7 +24,9 @@
             <h3>Utilisateurs</h3>
             <ul>
                 <li>
-                    <a href="{{ route('admin.users.index') }}">Liste des utilisateurs</a>
+                    @php
+//                   <a href="{{ route('admin.users.index') }}">Liste des utilisateurs</a>
+                    @endphp
                 </li>
             </ul>
         </nav>
