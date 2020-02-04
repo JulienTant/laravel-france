@@ -5,6 +5,7 @@
 - php
 - artisan
 - composer
+- phpunit
 
 ## load
 

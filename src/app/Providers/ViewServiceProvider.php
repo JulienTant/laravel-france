@@ -14,9 +14,6 @@ class ViewServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        View::composer(
-            'layouts.forums_list', 'LaravelFrance\Http\View\Composers\ForumsListComposer'
-        );
     }
 
     /**
@@ -26,6 +23,8 @@ class ViewServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        View::composer(
+            'layouts.forums_list', 'LaravelFrance\Http\View\Composers\ForumsListComposer'
+        );
     }
 }
