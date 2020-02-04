@@ -14,11 +14,14 @@
         "fideloper/proxy": "^4.0",
         "graham-campbell/markdown": "^11.1",
         "laravel/framework": "^6.0",
+        "laravel/slack-notification-channel": "^2.0",
         "laravel/socialite": "^4.2",
         "laravel/tinker": "^1.0",
         "league/commonmark-ext-autolink": "^1.0",
         "league/commonmark-ext-table": "^2.1",
         "predis/predis": "^1.1",
+        "spatie/flysystem-dropbox": "^1.2",
+        "spatie/laravel-backup": "^6.7",
         "uxweb/sweet-alert": "dev-master"
     },
     "require-dev": {
