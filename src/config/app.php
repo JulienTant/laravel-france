@@ -173,9 +173,9 @@ return [
         LaravelFrance\Providers\AuthServiceProvider::class,
         // App\Providers\BroadcastServiceProvider::class,
         LaravelFrance\Providers\EventServiceProvider::class,
-//        LaravelFrance\Providers\TelescopeServiceProvider::class,
         LaravelFrance\Providers\RouteServiceProvider::class,
         LaravelFrance\Providers\ViewServiceProvider::class,
+        LaravelFrance\Providers\DropboxServiceProvider::class,
 
     ],
 
