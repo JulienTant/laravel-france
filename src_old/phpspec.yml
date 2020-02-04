@@ -1,5 +1,0 @@
-suites:
-    main:
-        namespace: LaravelFrance
-        psr4_prefix: LaravelFrance
-        src_path: app
