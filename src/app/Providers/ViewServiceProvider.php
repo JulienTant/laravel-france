@@ -24,7 +24,7 @@ class ViewServiceProvider extends ServiceProvider
     public function boot()
     {
         View::composer(
-            'layouts.forums_list', 'LaravelFrance\Http\View\Composers\ForumsListComposer'
+            'layouts.forums_sidebar', 'LaravelFrance\Http\View\Composers\ForumsListComposer'
         );
     }
 }

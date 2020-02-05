@@ -9,6 +9,7 @@
     "license": "MIT",
     "require": {
         "php": "^7.2",
+        "algolia/scout-extended": "^1.8",
         "craftyx/slack-api": "2.0.4",
         "cviebrock/eloquent-sluggable": "^6.0",
         "fideloper/proxy": "^4.0",

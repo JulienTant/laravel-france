@@ -26,6 +26,8 @@ Route::put('/t/{categorySlug}/{topicSlug}/{messageId}', ['as' => 'messages.updat
 Route::get('/t/{categorySlug}/{topicSlug}/{messageId}/remove', ['as' => 'messages.remove', 'uses' => 'MessagesController@remove']);
 Route::delete('/t/{categorySlug}/{topicSlug}/{messageId}', ['as' => 'messages.delete', 'uses' => 'MessagesController@delete']);
 
+Route::get('/search', ['as' => 'search', 'uses' => 'SearchController']);
+
 // Auth
 Route::get('oauth/{provider}', ['as' => 'oauth.to', 'uses' => 'OAuthController@redirectToProvider']);
 Route::get('oauth/{provider}/callback', ['as' => 'oauth.callback', 'uses' => 'OAuthController@handleProviderCallback']);

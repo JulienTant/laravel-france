@@ -12,61 +12,31 @@
 
 namespace LaravelFrance{
 /**
- * LaravelFrance\ForumsWatch
+ * LaravelFrance\ForumsCategory
  *
  * @property int $id
- * @property int $forums_topic_id
- * @property int $user_id
- * @property int $is_up_to_date
- * @property \Illuminate\Support\Carbon $created_at
- * @property \Illuminate\Support\Carbon $updated_at
- * @property int $still_watching
- * @property int|null $first_unread_message_id
- * @property-read \LaravelFrance\ForumsMessage|null $firstUnreadMessage
- * @property-read \LaravelFrance\ForumsTopic $forumsTopic
- * @property-read \LaravelFrance\User $user
- * @method static \Illuminate\Database\Eloquent\Builder|\LaravelFrance\ForumsWatch active()
- * @method static \Illuminate\Database\Eloquent\Builder|\LaravelFrance\ForumsWatch mailable()
- * @method static \Illuminate\Database\Eloquent\Builder|\LaravelFrance\ForumsWatch newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\LaravelFrance\ForumsWatch newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\LaravelFrance\ForumsWatch query()
- * @method static \Illuminate\Database\Eloquent\Builder|\LaravelFrance\ForumsWatch whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\LaravelFrance\ForumsWatch whereFirstUnreadMessageId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\LaravelFrance\ForumsWatch whereForumsTopicId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\LaravelFrance\ForumsWatch whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\LaravelFrance\ForumsWatch whereIsUpToDate($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\LaravelFrance\ForumsWatch whereStillWatching($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\LaravelFrance\ForumsWatch whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\LaravelFrance\ForumsWatch whereUserId($value)
+ * @property int $order
+ * @property string $name
+ * @property string $slug
+ * @property string $background_color
+ * @property string $font_color
+ * @property string|null $description
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @method static \Illuminate\Database\Eloquent\Builder|\LaravelFrance\ForumsCategory newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\LaravelFrance\ForumsCategory newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\LaravelFrance\ForumsCategory query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\LaravelFrance\ForumsCategory whereBackgroundColor($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\LaravelFrance\ForumsCategory whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\LaravelFrance\ForumsCategory whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\LaravelFrance\ForumsCategory whereFontColor($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\LaravelFrance\ForumsCategory whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\LaravelFrance\ForumsCategory whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\LaravelFrance\ForumsCategory whereOrder($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\LaravelFrance\ForumsCategory whereSlug($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\LaravelFrance\ForumsCategory whereUpdatedAt($value)
  */
-	class ForumsWatch extends \Eloquent {}
-}
-
-namespace LaravelFrance{
-/**
- * LaravelFrance\OAuth
- *
- * @property int $id
- * @property int $user_id
- * @property string $provider
- * @property string $uid
- * @property \Illuminate\Support\Carbon $created_at
- * @property \Illuminate\Support\Carbon $updated_at
- * @property-read \LaravelFrance\User $user
- * @method static \Illuminate\Database\Eloquent\Builder|\LaravelFrance\OAuth github()
- * @method static \Illuminate\Database\Eloquent\Builder|\LaravelFrance\OAuth google()
- * @method static \Illuminate\Database\Eloquent\Builder|\LaravelFrance\OAuth newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\LaravelFrance\OAuth newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\LaravelFrance\OAuth query()
- * @method static \Illuminate\Database\Eloquent\Builder|\LaravelFrance\OAuth twitter()
- * @method static \Illuminate\Database\Eloquent\Builder|\LaravelFrance\OAuth whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\LaravelFrance\OAuth whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\LaravelFrance\OAuth whereProvider($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\LaravelFrance\OAuth whereUid($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\LaravelFrance\OAuth whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\LaravelFrance\OAuth whereUserId($value)
- */
-	class OAuth extends \Eloquent {}
+	class ForumsCategory extends \Eloquent {}
 }
 
 namespace LaravelFrance{
@@ -142,31 +112,61 @@ namespace LaravelFrance{
 
 namespace LaravelFrance{
 /**
- * LaravelFrance\ForumsCategory
+ * LaravelFrance\ForumsWatch
  *
  * @property int $id
- * @property int $order
- * @property string $name
- * @property string $slug
- * @property string $background_color
- * @property string $font_color
- * @property string|null $description
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @method static \Illuminate\Database\Eloquent\Builder|\LaravelFrance\ForumsCategory newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\LaravelFrance\ForumsCategory newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\LaravelFrance\ForumsCategory query()
- * @method static \Illuminate\Database\Eloquent\Builder|\LaravelFrance\ForumsCategory whereBackgroundColor($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\LaravelFrance\ForumsCategory whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\LaravelFrance\ForumsCategory whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\LaravelFrance\ForumsCategory whereFontColor($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\LaravelFrance\ForumsCategory whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\LaravelFrance\ForumsCategory whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\LaravelFrance\ForumsCategory whereOrder($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\LaravelFrance\ForumsCategory whereSlug($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\LaravelFrance\ForumsCategory whereUpdatedAt($value)
+ * @property int $forums_topic_id
+ * @property int $user_id
+ * @property int $is_up_to_date
+ * @property \Illuminate\Support\Carbon $created_at
+ * @property \Illuminate\Support\Carbon $updated_at
+ * @property int $still_watching
+ * @property int|null $first_unread_message_id
+ * @property-read \LaravelFrance\ForumsMessage|null $firstUnreadMessage
+ * @property-read \LaravelFrance\ForumsTopic $forumsTopic
+ * @property-read \LaravelFrance\User $user
+ * @method static \Illuminate\Database\Eloquent\Builder|\LaravelFrance\ForumsWatch active()
+ * @method static \Illuminate\Database\Eloquent\Builder|\LaravelFrance\ForumsWatch mailable()
+ * @method static \Illuminate\Database\Eloquent\Builder|\LaravelFrance\ForumsWatch newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\LaravelFrance\ForumsWatch newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\LaravelFrance\ForumsWatch query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\LaravelFrance\ForumsWatch whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\LaravelFrance\ForumsWatch whereFirstUnreadMessageId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\LaravelFrance\ForumsWatch whereForumsTopicId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\LaravelFrance\ForumsWatch whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\LaravelFrance\ForumsWatch whereIsUpToDate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\LaravelFrance\ForumsWatch whereStillWatching($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\LaravelFrance\ForumsWatch whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\LaravelFrance\ForumsWatch whereUserId($value)
  */
-	class ForumsCategory extends \Eloquent {}
+	class ForumsWatch extends \Eloquent {}
+}
+
+namespace LaravelFrance{
+/**
+ * LaravelFrance\OAuth
+ *
+ * @property int $id
+ * @property int $user_id
+ * @property string $provider
+ * @property string $uid
+ * @property \Illuminate\Support\Carbon $created_at
+ * @property \Illuminate\Support\Carbon $updated_at
+ * @property-read \LaravelFrance\User $user
+ * @method static \Illuminate\Database\Eloquent\Builder|\LaravelFrance\OAuth github()
+ * @method static \Illuminate\Database\Eloquent\Builder|\LaravelFrance\OAuth google()
+ * @method static \Illuminate\Database\Eloquent\Builder|\LaravelFrance\OAuth newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\LaravelFrance\OAuth newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\LaravelFrance\OAuth query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\LaravelFrance\OAuth twitter()
+ * @method static \Illuminate\Database\Eloquent\Builder|\LaravelFrance\OAuth whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\LaravelFrance\OAuth whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\LaravelFrance\OAuth whereProvider($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\LaravelFrance\OAuth whereUid($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\LaravelFrance\OAuth whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\LaravelFrance\OAuth whereUserId($value)
+ */
+	class OAuth extends \Eloquent {}
 }
 
 namespace LaravelFrance{
