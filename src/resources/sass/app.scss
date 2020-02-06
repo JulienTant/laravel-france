@@ -52,6 +52,13 @@
     & .meta-line {
         border-top: 1px solid $gray-300;
     }
+
+    & blockquote {
+        @extend .pl-3;
+        color: $gray-600;
+        border-left: 2px solid $gray-300;
+        @extend .font-italic;
+    }
 }
 
 .post {
