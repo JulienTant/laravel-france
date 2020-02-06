@@ -25,7 +25,7 @@ class SearchController extends Controller
         }
 
         $messages = $sQuery->paginate(20);
-        $messages->load('forumsTopic');
+        $messages->load('forumsTopic', 'forumsTopic.user', 'user');
 
         return view('topics.search', ['messages' => $messages, 'chosenCategory' => $chosenCategory]);
     }

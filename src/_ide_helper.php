@@ -3,7 +3,7 @@
 
 /**
  * A helper file for Laravel 5, to provide autocomplete information to your IDE
- * Generated for Laravel 6.14.0 on 2020-02-05 01:27:07.
+ * Generated for Laravel 6.14.0 on 2020-02-06 00:14:13.
  *
  * This file should not be included in your code, only analyzed by your IDE!
  *
@@ -17925,8 +17925,8 @@ namespace Laravel\Socialite\Facades {
         /**
          * Get the default driver name.
          *
-         * @throws \InvalidArgumentException
          * @return string 
+         * @throws \InvalidArgumentException
          * @static 
          */ 
         public static function getDefaultDriver()

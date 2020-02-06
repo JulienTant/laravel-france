@@ -41,11 +41,13 @@
             @foreach($messages as $message)
 
                     <div class="card mt-3">
-                        <div class="card-header"><a href="{{ route('topics.show', [$message->forumsTopic->forumsCategory->slug, $message->forumsTopic->slug]) }}" class="font-weight-bold">{{ $message->forumsTopic->title }}</a><br/><i class="fa fa-user"></i> {{ $message->forumsTopic->user->username }} <i class="fa fa-clock-o"></i> {{ $message->forumsTopic->lastMessage->created_at->diffForHumans() }} </div>
+                        <div class="card-header"><a href="{{ route('topics.show', [$message->forumsTopic->forumsCategory->slug, $message->forumsTopic->slug]) }}" class="font-weight-bold">{{ $message->forumsTopic->title }}</a>
+                            <br/>
+                            <i class="fa fa-user"></i> créé par {{ $message->forumsTopic->user->username }}&nbsp;&nbsp;<i class="fa fa-clock-o"></i> {{ $message->forumsTopic->lastMessage->created_at->diffForHumans() }} </div>
                         <div class="card-body">
                             @markdown($message->markdown)
                             <p class="mb-0">
-                                <a href="{{ route('messages.show', ['messageId' => $message->id]) }}">Voir le message <i class="fa fa-long-arrow-right"></i> </a>
+                                <a href="{{ route('messages.show', ['messageId' => $message->id]) }}">Voir le message de {{ $message->user->username }} <i class="fa fa-long-arrow-right"></i> </a>
                             </p>
                         </div>
                     </div>
