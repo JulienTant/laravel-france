@@ -3,8 +3,9 @@
         <div class="d-none d-md-block col-md-2">
             <div class="m-auto avatar p-1">
                 <img src="//www.gravatar.com/avatar/{{ md5($topic->user->email) }}?s=75" alt="{{ "Avatar de " . $topic->user->username }}" data-toggle="tooltip" data-placement="top" title="{{ $topic->user->username }}">
-                {{ $topic->user->username }}
+                <span class="small">{{ $topic->user->username }}</span>
             </div>
+
         </div>
         <div class="col-12 col-md-7">
             <h3 class="topic-title {{ $topic->solved ? 'topic-title-solved' : '' }}">
@@ -19,10 +20,12 @@
                 @include('topics._badge', ['category' => $topic->forumsCategory])
             </div>
             <div class="comments">
-                <i class="fa fa-comment-o"></i> {{ $topic->nb_messages-1 }}
+                <i class="fa fa-comment-o"></i> <span class="small">{{ $topic->nb_messages > 1 ? $topic->nb_messages-1 : "Aucune réponse" }}</span>
             </div>
             <div class="time">
-                <i class="fa fa-clock-o"></i> {{ $topic->lastMessage->created_at->diffForHumans() }}
+                @if($topic->nb_messages>1)
+                <i class="fa fa-clock-o"></i> <span class="small">{{ $topic->lastMessage->created_at->diffForHumans() }} par {{ $topic->lastMessage->user->username }}</span>
+                @endif
             </div>
 
         </div>
