@@ -6,7 +6,7 @@
 
 require('./bootstrap');
 require('./hljs');
-require('./simplemde');
+require('./easymde');
 require('./sweetalert');
 
 

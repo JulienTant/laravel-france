@@ -1,8 +1,8 @@
-import SimpleMDE from 'simplemde'
+import EasyMDE from 'easymde'
 
 $(function () {
     document.querySelectorAll('.editor-please').forEach((block) => {
-        new SimpleMDE({
+        new EasyMDE({
             element: block,
             indentWithTabs: false,
             spellChecker: false,
