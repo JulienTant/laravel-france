@@ -12,3 +12,5 @@ RUN mkdir /var/www/storage && chown -R www-data:www-data /var/www && chmod -R 75
 
 RUN mkdir /.composer && chmod -R 777 /.composer
 ENV COMPOSER_HOME /.composer
+
+RUN mkdir /.config && chmod -R 777 /.config
