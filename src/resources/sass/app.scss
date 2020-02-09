@@ -69,6 +69,11 @@
     padding-top: 20px;
     min-height: 150px;
 
+    &>.row {
+        margin-right: 0;
+        margin-left: 0;
+    }
+
     & .avatar {
         overflow: hidden;
         overflow-wrap: anywhere;

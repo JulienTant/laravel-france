@@ -58,3 +58,11 @@ services:
       - "9000:9000"
     networks:
       - laravelfrance
+
+  node:
+    image: node
+    working_dir: /tmp
+    volumes:
+      - ./src:/tmp
+
+
