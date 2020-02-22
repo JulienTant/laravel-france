@@ -12,11 +12,12 @@ use LaravelFrance\Http\Requests\CreateTopicRequest;
 use LaravelFrance\Http\Requests\SolveTopicRequest;
 use LaravelFrance\Http\Requests\StoreTopicRequest;
 use Redirect;
+use function foo\func;
 
 
 class TopicsController extends Controller
 {
-    public function index($categorySlug = null)
+    public function index(Request $request, $categorySlug = null)
     {
         $chosenCategory = null;
         if ($categorySlug) {
@@ -27,6 +28,22 @@ class TopicsController extends Controller
         if (!!$chosenCategory) {
             $topicsQuery = $topicsQuery->whereForumsCategoryId($chosenCategory->id);
         }
+
+        if ($request->get('author')) {
+            $topicsQuery = $topicsQuery->where('forums_topics.user_id', $request->get('author'));
+        }
+
+        if ($request->get('no-answers')) {
+            $topicsQuery = $topicsQuery->where('nb_messages', 1);
+        }
+
+        if ($from = $request->get('with-msg-from')) {
+            $topicsQuery = $topicsQuery->whereHas('forumsMessages', function ($q) use($from) {
+                $q->where('forums_messages.user_id', $from);
+            });
+        }
+
+
         $topics =  $topicsQuery->simplePaginate(Config::get('laravelfrance.forums.topics_per_page'));
 
         return view('topics.index', compact('topics', 'chosenCategory'));
