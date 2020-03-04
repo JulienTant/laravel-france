@@ -1,13 +1,6 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Web Dev Routes
-|--------------------------------------------------------------------------
-|
-| Those routes are loaded when env is not prodution
-|
-*/
+use Illuminate\Support\Facades\Route;
 
 Route::get('/as/{id}', function ($id) {
     Auth::loginUsingId($id);
