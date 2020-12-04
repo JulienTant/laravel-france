@@ -27,6 +27,6 @@
         "bootstrap-sweetalert": "^1.0.1",
         "easymde": "^2.9.0",
         "font-awesome": "^4.7.0",
-        "highlight.js": "^9.18.1"
+        "highlight.js": "^10.4.1"
     }
 }
